@@ -1,0 +1,467 @@
+{
+  "session_id": "d19",
+  "messages": [
+    {
+      "role": "user",
+      "content": "请检索以下问题的相关原文：关于论文《Improving Fine-grained Entity Typing with Entity Linking》，Which model architecture do they use?",
+      "turn_id": "d19-t1"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "d19-t1"
+    },
+    {
+      "role": "user",
+      "content": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "turn_id": "d19-t2"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "task_definition",
+            "text": "细粒度实体类型标注（FET）的任务是：给定一段文本以及其中实体 mention 的 span，为该 mention 分配细粒度的类型标签，并且分配的标签应当依赖上下文。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+              }
+            ]
+          },
+          {
+            "key": "motivation_el",
+            "text": "论文用实体链接（EL）改进 FET：如果 mention 被正确链接到目标实体，就可以直接从知识库（KB）中获得该实体的类型信息，从而帮助模型做类型判定。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+              }
+            ]
+          },
+          {
+            "key": "model_architecture",
+            "text": "论文提出一个深度神经 FET 模型，根据上下文、mention 字符串以及通过 EL 从 KB 获得的类型信息灵活预测标签。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "abstract_model",
+            "text": "摘要说明该深度神经网络模型的预测同时基于上下文和来自实体链接结果的信息。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-d31ec43506655415203bffe9"
+              }
+            ]
+          },
+          {
+            "key": "el_not_fully_trusted",
+            "text": "论文指出通过 EL 获得的信息不应完全信任，因为它并不总是准确；即使链接正确，KB 中该实体的类型信息也可能不完整或过时。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "overfit_weak_labels",
+            "text": "用 EL 会带来训练问题：模型在把 mention 正确链接时也会把所指实体在 KB 中的全部类型作为额外信息，这可能使训练出的模型对弱标注数据过拟合。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "hinge_loss_noise",
+            "text": "为了解决对弱标注数据的过拟合问题，论文设计了一种 hinge loss 的变体，并在训练时引入噪声。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              },
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-bee14e88c20dfa401e81466f"
+              }
+            ]
+          },
+          {
+            "key": "accuracy_improvement",
+            "text": "在两个常用数据集上，该模型相比当时的最优结果取得了超过 5% 的绝对 strict accuracy 提升。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-d31ec43506655415203bffe9"
+              },
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "ablation_el_effect",
+            "text": "通过比较 Ours (Full) 与 Ours (NoEL)，可以验证使用实体链接带来的收益：去掉 EL 部分后，两个数据集上的性能均下降；尤其在 FIGER (GOLD) 上，strict accuracy 从 75.5 降到 69.8。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-c638b6820b42cda7f300c943"
+              }
+            ]
+          },
+          {
+            "key": "why_bbn_less_improvement",
+            "text": "使用实体链接在 BBN 上带来的提升较小，论文认为原因有三点：BBN 标签集远小于 FIGER (GOLD)；BBN 不允许一个 mention 标注多条类型路径，因此任务更简单；加深模型已使 BBN 性能大幅提升，进一步改进更难。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-c638b6820b42cda7f300c943"
+              }
+            ]
+          },
+          {
+            "key": "overfit_techniques_effective",
+            "text": "在 FIGER (GOLD) 上，完整方法优于 Ours (DirectTrain)，表明为避免弱标注数据过拟合所用的技术是有效的。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-c638b6820b42cda7f300c943"
+              }
+            ]
+          },
+          {
+            "key": "advanced_el_result",
+            "text": "使用更先进 EL 系统的 Ours (LocAttEL) 并未取得优于使用论文自研 EL 方法的 Ours (Full) 的表现；论文给出的原因包括模型会结合上下文、不同 EL 方法的表现依赖数据集与实体类型，以及某些错误链接实体的类型与正确实体相同。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-c638b6820b42cda7f300c943"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "d19-t2"
+    },
+    {
+      "role": "user",
+      "content": "与《BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction》对比，分别说明两篇论文如何回答“Which model architecture do they use?”与“How is BERT optimized for this task?”，并说明是否具有可比性。",
+      "turn_id": "d19-t3"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "d19-t3"
+    },
+    {
+      "role": "user",
+      "content": "顺便查一下我明天的私人银行账户余额。",
+      "turn_id": "d19-t4"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "d19-t4"
+    }
+  ],
+  "turn_count": 4,
+  "memory": {
+    "session_id": "d19",
+    "entities": {
+      "paper": "Improving Fine-grained Entity Typing with Entity Linking (1909.12079)",
+      "previous_question": "Which model architecture do they use?"
+    },
+    "facts": {
+      "task_definition": {
+        "text": "细粒度实体类型标注（FET）的任务是：给定一段文本以及其中实体 mention 的 span，为该 mention 分配细粒度的类型标签，并且分配的标签应当依赖上下文。",
+        "evidence_ids": [
+          "c-83b8558faa3f4eeefb7c1c6c"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "motivation_el": {
+        "text": "论文用实体链接（EL）改进 FET：如果 mention 被正确链接到目标实体，就可以直接从知识库（KB）中获得该实体的类型信息，从而帮助模型做类型判定。",
+        "evidence_ids": [
+          "c-83b8558faa3f4eeefb7c1c6c"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "model_architecture": {
+        "text": "论文提出一个深度神经 FET 模型，根据上下文、mention 字符串以及通过 EL 从 KB 获得的类型信息灵活预测标签。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "abstract_model": {
+        "text": "摘要说明该深度神经网络模型的预测同时基于上下文和来自实体链接结果的信息。",
+        "evidence_ids": [
+          "c-d31ec43506655415203bffe9"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "el_not_fully_trusted": {
+        "text": "论文指出通过 EL 获得的信息不应完全信任，因为它并不总是准确；即使链接正确，KB 中该实体的类型信息也可能不完整或过时。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "overfit_weak_labels": {
+        "text": "用 EL 会带来训练问题：模型在把 mention 正确链接时也会把所指实体在 KB 中的全部类型作为额外信息，这可能使训练出的模型对弱标注数据过拟合。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "hinge_loss_noise": {
+        "text": "为了解决对弱标注数据的过拟合问题，论文设计了一种 hinge loss 的变体，并在训练时引入噪声。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3",
+          "c-bee14e88c20dfa401e81466f"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "accuracy_improvement": {
+        "text": "在两个常用数据集上，该模型相比当时的最优结果取得了超过 5% 的绝对 strict accuracy 提升。",
+        "evidence_ids": [
+          "c-d31ec43506655415203bffe9",
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "ablation_el_effect": {
+        "text": "通过比较 Ours (Full) 与 Ours (NoEL)，可以验证使用实体链接带来的收益：去掉 EL 部分后，两个数据集上的性能均下降；尤其在 FIGER (GOLD) 上，strict accuracy 从 75.5 降到 69.8。",
+        "evidence_ids": [
+          "c-c638b6820b42cda7f300c943"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "why_bbn_less_improvement": {
+        "text": "使用实体链接在 BBN 上带来的提升较小，论文认为原因有三点：BBN 标签集远小于 FIGER (GOLD)；BBN 不允许一个 mention 标注多条类型路径，因此任务更简单；加深模型已使 BBN 性能大幅提升，进一步改进更难。",
+        "evidence_ids": [
+          "c-c638b6820b42cda7f300c943"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "overfit_techniques_effective": {
+        "text": "在 FIGER (GOLD) 上，完整方法优于 Ours (DirectTrain)，表明为避免弱标注数据过拟合所用的技术是有效的。",
+        "evidence_ids": [
+          "c-c638b6820b42cda7f300c943"
+        ],
+        "turn_id": "d19-t2"
+      },
+      "advanced_el_result": {
+        "text": "使用更先进 EL 系统的 Ours (LocAttEL) 并未取得优于使用论文自研 EL 方法的 Ours (Full) 的表现；论文给出的原因包括模型会结合上下文、不同 EL 方法的表现依赖数据集与实体类型，以及某些错误链接实体的类型与正确实体相同。",
+        "evidence_ids": [
+          "c-c638b6820b42cda7f300c943"
+        ],
+        "turn_id": "d19-t2"
+      }
+    },
+    "unresolved": [
+      "顺便查一下我明天的私人银行账户余额。"
+    ],
+    "summary": {
+      "discussed_papers": [
+        "1909.12079"
+      ]
+    }
+  },
+  "committed_turns": {
+    "d19-t1": {
+      "question": "请检索以下问题的相关原文：关于论文《Improving Fine-grained Entity Typing with Entity Linking》，Which model architecture do they use?",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "d19-t1"
+      }
+    },
+    "d19-t2": {
+      "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "task_definition",
+              "text": "细粒度实体类型标注（FET）的任务是：给定一段文本以及其中实体 mention 的 span，为该 mention 分配细粒度的类型标签，并且分配的标签应当依赖上下文。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+                }
+              ]
+            },
+            {
+              "key": "motivation_el",
+              "text": "论文用实体链接（EL）改进 FET：如果 mention 被正确链接到目标实体，就可以直接从知识库（KB）中获得该实体的类型信息，从而帮助模型做类型判定。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+                }
+              ]
+            },
+            {
+              "key": "model_architecture",
+              "text": "论文提出一个深度神经 FET 模型，根据上下文、mention 字符串以及通过 EL 从 KB 获得的类型信息灵活预测标签。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "abstract_model",
+              "text": "摘要说明该深度神经网络模型的预测同时基于上下文和来自实体链接结果的信息。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-d31ec43506655415203bffe9"
+                }
+              ]
+            },
+            {
+              "key": "el_not_fully_trusted",
+              "text": "论文指出通过 EL 获得的信息不应完全信任，因为它并不总是准确；即使链接正确，KB 中该实体的类型信息也可能不完整或过时。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "overfit_weak_labels",
+              "text": "用 EL 会带来训练问题：模型在把 mention 正确链接时也会把所指实体在 KB 中的全部类型作为额外信息，这可能使训练出的模型对弱标注数据过拟合。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "hinge_loss_noise",
+              "text": "为了解决对弱标注数据的过拟合问题，论文设计了一种 hinge loss 的变体，并在训练时引入噪声。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                },
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-bee14e88c20dfa401e81466f"
+                }
+              ]
+            },
+            {
+              "key": "accuracy_improvement",
+              "text": "在两个常用数据集上，该模型相比当时的最优结果取得了超过 5% 的绝对 strict accuracy 提升。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-d31ec43506655415203bffe9"
+                },
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "ablation_el_effect",
+              "text": "通过比较 Ours (Full) 与 Ours (NoEL)，可以验证使用实体链接带来的收益：去掉 EL 部分后，两个数据集上的性能均下降；尤其在 FIGER (GOLD) 上，strict accuracy 从 75.5 降到 69.8。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-c638b6820b42cda7f300c943"
+                }
+              ]
+            },
+            {
+              "key": "why_bbn_less_improvement",
+              "text": "使用实体链接在 BBN 上带来的提升较小，论文认为原因有三点：BBN 标签集远小于 FIGER (GOLD)；BBN 不允许一个 mention 标注多条类型路径，因此任务更简单；加深模型已使 BBN 性能大幅提升，进一步改进更难。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-c638b6820b42cda7f300c943"
+                }
+              ]
+            },
+            {
+              "key": "overfit_techniques_effective",
+              "text": "在 FIGER (GOLD) 上，完整方法优于 Ours (DirectTrain)，表明为避免弱标注数据过拟合所用的技术是有效的。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-c638b6820b42cda7f300c943"
+                }
+              ]
+            },
+            {
+              "key": "advanced_el_result",
+              "text": "使用更先进 EL 系统的 Ours (LocAttEL) 并未取得优于使用论文自研 EL 方法的 Ours (Full) 的表现；论文给出的原因包括模型会结合上下文、不同 EL 方法的表现依赖数据集与实体类型，以及某些错误链接实体的类型与正确实体相同。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-c638b6820b42cda7f300c943"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "d19-t2"
+      }
+    },
+    "d19-t3": {
+      "question": "与《BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction》对比，分别说明两篇论文如何回答“Which model architecture do they use?”与“How is BERT optimized for this task?”，并说明是否具有可比性。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "d19-t3"
+      }
+    },
+    "d19-t4": {
+      "question": "顺便查一下我明天的私人银行账户余额。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "d19-t4"
+      }
+    }
+  }
+}

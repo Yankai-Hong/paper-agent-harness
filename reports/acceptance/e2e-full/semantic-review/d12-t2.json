@@ -1,0 +1,301 @@
+{
+  "id": "d12-t2",
+  "session_id": "d12",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 7,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "All seven claims are directly supported by the cited chunks, including the BERT choice rationale, setup details, F1 score 0.89, 80-20 split, Tables 2 and 3, the spaCy comparison, and the token-classification formulation. The answer stays grounded in the paper's evidence without adding outside conclusions, and it addresses performance, data split, and spaCy comparison as requested.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "Chunk c-35ae853dec5dd79f61ef4980 states BERT was chosen 'because of its general-purpose nature and usage of contextualized word embeddings,' matching the claim."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "The same chunk describes multi-class classification with BERT's pre-trained cased model, pytorch transformers and hugging face per the tutorial using BertForTokenClassification, embedding text as tokens and masks with maximum token length, and full fine-tuning — all matching the claim."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "The chunk explicitly states 'The model gives an F1-score of 0.89 for the concept recognition task.'"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "The chunk states 'An 80-20 data split is used for training and evaluation.'"
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "The chunk states 'Detailed performance of the CR is shown in Table 2 and 3.'"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "The chunk states a spaCy implementation was also done and 'also produced similar results.'"
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "Chunk c-7e9b5fdcd1b735fa2b7de65a states the problem is formulated as a token classification task similar to named entity extraction and that a pre-trained language model is fine-tuned with the labeled concept dataset."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "6eb82394875877e9ae5ce5e4e4dcb7ce65d7bda6a565e10d2806435d9611dcd5",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4391,
+        "completion_tokens": 448,
+        "total_tokens": 4839,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4135,
+        "output_tokens": 448,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5167.4556999932975
+    }
+  ],
+  "payload_hash": "f34ae082e85d53aaf746e058dac3947af49cfcb96e5cc380f2a063f879090b8d",
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "bert_model_choice",
+          "text": "论文选择 BERT 进行概念识别（CR）的微调，理由是 BERT 具有通用性并使用上下文化词嵌入。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "bert_setup",
+          "text": "作者使用 BERT 预训练的 cased 语言模型做多类分类，借助 pytorch transformers 与 hugging face，采用 BertForTokenClassification；文本被嵌入为带最大 token 长度的 token 与 mask，输入预训练 BERT 做完整微调。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "bert_f1",
+          "text": "该模型在概念识别任务上取得 F1 分数 0.89。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "data_split",
+          "text": "训练与评估采用 80-20 的数据划分。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "tables",
+          "text": "CR 的详细性能展示在表 2 和表 3 中。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "spacy_comparison",
+          "text": "作者还用 spaCy 实现了 CR，其结果与 BERT 方案相似。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "task_formulation",
+          "text": "论文把该问题表述为与命名实体抽取类似的 token 分类任务，并通过预训练语言模型在概念标注数据集上微调来识别系统工程概念。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "What evidence does the paper Common-Knowledge Concept Recognition for SEVA provide about the performance of the fine-tuned BERT model, data split, and spaCy comparison on the concept recognition task?",
+    "evidence": [
+      {
+        "chunk_id": "c-35ae853dec5dd79f61ef4980",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+        "text": "Any language model can be used for the purpose of customizing an NER problem to CR. We choose to go with BERT BIBREF16 because of its general-purpose nature and usage of contextualized word embeddings.\n\nIn the hand-labelled dataset, each word gets a label. The idea is to perform multi-class classification using BERT's pre-trained cased language model. We use pytorch transformers and hugging face as per the tutorial by BIBREF17 which uses $BertForTokenClassification$. The text is embedded as tokens and masks with a maximum token length. This embedded tokens are provided as the input to the pre-trained BERT model for a full fine-tuning. The model gives an F1-score of $0.89$ for the concept recognition task. An 80-20 data split is used for training and evaluation. Detailed performance of the CR is shown in Table 2 and 3. Additionally, we also implemented CR using spaCy BIBREF18 which also produced similar results.",
+        "text_hash": "305951aa3f60e3592031bd309facdfafa70442101c1afbb9b46439f740a25d05",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+            "start": 0,
+            "end": 201,
+            "text": "Any language model can be used for the purpose of customizing an NER problem to CR. We choose to go with BERT BIBREF16 because of its general-purpose nature and usage of contextualized word embeddings.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+            "start": 0,
+            "end": 721,
+            "text": "In the hand-labelled dataset, each word gets a label. The idea is to perform multi-class classification using BERT's pre-trained cased language model. We use pytorch transformers and hugging face as per the tutorial by BIBREF17 which uses $BertForTokenClassification$. The text is embedded as tokens and masks with a maximum token length. This embedded tokens are provided as the input to the pre-trained BERT model for a full fine-tuning. The model gives an F1-score of $0.89$ for the concept recognition task. An 80-20 data split is used for training and evaluation. Detailed performance of the CR is shown in Table 2 and 3. Additionally, we also implemented CR using spaCy BIBREF18 which also produced similar results.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "Abstract",
+        "text": "We build a common-knowledge concept recognition system for a Systems Engineer's Virtual Assistant (SEVA) which can be used for downstream tasks such as relation extraction, knowledge graph construction, and question-answering. The problem is formulated as a token classification task similar to named entity extraction. With the help of a domain expert and text processing methods, we construct a dataset annotated at the word-level by carefully defining a labelling scheme to train a sequence model to recognize systems engineering concepts. We use a pre-trained language model and fine-tune it with the labeled dataset of concepts. In addition, we also create some essential datasets for information such as abbreviations and definitions from the systems engineering domain. Finally, we construct a simple knowledge graph using these extracted concepts along with some hyponym relations.",
+        "text_hash": "045822a3fecb7078ca20addb6229c7db27066b696cc3951a27779069cc245f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 889,
+            "text": "We build a common-knowledge concept recognition system for a Systems Engineer's Virtual Assistant (SEVA) which can be used for downstream tasks such as relation extraction, knowledge graph construction, and question-answering. The problem is formulated as a token classification task similar to named entity extraction. With the help of a domain expert and text processing methods, we construct a dataset annotated at the word-level by carefully defining a labelling scheme to train a sequence model to recognize systems engineering concepts. We use a pre-trained language model and fine-tune it with the labeled dataset of concepts. In addition, we also create some essential datasets for information such as abbreviations and definitions from the systems engineering domain. Finally, we construct a simple knowledge graph using these extracted concepts along with some hyponym relations.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-31214b784b9f4dcaddc0adf6",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "INTRODUCTION",
+        "text": "The Systems Engineer's Virtual Assistant (SEVA) BIBREF0 was introduced with the goal to assist systems engineers (SE) in their problem-solving abilities by keeping track of large amounts of information of a NASA-specific project and using the information to answer queries from the user. In this work, we address a system element by constructing a common-knowledge concept recognition system for improving the performance of SEVA, using the static knowledge collected from the Systems Engineering Handbook BIBREF1 that is widely used in projects across the organization as domain-specific commonsense knowledge. At NASA, although there exists knowledge engines and ontologies for the SE domain such as MBSE BIBREF2, IMCE BIBREF3, and OpenCaesar BIBREF4, generic commonsense acquisition is rarely discussed; we aim to address this challenge. SE commonsense comes from years of experience and learning which involves background knowledge that goes beyond any handbook. Although constructing an assistant like SEVA system is the overarching objective, a key problem to first address is to extract elementary common-knowledge concepts using the SE handbook and domain experts. We use the term `common-knowledge' as the `commonsense' knowledge of a specific domain. This knowledge can be seen as a pivot that can be used later to collect `commonsense' knowledge for the SE domain. We propose a preliminary research study that can pave a path towards a comprehensive commonsense knowledge acquisition for an effective Artificial Intelligence (AI) application for the SE domain. Overall structure of this work is summarized in Figure 1. Implementation with demo and dataset is available at: https://github.com/jitinkrishnan/NASA-SE .",
+        "text_hash": "1e7499b4fd7e0694910dc6b9e12a8306e241def879582d4f6d1db068d157abd8",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "INTRODUCTION",
+            "start": 0,
+            "end": 1726,
+            "text": "The Systems Engineer's Virtual Assistant (SEVA) BIBREF0 was introduced with the goal to assist systems engineers (SE) in their problem-solving abilities by keeping track of large amounts of information of a NASA-specific project and using the information to answer queries from the user. In this work, we address a system element by constructing a common-knowledge concept recognition system for improving the performance of SEVA, using the static knowledge collected from the Systems Engineering Handbook BIBREF1 that is widely used in projects across the organization as domain-specific commonsense knowledge. At NASA, although there exists knowledge engines and ontologies for the SE domain such as MBSE BIBREF2, IMCE BIBREF3, and OpenCaesar BIBREF4, generic commonsense acquisition is rarely discussed; we aim to address this challenge. SE commonsense comes from years of experience and learning which involves background knowledge that goes beyond any handbook. Although constructing an assistant like SEVA system is the overarching objective, a key problem to first address is to extract elementary common-knowledge concepts using the SE handbook and domain experts. We use the term `common-knowledge' as the `commonsense' knowledge of a specific domain. This knowledge can be seen as a pivot that can be used later to collect `commonsense' knowledge for the SE domain. We propose a preliminary research study that can pave a path towards a comprehensive commonsense knowledge acquisition for an effective Artificial Intelligence (AI) application for the SE domain. Overall structure of this work is summarized in Figure 1. Implementation with demo and dataset is available at: https://github.com/jitinkrishnan/NASA-SE .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c721d66657a8536d02534408",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "BACKGROUND AND MOTIVATION",
+        "text": "Creating commonsense AI still remains an important and challenging task in AI research today. Some of the inspiring works are the CYC project BIBREF5 that tries to serve as a foundational knowledge to all systems with millions of everyday life commonsense assertions, Mosaic Commonsense Knowledge Graphs and Reasoning BIBREF6 that addresses aspects like social situations, mental states, and causal relationships, and Aristo System BIBREF7 that focuses on basic science knowledge. In NASA's context, systems engineering combines several engineering disciplines requiring extreme coordination and is prone to human errors. This, in combination with the lack of efficient knowledge transfer of generic lessons-learned makes most technology-based missions risk-averse. Thus, a comprehensive commonsense engine can significantly enhance the productivity of any mission by letting the experts focus on what they do best.\n\nConcept Recognition (CR) is a task identical to the traditional Named Entity Recognition (NER) problem. A typical NER task seeks to identify entities like name of a person such as `Shakespeare', a geographical location such as `London', or name of an organisation such as `NASA' from unstructured text. A supervised NER dataset consists of the above mentioned entities annotated at the word-token level using labelling schemes such as BIO which provides beginning (B), continuation or inside (I), and outside (O) representation for each word of an entity. BIBREF8 is the current top-performing NER model for CoNLL-2003 shared task BIBREF9. Off-the-shelf named entity extractors do not suffice in the SE common-knowledge scenario because the entities we want to extract are domain-specific concepts such as `system architecture' or `functional requirements' rather than physical entities such as `Shakespeare' or `London'. This requires defining new labels and fine-tuning.",
+        "text_hash": "8c08ff2023d27a4483fb25011e9d345ea29cff9ed18c98a3905c7287ae5a6d90",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "BACKGROUND AND MOTIVATION",
+            "start": 0,
+            "end": 915,
+            "text": "Creating commonsense AI still remains an important and challenging task in AI research today. Some of the inspiring works are the CYC project BIBREF5 that tries to serve as a foundational knowledge to all systems with millions of everyday life commonsense assertions, Mosaic Commonsense Knowledge Graphs and Reasoning BIBREF6 that addresses aspects like social situations, mental states, and causal relationships, and Aristo System BIBREF7 that focuses on basic science knowledge. In NASA's context, systems engineering combines several engineering disciplines requiring extreme coordination and is prone to human errors. This, in combination with the lack of efficient knowledge transfer of generic lessons-learned makes most technology-based missions risk-averse. Thus, a comprehensive commonsense engine can significantly enhance the productivity of any mission by letting the experts focus on what they do best.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "BACKGROUND AND MOTIVATION",
+            "start": 0,
+            "end": 972,
+            "text": "Concept Recognition (CR) is a task identical to the traditional Named Entity Recognition (NER) problem. A typical NER task seeks to identify entities like name of a person such as `Shakespeare', a geographical location such as `London', or name of an organisation such as `NASA' from unstructured text. A supervised NER dataset consists of the above mentioned entities annotated at the word-token level using labelling schemes such as BIO which provides beginning (B), continuation or inside (I), and outside (O) representation for each word of an entity. BIBREF8 is the current top-performing NER model for CoNLL-2003 shared task BIBREF9. Off-the-shelf named entity extractors do not suffice in the SE common-knowledge scenario because the entities we want to extract are domain-specific concepts such as `system architecture' or `functional requirements' rather than physical entities such as `Shakespeare' or `London'. This requires defining new labels and fine-tuning.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-945a37a61c8991cd2adfcf07",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "CONCLUSION AND FUTURE WORK",
+        "text": "We presented a common-knowledge concept extractor for the Systems Engineer's Virtual Assistant (SEVA) system and showed how it can be beneficial for downstream tasks such as relation extraction and knowledge graph construction. We construct a word-level annotated dataset with the help of a domain expert by carefully defining a labelling scheme to train a sequence labelling task to recognize SE concepts. Further, we also construct some essential datasets from the SE domain which can be used for future research. Future directions include constructing a comprehensive common-knowledge relation extractor from SE handbook and incorporating such human knowledge into a more comprehensive machine-processable commonsense knowledge base for the SE domain.",
+        "text_hash": "30b4339feb6b6c24899392234c0f9cc2eaf6e0059778e38d27055f56b8143425",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "CONCLUSION AND FUTURE WORK",
+            "start": 0,
+            "end": 754,
+            "text": "We presented a common-knowledge concept extractor for the Systems Engineer's Virtual Assistant (SEVA) system and showed how it can be beneficial for downstream tasks such as relation extraction and knowledge graph construction. We construct a word-level annotated dataset with the help of a domain expert by carefully defining a labelling scheme to train a sequence labelling task to recognize SE concepts. Further, we also construct some essential datasets from the SE domain which can be used for future research. Future directions include constructing a comprehensive common-knowledge relation extractor from SE handbook and incorporating such human knowledge into a more comprehensive machine-processable commonsense knowledge base for the SE domain.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

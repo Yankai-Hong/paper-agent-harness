@@ -1,0 +1,403 @@
+{
+  "id": "d26-t3",
+  "session_id": "d26",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": false,
+    "behavior_appropriate": false,
+    "reason": "The provided evidence includes sufficient material to answer the question for both papers: for the F-Score paper, the Datasets section states the unlabeled text comes from Sina Weibo, and the Results section lists micro F1-score (Overall) and OOV recall; for the Spoken Conversational Search paper, the Evaluation section lists macro precision, recall and F-1 for Bench'It and precision/recall/F-1 for CALOR, and the paper concerns French general knowledge from Wikidata/Wikipedia, not a Chinese social media platform. Thus refusing for insufficient evidence is not appropriate. Additionally, the question's framing (comparison of Chinese social media platform data sources) requires noting that the second paper has no Chinese social media data, which affects comparability; the refusal does not address this.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "0870342249964204d4fb61c29b11b1a185b2c0d4ecf8cc83ede7a2eabf23eb2b",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7176,
+        "completion_tokens": 183,
+        "total_tokens": 7359,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6920,
+        "output_tokens": 183,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3881.4399000257254
+    }
+  ],
+  "payload_hash": "c29ddf1bf3a458a2fe7d2c25420cf851bf2e6b93fe5d0d76c57825422b1203b0",
+  "payload": {
+    "question": "与《F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media》对比，分别说明两篇论文如何回答“What metrics are used for evaluation?”与“Which Chinese social media platform does the data come from?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media 与 Spoken Conversational Search for General Knowledge：评估指标（metrics）与中文社交媒体数据来源平台对比及可比性",
+    "evidence": [
+      {
+        "chunk_id": "c-9a8e2c5a1623ba6a00cddbb9",
+        "paper_id": "1611.04234",
+        "title": "F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media",
+        "section": "Abstract",
+        "text": "We focus on named entity recognition (NER) for Chinese social media. With massive unlabeled text and quite limited labelled corpus, we propose a semi-supervised learning model based on B-LSTM neural network. To take advantage of traditional methods in NER such as CRF, we combine transition probability with deep learning in our model. To bridge the gap between label accuracy and F-score of NER, we construct a model which can be directly trained on F-score. When considering the instability of F-score driven method and meaningful information provided by label accuracy, we propose an integrated method to train on both F-score and label accuracy. Our integrated model yields 7.44\\% improvement over previous state-of-the-art result.",
+        "text_hash": "4b7cf7b2d280195807418d563881c534b0268f3c48ef3fcb2128e645b364df5d",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.04234",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 735,
+            "text": "We focus on named entity recognition (NER) for Chinese social media. With massive unlabeled text and quite limited labelled corpus, we propose a semi-supervised learning model based on B-LSTM neural network. To take advantage of traditional methods in NER such as CRF, we combine transition probability with deep learning in our model. To bridge the gap between label accuracy and F-score of NER, we construct a model which can be directly trained on F-score. When considering the instability of F-score driven method and meaningful information provided by label accuracy, we propose an integrated method to train on both F-score and label accuracy. Our integrated model yields 7.44\\% improvement over previous state-of-the-art result.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2ecfa49d168250a1345fa6af",
+        "paper_id": "1611.04234",
+        "title": "F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media",
+        "section": "Results and Analysis",
+        "text": "We evaluate two methods to incorporate word segmentation information. The results of two methods are shown as Table TABREF22 . We can see that positional character embeddings perform better in neural network. This is probably because positional character embeddings method can learn word segmentation information from unlabeled text while word segmentation can only use training corpus.\n\nWe adopt positional character embeddings in our next four models. Our first model is a B-LSTM neural network (baseline). To take advantage of traditional model BIBREF23 , BIBREF24 such as CRF, we combine transition probability in our B-LSTM based MMNN. We design a F-Score driven training method in our third model F-Score Driven Model I . We propose an integrated training method in our fourth model F-Score Driven Model II .The results of models are depicted as Figure UID11 . From the figure, we can know our models perfrom better with little loss in time.\n\nTable TABREF23 shows results for NER on test sets. In the Table TABREF23 , we also show micro F1-score (Overall) and out-of-vocabulary entities (OOV) recall. Peng and Dredze peng-dredze:2016:P16-2 is the state-of-the-art NER system in Chinese Social media. By comparing the results of B-LSTM model and B-LSTM + MTNN model, we can know transition probability is significant for NER. Compared with B-LSTM + MMNN model, F-Score Driven Model I improves the result of named entity with a loss in nominal mention. The integrated training model (F-Score Driven Model II) benefits from both label accuracy and F-Score, which achieves a new state-of-the-art NER system in Chinese social media. Our integrated model has better performance on named entity and nominal mention.",
+        "text_hash": "75ae318a237d72cb99fe009dc6d36ef18f35dd47d170a36658376de68380bd5e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.04234",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "Results and Analysis",
+            "start": 0,
+            "end": 386,
+            "text": "We evaluate two methods to incorporate word segmentation information. The results of two methods are shown as Table TABREF22 . We can see that positional character embeddings perform better in neural network. This is probably because positional character embeddings method can learn word segmentation information from unlabeled text while word segmentation can only use training corpus.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "Results and Analysis",
+            "start": 0,
+            "end": 559,
+            "text": "We adopt positional character embeddings in our next four models. Our first model is a B-LSTM neural network (baseline). To take advantage of traditional model BIBREF23 , BIBREF24 such as CRF, we combine transition probability in our B-LSTM based MMNN. We design a F-Score driven training method in our third model F-Score Driven Model I . We propose an integrated training method in our fourth model F-Score Driven Model II .The results of models are depicted as Figure UID11 . From the figure, we can know our models perfrom better with little loss in time.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p2",
+            "section": "Results and Analysis",
+            "start": 0,
+            "end": 765,
+            "text": "Table TABREF23 shows results for NER on test sets. In the Table TABREF23 , we also show micro F1-score (Overall) and out-of-vocabulary entities (OOV) recall. Peng and Dredze peng-dredze:2016:P16-2 is the state-of-the-art NER system in Chinese Social media. By comparing the results of B-LSTM model and B-LSTM + MTNN model, we can know transition probability is significant for NER. Compared with B-LSTM + MMNN model, F-Score Driven Model I improves the result of named entity with a loss in nominal mention. The integrated training model (F-Score Driven Model II) benefits from both label accuracy and F-Score, which achieves a new state-of-the-art NER system in Chinese social media. Our integrated model has better performance on named entity and nominal mention.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9c109743050dbae8f60937f3",
+        "paper_id": "1611.04234",
+        "title": "F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media",
+        "section": "Introduction",
+        "text": "With the development of Internet, social media plays an important role in information exchange. The natural language processing tasks on social media are more challenging which draw attention of many researchers BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 . As the foundation of many downstream applications BIBREF4 , BIBREF5 , BIBREF6 such as information extraction, named entity recognition (NER) deserves more research in prevailing and challenging social media text. NER is a task to identify names in texts and to assign names with particular types BIBREF7 , BIBREF8 , BIBREF9 , BIBREF10 . It is the informality of social media that discourages accuracy of NER systems. While efforts in English have narrowed the gap between social media and formal domains BIBREF3 , the task in Chinese remains challenging. It is caused by Chinese logographic characters which lack many clues to indicate whether a word is a name, such as capitalization. The scant labelled Chinese social media corpus makes the task more challenging BIBREF11 , BIBREF12 , BIBREF13 .\n\nTo address the problem, one approach is to use the lexical embeddings learnt from massive unlabeled text. To take better advantage of unlabeled text, Peng and Dredze peng-dredze:2015:EMNLP evaluates three types of embeddings for Chinese text, and shows the effectiveness of positional character embeddings with experiments. Considering the value of word segmentation in Chinese NER, another approach is to construct an integrated model to jointly train learned representations for both predicting word segmentations and NER BIBREF14 .",
+        "text_hash": "5f50c4316bb69c059add2d7f75b1814b551f8cab46e515d443cde50f5b28a700",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.04234",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1049,
+            "text": "With the development of Internet, social media plays an important role in information exchange. The natural language processing tasks on social media are more challenging which draw attention of many researchers BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 . As the foundation of many downstream applications BIBREF4 , BIBREF5 , BIBREF6 such as information extraction, named entity recognition (NER) deserves more research in prevailing and challenging social media text. NER is a task to identify names in texts and to assign names with particular types BIBREF7 , BIBREF8 , BIBREF9 , BIBREF10 . It is the informality of social media that discourages accuracy of NER systems. While efforts in English have narrowed the gap between social media and formal domains BIBREF3 , the task in Chinese remains challenging. It is caused by Chinese logographic characters which lack many clues to indicate whether a word is a name, such as capitalization. The scant labelled Chinese social media corpus makes the task more challenging BIBREF11 , BIBREF12 , BIBREF13 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 534,
+            "text": "To address the problem, one approach is to use the lexical embeddings learnt from massive unlabeled text. To take better advantage of unlabeled text, Peng and Dredze peng-dredze:2015:EMNLP evaluates three types of embeddings for Chinese text, and shows the effectiveness of positional character embeddings with experiments. Considering the value of word segmentation in Chinese NER, another approach is to construct an integrated model to jointly train learned representations for both predicting word segmentations and NER BIBREF14 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-014d25fff447b24d4e5aae00",
+        "paper_id": "1611.04234",
+        "title": "F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media",
+        "section": "Datasets",
+        "text": "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media. Details of the data are listed in Table TABREF19 . We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs.",
+        "text_hash": "4f1ea9d55c87802561542246c2d7a5096aa4b6069c1a17a733050292a4515479",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.04234",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Datasets",
+            "start": 0,
+            "end": 439,
+            "text": "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media. Details of the data are listed in Table TABREF19 . We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e4f76fadf3cc79c31edbed9c",
+        "paper_id": "1611.04234",
+        "title": "F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media",
+        "section": "F-Score Driven Training Method",
+        "text": "Max Margin training method use structured margin loss INLINEFORM0 to describe the difference between the corrected label sequence INLINEFORM1 and predicted label sequence INLINEFORM2 . In fact, the structured margin loss INLINEFORM3 reflect the loss in label accuracy. Considering the gap between label accuracy and F-Score in NER, we introduce a new training method to train directly on F-Score. To introduce F-Score driven training method, we need to take a look at the subgradient of equation ( EQREF9 ): INLINEFORM4 \n\nIn the subgradient, we can know that structured margin loss INLINEFORM0 contributes nothing to the subgradient of the regularized objective function INLINEFORM1 . The margin loss INLINEFORM2 serves as a trigger function to conduct the training process of B-LSTM based MMNN. We can introduce a new trigger function to guide the training process of neural network.\n\nF-Score Trigger Function The main criterion of NER task is F-score. However, high label accuracy does not mean high F-score. For instance, if every named entity's last character is labeledas O, the label accuracy can be quite high, but the precision, recall and F-score are 0. We use the F-Score between corrected label sequence and predicted label sequence as trigger function, which can conduct the training process to optimize the F-Score of training examples. Our new structured margin loss can be described as: DISPLAYFORM0 \n\nwhere INLINEFORM0 is the F-Score between corrected label sequence and predicted label sequence.\n\nF-Score and Label Accuracy Trigger Function The F-Score can be quite unstable in some situation. For instance, if there is no named entity in a sentence, F-Score will be always 0 regardless of the predicted label sequence. To take advantage of meaningful information provided by label accuracy, we introduce an integrated trigger function as follows: DISPLAYFORM0 \n\nwhere INLINEFORM0 is a factor to adjust the weight of label accuracy and F-Score.",
+        "text_hash": "8c25bf9b4965fe6fcd2168ccd1ff9a51366038c61d6f141027eb6e72d69e41b8",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.04234",
+        "spans": [
+          {
+            "paragraph_id": "s3-p0",
+            "section": "F-Score Driven Training Method",
+            "start": 0,
+            "end": 520,
+            "text": "Max Margin training method use structured margin loss INLINEFORM0 to describe the difference between the corrected label sequence INLINEFORM1 and predicted label sequence INLINEFORM2 . In fact, the structured margin loss INLINEFORM3 reflect the loss in label accuracy. Considering the gap between label accuracy and F-Score in NER, we introduce a new training method to train directly on F-Score. To introduce F-Score driven training method, we need to take a look at the subgradient of equation ( EQREF9 ): INLINEFORM4 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p1",
+            "section": "F-Score Driven Training Method",
+            "start": 0,
+            "end": 362,
+            "text": "In the subgradient, we can know that structured margin loss INLINEFORM0 contributes nothing to the subgradient of the regularized objective function INLINEFORM1 . The margin loss INLINEFORM2 serves as a trigger function to conduct the training process of B-LSTM based MMNN. We can introduce a new trigger function to guide the training process of neural network.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p2",
+            "section": "F-Score Driven Training Method",
+            "start": 0,
+            "end": 529,
+            "text": "F-Score Trigger Function The main criterion of NER task is F-score. However, high label accuracy does not mean high F-score. For instance, if every named entity's last character is labeledas O, the label accuracy can be quite high, but the precision, recall and F-score are 0. We use the F-Score between corrected label sequence and predicted label sequence as trigger function, which can conduct the training process to optimize the F-Score of training examples. Our new structured margin loss can be described as: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p3",
+            "section": "F-Score Driven Training Method",
+            "start": 0,
+            "end": 95,
+            "text": "where INLINEFORM0 is the F-Score between corrected label sequence and predicted label sequence.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p4",
+            "section": "F-Score Driven Training Method",
+            "start": 0,
+            "end": 364,
+            "text": "F-Score and Label Accuracy Trigger Function The F-Score can be quite unstable in some situation. For instance, if there is no named entity in a sentence, F-Score will be always 0 regardless of the predicted label sequence. To take advantage of meaningful information provided by label accuracy, we introduce an integrated trigger function as follows: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p5",
+            "section": "F-Score Driven Training Method",
+            "start": 0,
+            "end": 81,
+            "text": "where INLINEFORM0 is a factor to adjust the weight of label accuracy and F-Score.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c64ef8a63ba49a8f3c0aaf5e",
+        "paper_id": "1909.11980",
+        "title": "Spoken Conversational Search for General Knowledge",
+        "section": "Abstract",
+        "text": "We present a spoken conversational question answering proof of concept that is able to answer questions about general knowledge from Wikidata. The dialogue component does not only orchestrate various components but also solve coreferences and ellipsis.",
+        "text_hash": "e8e54958d67d614965f73b4b608abf50f72834c2c2b9d9a8e061d97161a42dab",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.11980",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 252,
+            "text": "We present a spoken conversational question answering proof of concept that is able to answer questions about general knowledge from Wikidata. The dialogue component does not only orchestrate various components but also solve coreferences and ellipsis.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-25081376dc5c3d8bd7d1b8ff",
+        "paper_id": "1909.11980",
+        "title": "Spoken Conversational Search for General Knowledge",
+        "section": "Evaluation",
+        "text": "The evaluation of the individual components of the proposed system was performed outside the scope of this work. We evaluated out-of-context questions, as well as the coreference resolution module.\n\nPerformance on out-of-context questions was evaluated on Bench'It, a dataset containing 150 open ended questions about general knowledge in French (Figure FIGREF20). The system reached a macro precision, recall and F-1 of $64.14\\%$, $64.33\\%$ and $63.46\\%$ respectively.\n\nWe also evaluated the coreference resolution model on the test-set of CALOR (Table TABREF11), obtaining an average precision, recall and F-1 of 65.59%, 48.86% and 55.77% respectively. The same model reached a average F-1 of 68.8% for English BIBREF6. Comparable measurements are not available for French. F-1 scores for French are believed to be lower because of the lower amount of annotated data.",
+        "text_hash": "ec4bd6b7ea58167fb884fbe5c94c7a405c0c901cc23fb7750542b56f366bae29",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.11980",
+        "spans": [
+          {
+            "paragraph_id": "s15-p0",
+            "section": "Evaluation",
+            "start": 0,
+            "end": 197,
+            "text": "The evaluation of the individual components of the proposed system was performed outside the scope of this work. We evaluated out-of-context questions, as well as the coreference resolution module.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s15-p1",
+            "section": "Evaluation",
+            "start": 0,
+            "end": 270,
+            "text": "Performance on out-of-context questions was evaluated on Bench'It, a dataset containing 150 open ended questions about general knowledge in French (Figure FIGREF20). The system reached a macro precision, recall and F-1 of $64.14\\%$, $64.33\\%$ and $63.46\\%$ respectively.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s15-p2",
+            "section": "Evaluation",
+            "start": 0,
+            "end": 398,
+            "text": "We also evaluated the coreference resolution model on the test-set of CALOR (Table TABREF11), obtaining an average precision, recall and F-1 of 65.59%, 48.86% and 55.77% respectively. The same model reached a average F-1 of 68.8% for English BIBREF6. Comparable measurements are not available for French. F-1 scores for French are believed to be lower because of the lower amount of annotated data.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-b305401ec9a9c05028159ed3",
+        "paper_id": "1909.11980",
+        "title": "Spoken Conversational Search for General Knowledge",
+        "section": "Introduction",
+        "text": "Conversational question answering is an open research problem. It studies the integration of question answering (QA) systems in a dialogue system(DS). Not long ago, each of these research subjects were studied separately; only very recently has studying the intersection between them gained increasing interest BIBREF0, BIBREF1.\n\nWe present a spoken conversational question answering system that is able to answer questions about general knowledge in French by calling two distinct QA systems. It solves coreference and ellipsis by modelling context. Furthermore, it is extensible, thus other components such as neural approaches for question-answering can be easily integrated. It is also possible to collect a dialogue corpus from its iterations.\n\nIn contrast to most conversational systems which support only speech, two input and output modalities are supported speech and text. Thus it is possible to let the user check the answers by either asking relevant Wikipedia excerpts or by navigating through the retrieved name entities or by exploring the answer details of the QA components: the confidence score as well as the set of explored triplets. Therefore, the user has the final word to consider the answer as correct or incorrect and to provide a reward, which can be used in the future for training reinforcement learning algorithms.",
+        "text_hash": "caa3e556913e34b732ea6e7f990656419603c155990119c77e6f4d90760be07c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.11980",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 328,
+            "text": "Conversational question answering is an open research problem. It studies the integration of question answering (QA) systems in a dialogue system(DS). Not long ago, each of these research subjects were studied separately; only very recently has studying the intersection between them gained increasing interest BIBREF0, BIBREF1.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 418,
+            "text": "We present a spoken conversational question answering system that is able to answer questions about general knowledge in French by calling two distinct QA systems. It solves coreference and ellipsis by modelling context. Furthermore, it is extensible, thus other components such as neural approaches for question-answering can be easily integrated. It is also possible to collect a dialogue corpus from its iterations.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 594,
+            "text": "In contrast to most conversational systems which support only speech, two input and output modalities are supported speech and text. Thus it is possible to let the user check the answers by either asking relevant Wikipedia excerpts or by navigating through the retrieved name entities or by exploring the answer details of the QA components: the confidence score as well as the set of explored triplets. Therefore, the user has the final word to consider the answer as correct or incorrect and to provide a reward, which can be used in the future for training reinforcement learning algorithms.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-5c32cf6a290887fe55d0cb9e",
+        "paper_id": "1909.11980",
+        "title": "Spoken Conversational Search for General Knowledge",
+        "section": "Conclusion and Future Work",
+        "text": "We have presented a spoken conversational question answering system, in French. The DS orchestrates different QA systems and returns the response with the higher confidence score. The system contains modules specifically designed for dealing with common spoken conversation phenomena such as coreference and ellipsis.\n\nWe will soon integrate a state-of-the art reading comprehension approach, support English language and improve the coreference resolution module. We are also interested in exploring policy learning, thus the system will be able to find the best criterion to chose the answer or to ask for clarification in the case of ambiguity and uncertainty.",
+        "text_hash": "c485cbde6cecb8ca422fd44e4d5256c46e30c24d01983e3deeac4be24c86a78e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.11980",
+        "spans": [
+          {
+            "paragraph_id": "s17-p0",
+            "section": "Conclusion and Future Work",
+            "start": 0,
+            "end": 317,
+            "text": "We have presented a spoken conversational question answering system, in French. The DS orchestrates different QA systems and returns the response with the higher confidence score. The system contains modules specifically designed for dealing with common spoken conversation phenomena such as coreference and ellipsis.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s17-p1",
+            "section": "Conclusion and Future Work",
+            "start": 0,
+            "end": 344,
+            "text": "We will soon integrate a state-of-the art reading comprehension approach, support English language and improve the coreference resolution module. We are also interested in exploring policy learning, thus the system will be able to find the best criterion to chose the answer or to ask for clarification in the case of ambiguity and uncertainty.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c6ceb7fd3070878b9c9cd9a0",
+        "paper_id": "1909.11980",
+        "title": "Spoken Conversational Search for General Knowledge",
+        "section": "Architectural Description ::: QA Systems ::: Search QA",
+        "text": "The Search QA system uses an internal knowledge base, which finely indexes data using Elasticsearch. It is powered by Wikidata and enriched by Wikipedia, especially to calculate a Page-Rank BIBREF10 on each entity. This QA system first determines the potential named entities in the question (i.e. subjects, predicates, and types of subjects). Second, it constructs a correlation matrix by looking for the triplets in Wikidata that link these entities. This matrix is filtered according the coverage of the question and the relevance of each entity in order to find the best answer.",
+        "text_hash": "298ea28554b293e228ad795f4169a63e473bbcdf7c9bf6b24119db09c51b1fae",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.11980",
+        "spans": [
+          {
+            "paragraph_id": "s11-p0",
+            "section": "Architectural Description ::: QA Systems ::: Search QA",
+            "start": 0,
+            "end": 582,
+            "text": "The Search QA system uses an internal knowledge base, which finely indexes data using Elasticsearch. It is powered by Wikidata and enriched by Wikipedia, especially to calculate a Page-Rank BIBREF10 on each entity. This QA system first determines the potential named entities in the question (i.e. subjects, predicates, and types of subjects). Second, it constructs a correlation matrix by looking for the triplets in Wikidata that link these entities. This matrix is filtered according the coverage of the question and the relevance of each entity in order to find the best answer.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

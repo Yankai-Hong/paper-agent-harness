@@ -1,0 +1,243 @@
+{
+  "id": "d02-t3",
+  "session_id": "d02",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "The evidence includes only the georeferenced corpora paper (2004.00809); no chunks from 'Unsupervised Question Answering for Fact-Checking' are supplied, and no evidence addresses the FEVER dataset size or the hypothesis question as framed for that paper. Because a comparative answer cannot be grounded, refusing is appropriate and the refusal text ('insufficient evidence / out of scope') matches the evidence state. No claims are supplied, so no per-claim judgments are required.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "fc559f533737d25e41f037ad1069eabf2166a6db4cc42d52a4279b33e7c44c17",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5106,
+        "completion_tokens": 123,
+        "total_tokens": 5229,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4850,
+        "output_tokens": 123,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3952.315800008364
+    }
+  ],
+  "payload_hash": "454b74b7933daa8eb0b60046ffaab4c618989a04d69e17c647756fe5348a0b74",
+  "payload": {
+    "question": "与《Unsupervised Question Answering for Fact-Checking》对比，分别说明两篇论文如何回答“Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?”与“How large is the FEVER dataset?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "对比《Mapping Languages and Demographics with Georeferenced Corpora》与《Unsupervised Question Answering for Fact-Checking》：Twitter 数据在预测各国语言清单方面为何表现更好（作者是否给出假设），以及 FEVER 数据集的规模有多大，两篇论文对这些问题的回答是否可比",
+    "evidence": [
+      {
+        "chunk_id": "c-204aa49abd2af324ac170d44",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Abstract",
+        "text": "This paper evaluates large georeferenced corpora, taken from both web-crawled and social media sources, against ground-truth population and language-census datasets. The goal is to determine (i) which dataset best represents population demographics; (ii) in what parts of the world the datasets are most representative of actual populations; and (iii) how to weight the datasets to provide more accurate representations of underlying populations. The paper finds that the two datasets represent very different populations and that they correlate with actual populations with values of r=0.60 (social media) and r=0.49 (web-crawled). Further, Twitter data makes better predictions about the inventory of languages used in each country.",
+        "text_hash": "e6def59a72f19eaa8d44b062ffabc2961856a6aef8204a923dcd65f859a3fd3e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 734,
+            "text": "This paper evaluates large georeferenced corpora, taken from both web-crawled and social media sources, against ground-truth population and language-census datasets. The goal is to determine (i) which dataset best represents population demographics; (ii) in what parts of the world the datasets are most representative of actual populations; and (iii) how to weight the datasets to provide more accurate representations of underlying populations. The paper finds that the two datasets represent very different populations and that they correlate with actual populations with values of r=0.60 (social media) and r=0.49 (web-crawled). Further, Twitter data makes better predictions about the inventory of languages used in each country.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9887004ca215701b79e8e570",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Discussion",
+        "text": "Analyses and models based on digital texts, especially from Twitter, often come with uncertainty about the underlying populations that those texts represent. This paper has systematically collected Twitter and web-data from locations around the world without language-specific searches that would bias the collection. The purpose is to understand how well these data sets correspond with what we know about global populations from ground-truth sources, providing a method for evaluating different data collection techniques.\n\nThe first important finding is that patterns from Twitter and web-crawled data diverge significantly in their representation of the world's population. This simply reflects the fact that data drawn from Twitter and web pages will likely represent people from different places. Why? We have also seen that Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics. This implies that Twitter as a platform represents more wealthy populations than general web-crawled data. An alternate interpretation is that the Twitter collection here is based on urban areas, which tend to have more wealthy populations. Would the same bias be found with a rural-centered collection procedure? That is a secondary problem in this context because the goal is to develop ground-truth population-centered baselines that could be used to evaluate different Twitter collection methods.\n\nThe second important finding is that, given what ground-truth language-use data is available, there are in general very few false positives: cases where the corpora suggest a language is frequently used in a country but census-based data does not. While uncommon, there are more false positives in Twitter data. This is significant because it means that, in general, these corpora do not predict language use that is not actually present.\n\nBut the third important finding is that, given what ground-truth language-use data is available, there remain a number of countries where these corpora do not represent all the language produced by the local populations: not all languages from censuses are found in digital texts. In this case Twitter has fewer missing languages.",
+        "text_hash": "28d9e82dd11896161801f335dbe447af7e12abbeaca95b09385cf0fdc3a668bc",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Discussion",
+            "start": 0,
+            "end": 524,
+            "text": "Analyses and models based on digital texts, especially from Twitter, often come with uncertainty about the underlying populations that those texts represent. This paper has systematically collected Twitter and web-data from locations around the world without language-specific searches that would bias the collection. The purpose is to understand how well these data sets correspond with what we know about global populations from ground-truth sources, providing a method for evaluating different data collection techniques.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Discussion",
+            "start": 0,
+            "end": 943,
+            "text": "The first important finding is that patterns from Twitter and web-crawled data diverge significantly in their representation of the world's population. This simply reflects the fact that data drawn from Twitter and web pages will likely represent people from different places. Why? We have also seen that Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics. This implies that Twitter as a platform represents more wealthy populations than general web-crawled data. An alternate interpretation is that the Twitter collection here is based on urban areas, which tend to have more wealthy populations. Would the same bias be found with a rural-centered collection procedure? That is a secondary problem in this context because the goal is to develop ground-truth population-centered baselines that could be used to evaluate different Twitter collection methods.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p2",
+            "section": "Discussion",
+            "start": 0,
+            "end": 438,
+            "text": "The second important finding is that, given what ground-truth language-use data is available, there are in general very few false positives: cases where the corpora suggest a language is frequently used in a country but census-based data does not. While uncommon, there are more false positives in Twitter data. This is significant because it means that, in general, these corpora do not predict language use that is not actually present.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p3",
+            "section": "Discussion",
+            "start": 0,
+            "end": 330,
+            "text": "But the third important finding is that, given what ground-truth language-use data is available, there remain a number of countries where these corpora do not represent all the language produced by the local populations: not all languages from censuses are found in digital texts. In this case Twitter has fewer missing languages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-227fd89576f8c0e3eb0ce352",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Collecting Global Corpora",
+        "text": "In isolation, web-crawled data provides one observation of global language use. Another common source of data used for this purpose is Twitter BIBREF15, BIBREF16, BIBREF17, BIBREF18, BIBREF19, BIBREF20, BIBREF21). A spatial search is used to collect tweets from within a 50km radius of 10k cities. This search avoids biasing the selection by using language-specific keywords or hashtags. The Twitter data covers the period from May of 2017 until early 2019. This creates a corpus containing 1,066,038,000 tweets, all connected with the city from which they were collected. Because the language identification component only provides reliable predictions for samples containing at least 50 characters, the corpus is pruned to that length threshold (this removes approximately 250 million tweets). As shown in Table 1, this produces a corpus containing 4.14 billion words.\n\nEach of these datasets rests on different assumptions and, as a result, is subject to different confounds. For example, using top-level domains to determine the country of origin for web pages is likely to over-represent countries like Estonia that use their TLD extensively and to under-represent countries like the United States that do not traditionally use their TLD. The Twitter dataset relies on georeferenced tweets, but not all users have GPS-enabled devices. For example, we might expect that countries with a lower per capita GDP have a lower percent of georeferenced tweets, in addition to having fewer tweets overall. The goal here is to establish a baseline of how well these corpora represent actual populations.",
+        "text_hash": "9295a8d02baf1ef80e427d87c2b15fc4a144eb65a84adcd4bb3b833b0671f5a3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s1-p3",
+            "section": "Collecting Global Corpora",
+            "start": 0,
+            "end": 870,
+            "text": "In isolation, web-crawled data provides one observation of global language use. Another common source of data used for this purpose is Twitter BIBREF15, BIBREF16, BIBREF17, BIBREF18, BIBREF19, BIBREF20, BIBREF21). A spatial search is used to collect tweets from within a 50km radius of 10k cities. This search avoids biasing the selection by using language-specific keywords or hashtags. The Twitter data covers the period from May of 2017 until early 2019. This creates a corpus containing 1,066,038,000 tweets, all connected with the city from which they were collected. Because the language identification component only provides reliable predictions for samples containing at least 50 characters, the corpus is pruned to that length threshold (this removes approximately 250 million tweets). As shown in Table 1, this produces a corpus containing 4.14 billion words.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p4",
+            "section": "Collecting Global Corpora",
+            "start": 0,
+            "end": 726,
+            "text": "Each of these datasets rests on different assumptions and, as a result, is subject to different confounds. For example, using top-level domains to determine the country of origin for web pages is likely to over-represent countries like Estonia that use their TLD extensively and to under-represent countries like the United States that do not traditionally use their TLD. The Twitter dataset relies on georeferenced tweets, but not all users have GPS-enabled devices. For example, we might expect that countries with a lower per capita GDP have a lower percent of georeferenced tweets, in addition to having fewer tweets overall. The goal here is to establish a baseline of how well these corpora represent actual populations.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-5025cf2eb4de7a0db3b92064",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Collecting Global Corpora",
+        "text": "Data comes from two sources of digital texts: web pages from the Common Crawl and social media from Twitter. Starting with the web-crawled data, we can compare this dataset to previous georeferenced web corpora BIBREF12, BIBREF13. The basic pipeline is to process all text within $<p>$ tags, removing boilerplate content, navigation content, and noisy text. We view each web page as a document containing the remaining material. Documents are then deduplicated by site, by time, and by location.\n\nLanguage samples are geo-located using country-specific top-level domains: the assumption is that a language sample from a web-site under the .ca domain originated from Canada. This approach to regionalization does not assume that whoever produced that language sample was born in Canada or represents a traditional Canadian dialect group. Rather, the assumption is only that the sample represents someone in Canada who is producing language data. Previous work has shown that there is a significant relationship between domain-level georeferencing and traditionally-collected linguistic data BIBREF14.\n\nSome countries are not available because their top-level domains are used for other purposes (i.e., .ai, .fm, .io, .ly, .ag, .tv). Domains that do not contain geographic information are also removed from consideration (e.g., .com sites). The Common Crawl dataset covers 2014 through the end of 2017, totalling 81.5 billion web pages. As shown in Table 1, after processing this produces a corpus of 16.65 billion words. Table 1 also shows the number of countries represented in the web corpus against the number of countries in the ground-truth UN dataset and in the collected Twitter corpus. Countries may be missing from the web dataset (i) because their domains are used for a different purpose or (ii) their domains are not widely used or the country does not produce a significant amount of data on the open internet.",
+        "text_hash": "6573e19c0364949a204ac7f1cc9aa327715d02b6322369c3ca81727e8cb85a7c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Collecting Global Corpora",
+            "start": 0,
+            "end": 495,
+            "text": "Data comes from two sources of digital texts: web pages from the Common Crawl and social media from Twitter. Starting with the web-crawled data, we can compare this dataset to previous georeferenced web corpora BIBREF12, BIBREF13. The basic pipeline is to process all text within $<p>$ tags, removing boilerplate content, navigation content, and noisy text. We view each web page as a document containing the remaining material. Documents are then deduplicated by site, by time, and by location.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Collecting Global Corpora",
+            "start": 0,
+            "end": 602,
+            "text": "Language samples are geo-located using country-specific top-level domains: the assumption is that a language sample from a web-site under the .ca domain originated from Canada. This approach to regionalization does not assume that whoever produced that language sample was born in Canada or represents a traditional Canadian dialect group. Rather, the assumption is only that the sample represents someone in Canada who is producing language data. Previous work has shown that there is a significant relationship between domain-level georeferencing and traditionally-collected linguistic data BIBREF14.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p2",
+            "section": "Collecting Global Corpora",
+            "start": 0,
+            "end": 821,
+            "text": "Some countries are not available because their top-level domains are used for other purposes (i.e., .ai, .fm, .io, .ly, .ag, .tv). Domains that do not contain geographic information are also removed from consideration (e.g., .com sites). The Common Crawl dataset covers 2014 through the end of 2017, totalling 81.5 billion web pages. As shown in Table 1, after processing this produces a corpus of 16.65 billion words. Table 1 also shows the number of countries represented in the web corpus against the number of countries in the ground-truth UN dataset and in the collected Twitter corpus. Countries may be missing from the web dataset (i) because their domains are used for a different purpose or (ii) their domains are not widely used or the country does not produce a significant amount of data on the open internet.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2c5ce0fcf55ceae4996208b8",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Population Density",
+        "text": "For web-crawled data, internet access provides a much better population weighting ($r=0.49$). This is perhaps not surprising because the internet usage statistics are directly relevant to the production of websites. But it is surprising that general internet access is not a good predictor of Twitter usage. Overall, we see that there is a definite relationship between populations and the amount of digital text produced per country, but there are clear regional biases.\n\nWhat countries are specifically over-represented and under-represented in the two datasets? We first find the relative share of each dataset for each country. For example, what percentage of the web-corpus is from India? This assumes the total world population and the total corpus size as constants and finds the share of that total from each country. We then subtract the population estimates from the corpus-based estimates. In other words, we first normalize each representation (corpus size and population) and then find the difference between the normalized measures. This allows us to take into account the very different counts (words vs. persons).\n\nIf the result is negative, then a particular country is under-represented. For example, the share of the corpus from India has values of -0.1730 (CC) and -0.1421 (TW). This means that language from India is under-represented given what we would expect its population to produce. On the other hand, if the result is positive, then a particular country is over-represented. For example, Estonia is over-represented in the web-crawled data (0.0290) as is Australia in the Twitter data (0.0226) These numbers mean that there is 2.9% more language data from Estonia on the web than expected given the population of Estonia; and there is 17.3% less language data from India on the web than expected given the population of India.",
+        "text_hash": "681e616ec7d505b47a246de2f72e343d8f0a48b6bf08c1df7f79ed95708c0a28",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s4-p4",
+            "section": "Population Density",
+            "start": 0,
+            "end": 471,
+            "text": "For web-crawled data, internet access provides a much better population weighting ($r=0.49$). This is perhaps not surprising because the internet usage statistics are directly relevant to the production of websites. But it is surprising that general internet access is not a good predictor of Twitter usage. Overall, we see that there is a definite relationship between populations and the amount of digital text produced per country, but there are clear regional biases.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p5",
+            "section": "Population Density",
+            "start": 0,
+            "end": 656,
+            "text": "What countries are specifically over-represented and under-represented in the two datasets? We first find the relative share of each dataset for each country. For example, what percentage of the web-corpus is from India? This assumes the total world population and the total corpus size as constants and finds the share of that total from each country. We then subtract the population estimates from the corpus-based estimates. In other words, we first normalize each representation (corpus size and population) and then find the difference between the normalized measures. This allows us to take into account the very different counts (words vs. persons).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p6",
+            "section": "Population Density",
+            "start": 0,
+            "end": 723,
+            "text": "If the result is negative, then a particular country is under-represented. For example, the share of the corpus from India has values of -0.1730 (CC) and -0.1421 (TW). This means that language from India is under-represented given what we would expect its population to produce. On the other hand, if the result is positive, then a particular country is over-represented. For example, Estonia is over-represented in the web-crawled data (0.0290) as is Australia in the Twitter data (0.0226) These numbers mean that there is 2.9% more language data from Estonia on the web than expected given the population of Estonia; and there is 17.3% less language data from India on the web than expected given the population of India.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

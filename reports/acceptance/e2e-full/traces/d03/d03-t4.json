@@ -1,0 +1,252 @@
+{
+  "turn_id": "d03-t4",
+  "session_id": "d03",
+  "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007999944500625134
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-02 私有实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 3114.560700021684
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.002100015990436077
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d03",
+        "entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking",
+          "paper_a": "Unsupervised Question Answering for Fact-Checking (1910.07154)",
+          "paper_b": "Clinical Information Extraction via Convolutional Neural Network (1603.09381)",
+          "dataset": "FEVER"
+        },
+        "facts": {
+          "fever_claim_count": {
+            "text": "论文指出，FEVER 是最大的数据集，包含约 185k 条来自 5.4M 篇维基百科文章语料的 claim。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "fever_corpus_size": {
+            "text": "FEVER 数据集所依据的语料为 5.4M 篇维基百科文章。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "fever_transformation": {
+            "text": "作者将 FEVER 数据集转换为 Cloze-task，方法是遮蔽 claim 中提供的命名实体。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "conversion_accuracy": {
+            "text": "问题生成任务在将 FEVER 数据集转换为 Cloze-task 时达到约 90% 的准确率。",
+            "evidence_ids": [
+              "c-7d59a4589df766fa1261d8c6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "fever_dataset_size": {
+            "text": "论文《Unsupervised Question Answering for Fact-Checking》在引言中指出，FEVER 是最大的数据集，包含约 185k 条 claim，来自包含 5.4M 篇 Wikipedia 文章的语料库。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "fever_labels": {
+            "text": "同一论文说明，FEVER 的 claim 根据证据集被标注为“SUPPORTS”“REFUTES”或“NOT ENOUGH INFO”。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "clinical_no_fever_size": {
+            "text": "论文《Clinical Information Extraction via Convolutional Neural Network》未报告 FEVER 数据集的规模；其研究聚焦于使用 Mayo Clinic 的临床记录和病理报告进行临床信息抽取。",
+            "evidence_ids": [
+              "c-09342b6b2a0eabec97459832"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "fever_model_accuracy": {
+            "text": "《Unsupervised Question Answering for Fact-Checking》的方法在转换后数据集的开发集上取得 80.2% 的标签准确率，在测试集上取得 80.25% 的标签准确率。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "fever_compare_hexaf": {
+            "text": "该论文将“SUPPORTS”标签的标签准确率与监督方法 HexaF 进行比较，并称当 φ = 0.76 时其方法可与 HexaF 相媲美。",
+            "evidence_ids": [
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "fever_no_explicit_gain": {
+            "text": "所提供的证据仅说明其结果与 HexaF 可比，并未给出相对该基线的明确数值提升幅度。",
+            "evidence_ids": [
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "clinical_outperforms": {
+            "text": "《Clinical Information Extraction via Convolutional Neural Network》报告称，其初始提交 RUN 4 和 RUN 5 在事件表达任务上于每项任务的每个指标上都优于记忆基线，并称其方法在标准评估数据集上持续优于现有基线方法。",
+            "evidence_ids": [
+              "c-a0309b4d3fb3a7dc29b07966",
+              "c-f45dc29ea469cc573133e3c9"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "clinical_no_numeric_gain": {
+            "text": "所提供的证据未给出该临床模型相对基线在性能上的具体数值提升幅度。",
+            "evidence_ids": [
+              "c-a0309b4d3fb3a7dc29b07966"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "not_comparable_tasks": {
+            "text": "两篇论文回答的是不同任务：前者是事实核查，将 FEVER 转换为 Cloze 任务，并统计“SUPPORTS”标签的准确率；后者是从临床记录中抽取事件跨度及属性，因此两者的性能提升数字不具备可比性。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6",
+              "c-712a82e231bc15b7c11610b4"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "not_comparable_datasets": {
+            "text": "两篇论文的数据集不同，分别为 FEVER 的 Wikipedia 主张与 Mayo Clinic 的临床记录和病理报告，故 FEVER 规模相关结论也不适用于临床论文。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b",
+              "c-09342b6b2a0eabec97459832"
+            ],
+            "turn_id": "d03-t3"
+          }
+        },
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154",
+            "1603.09381"
+          ]
+        }
+      },
+      "elapsed_ms": 3.604999976232648
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792666987.4060829,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 11,
+      "request_hash": "370cc26da26e29e47a481bc5a9eed3fcc64df085df96bed7ef1f02fa7089a5f0",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6419,
+        "completion_tokens": 44,
+        "total_tokens": 6463,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6419,
+        "output_tokens": 44,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3113.1400000303984
+    }
+  ]
+}

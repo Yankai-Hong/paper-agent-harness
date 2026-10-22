@@ -1,0 +1,382 @@
+{
+  "id": "d16-t1",
+  "session_id": "d16",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 11,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "The answer correctly summarizes the two shortcomings (overconfidence and incomplete transcriptions with language models) from the abstract, and accurately describes the proposed solutions: label smoothing (for overconfidence) and a coverage penalty (for incomplete transcripts). All specific claims are traceable to the cited chunks.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "Abstract explicitly states two shortcomings: overconfidence in predictions and a tendency to produce incomplete transcriptions when language models are used."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "Abstract states 'We propose practical solutions to both problems'; the specific solutions (label smoothing, coverage penalty) are indeed discussed in related work and solutions sections."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "Chunk states 'Label smoothing prevents saturating the SoftMax nonlinearity and results in better gradient flow to lower layers of the network.'"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "Chunk states 'Smoothing techniques increase the entropy of a model's predictions' and that it remains to be established whether globally normalized models can be approximated by locally normalized models with proper regularization such as label smoothing."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "Chunk states 'Our solution that employs a coverage penalty at decode time only is most similar to the one used by the Google Translation system.'"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "Chunk states wide beam searches often yield incomplete transcripts with language model, and with narrow beams the problem is less visible due to implicit hypothesis pruning."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "Chunk states 'We compare three strategies designed to prevent incomplete transcripts.'"
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "Chunk describes first strategy: forbids emitting EOS unless its probability is within set range of most probable token; prevents truncations but inefficient against omissions in the middle."
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "Chunk states a length-dependent term was proposed for CTC and seq2seq but usage was difficult because beam search was looping, requiring additional constraints."
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "Chunk states coverage term counts frames with cumulative attention greater than threshold; once bypassed, frame counted as selected and subsequent selections do not reduce decoding cost."
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "Chunk states 'the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.'"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "7d7f3afecb326293f5173c9fc5aa27d26c059fa25af5806613f26f9b427dca3a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5152,
+        "completion_tokens": 582,
+        "total_tokens": 5734,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5024,
+        "output_tokens": 582,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3882.1570000145584
+    }
+  ],
+  "payload_hash": "2421ebb4b9ca47948eac9725c0bd652924d7f619fa23d710d9121a303484db4c",
+  "payload": {
+    "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+    "answer": {
+      "claims": [
+        {
+          "key": "two_shortcomings",
+          "text": "论文将两个缺点归纳为：模型对预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整转写。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        },
+        {
+          "key": "two_solutions_overview",
+          "text": "论文针对上述两个问题提出了实际可行的解决方案（具体为标签平滑和覆盖率惩罚，详见正文）。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        },
+        {
+          "key": "label_smoothing_mechanism",
+          "text": "标签平滑可防止 SoftMax 非线性饱和，并使梯度更顺畅地流向网络低层。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-7549a11343a20fbc64d6dc01"
+            }
+          ]
+        },
+        {
+          "key": "label_smoothing_entropy",
+          "text": "平滑技术会提高模型预测的熵；论文指出仍需验证局部归一化模型配合标签平滑等正则化能否近似全局归一化模型。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-7549a11343a20fbc64d6dc01"
+            }
+          ]
+        },
+        {
+          "key": "coverage_penalty",
+          "text": "论文作者提出的方案仅在解码时施加覆盖率惩罚（coverage penalty），这与 Google 翻译系统所用方式最为相似。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-7549a11343a20fbc64d6dc01"
+            }
+          ]
+        },
+        {
+          "key": "partial_transcripts_problem",
+          "text": "使用语言模型时，宽束搜索常常产生不完整的转写；窄束下由于隐式剪枝，该问题不那么明显。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "three_strategies",
+          "text": "论文比较了三种防止不完整转写的策略。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "eos_restriction",
+          "text": "第一种策略不改变束搜索准则，而是除非 EOS 概率与最可能 token 的概率之差在设定范围内，否则禁止输出 EOS；该策略能防止截断，但对转写中部的遗漏无效。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "length_term_looping",
+          "text": "基于转写长度的奖励项曾被用于 CTC 与 seq2seq 网络，但据报道难以使用，因为束搜索会绕录音的某些部分循环，需要额外约束。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_definition",
+          "text": "为防止循环，论文提出使用覆盖率项，统计累计注意力超过给定阈值的帧数；一旦某帧被计为已选中，后续再次选择该帧不会降低解码代价。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_recompute",
+          "text": "在实现中，覆盖率在每个束搜索迭代时用截至该步产生的全部注意力权重重新计算。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "Towards better decoding and language model integration in sequence to sequence models: proposed solutions for seq2seq shortcomings",
+    "evidence": [
+      {
+        "chunk_id": "c-c1a01afddd733ef65ed6d199",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Abstract",
+        "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+        "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 782,
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7549a11343a20fbc64d6dc01",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Related Work",
+        "text": "Label smoothing was proposed as an efficient regularizer for the Inception architecture BIBREF15 . Several improved smoothing schemes were proposed, including sampling erroneous labels instead of using a fixed distribution BIBREF24 , using the marginal label probabilities BIBREF16 , or using early errors of the model BIBREF25 . Smoothing techniques increase the entropy of a model's predictions, a technique that was used to promote exploration in reinforcement learning BIBREF26 , BIBREF27 , BIBREF28 . Label smoothing prevents saturating the SoftMax nonlinearity and results in better gradient flow to lower layers of the network BIBREF15 . A similar concept, in which training targets were set slightly below the range of the output nonlinearity was proposed in BIBREF29 .\n\nOur seq2seq networks are locally normalized, i.e. the speller produces a probability distribution at every step. Alternatively normalization can be performed globally on whole transcripts. In discriminative training of classical ASR systems normalization is performed over lattices BIBREF30 . In the case of recurrent networks lattices are replaced by beam search results. Global normalization has yielded important benefits on many NLP tasks including parsing and translation BIBREF31 , BIBREF32 . Global normalization is expensive, because each training step requires running beam search inference. It remains to be established whether globally normalized models can be approximated by cheaper to train locally normalized models with proper regularization such as label smoothing.\n\nUsing source coverage vectors has been investigated in neural machine translation models. Past attentions vectors were used as auxiliary inputs in the emitting RNN either directly BIBREF33 , or as cumulative coverage information BIBREF34 . Coverage embeddings vectors associated with source words end modified during training were proposed in BIBREF35 . Our solution that employs a coverage penalty at decode time only is most similar to the one used by the Google Translation system BIBREF9 .",
+        "text_hash": "2cc0ea3c1061ea39fe21f7e45a50da37c0ac878ec0cff6be5e035fa1233165e0",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s12-p0",
+            "section": "Related Work",
+            "start": 0,
+            "end": 777,
+            "text": "Label smoothing was proposed as an efficient regularizer for the Inception architecture BIBREF15 . Several improved smoothing schemes were proposed, including sampling erroneous labels instead of using a fixed distribution BIBREF24 , using the marginal label probabilities BIBREF16 , or using early errors of the model BIBREF25 . Smoothing techniques increase the entropy of a model's predictions, a technique that was used to promote exploration in reinforcement learning BIBREF26 , BIBREF27 , BIBREF28 . Label smoothing prevents saturating the SoftMax nonlinearity and results in better gradient flow to lower layers of the network BIBREF15 . A similar concept, in which training targets were set slightly below the range of the output nonlinearity was proposed in BIBREF29 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p1",
+            "section": "Related Work",
+            "start": 0,
+            "end": 782,
+            "text": "Our seq2seq networks are locally normalized, i.e. the speller produces a probability distribution at every step. Alternatively normalization can be performed globally on whole transcripts. In discriminative training of classical ASR systems normalization is performed over lattices BIBREF30 . In the case of recurrent networks lattices are replaced by beam search results. Global normalization has yielded important benefits on many NLP tasks including parsing and translation BIBREF31 , BIBREF32 . Global normalization is expensive, because each training step requires running beam search inference. It remains to be established whether globally normalized models can be approximated by cheaper to train locally normalized models with proper regularization such as label smoothing.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p2",
+            "section": "Related Work",
+            "start": 0,
+            "end": 493,
+            "text": "Using source coverage vectors has been investigated in neural machine translation models. Past attentions vectors were used as auxiliary inputs in the emitting RNN either directly BIBREF33 , or as cumulative coverage information BIBREF34 . Coverage embeddings vectors associated with source words end modified during training were proposed in BIBREF35 . Our solution that employs a coverage penalty at decode time only is most similar to the one used by the Google Translation system BIBREF9 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-753acdce1e13381d0f0064dc",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Solutions to Partial Transcripts Problem",
+        "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+        "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 602,
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 911,
+            "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 369,
+            "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-0b5bc372895d6d0706b56a8e",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Introduction",
+        "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.\n\nUnderstanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+        "text_hash": "28420c534a7cb4dbf7ddb929f504b7226ec7d22b3e9800a277b4c4c3a3376c90",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1148,
+            "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 568,
+            "text": "Understanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-765ec796280535cd105fabf4",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Model Description",
+        "text": "Our speech recognition system, builds on the recently proposed Listen, Attend and Spell network BIBREF12 . It is an attention-based seq2seq model that is able to directly transcribe an audio recording INLINEFORM0 into a space-delimited sequence of characters INLINEFORM1 . Similarly to other seq2seq neural networks, it uses an encoder-decoder architecture composed of three parts: a listener module tasked with acoustic modeling, a speller module tasked with emitting characters and an attention module serving as the intermediary between the speller and the listener: DISPLAYFORM0 ",
+        "text_hash": "80a37feec3d65f7ccb164a735cd068abd93d038e71fd6c38a09c448b1b6c6159",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Model Description",
+            "start": 0,
+            "end": 583,
+            "text": "Our speech recognition system, builds on the recently proposed Listen, Attend and Spell network BIBREF12 . It is an attention-based seq2seq model that is able to directly transcribe an audio recording INLINEFORM0 into a space-delimited sequence of characters INLINEFORM1 . Similarly to other seq2seq neural networks, it uses an encoder-decoder architecture composed of three parts: a listener module tasked with acoustic modeling, a speller module tasked with emitting characters and an attention module serving as the intermediary between the speller and the listener: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,279 @@
+{
+  "turn_id": "4bf825eb1c6c4d029413caabf18dc97b",
+  "session_id": "d29-d29-t4",
+  "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007900060154497623
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "compare",
+        "standalone_query": "对比《Tackling Online Abuse: A Survey of Automated Abuse Detection Methods》与《Reverse-Engineering Satire》在可预测滥用内容的特征洞察与是否使用 The Onion 数据集上的回答",
+        "needs_clarification": true,
+        "paper_ids": [
+          "1908.06024",
+          "1901.03253"
+        ],
+        "resolved_entities": {
+          "paper_a": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+          "paper_b": "Reverse-Engineering Satire, or\"Paper on Computational Humor Accepted Despite Making Serious Advances\""
+        }
+      },
+      "elapsed_ms": 9900.284599978477
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "clarify"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "clarify",
+        "claims": [],
+        "text": "请明确所指论文或比较对象。"
+      },
+      "elapsed_ms": 0.001500011421740055
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "clarify"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d29-d29-t4",
+        "entities": {
+          "paper": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+          "paper_id": "1908.06024"
+        },
+        "facts": {
+          "feature_sets_nobata": {
+            "text": "Nobata et al. evaluated a large range of features on the Yahoo! datasets using a regression model: (1) word and character n-grams; (2) linguistic features such as number of polite/hate words and punctuation count; (3) syntactic features such as parent and grandparent of a node in a dependency tree; (4) distributional-semantic features such as paragraph2vec comment representations.",
+            "evidence_ids": [
+              "c-891d7142a2d2cad4f16b6f9c"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "char_ngram_robustness": {
+            "text": "Although the best results were achieved with all features combined, character n-grams on their own contributed significantly more than other features due to their robustness to noise (obfuscations, misspellings, unseen words).",
+            "evidence_ids": [
+              "c-891d7142a2d2cad4f16b6f9c"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "char_vs_word_superiority": {
+            "text": "Mehdad and Tetreault's results demonstrated the superiority of character-level features over word-level ones, with SVM classifiers trained on Bayesian log-ratio vectors of average counts of character n-grams outperforming the approach of Nobata et al. in terms of AUC as well as other RNN-based character and word-level models.",
+            "evidence_ids": [
+              "c-891d7142a2d2cad4f16b6f9c"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "bow_features": {
+            "text": "Bag-of-words (BOW) features have been integral to several works on abuse detection; for example, Sood et al. showed that an SVM trained on word bi-gram features outperformed a word-list baseline using a Levenshtein distance-based heuristic for detecting profanity.",
+            "evidence_ids": [
+              "c-892e55b6de4edd89afd5eff6"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "word_ngrams_other_features": {
+            "text": "Word n-grams have been used in conjunction with other features, such as typed-dependency relations or scores based on sentiment lexicons, to train SVMs.",
+            "evidence_ids": [
+              "c-892e55b6de4edd89afd5eff6"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "tfidf_ngrams": {
+            "text": "Salminen et al. showed that a linear SVM using tf-idf weighted n-grams achieves the best performance on classification of hateful comments as one of 29 different hate categories.",
+            "evidence_ids": [
+              "c-892e55b6de4edd89afd5eff6"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "hand_engineered_features": {
+            "text": "Samghabadi et al. augmented features with hand-engineered ones such as polarity scores derived from SentiWordNet, measures based on the LIWC program, and features based on emoticons; distributional-semantic features combined with these constituted an effective feature space.",
+            "evidence_ids": [
+              "c-f45f8ae3b81df25a89e5319c"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "char_ngrams_general": {
+            "text": "In line with the findings of Nobata et al. and Mehdad and Tetreault, character n-grams performed well on the datasets used by Samghabadi et al.",
+            "evidence_ids": [
+              "c-f45f8ae3b81df25a89e5319c"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "germeval_winning": {
+            "text": "The winning system of the GermEval shared task employed multiple character and token n-gram classifiers, as well as distributional semantic features obtained by averaging word embeddings.",
+            "evidence_ids": [
+              "c-2f212f20ecf57a84c49074df"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "hindi_lexical": {
+            "text": "The top approach for Hindi in the aggression identification shared task utilized lexical features based on word and character n-grams.",
+            "evidence_ids": [
+              "c-2f212f20ecf57a84c49074df"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "sarcasm_surface_insufficient": {
+            "text": "Sarcastic comments are hard for abuse detection methods to deal with since surface features are not sufficient; typically knowledge of the context or background of the user is also required.",
+            "evidence_ids": [
+              "c-482db66d96fa77c449b5baed"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          },
+          "metaphor_frequency": {
+            "text": "Mishra found that metaphors are more frequent in abusive samples as opposed to non-abusive ones.",
+            "evidence_ids": [
+              "c-482db66d96fa77c449b5baed"
+            ],
+            "turn_id": "d75625ebdcce42c89e405ab3eb6370ca"
+          }
+        },
+        "unresolved": [
+          "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1908.06024"
+          ]
+        }
+      },
+      "elapsed_ms": 3.0866999877616763
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792667159.1654625,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "clarify",
+  "answer": {
+    "decision": "clarify",
+    "claims": [],
+    "text": "请明确所指论文或比较对象。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "error",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "f60987491f9956bb7d63ae9eb91b9fb8daa2455411458289fb3e06806b4635ab",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6199,
+        "completion_tokens": 122,
+        "total_tokens": 6321,
+        "prompt_tokens_details": {
+          "cached_tokens": 256,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5943,
+        "output_tokens": 122,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "error_type": "ValidationError",
+      "schema_error_path": [
+        "intent"
+      ],
+      "schema_validator": "enum",
+      "elapsed_ms": 6894.754600012675,
+      "retry_reason": "structured_output_repair",
+      "retry_delay_seconds": 0
+    },
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": true,
+      "attempt": 11,
+      "request_hash": "9d310a6a1f02f5602081ae89ede7b2e3ddae8736e134d8e1e0f2c5b1ee82bf0e",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6218,
+        "completion_tokens": 134,
+        "total_tokens": 6352,
+        "prompt_tokens_details": {
+          "cached_tokens": 256,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5962,
+        "output_tokens": 134,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3003.712199977599
+    }
+  ]
+}

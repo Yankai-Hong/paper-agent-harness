@@ -1,0 +1,586 @@
+{
+  "turn_id": "d16-t1",
+  "session_id": "d16",
+  "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.01610000617802143
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Towards better decoding and language model integration in sequence to sequence models: proposed solutions for seq2seq shortcomings",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1612.02695"
+        ],
+        "resolved_entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models (1612.02695)"
+        }
+      },
+      "elapsed_ms": 2866.8311000801623
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Towards better decoding and language model integration in sequence to sequence models: proposed solutions for seq2seq shortcomings"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4",
+          "c-753acdce1e13381d0f0064dc",
+          "c-584f58479e6aaaf4703e5890",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-de41334c9a60659c0e8f8592",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-064a283f41c1740b79fd7ed5",
+          "c-baaa5b8f20389a190a483b14",
+          "c-317a4f696f4b18da509bd253",
+          "c-b0a75fbe402507f3ea2c17d0"
+        ]
+      },
+      "elapsed_ms": 45.684600016102195
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4",
+          "c-753acdce1e13381d0f0064dc",
+          "c-584f58479e6aaaf4703e5890",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-de41334c9a60659c0e8f8592",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-064a283f41c1740b79fd7ed5",
+          "c-baaa5b8f20389a190a483b14",
+          "c-317a4f696f4b18da509bd253",
+          "c-b0a75fbe402507f3ea2c17d0"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-753acdce1e13381d0f0064dc",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4"
+        ]
+      },
+      "elapsed_ms": 299.9759999802336
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-753acdce1e13381d0f0064dc",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "The evidence addresses both shortcomings named in the abstract. For overconfidence, the evidence is partial: Related Work discusses label smoothing (which increases prediction entropy and prevents saturating softmax) and global normalization as alternative approaches, and the Introduction frames the sharp-prediction problem, so label smoothing is presented as a solution. For the partial-transcript problem, the 'Solutions to Partial Transcripts Problem' section explicitly describes three strategies: (1) forbidding EOS emission unless within a range of the most probable token, (2) extending beam search to promote long transcripts, and (3) a coverage term counting frames with cumulative attention above a threshold to prevent looping. The evidence fully supports the incomplete-transcript solutions and sufficiently supports label smoothing as the overconfidence remedy, though the specific dedicated section detailing the overconfidence solution is not present in full."
+      },
+      "elapsed_ms": 6454.197200015187
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "two_shortcomings",
+            "text": "论文将两个缺点归纳为：模型对预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整转写。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "two_solutions_overview",
+            "text": "论文针对上述两个问题提出了实际可行的解决方案（具体为标签平滑和覆盖率惩罚，详见正文）。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "label_smoothing_mechanism",
+            "text": "标签平滑可防止 SoftMax 非线性饱和，并使梯度更顺畅地流向网络低层。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-7549a11343a20fbc64d6dc01"
+              }
+            ]
+          },
+          {
+            "key": "label_smoothing_entropy",
+            "text": "平滑技术会提高模型预测的熵；论文指出仍需验证局部归一化模型配合标签平滑等正则化能否近似全局归一化模型。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-7549a11343a20fbc64d6dc01"
+              }
+            ]
+          },
+          {
+            "key": "coverage_penalty",
+            "text": "论文作者提出的方案仅在解码时施加覆盖率惩罚（coverage penalty），这与 Google 翻译系统所用方式最为相似。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-7549a11343a20fbc64d6dc01"
+              }
+            ]
+          },
+          {
+            "key": "partial_transcripts_problem",
+            "text": "使用语言模型时，宽束搜索常常产生不完整的转写；窄束下由于隐式剪枝，该问题不那么明显。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "three_strategies",
+            "text": "论文比较了三种防止不完整转写的策略。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "eos_restriction",
+            "text": "第一种策略不改变束搜索准则，而是除非 EOS 概率与最可能 token 的概率之差在设定范围内，否则禁止输出 EOS；该策略能防止截断，但对转写中部的遗漏无效。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "length_term_looping",
+            "text": "基于转写长度的奖励项曾被用于 CTC 与 seq2seq 网络，但据报道难以使用，因为束搜索会绕录音的某些部分循环，需要额外约束。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_definition",
+            "text": "为防止循环，论文提出使用覆盖率项，统计累计注意力超过给定阈值的帧数；一旦某帧被计为已选中，后续再次选择该帧不会降低解码代价。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_recompute",
+            "text": "在实现中，覆盖率在每个束搜索迭代时用截至该步产生的全部注意力权重重新计算。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 8867.902699974366
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d16",
+        "entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models (1612.02695)"
+        },
+        "facts": {
+          "two_shortcomings": {
+            "text": "论文将两个缺点归纳为：模型对预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整转写。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "two_solutions_overview": {
+            "text": "论文针对上述两个问题提出了实际可行的解决方案（具体为标签平滑和覆盖率惩罚，详见正文）。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "label_smoothing_mechanism": {
+            "text": "标签平滑可防止 SoftMax 非线性饱和，并使梯度更顺畅地流向网络低层。",
+            "evidence_ids": [
+              "c-7549a11343a20fbc64d6dc01"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "label_smoothing_entropy": {
+            "text": "平滑技术会提高模型预测的熵；论文指出仍需验证局部归一化模型配合标签平滑等正则化能否近似全局归一化模型。",
+            "evidence_ids": [
+              "c-7549a11343a20fbc64d6dc01"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_penalty": {
+            "text": "论文作者提出的方案仅在解码时施加覆盖率惩罚（coverage penalty），这与 Google 翻译系统所用方式最为相似。",
+            "evidence_ids": [
+              "c-7549a11343a20fbc64d6dc01"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "partial_transcripts_problem": {
+            "text": "使用语言模型时，宽束搜索常常产生不完整的转写；窄束下由于隐式剪枝，该问题不那么明显。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "three_strategies": {
+            "text": "论文比较了三种防止不完整转写的策略。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "eos_restriction": {
+            "text": "第一种策略不改变束搜索准则，而是除非 EOS 概率与最可能 token 的概率之差在设定范围内，否则禁止输出 EOS；该策略能防止截断，但对转写中部的遗漏无效。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "length_term_looping": {
+            "text": "基于转写长度的奖励项曾被用于 CTC 与 seq2seq 网络，但据报道难以使用，因为束搜索会绕录音的某些部分循环，需要额外约束。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_definition": {
+            "text": "为防止循环，论文提出使用覆盖率项，统计累计注意力超过给定阈值的帧数；一旦某帧被计为已选中，后续再次选择该帧不会降低解码代价。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_recompute": {
+            "text": "在实现中，覆盖率在每个束搜索迭代时用截至该步产生的全部注意力权重重新计算。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1612.02695"
+          ]
+        }
+      },
+      "elapsed_ms": 4.2347999988123775
+    }
+  ],
+  "started_at": 1792667088.704822,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "two_shortcomings",
+        "text": "论文将两个缺点归纳为：模型对预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整转写。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      },
+      {
+        "key": "two_solutions_overview",
+        "text": "论文针对上述两个问题提出了实际可行的解决方案（具体为标签平滑和覆盖率惩罚，详见正文）。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      },
+      {
+        "key": "label_smoothing_mechanism",
+        "text": "标签平滑可防止 SoftMax 非线性饱和，并使梯度更顺畅地流向网络低层。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-7549a11343a20fbc64d6dc01"
+          }
+        ]
+      },
+      {
+        "key": "label_smoothing_entropy",
+        "text": "平滑技术会提高模型预测的熵；论文指出仍需验证局部归一化模型配合标签平滑等正则化能否近似全局归一化模型。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-7549a11343a20fbc64d6dc01"
+          }
+        ]
+      },
+      {
+        "key": "coverage_penalty",
+        "text": "论文作者提出的方案仅在解码时施加覆盖率惩罚（coverage penalty），这与 Google 翻译系统所用方式最为相似。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-7549a11343a20fbc64d6dc01"
+          }
+        ]
+      },
+      {
+        "key": "partial_transcripts_problem",
+        "text": "使用语言模型时，宽束搜索常常产生不完整的转写；窄束下由于隐式剪枝，该问题不那么明显。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "three_strategies",
+        "text": "论文比较了三种防止不完整转写的策略。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "eos_restriction",
+        "text": "第一种策略不改变束搜索准则，而是除非 EOS 概率与最可能 token 的概率之差在设定范围内，否则禁止输出 EOS；该策略能防止截断，但对转写中部的遗漏无效。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "length_term_looping",
+        "text": "基于转写长度的奖励项曾被用于 CTC 与 seq2seq 网络，但据报道难以使用，因为束搜索会绕录音的某些部分循环，需要额外约束。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_definition",
+        "text": "为防止循环，论文提出使用覆盖率项，统计累计注意力超过给定阈值的帧数；一旦某帧被计为已选中，后续再次选择该帧不会降低解码代价。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_recompute",
+        "text": "在实现中，覆盖率在每个束搜索迭代时用截至该步产生的全部注意力权重重新计算。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "ff40be6036ce0b2a2172e003f0773fc6bd9b87457960a3e16617d85ff34d5e84",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3281,
+        "completion_tokens": 85,
+        "total_tokens": 3366,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3025,
+        "output_tokens": 85,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2865.535299992189
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 2,
+      "request_hash": "6f5a581cc116fd831c7f339b30567d71d294d2fc14083fd45322cd84ad186060",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4322,
+        "completion_tokens": 181,
+        "total_tokens": 4503,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4322,
+        "output_tokens": 181,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6453.8734999950975
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 3,
+      "request_hash": "805dc66bfbae21836796daade3f71d214f4e51a6c64c1bb956972c88c8af225a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4424,
+        "completion_tokens": 824,
+        "total_tokens": 5248,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4424,
+        "output_tokens": 824,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 8867.206300026737
+    }
+  ]
+}

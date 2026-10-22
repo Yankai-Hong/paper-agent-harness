@@ -1,0 +1,641 @@
+{
+  "turn_id": "mem-d02-t2",
+  "session_id": "d02",
+  "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007600057870149612
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "Mapping Languages and Demographics with Georeferenced Corpora 论文中 Twitter 数据为何对各国语言清单预测更好，作者提出的假设及相关证据",
+        "needs_clarification": false,
+        "paper_ids": [
+          "2004.00809"
+        ],
+        "resolved_entities": {
+          "paper": "Mapping Languages and Demographics with Georeferenced Corpora",
+          "paper_id": "2004.00809"
+        }
+      },
+      "elapsed_ms": 2910.07109999191
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Mapping Languages and Demographics with Georeferenced Corpora 论文中 Twitter 数据为何对各国语言清单预测更好，作者提出的假设及相关证据"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-9887004ca215701b79e8e570",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-9112346152089bf519490033",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-162f98bff11b9de38d755b70",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-0efba46a0570e1863cb689f1",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-1bf564989651e887cbd88011",
+          "c-b60f4e4a6d050d048f70b660",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-d80dd59432fac531ad74efcf"
+        ]
+      },
+      "elapsed_ms": 13.476100051775575
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-9887004ca215701b79e8e570",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-9112346152089bf519490033",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-162f98bff11b9de38d755b70",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-0efba46a0570e1863cb689f1",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-1bf564989651e887cbd88011",
+          "c-b60f4e4a6d050d048f70b660",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-d80dd59432fac531ad74efcf"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-9887004ca215701b79e8e570",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-9112346152089bf519490033"
+        ]
+      },
+      "elapsed_ms": 0.004900037311017513
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-9887004ca215701b79e8e570",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-9112346152089bf519490033"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据可回答部分：Twitter与网页爬取语料代表不同人群，相关性r=0.60（Twitter）、r=0.49（网页）；Twitter对各国语言清单预测更好，表现为总体假阳性很少但Twitter更多（摘要、讨论、人口部分），且缺失语言更少（讨论）；Twitter在北美和大洋洲代表性更好；作者解释Twitter更匹配GDP加权人口、更差匹配互联网使用加权人口，暗示平台偏向较富裕/城市化人群，并提到采集基于城市。不能回答部分：证据未明确给出单一正式“假设”表述，也未解释为何Twitter语言清单预测更优的机制原因（如平台语言多样性、用户结构），文中明确更多研究需区分移民、旅游、商业等假阳性来源。来源：2004.00809 Abstract、Discussion、Population Demographics、Collecting Global Corpora、Introduction。"
+      },
+      "elapsed_ms": 7428.422199911438
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "twitter_better_language_inventory",
+            "text": "数据摘要指出，与网络爬取数据相比，Twitter 数据就每个国家所使用的语言清单能做出更好的预测，而两种数据集与实际人口的相关性分别为 r=0.60（社交媒体）和 r=0.49（网络爬取）。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-204aa49abd2af324ac170d44"
+              }
+            ]
+          },
+          {
+            "key": "fewer_missing_languages_twitter",
+            "text": "在语料未能覆盖普查中当地人口使用的全部语言的情况下，Twitter 缺失的语言比网络爬取数据更少。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "few_false_positives_but_more_on_twitter",
+            "text": "总体而言，相对于可用的人工真值语言使用数据，两种语料的假阳性都很少；而在这些不多的情况中，Twitter 数据的假阳性更多。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "wealth_gdp_hypothesis",
+            "text": "作者观察到，当人口数字按 GDP 加权时 Twitter 数据与人口匹配得更好，按互联网使用统计加权时匹配得更差，并据此推断 Twitter 这一平台所代表的人口比一般网络爬取数据所代表的更为富裕。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "urban_alternative_hypothesis",
+            "text": "作者提出另一种解释：本研究的 Twitter 采集以城市地区为基础，而城市地区往往有更富裕的人口。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "regional_twitter_advantage",
+            "text": "在两种语料预测不一致的地方，Twitter 对北美和大洋洲的代表性更好，而两者在欧洲、有真值数据的非洲部分地区以及南美大体一致。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+              }
+            ]
+          },
+          {
+            "key": "english_spanish_default_effect",
+            "text": "由于英语和西班牙语在 Twitter 上都非常常见，任何以这两种语言为主的国家都会默认获得良好的代表性；这可能是国家层面真实正例率高的一种因素。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+              }
+            ]
+          },
+          {
+            "key": "twitter_false_positive_geography",
+            "text": "Twitter 的假阳性大多出现在俄罗斯和东欧，但在美国、加拿大、南非、法国、印度和澳大利亚也存在过度预测的语言；而网络爬取语料在俄罗斯和东欧之外假阳性极少。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+              }
+            ]
+          },
+          {
+            "key": "collection_without_language_bias",
+            "text": "Twitter 语料通过空间检索收集 1 万座城市 50 公里半径内的推文，避免了使用特定语言的关键词或话题标签进行选择所带来的偏差。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-227fd89576f8c0e3eb0ce352"
+              }
+            ]
+          },
+          {
+            "key": "georeferencing_gdp_confound",
+            "text": "Twitter 数据集依赖地理定位的推文，而并非所有用户都有支持 GPS 的设备；作者推测人均 GDP 较低的国家地理定位推文的比例可能更低。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-227fd89576f8c0e3eb0ce352"
+              }
+            ]
+          },
+          {
+            "key": "alternative_explanations_unresolved",
+            "text": "对于俄罗斯出现的假阳性（法语、德语、西班牙语、意大利语等其他欧洲语言），作者指出需要更多研究来区分移民、旅游和商业作为数字数据集中假阳性语言来源的不同解释。",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 6336.012899992056
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d02",
+        "entities": {
+          "paper": "Mapping Languages and Demographics with Georeferenced Corpora",
+          "paper_id": "2004.00809"
+        },
+        "facts": {
+          "regional_pattern": {
+            "text": "Twitter对北美和大洋洲的语言使用代表性更好，而两个语料库在欧洲、有真实数据的非洲部分以及南美洲的预测一致。",
+            "evidence_ids": [
+              "c-01b9a363a68a29a0e9af4ff8"
+            ],
+            "turn_id": "mem-d02-t1"
+          },
+          "frequent_languages_factor": {
+            "text": "英语和西班牙语在Twitter上非常常见，因此任何主要使用这两种语言的国家默认就会有较好的代表性。",
+            "evidence_ids": [
+              "c-01b9a363a68a29a0e9af4ff8"
+            ],
+            "turn_id": "mem-d02-t1"
+          },
+          "fewer_missing_languages": {
+            "text": "在检查到的国家中，Twitter缺少的语言比网络爬取数据更少。",
+            "evidence_ids": [
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "mem-d02-t1"
+          },
+          "urban_collection_hypothesis": {
+            "text": "作者提出另一种解释：本文的Twitter采集基于城市地区，而城市地区往往人口更富裕。",
+            "evidence_ids": [
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "mem-d02-t1"
+          },
+          "false_positives_caveat": {
+            "text": "Twitter上的误报更多，而且需要更多研究来区分移民、旅游和商业作为数字数据中出现误报语言的其他来源。",
+            "evidence_ids": [
+              "c-01b9a363a68a29a0e9af4ff8",
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "mem-d02-t1"
+          },
+          "twitter_better_language_inventory": {
+            "text": "数据摘要指出，与网络爬取数据相比，Twitter 数据就每个国家所使用的语言清单能做出更好的预测，而两种数据集与实际人口的相关性分别为 r=0.60（社交媒体）和 r=0.49（网络爬取）。",
+            "evidence_ids": [
+              "c-204aa49abd2af324ac170d44"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "fewer_missing_languages_twitter": {
+            "text": "在语料未能覆盖普查中当地人口使用的全部语言的情况下，Twitter 缺失的语言比网络爬取数据更少。",
+            "evidence_ids": [
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "few_false_positives_but_more_on_twitter": {
+            "text": "总体而言，相对于可用的人工真值语言使用数据，两种语料的假阳性都很少；而在这些不多的情况中，Twitter 数据的假阳性更多。",
+            "evidence_ids": [
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "wealth_gdp_hypothesis": {
+            "text": "作者观察到，当人口数字按 GDP 加权时 Twitter 数据与人口匹配得更好，按互联网使用统计加权时匹配得更差，并据此推断 Twitter 这一平台所代表的人口比一般网络爬取数据所代表的更为富裕。",
+            "evidence_ids": [
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "urban_alternative_hypothesis": {
+            "text": "作者提出另一种解释：本研究的 Twitter 采集以城市地区为基础，而城市地区往往有更富裕的人口。",
+            "evidence_ids": [
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "regional_twitter_advantage": {
+            "text": "在两种语料预测不一致的地方，Twitter 对北美和大洋洲的代表性更好，而两者在欧洲、有真值数据的非洲部分地区以及南美大体一致。",
+            "evidence_ids": [
+              "c-01b9a363a68a29a0e9af4ff8"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "english_spanish_default_effect": {
+            "text": "由于英语和西班牙语在 Twitter 上都非常常见，任何以这两种语言为主的国家都会默认获得良好的代表性；这可能是国家层面真实正例率高的一种因素。",
+            "evidence_ids": [
+              "c-01b9a363a68a29a0e9af4ff8"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "twitter_false_positive_geography": {
+            "text": "Twitter 的假阳性大多出现在俄罗斯和东欧，但在美国、加拿大、南非、法国、印度和澳大利亚也存在过度预测的语言；而网络爬取语料在俄罗斯和东欧之外假阳性极少。",
+            "evidence_ids": [
+              "c-01b9a363a68a29a0e9af4ff8"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "collection_without_language_bias": {
+            "text": "Twitter 语料通过空间检索收集 1 万座城市 50 公里半径内的推文，避免了使用特定语言的关键词或话题标签进行选择所带来的偏差。",
+            "evidence_ids": [
+              "c-227fd89576f8c0e3eb0ce352"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "georeferencing_gdp_confound": {
+            "text": "Twitter 数据集依赖地理定位的推文，而并非所有用户都有支持 GPS 的设备；作者推测人均 GDP 较低的国家地理定位推文的比例可能更低。",
+            "evidence_ids": [
+              "c-227fd89576f8c0e3eb0ce352"
+            ],
+            "turn_id": "mem-d02-t2"
+          },
+          "alternative_explanations_unresolved": {
+            "text": "对于俄罗斯出现的假阳性（法语、德语、西班牙语、意大利语等其他欧洲语言），作者指出需要更多研究来区分移民、旅游和商业作为数字数据集中假阳性语言来源的不同解释。",
+            "evidence_ids": [
+              "c-01b9a363a68a29a0e9af4ff8"
+            ],
+            "turn_id": "mem-d02-t2"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "2004.00809"
+          ]
+        }
+      },
+      "elapsed_ms": 5.1932999631389976
+    }
+  ],
+  "started_at": 1792667161.314671,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "twitter_better_language_inventory",
+        "text": "数据摘要指出，与网络爬取数据相比，Twitter 数据就每个国家所使用的语言清单能做出更好的预测，而两种数据集与实际人口的相关性分别为 r=0.60（社交媒体）和 r=0.49（网络爬取）。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-204aa49abd2af324ac170d44"
+          }
+        ]
+      },
+      {
+        "key": "fewer_missing_languages_twitter",
+        "text": "在语料未能覆盖普查中当地人口使用的全部语言的情况下，Twitter 缺失的语言比网络爬取数据更少。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "few_false_positives_but_more_on_twitter",
+        "text": "总体而言，相对于可用的人工真值语言使用数据，两种语料的假阳性都很少；而在这些不多的情况中，Twitter 数据的假阳性更多。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "wealth_gdp_hypothesis",
+        "text": "作者观察到，当人口数字按 GDP 加权时 Twitter 数据与人口匹配得更好，按互联网使用统计加权时匹配得更差，并据此推断 Twitter 这一平台所代表的人口比一般网络爬取数据所代表的更为富裕。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "urban_alternative_hypothesis",
+        "text": "作者提出另一种解释：本研究的 Twitter 采集以城市地区为基础，而城市地区往往有更富裕的人口。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "regional_twitter_advantage",
+        "text": "在两种语料预测不一致的地方，Twitter 对北美和大洋洲的代表性更好，而两者在欧洲、有真值数据的非洲部分地区以及南美大体一致。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+          }
+        ]
+      },
+      {
+        "key": "english_spanish_default_effect",
+        "text": "由于英语和西班牙语在 Twitter 上都非常常见，任何以这两种语言为主的国家都会默认获得良好的代表性；这可能是国家层面真实正例率高的一种因素。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+          }
+        ]
+      },
+      {
+        "key": "twitter_false_positive_geography",
+        "text": "Twitter 的假阳性大多出现在俄罗斯和东欧，但在美国、加拿大、南非、法国、印度和澳大利亚也存在过度预测的语言；而网络爬取语料在俄罗斯和东欧之外假阳性极少。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+          }
+        ]
+      },
+      {
+        "key": "collection_without_language_bias",
+        "text": "Twitter 语料通过空间检索收集 1 万座城市 50 公里半径内的推文，避免了使用特定语言的关键词或话题标签进行选择所带来的偏差。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-227fd89576f8c0e3eb0ce352"
+          }
+        ]
+      },
+      {
+        "key": "georeferencing_gdp_confound",
+        "text": "Twitter 数据集依赖地理定位的推文，而并非所有用户都有支持 GPS 的设备；作者推测人均 GDP 较低的国家地理定位推文的比例可能更低。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-227fd89576f8c0e3eb0ce352"
+          }
+        ]
+      },
+      {
+        "key": "alternative_explanations_unresolved",
+        "text": "对于俄罗斯出现的假阳性（法语、德语、西班牙语、意大利语等其他欧洲语言），作者指出需要更多研究来区分移民、旅游和商业作为数字数据集中假阳性语言来源的不同解释。",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "8eda834f02687cb59b77a34f770a51f7b14a8a34ddac72db8a35cb79b3a7c5bd",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4506,
+        "completion_tokens": 100,
+        "total_tokens": 4606,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4378,
+        "output_tokens": 100,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2908.67600007914
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "error",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "baa6c58d8066fa8152c9cd255094024c37d802c2bd5d93d81f6c00d2c1cd0647",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5133,
+        "completion_tokens": 357,
+        "total_tokens": 5490,
+        "prompt_tokens_details": {
+          "cached_tokens": 4864
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 269,
+        "output_tokens": 357,
+        "cache_read_input_tokens": 4864,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "error_type": "JSONDecodeError",
+      "elapsed_ms": 3979.6366000082344,
+      "retry_reason": "structured_output_repair",
+      "retry_delay_seconds": 0
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": true,
+      "attempt": 6,
+      "request_hash": "bacf1469b69e59ca9c36ad1e7e6cb57710403e22ef80337b887a40f7c0778ccf",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5152,
+        "completion_tokens": 192,
+        "total_tokens": 5344,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5152,
+        "output_tokens": 192,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3447.6284000556916
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "4a6025caff133d56b6f4502c4246cb14610eceb1377dcf39690f04d39b6e8d75",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5236,
+        "completion_tokens": 968,
+        "total_tokens": 6204,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5108,
+        "output_tokens": 968,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6334.877599962056
+    }
+  ]
+}

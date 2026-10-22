@@ -1,0 +1,299 @@
+{
+  "id": "d19-t1",
+  "session_id": "d19",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": false,
+    "behavior_appropriate": false,
+    "reason": "The evidence contains relevant content from the paper answering the question: the proposed model is a deep neural model that predicts labels based on context, mention string, and KB type information from entity linking. Therefore the refusal claiming insufficient evidence is inappropriate.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "450b33b07b117abcc63c216b7d091a2660e6e9d4d5f2cc59f6509357063b00e0",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5059,
+        "completion_tokens": 70,
+        "total_tokens": 5129,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4803,
+        "output_tokens": 70,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2991.9561999849975
+    }
+  ],
+  "payload_hash": "f50ecab5c6f7ef7c35f92c4143bdeaeb56d0042701cf9767841cb43db9d56da8",
+  "payload": {
+    "question": "请检索以下问题的相关原文：关于论文《Improving Fine-grained Entity Typing with Entity Linking》，Which model architecture do they use?",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "What model architecture is used in Improving Fine-grained Entity Typing with Entity Linking?",
+    "evidence": [
+      {
+        "chunk_id": "c-bee14e88c20dfa401e81466f",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Conclusions",
+        "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+        "text_hash": "1313b9162683208a1c708a1b1956e8c24781179508d87207a799d161dc944dc9",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 364,
+            "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-d31ec43506655415203bffe9",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Abstract",
+        "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+        "text_hash": "bf5c9090658c6f77532e89c9d48cc0b720e9aa022da46b3acc60ae4e5642f749",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 617,
+            "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-83b8558faa3f4eeefb7c1c6c",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Introduction",
+        "text": "Given a piece of text and the span of an entity mention in this text, fine-grained entity typing (FET) is the task of assigning fine-grained type labels to the mention BIBREF0. The assigned labels should be context dependent BIBREF1. For example, in the sentence “Trump threatens to pull US out of World Trade Organization,” the mention “Trump” should be labeled as /person and /person/politician, although Donald Trump also had other occupations such as businessman, TV personality, etc.\n\nThis task is challenging because it usually uses a relatively large tag set, and some mentions may require the understanding of the context to be correctly labeled. Moreover, since manual annotation is very labor-intensive, existing approaches have to rely on distant supervision to train models BIBREF0, BIBREF2.\n\nThus, the use of extra information to help with the classification process becomes very important. In this paper, we improve FET with entity linking (EL). EL is helpful for a model to make typing decisions because if a mention is correctly linked to its target entity, we can directly obtain the type information about this entity in the knowledge base (KB). For example, in the sentence “There were some great discussions on a variety of issues facing Federal Way,” the mention “Federal Way” may be incorrectly labeled as a company by some FET models. Such a mistake can be avoided after linking it to the city Federal Way, Washington. For cases that require the understanding of the context, using entity linking results is also beneficial. In the aforementioned example where “Trump” is the mention, obtaining all the types of Donald Trump in the knowledge base (e.g., politician, businessman, TV personality, etc.) is still informative for inferring the correct type (i.e., politician) that fits the context, since they narrows the possible labels down.",
+        "text_hash": "80f8920937b9b6adbf6634aee89383c05ec83d41efc0f0ac36566ed07182d530",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 488,
+            "text": "Given a piece of text and the span of an entity mention in this text, fine-grained entity typing (FET) is the task of assigning fine-grained type labels to the mention BIBREF0. The assigned labels should be context dependent BIBREF1. For example, in the sentence “Trump threatens to pull US out of World Trade Organization,” the mention “Trump” should be labeled as /person and /person/politician, although Donald Trump also had other occupations such as businessman, TV personality, etc.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 313,
+            "text": "This task is challenging because it usually uses a relatively large tag set, and some mentions may require the understanding of the context to be correctly labeled. Moreover, since manual annotation is very labor-intensive, existing approaches have to rely on distant supervision to train models BIBREF0, BIBREF2.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1057,
+            "text": "Thus, the use of extra information to help with the classification process becomes very important. In this paper, we improve FET with entity linking (EL). EL is helpful for a model to make typing decisions because if a mention is correctly linked to its target entity, we can directly obtain the type information about this entity in the knowledge base (KB). For example, in the sentence “There were some great discussions on a variety of issues facing Federal Way,” the mention “Federal Way” may be incorrectly labeled as a company by some FET models. Such a mistake can be avoided after linking it to the city Federal Way, Washington. For cases that require the understanding of the context, using entity linking results is also beneficial. In the aforementioned example where “Trump” is the mention, obtaining all the types of Donald Trump in the knowledge base (e.g., politician, businessman, TV personality, etc.) is still informative for inferring the correct type (i.e., politician) that fits the context, since they narrows the possible labels down.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-23d2fdeeb3e49fb0893362f3",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Introduction",
+        "text": "However, the information obtained through EL should not be fully trusted since it is not always accurate. Even when a mention is correctly linked to an entity, the type information of this entity in the KB may be incomplete or outdated. Thus, in this paper, we propose a deep neural fine-grained entity typing model that flexibly predicts labels based on the context, the mention string, and the type information from KB obtained with EL.\n\nUsing EL also introduces a new problem for the training process. Currently, a widely used approach to create FET training samples is to use the anchor links in Wikipedia BIBREF0, BIBREF3. Each anchor link is regarded as a mention, and is weakly labeled with all the types of its referred entity (the Wikipedia page the anchor link points to) in KB. Our approach, when links the mention correctly, also uses all the types of the referred entity in KB as extra information. This may cause the trained model to overfit the weakly labeled data. We design a variant of the hinge loss and introduce noise during training to address this problem.\n\nWe conduct experiments on two commonly used FET datasets. Experimental results show that introducing information obtained through entity linking and having a deep neural model both helps to improve FET performance. Our model achieves more than 5% absolute strict accuracy improvement over the state of the art on both datasets.\n\nOur contributions are summarized as follows:\n\nWe propose a deep neural fine-grained entity typing model that utilizes type information from KB obtained through entity linking.\n\nWe address the problem that our model may overfit the weakly labeled data by using a variant of the hinge-loss and introducing noise during training.\n\nWe demonstrate the effectiveness of our approach with experimental results on commonly used FET datasets.\n\nOur code is available at https://github.com/HKUST-KnowComp/IFETEL.",
+        "text_hash": "5f085bf57c9326a4277d8b58b41082fe7ec4f0ce27e8537af1aaad4baebec7e3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 438,
+            "text": "However, the information obtained through EL should not be fully trusted since it is not always accurate. Even when a mention is correctly linked to an entity, the type information of this entity in the KB may be incomplete or outdated. Thus, in this paper, we propose a deep neural fine-grained entity typing model that flexibly predicts labels based on the context, the mention string, and the type information from KB obtained with EL.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 639,
+            "text": "Using EL also introduces a new problem for the training process. Currently, a widely used approach to create FET training samples is to use the anchor links in Wikipedia BIBREF0, BIBREF3. Each anchor link is regarded as a mention, and is weakly labeled with all the types of its referred entity (the Wikipedia page the anchor link points to) in KB. Our approach, when links the mention correctly, also uses all the types of the referred entity in KB as extra information. This may cause the trained model to overfit the weakly labeled data. We design a variant of the hinge loss and introduce noise during training to address this problem.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 327,
+            "text": "We conduct experiments on two commonly used FET datasets. Experimental results show that introducing information obtained through entity linking and having a deep neural model both helps to improve FET performance. Our model achieves more than 5% absolute strict accuracy improvement over the state of the art on both datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p6",
+            "section": "Introduction",
+            "start": 0,
+            "end": 44,
+            "text": "Our contributions are summarized as follows:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p7",
+            "section": "Introduction",
+            "start": 0,
+            "end": 129,
+            "text": "We propose a deep neural fine-grained entity typing model that utilizes type information from KB obtained through entity linking.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p8",
+            "section": "Introduction",
+            "start": 0,
+            "end": 149,
+            "text": "We address the problem that our model may overfit the weakly labeled data by using a variant of the hinge-loss and introducing noise during training.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p9",
+            "section": "Introduction",
+            "start": 0,
+            "end": 105,
+            "text": "We demonstrate the effectiveness of our approach with experimental results on commonly used FET datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p10",
+            "section": "Introduction",
+            "start": 0,
+            "end": 66,
+            "text": "Our code is available at https://github.com/HKUST-KnowComp/IFETEL.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-3deeb7727365666f3b0b87a5",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Method ::: Model Training",
+        "text": "Following existing studies, we also generate training data by using the anchor links in Wikipedia. Each anchor link can be used as a mention. These mentions are labeled by mapping the Freebase types of the target entries to the tag set $T$ BIBREF0.\n\nSince the KB type representations we use in our FET model are also obtained through mapping Freebase types, they will perfectly match the automatically generated labels for the mentions that are correctly linked (i.e., when the entity returned by the EL algorithm and the target entry of the anchor link are the same). For example, in Figure FIGREF4, suppose the example sentence is a training sample obtained from Wikipedia, where “Donald Trump” is an anchor link points to the Wikipedia page of Donald Trump. After mapping the Freebase types of Donald Trump to the target tag set, this sample will be weakly annotated as /person/politician, /person/tv_personality, and /person/business, which is exactly the same as the type information (the “Types From KB” in Figure FIGREF4) obtained through EL. Thus, during training, when the EL system links the mention to the correct entity, the model only needs to output the types in the KB type representation. This may cause the trained model to overfit the weakly labeled training data. For most types of entities such as locations and organizations, it is fine since they usually have the same types in different contexts. But it is problematic for person mentions, as their types can be context dependent.\n\nTo address this problem, during training, if a mention is linked to a person entity by our entity linking algorithm, we add a random fine-grained person type label that does not belong to this entity while generating the KB type representation. For example, if the mention is linked to a person with types /person/actor and /person/author, a random label /person/politician may be added. This will force the model to still infer the type labels from the context even when the mention is correctly linked, since the KB type representation no longer perfectly match the weak labels.",
+        "text_hash": "345ca16e1beb9235e9633addb1e2b96083d6695bfeca4f5501c9478b1e09185e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s8-p0",
+            "section": "Method ::: Model Training",
+            "start": 0,
+            "end": 248,
+            "text": "Following existing studies, we also generate training data by using the anchor links in Wikipedia. Each anchor link can be used as a mention. These mentions are labeled by mapping the Freebase types of the target entries to the tag set $T$ BIBREF0.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p1",
+            "section": "Method ::: Model Training",
+            "start": 0,
+            "end": 1253,
+            "text": "Since the KB type representations we use in our FET model are also obtained through mapping Freebase types, they will perfectly match the automatically generated labels for the mentions that are correctly linked (i.e., when the entity returned by the EL algorithm and the target entry of the anchor link are the same). For example, in Figure FIGREF4, suppose the example sentence is a training sample obtained from Wikipedia, where “Donald Trump” is an anchor link points to the Wikipedia page of Donald Trump. After mapping the Freebase types of Donald Trump to the target tag set, this sample will be weakly annotated as /person/politician, /person/tv_personality, and /person/business, which is exactly the same as the type information (the “Types From KB” in Figure FIGREF4) obtained through EL. Thus, during training, when the EL system links the mention to the correct entity, the model only needs to output the types in the KB type representation. This may cause the trained model to overfit the weakly labeled training data. For most types of entities such as locations and organizations, it is fine since they usually have the same types in different contexts. But it is problematic for person mentions, as their types can be context dependent.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p2",
+            "section": "Method ::: Model Training",
+            "start": 0,
+            "end": 580,
+            "text": "To address this problem, during training, if a mention is linked to a person entity by our entity linking algorithm, we add a random fine-grained person type label that does not belong to this entity while generating the KB type representation. For example, if the mention is linked to a person with types /person/actor and /person/author, a random label /person/politician may be added. This will force the model to still infer the type labels from the context even when the mention is correctly linked, since the KB type representation no longer perfectly match the weak labels.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7e11be9f252eb0babaf96717",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Method ::: Fine-grained Entity Typing Model ::: Input",
+        "text": "Each input sample to our FET system contains one mention and the sentence it belongs to. We denote $w_1,w_2,...,w_n$ as the words in the current sentence, $w_{p_1},w_{p_2},...,w_{p_l}$ as the words in the mention string, where $n$ is the number of words in the sentence, $p_1,...,p_l$ are the indices of the words in the mention string, $l$ is the number of words in the mention string. We also use a set of pretrained word embeddings.\n\nOur FET approach is illustrated in Figure FIGREF4. It first constructs three representations: context representation, mention string representation, and KB type representation. Note that the KB type representation is obtained from a knowledge base through entity linking and is independent of the context of the mention.",
+        "text_hash": "4879d54f0c76f254979db4e74b1d756293e61965489f38babd98f8b373ba5a57",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s3-p0",
+            "section": "Method ::: Fine-grained Entity Typing Model ::: Input",
+            "start": 0,
+            "end": 435,
+            "text": "Each input sample to our FET system contains one mention and the sentence it belongs to. We denote $w_1,w_2,...,w_n$ as the words in the current sentence, $w_{p_1},w_{p_2},...,w_{p_l}$ as the words in the mention string, where $n$ is the number of words in the sentence, $p_1,...,p_l$ are the indices of the words in the mention string, $l$ is the number of words in the mention string. We also use a set of pretrained word embeddings.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p1",
+            "section": "Method ::: Fine-grained Entity Typing Model ::: Input",
+            "start": 0,
+            "end": 320,
+            "text": "Our FET approach is illustrated in Figure FIGREF4. It first constructs three representations: context representation, mention string representation, and KB type representation. Note that the KB type representation is obtained from a knowledge base through entity linking and is independent of the context of the mention.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "id": "d24-t1",
+  "session_id": "d24",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 2,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "Both claims are directly supported by their cited chunks. Claim 1 matches the Introduction statement that experiments use the public benchmark dataset 'Quora Question Pairs' for paraphrase identification. Claim 2 matches the Neural Architecture text stating a threshold learned in the development dataset is used to binarize cosine similarity. The answer is relevant and complete for the question about training datasets.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "The cited Introduction chunk explicitly states: 'We conduct our experiments on the public benchmark dataset of “Quora Question Pairs” for the task of paraphrase identification.'"
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "The cited Neural Architecture chunk explicitly states: 'we also apply a threshold learned in the development dataset to binary the cosine similarity as paraphrase/non-paraphrase.'"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "e40e29bf542873da66a30c8a953d2fa0147c727d457118b103225fcbd75c8ff5",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4108,
+        "completion_tokens": 196,
+        "total_tokens": 4304,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3852,
+        "output_tokens": 196,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4036.952900001779
+    }
+  ],
+  "payload_hash": "e7366b703f19e793ff50353d5cce31bb054ff0d0b458a31fab8a58d621ed413c",
+  "payload": {
+    "question": "关于论文《Hungarian Layer: Logics Empowered Neural Architecture》，Which dataset(s) do they train on?",
+    "answer": {
+      "claims": [
+        {
+          "key": "training_dataset",
+          "text": "论文在公开基准数据集“Quora Question Pairs”上进行实验，用于释义识别任务。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-70876748d6ad7c5c4f480427"
+            }
+          ]
+        },
+        {
+          "key": "dev_dataset_threshold",
+          "text": "论文使用在开发数据集（development dataset）中学习到的阈值，将余弦相似度二值化为释义/非释义。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-486c0ce43082d60933f2417a"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "Which dataset(s) does the paper 'Hungarian Layer: Logics Empowered Neural Architecture' train on?",
+    "evidence": [
+      {
+        "chunk_id": "c-70876748d6ad7c5c4f480427",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Introduction",
+        "text": "Specifically, our model performs this task in three steps. First, our model applies BiLSTM to parse the input sentences into hidden representations. Then, Hungarian layer leverages the hidden representations to extract the aligned unmatched parts. Last, we apply cosine similarity to metric the aligned unmatched parts for a final discrimination. Regarding the training process of Hungarian layer, we modify the back-propagation algorithm in both directions. In the forward pass, Hungarian layer works out the alignment relationship, according to which, the computational graph is dynamically constructed, as demonstrated in Figure FIGREF13 . Once the computational graph has been dynamically constructed, the backward propagation could be performed as usual in a conventional graph.\n\nWe conduct our experiments on the public benchmark dataset of “Quora Question Pairs” for the task of paraphrase identification. Experimental results demonstrate that our model outperforms other baselines extensively and significantly, which verifies our theory about the aligned unmatched parts and illustrates the effectiveness of our methodology.\n\nContributions. (1.) We offer a new perspective for paraphrase identification, which focuses on the aligned unmatched parts of two sentences. Accordingly, we propose the Hungarian layer to extract the aligned unmatched parts. The proposed method can achieve hard and exclusive alignments between two sequences, while we can learn parameters by end-to-end back-propagation. (2.) Our model outperforms other baselines extensively, verifying the effectiveness of our theory and method.\n\nOrganization. In Section 2, we survey the related work of paraphrase identification and dynamic differentiable computational graphs. In Section 3, we introduce our neural architecture. In Section 4, we conduct the experiments. In Section 5, we conclude our paper and publish our codes.",
+        "text_hash": "cd6c61ebe2220f0fbf0d775d0ccdfc67ad6c47ee343245f44ed51d84132ba018",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 783,
+            "text": "Specifically, our model performs this task in three steps. First, our model applies BiLSTM to parse the input sentences into hidden representations. Then, Hungarian layer leverages the hidden representations to extract the aligned unmatched parts. Last, we apply cosine similarity to metric the aligned unmatched parts for a final discrimination. Regarding the training process of Hungarian layer, we modify the back-propagation algorithm in both directions. In the forward pass, Hungarian layer works out the alignment relationship, according to which, the computational graph is dynamically constructed, as demonstrated in Figure FIGREF13 . Once the computational graph has been dynamically constructed, the backward propagation could be performed as usual in a conventional graph.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 348,
+            "text": "We conduct our experiments on the public benchmark dataset of “Quora Question Pairs” for the task of paraphrase identification. Experimental results demonstrate that our model outperforms other baselines extensively and significantly, which verifies our theory about the aligned unmatched parts and illustrates the effectiveness of our methodology.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p6",
+            "section": "Introduction",
+            "start": 0,
+            "end": 481,
+            "text": "Contributions. (1.) We offer a new perspective for paraphrase identification, which focuses on the aligned unmatched parts of two sentences. Accordingly, we propose the Hungarian layer to extract the aligned unmatched parts. The proposed method can achieve hard and exclusive alignments between two sequences, while we can learn parameters by end-to-end back-propagation. (2.) Our model outperforms other baselines extensively, verifying the effectiveness of our theory and method.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p7",
+            "section": "Introduction",
+            "start": 0,
+            "end": 285,
+            "text": "Organization. In Section 2, we survey the related work of paraphrase identification and dynamic differentiable computational graphs. In Section 3, we introduce our neural architecture. In Section 4, we conduct the experiments. In Section 5, we conclude our paper and publish our codes.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-486c0ce43082d60933f2417a",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Neural Architecture",
+        "text": "where INLINEFORM0 is the matching score, INLINEFORM1 is the length of vector and INLINEFORM2 / INLINEFORM3 is the corresponding source/target part of the final sentence representation INLINEFORM4 . Thus, our output ranges in INLINEFORM5 , where INLINEFORM6 means the two sentences are similar/paraphrase, and INLINEFORM7 means otherwise. For further evaluation of accuracy, we also apply a threshold learned in the development dataset to binary the cosine similarity as paraphrase/non-paraphrase. Notably, the introduction of concatenation layer facilitates the inference and training of Hungarian layer.",
+        "text_hash": "83ec54cc3476222164b7004444fc2b9e69ae2b03821650844afd6b66d3e9140b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s7-p13",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 604,
+            "text": "where INLINEFORM0 is the matching score, INLINEFORM1 is the length of vector and INLINEFORM2 / INLINEFORM3 is the corresponding source/target part of the final sentence representation INLINEFORM4 . Thus, our output ranges in INLINEFORM5 , where INLINEFORM6 means the two sentences are similar/paraphrase, and INLINEFORM7 means otherwise. For further evaluation of accuracy, we also apply a threshold learned in the development dataset to binary the cosine similarity as paraphrase/non-paraphrase. Notably, the introduction of concatenation layer facilitates the inference and training of Hungarian layer.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-93293501afba2ed0cf8487d1",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Conclusion",
+        "text": "In this paper, we leverage Hungarian algorithm to design Hungarian layer, which extracts the aligned matched and unmatched parts exclusively from the sentence pair. Then our model is designed by assuming the aligned unmatched parts are semantically critical. Experimental results on benchmark datasets verify our theory and demonstrate the effectiveness of our proposed method.",
+        "text_hash": "010ccd9656b9d329f5383b7172288ec5796c1d6469fb18521140a87be1b59076",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 377,
+            "text": "In this paper, we leverage Hungarian algorithm to design Hungarian layer, which extracts the aligned matched and unmatched parts exclusively from the sentence pair. Then our model is designed by assuming the aligned unmatched parts are semantically critical. Experimental results on benchmark datasets verify our theory and demonstrate the effectiveness of our proposed method.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e02ebd81f0f8210ef85fd8bf",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Abstract",
+        "text": "Neural architecture is a purely numeric framework, which fits the data as a continuous function. However, lacking of logic flow (e.g. \\textit{if, for, while}), traditional algorithms (e.g. \\textit{Hungarian algorithm, A$^*$ searching, decision tress algorithm}) could not be embedded into this paradigm, which limits the theories and applications. In this paper, we reform the calculus graph as a dynamic process, which is guided by logic flow. Within our novel methodology, traditional algorithms could empower numerical neural network. Specifically, regarding the subject of sentence matching, we reformulate this issue as the form of task-assignment, which is solved by Hungarian algorithm. First, our model applies BiLSTM to parse the sentences. Then Hungarian layer aligns the matching positions. Last, we transform the matching results for soft-max regression by another BiLSTM. Extensive experiments show that our model outperforms other state-of-the-art baselines substantially.",
+        "text_hash": "bd2993e5655895ce6ae998c491a61285e653c6326528693698a1836ebbf17bd1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 986,
+            "text": "Neural architecture is a purely numeric framework, which fits the data as a continuous function. However, lacking of logic flow (e.g. \\textit{if, for, while}), traditional algorithms (e.g. \\textit{Hungarian algorithm, A$^*$ searching, decision tress algorithm}) could not be embedded into this paradigm, which limits the theories and applications. In this paper, we reform the calculus graph as a dynamic process, which is guided by logic flow. Within our novel methodology, traditional algorithms could empower numerical neural network. Specifically, regarding the subject of sentence matching, we reformulate this issue as the form of task-assignment, which is solved by Hungarian algorithm. First, our model applies BiLSTM to parse the sentences. Then Hungarian layer aligns the matching positions. Last, we transform the matching results for soft-max regression by another BiLSTM. Extensive experiments show that our model outperforms other state-of-the-art baselines substantially.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-529aa1915e8e6445e47ea30c",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Neural Architecture",
+        "text": "Our neural architecture is illustrated in Figure FIGREF6 . Basically our model is composed by four components, namely, word embedding, bi-directional LSTM (BiLSTM), Hungarian layer and cosine similarity.\n\nWord Embedding. The goal of this layer is to represent each word INLINEFORM0 in every sentence INLINEFORM1 with INLINEFORM2 -dimensional semantic vectors. The word representations, which are pre-trained by GloVe BIBREF21 , are unmodified within the learning procedure. The inputs of this layer are a pair of sentences as word sequences INLINEFORM3 and INLINEFORM4 , while the outputs are corresponding embedding matrices as INLINEFORM5 and INLINEFORM6 .\n\nBi-Directional LSTM (BiLSTM). The purpose of this layer is to transform lexical representations to hidden contextual representations. For hidden contextual encoding, we employ a parameter-shared bi-directional LSTM (BiLSTM) BIBREF22 to parse the word embeddings into hidden representations, mathematically as: DISPLAYFORM0 \n\nwhere INLINEFORM0 is the INLINEFORM1 -th hidden representation and INLINEFORM2 corresponds to the INLINEFORM3 -th word embedding in the source/target sentence or INLINEFORM4 / INLINEFORM5 .\n\nHungarian Layer. This layer, which is the matching component of our model, extracts the aligned unmatched parts from the source and target sentences. This layer is composed by two sequential stages.\n\nAlgorithm SECREF7 demonstrates the first stage. The objective of this stage is to align the source and target hidden representations. The inputs of this stage are INLINEFORM0 source hidden representation vectors INLINEFORM1 and INLINEFORM2 target hidden representation vectors INLINEFORM3 , while the outputs of this stage are INLINEFORM4 aligned hidden representation vector pairs INLINEFORM5 , assuming INLINEFORM6 , where INLINEFORM7 corresponds to the INLINEFORM8 -th aligned source/target hidden representation vector, respectively.",
+        "text_hash": "e9389fb73230d4aa3e4a0f8c8b095c9eeeaa9e5d3b0a9c6b4a0b1ec671a898f1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 203,
+            "text": "Our neural architecture is illustrated in Figure FIGREF6 . Basically our model is composed by four components, namely, word embedding, bi-directional LSTM (BiLSTM), Hungarian layer and cosine similarity.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 453,
+            "text": "Word Embedding. The goal of this layer is to represent each word INLINEFORM0 in every sentence INLINEFORM1 with INLINEFORM2 -dimensional semantic vectors. The word representations, which are pre-trained by GloVe BIBREF21 , are unmodified within the learning procedure. The inputs of this layer are a pair of sentences as word sequences INLINEFORM3 and INLINEFORM4 , while the outputs are corresponding embedding matrices as INLINEFORM5 and INLINEFORM6 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p2",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 323,
+            "text": "Bi-Directional LSTM (BiLSTM). The purpose of this layer is to transform lexical representations to hidden contextual representations. For hidden contextual encoding, we employ a parameter-shared bi-directional LSTM (BiLSTM) BIBREF22 to parse the word embeddings into hidden representations, mathematically as: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p3",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 189,
+            "text": "where INLINEFORM0 is the INLINEFORM1 -th hidden representation and INLINEFORM2 corresponds to the INLINEFORM3 -th word embedding in the source/target sentence or INLINEFORM4 / INLINEFORM5 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p4",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 198,
+            "text": "Hungarian Layer. This layer, which is the matching component of our model, extracts the aligned unmatched parts from the source and target sentences. This layer is composed by two sequential stages.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p5",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 537,
+            "text": "Algorithm SECREF7 demonstrates the first stage. The objective of this stage is to align the source and target hidden representations. The inputs of this stage are INLINEFORM0 source hidden representation vectors INLINEFORM1 and INLINEFORM2 target hidden representation vectors INLINEFORM3 , while the outputs of this stage are INLINEFORM4 aligned hidden representation vector pairs INLINEFORM5 , assuming INLINEFORM6 , where INLINEFORM7 corresponds to the INLINEFORM8 -th aligned source/target hidden representation vector, respectively.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

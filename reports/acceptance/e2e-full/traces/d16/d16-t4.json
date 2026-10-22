@@ -1,0 +1,287 @@
+{
+  "turn_id": "d16-t4",
+  "session_id": "d16",
+  "question": "顺便查一下我明天的私人银行账户余额。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.005699926987290382
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "查询个人银行账户余额",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 2308.1842999672517
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001400010660290718
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d16",
+        "entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models (1612.02695)"
+        },
+        "facts": {
+          "two_solutions_overview": {
+            "text": "论文针对上述两个问题提出了实际可行的解决方案（具体为标签平滑和覆盖率惩罚，详见正文）。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "label_smoothing_entropy": {
+            "text": "平滑技术会提高模型预测的熵；论文指出仍需验证局部归一化模型配合标签平滑等正则化能否近似全局归一化模型。",
+            "evidence_ids": [
+              "c-7549a11343a20fbc64d6dc01"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_penalty": {
+            "text": "论文作者提出的方案仅在解码时施加覆盖率惩罚（coverage penalty），这与 Google 翻译系统所用方式最为相似。",
+            "evidence_ids": [
+              "c-7549a11343a20fbc64d6dc01"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "partial_transcripts_problem": {
+            "text": "使用语言模型时，宽束搜索常常产生不完整的转写；窄束下由于隐式剪枝，该问题不那么明显。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "three_strategies": {
+            "text": "论文比较了三种防止不完整转写的策略。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "eos_restriction": {
+            "text": "第一种策略不改变束搜索准则，而是除非 EOS 概率与最可能 token 的概率之差在设定范围内，否则禁止输出 EOS；该策略能防止截断，但对转写中部的遗漏无效。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "length_term_looping": {
+            "text": "基于转写长度的奖励项曾被用于 CTC 与 seq2seq 网络，但据报道难以使用，因为束搜索会绕录音的某些部分循环，需要额外约束。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_definition": {
+            "text": "为防止循环，论文提出使用覆盖率项，统计累计注意力超过给定阈值的帧数；一旦某帧被计为已选中，后续再次选择该帧不会降低解码代价。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_recompute": {
+            "text": "在实现中，覆盖率在每个束搜索迭代时用截至该步产生的全部注意力权重重新计算。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "two_shortcomings": {
+            "text": "论文观察到该基于注意力的seq2seq语音识别系统有两个缺点：预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整转写（incomplete transcriptions）。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "lm_integration_challenges": {
+            "text": "作者在加入语言模型时识别出两个挑战：第一，由于模型过度自信，偏离网络最佳猜测的偏差会剧烈改变相应项，使得公式中各项的平衡变得困难；第二，除非加入录音覆盖（coverage）项，否则会产生不完整转写。",
+            "evidence_ids": [
+              "c-8df66f805cb20dd4b2c01daf"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "label_smoothing_mechanism": {
+            "text": "论文将标签平滑描述为防止模型过度自信的方案：在计算训练代价时平滑真实标签分布，把一部分概率质量分配给非正确类别，从而阻止模型把所有概率质量集中到单个token上，并使误差函数不易饱和。",
+            "evidence_ids": [
+              "c-2a97da9c8e3dd5b7f857934d"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "neighborhood_smoothing": {
+            "text": "论文提出一种邻域平滑方案，利用转写的时间结构，把剩余概率质量分配给转写中相邻的token。",
+            "evidence_ids": [
+              "c-2a97da9c8e3dd5b7f857934d"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "smoothing_effects": {
+            "text": "作者报告了两个效果：模型被正则化，贪心解码的错误率降低近3个百分点；网络预测的熵更高，使beam search无需温度控制即可发现好的解，并且由于训练和评估都使用了该平滑设置，不需要控制EOS token的发射。",
+            "evidence_ids": [
+              "c-2a97da9c8e3dd5b7f857934d"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "incomplete_transcript_failure": {
+            "text": "论文指出，当使用语言模型时，宽beam search常常产生不完整转写；在表中的失败示例里，真实转写同时是网络和语言模型认为最不可能的转写，宽度100的beam search配合trigram语言模型找到的第二条转写缺少了话语开头。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "eos_forbidding_strategy": {
+            "text": "第一种防止不完整转写的策略不改变beam search准则，而是禁止发射EOS token，除非其概率处于最可能token概率的一定范围内；该策略可防止截断，但对转写中间的遗漏无效。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "coverage_term": {
+            "text": "为促进更长转写并防止beam search在录音部分上循环，论文提出使用覆盖项，统计累计注意力超过某阈值的帧数；一旦累计注意力超过阈值，该帧即计为已选中，后续再次选中该帧不会降低解码代价。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "coverage_recomputation": {
+            "text": "在其实现中，覆盖项在每次beam search迭代时使用截至该步产生的全部注意力权重重新计算。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "intrinsic_lm_suppression": {
+            "text": "作者尝试通过加入内在语言模型抑制项来为beam search准则（条件与无条件概率相乘的启发式）提供依据，并用恒定、单独训练的偏置向量替换编码语音来估计speller的语言建模能力，得到每字符困惑度约为6.5，但未观察到该beam search准则扩展带来一致收益。",
+            "evidence_ids": [
+              "c-8df66f805cb20dd4b2c01daf"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "wer_results": {
+            "text": "论文报告在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为10.6% WER，配合trigram语言模型时为6.7% WER。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t2"
+          }
+        },
+        "unresolved": [
+          "顺便查一下我明天的私人银行账户余额。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1612.02695"
+          ]
+        }
+      },
+      "elapsed_ms": 3.3463999861851335
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792667143.174262,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "f2107a3b39577609350854ddbdb19f0476e7b04bf1617728bf06447bf90aeb76",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7364,
+        "completion_tokens": 45,
+        "total_tokens": 7409,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7108,
+        "output_tokens": 45,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2306.8274999968708
+    }
+  ]
+}

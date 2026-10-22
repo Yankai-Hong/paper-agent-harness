@@ -1,0 +1,343 @@
+{
+  "id": "mem-d01-t5",
+  "session_id": "d01",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 9,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "The answer correctly separates what the evidence supports (US BLS-based comparison, distribution shape, t-test, average/variance comparison) from what it cannot support (other countries, concrete numeric values replaced by placeholders, per-language country distributions). All claims are consistent with the cited chunks; the only minor nuance is a plural citation where only one chunk contains the placeholder figures, but the claim itself remains accurate.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "c-0ff7525d7bb39cc1411d378f states job positions came from the U.S. BLS and were used to build 'He/She is an Engineer' sentences in 12 gender-neutral languages including Hungarian, Chinese, Yoruba."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "The same chunk says they ran statistics against BLS data for female participation per job and that GT fails to reproduce the real-world distribution of female workers."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "c-6d84e20bfa1a0d5f93e73fb6 states BLS data contains percentage of women participation per occupation category and is available for each individual occupation, allowing computation of women participation per 12-quantile, with histograms plotted side-by-side for translated female pronoun frequencies."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "The same chunk says translated female pronouns are inversely distributed accumulating in the first 12-quantile, whereas BLS data peaks in the fourth 12-quantile and remains significant throughout the next ones."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "c-524c4c9c6f083273886d5971 describes a one-sided t-test of the null that female participation frequency is not significantly greater than GT female pronoun frequency, with p-value vastly inferior to the confidence level, rejecting H0 and concluding GT sub-estimates female participation in US job positions."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "The same chunk states that averaged over occupations and languages, female pronoun frequency (INLINEFORM0) is lower than BLS averaged female participation (INLINEFORM1), and translation variance (INLINEFORM2) is lower than the report's (INLINEFORM3)."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "The evidence only uses US BLS data for the real-world comparison; no other-country data is mentioned in the cited chunks."
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "c-524c4c9c6f083273886d5971 uses placeholders INLINEFORM0–INLINEFORM5 for the frequency, variance, p-value and confidence level figures, so concrete numbers cannot be given."
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "c-0ff7525d7bb39cc1411d378f mentions 12 gender-neutral languages but gives no country/region-specific female worker distributions or per-language-country comparisons against reality."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "64d9a423035236bf6572ed7c3da5dae98aa943eaebd7f672d84dd2e7efdf66be",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5039,
+        "completion_tokens": 688,
+        "total_tokens": 5727,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4783,
+        "output_tokens": 688,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7390.3914000838995
+    }
+  ],
+  "payload_hash": "9914ec1c1b7eb1509451097a6e709cbac8fbab18b9c5ca2e3c14162ef17ccfa0",
+  "payload": {
+    "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+    "answer": {
+      "claims": [
+        {
+          "key": "can_answer_data_source",
+          "text": "论文使用来自美国劳工统计局（U.S. Bureau of Labor Statistics, BLS）的职业岗位列表来构建“他/她是一名工程师”这类句子，并涵盖匈牙利语、中文、约鲁巴语等12种性别中性语言。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_real_distribution",
+          "text": "作者将Google Translate输出中女性代词频率与BLS报告中各职业女性从业比例进行对比，发现Google Translate未能再现现实世界中女性工作者的分布。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_12quantile",
+          "text": "美国劳工统计局数据包含各职业类别女性参与比例，也可获得每个具体职业的数据，作者据此计算每个12分位上的女性参与频率，并与翻译中女性代词频率的分位直方图并排比较。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-6d84e20bfa1a0d5f93e73fb6"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_distribution_shape",
+          "text": "翻译输出中女性代词分布呈反向分布、集中在第一个12分位，而BLS数据显示女性参与率在第四个12分位达到峰值并在之后保持显著。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-6d84e20bfa1a0d5f93e73fb6"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_ttest",
+          "text": "作者对“女性参与频率不显著高于同一岗位Google Translate女性代词频率”的原假设进行单侧t检验，p值远低于置信水平，从而拒绝原假设，结论是Google Translate的女性翻译频率低估了美国岗位中的女性参与频率。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-524c4c9c6f083273886d5971"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_average_comparison",
+          "text": "在所有职业和语言上平均，翻译句子使用女性代词的比例低于BLS报告中所有职业女性工作者参与频率的平均值，且翻译结果的方差也更低。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-524c4c9c6f083273886d5971"
+            }
+          ]
+        },
+        {
+          "key": "cannot_answer_other_countries",
+          "text": "所给证据只涉及美国BLS数据用于对比女性工作者现实分布，未提供使用其他国家数据考察该问题的证据。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            },
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-6d84e20bfa1a0d5f93e73fb6"
+            }
+          ]
+        },
+        {
+          "key": "cannot_answer_actual_numbers",
+          "text": "证据中的具体数值被占位符替代（如INLINEFORM0、INLINEFORM1），因此无法从所给证据给出翻译女性代词频率、BLS女性参与率、方差和p值的具体数字。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-524c4c9c6f083273886d5971"
+            }
+          ]
+        },
+        {
+          "key": "cannot_answer_per_language_country",
+          "text": "证据说明了使用12种性别中性语言构建句子，但未说明这些语言所在国家/地区的女性工作者分布，也未按语言所在国家/地区分别与现实分布对比。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "论文中作者是否考察了性别中性语言所在国家/地区的女性工作者现实分布？使用了什么数据来源（BLS/美国数据还是其他国家数据），哪些部分可以回答、哪些无法回答？",
+    "evidence": [
+      {
+        "chunk_id": "c-0ff7525d7bb39cc1411d378f",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Abstract",
+        "text": "Recently there has been a growing concern about machine bias, where trained statistical models grow to reflect controversial societal asymmetries, such as gender or racial bias. A significant number of AI tools have recently been suggested to be harmfully biased towards some minority, with reports of racist criminal behavior predictors, Iphone X failing to differentiate between two Asian people and Google photos' mistakenly classifying black people as gorillas. Although a systematic study of such biases can be difficult, we believe that automated translation tools can be exploited through gender neutral languages to yield a window into the phenomenon of gender bias in AI. In this paper, we start with a comprehensive list of job positions from the U.S. Bureau of Labor Statistics (BLS) and used it to build sentences in constructions like\"He/She is an Engineer\"in 12 different gender neutral languages such as Hungarian, Chinese, Yoruba, and several others. We translate these sentences into English using the Google Translate API, and collect statistics about the frequency of female, male and gender-neutral pronouns in the translated output. We show that GT exhibits a strong tendency towards male defaults, in particular for fields linked to unbalanced gender distribution such as STEM jobs. We ran these statistics against BLS' data for the frequency of female participation in each job position, showing that GT fails to reproduce a real-world distribution of female workers. We provide experimental evidence that even if one does not expect in principle a 50:50 pronominal gender distribution, GT yields male defaults much more frequently than what would be expected from demographic data alone. We are hopeful that this work will ignite a debate about the need to augment current statistical translation tools with debiasing techniques which can already be found in the scientific literature.",
+        "text_hash": "da329b45f168b0651f821b46a1c9cc5c468b59157bca0ace603590899a2467c5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1909,
+            "text": "Recently there has been a growing concern about machine bias, where trained statistical models grow to reflect controversial societal asymmetries, such as gender or racial bias. A significant number of AI tools have recently been suggested to be harmfully biased towards some minority, with reports of racist criminal behavior predictors, Iphone X failing to differentiate between two Asian people and Google photos' mistakenly classifying black people as gorillas. Although a systematic study of such biases can be difficult, we believe that automated translation tools can be exploited through gender neutral languages to yield a window into the phenomenon of gender bias in AI. In this paper, we start with a comprehensive list of job positions from the U.S. Bureau of Labor Statistics (BLS) and used it to build sentences in constructions like\"He/She is an Engineer\"in 12 different gender neutral languages such as Hungarian, Chinese, Yoruba, and several others. We translate these sentences into English using the Google Translate API, and collect statistics about the frequency of female, male and gender-neutral pronouns in the translated output. We show that GT exhibits a strong tendency towards male defaults, in particular for fields linked to unbalanced gender distribution such as STEM jobs. We ran these statistics against BLS' data for the frequency of female participation in each job position, showing that GT fails to reproduce a real-world distribution of female workers. We provide experimental evidence that even if one does not expect in principle a 50:50 pronominal gender distribution, GT yields male defaults much more frequently than what would be expected from demographic data alone. We are hopeful that this work will ignite a debate about the need to augment current statistical translation tools with debiasing techniques which can already be found in the scientific literature.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-524c4c9c6f083273886d5971",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Comparison with women participation data across job positions",
+        "text": "Averaged over occupations and languages, sentences are translated with female pronouns INLINEFORM0 of the time. In contrast, the gender participation frequency for female workers averaged over all occupations in the BLS report yields a consistently larger figure of INLINEFORM1 . The variance reported for the translation results is also lower, at INLINEFORM2 in contrast with the report's INLINEFORM3 . We ran an one-sided t-test to evaluate the null hypothesis that the female participation frequency is not significantly greater then the GT female pronoun frequency for the same job positions, obtaining a p-value INLINEFORM4 vastly inferior to our confidence level of INLINEFORM5 and thus rejecting H0 and concluding that Google Translate's female translation frequencies sub-estimates female participation frequencies in US job positions. As a result, it is not possible to understand this asymmetry as a reflection of workplace demographics, and the prominence of male defaults in Google Translate is, we believe, yet lacking a clear justification.",
+        "text_hash": "f8c5a80cba088d1c66ba87c8e2b960923ddd70687b03d4c6c6cb36e95b807913",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s8-p2",
+            "section": "Comparison with women participation data across job positions",
+            "start": 0,
+            "end": 1054,
+            "text": "Averaged over occupations and languages, sentences are translated with female pronouns INLINEFORM0 of the time. In contrast, the gender participation frequency for female workers averaged over all occupations in the BLS report yields a consistently larger figure of INLINEFORM1 . The variance reported for the translation results is also lower, at INLINEFORM2 in contrast with the report's INLINEFORM3 . We ran an one-sided t-test to evaluate the null hypothesis that the female participation frequency is not significantly greater then the GT female pronoun frequency for the same job positions, obtaining a p-value INLINEFORM4 vastly inferior to our confidence level of INLINEFORM5 and thus rejecting H0 and concluding that Google Translate's female translation frequencies sub-estimates female participation frequencies in US job positions. As a result, it is not possible to understand this asymmetry as a reflection of workplace demographics, and the prominence of male defaults in Google Translate is, we believe, yet lacking a clear justification.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-6d84e20bfa1a0d5f93e73fb6",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Comparison with women participation data across job positions",
+        "text": "A sensible objection to the conclusions we draw from our study is that the perceived gender bias in Google Translate results stems from the fact that possibly female participation in some job positions is itself low. We must account for the possibility that the statistics of gender pronouns in Google Translate outputs merely reflects the demographics of male-dominated fields (male-dominated fields can be considered those that have less than 25% of women participation BIBREF20 , according to the U.S. Department of Labor Women's Bureau). In this context, the argument in favor of a critical revision of statistic translation algorithms weakens considerably, and possibly shifts the blame away from these tools.\n\nThe U.S. Bureau of Labor Statistics data summarized in Table TABREF3 contains statistics about the percentage of women participation in each occupation category. This data is also available for each individual occupation, which allows us to compute the frequency of women participation for each 12-quantile. We carried the same computation in the context of frequencies of translated female pronouns, and the resulting histograms are plotted side-by-side in Figure FIGREF29 . The data shows us that Google Translate outputs fail to follow the real-world distribution of female workers across a comprehensive set of job positions. The distribution of translated female pronouns is consistently inversely distributed, with female pronouns accumulating in the first 12-quantile. By contrast, BLS data shows that female participation peaks in the fourth 12-quantile and remains significant throughout the next ones.",
+        "text_hash": "7013d13546decfca89d1becf6b28e05e030f5f885dc6b79c276f85def8e0fbf8",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s8-p0",
+            "section": "Comparison with women participation data across job positions",
+            "start": 0,
+            "end": 714,
+            "text": "A sensible objection to the conclusions we draw from our study is that the perceived gender bias in Google Translate results stems from the fact that possibly female participation in some job positions is itself low. We must account for the possibility that the statistics of gender pronouns in Google Translate outputs merely reflects the demographics of male-dominated fields (male-dominated fields can be considered those that have less than 25% of women participation BIBREF20 , according to the U.S. Department of Labor Women's Bureau). In this context, the argument in favor of a critical revision of statistic translation algorithms weakens considerably, and possibly shifts the blame away from these tools.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p1",
+            "section": "Comparison with women participation data across job positions",
+            "start": 0,
+            "end": 911,
+            "text": "The U.S. Bureau of Labor Statistics data summarized in Table TABREF3 contains statistics about the percentage of women participation in each occupation category. This data is also available for each individual occupation, which allows us to compute the frequency of women participation for each 12-quantile. We carried the same computation in the context of frequencies of translated female pronouns, and the resulting histograms are plotted side-by-side in Figure FIGREF29 . The data shows us that Google Translate outputs fail to follow the real-world distribution of female workers across a comprehensive set of job positions. The distribution of translated female pronouns is consistently inversely distributed, with female pronouns accumulating in the first 12-quantile. By contrast, BLS data shows that female participation peaks in the fourth 12-quantile and remains significant throughout the next ones.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-fac8456bc7422034747690c9",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Distribution of translated gender pronouns per occupation category",
+        "text": "A sensible way to group translation data is to coalesce occupations in the same category and collect statistics among languages about how prominent male defaults are in each field. What we have found is that Google Translate does indeed translate sentences with male pronouns with greater probability than it does either with female or gender-neutral pronouns, in general. Furthermore, this bias is seemingly aggravated for fields suggested to be troubled by male stereotypes, such as life and physical sciences, architecture, engineering, computer science and mathematics BIBREF32 . Table TABREF11 summarizes these data, and Table TABREF12 summarizes it even further by coalescing occupation categories into broader groups to ease interpretation. For instance, STEM (Science, Technology, Engineering and Mathematics) fields are grouped into a single category, which helps us compare the large asymmetry between gender pronouns in these fields ( INLINEFORM0 of male defaults) to that of more evenly distributed fields such as healthcare ( INLINEFORM1 ).\n\nPlotting histograms for the number of gender pronouns per occupation category sheds further light on how female, male and gender-neutral pronouns are differently distributed. The histogram in Figure FIGREF13 suggests that the number of female pronouns is inversely distributed – which is mirrored in the data for gender-neutral pronouns in Figure FIGREF15 –, while the same data for male pronouns (shown in Figure FIGREF14 ) suggests a skew normal distribution. Furthermore we can see both on Figures FIGREF13 and FIGREF14 how STEM fields (labeled in beigeexhibit predominantly male defaults – amounting predominantly near INLINEFORM0 in the female histogram although much to the right in the male histogram.\n\nThese values contrast with BLS' report of gender participation, which will be discussed in more detail in Section SECREF8 .",
+        "text_hash": "58793782a2c11f755d2f567c859fbcaa3a33dbaff42e2adb1b48c3d4ef9f76e5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Distribution of translated gender pronouns per occupation category",
+            "start": 0,
+            "end": 1053,
+            "text": "A sensible way to group translation data is to coalesce occupations in the same category and collect statistics among languages about how prominent male defaults are in each field. What we have found is that Google Translate does indeed translate sentences with male pronouns with greater probability than it does either with female or gender-neutral pronouns, in general. Furthermore, this bias is seemingly aggravated for fields suggested to be troubled by male stereotypes, such as life and physical sciences, architecture, engineering, computer science and mathematics BIBREF32 . Table TABREF11 summarizes these data, and Table TABREF12 summarizes it even further by coalescing occupation categories into broader groups to ease interpretation. For instance, STEM (Science, Technology, Engineering and Mathematics) fields are grouped into a single category, which helps us compare the large asymmetry between gender pronouns in these fields ( INLINEFORM0 of male defaults) to that of more evenly distributed fields such as healthcare ( INLINEFORM1 ).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Distribution of translated gender pronouns per occupation category",
+            "start": 0,
+            "end": 708,
+            "text": "Plotting histograms for the number of gender pronouns per occupation category sheds further light on how female, male and gender-neutral pronouns are differently distributed. The histogram in Figure FIGREF13 suggests that the number of female pronouns is inversely distributed – which is mirrored in the data for gender-neutral pronouns in Figure FIGREF15 –, while the same data for male pronouns (shown in Figure FIGREF14 ) suggests a skew normal distribution. Furthermore we can see both on Figures FIGREF13 and FIGREF14 how STEM fields (labeled in beigeexhibit predominantly male defaults – amounting predominantly near INLINEFORM0 in the female histogram although much to the right in the male histogram.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Distribution of translated gender pronouns per occupation category",
+            "start": 0,
+            "end": 123,
+            "text": "These values contrast with BLS' report of gender participation, which will be discussed in more detail in Section SECREF8 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-10f671efdbe25a3af88930ca",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Introduction",
+        "text": "With this in mind, we propose a quantitative analysis of the phenomenon of gender bias in machine translation. We illustrate how this can be done by simply exploiting Google Translate to map sentences from a gender neutral language into English. As Figure FIGREF1 exemplifies, this approach produces results consistent with the hypothesis that sentences about stereotypical gender roles are translated accordingly with high probability: nurse and baker are translated with female pronouns while engineer and CEO are translated with male ones.",
+        "text_hash": "a3ee9d14a261b6eb07237b7589a2b68dd2c63baa1c63720fc8c99155560d48db",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s0-p8",
+            "section": "Introduction",
+            "start": 0,
+            "end": 542,
+            "text": "With this in mind, we propose a quantitative analysis of the phenomenon of gender bias in machine translation. We illustrate how this can be done by simply exploiting Google Translate to map sentences from a gender neutral language into English. As Figure FIGREF1 exemplifies, this approach produces results consistent with the hypothesis that sentences about stereotypical gender roles are translated accordingly with high probability: nurse and baker are translated with female pronouns while engineer and CEO are translated with male ones.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

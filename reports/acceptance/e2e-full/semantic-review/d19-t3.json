@@ -1,0 +1,187 @@
+{
+  "id": "d19-t3",
+  "session_id": "d19",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": false,
+    "behavior_appropriate": false,
+    "reason": "The evidence is not insufficient: it contains clear details for paper 1908.05908 on model architecture (BERT feature layer + CRF + soft label embedding + multi-sigmoid multi-head selection) and BERT optimization (semantic-enhanced pre-training task), and for paper 1909.12079 a deep neural model using entity linking with hinge-loss variant and noise during training. While 1909.12079 evidence does not describe BERT optimization, the question about that paper's BERT optimization may be answerable as 'not addressed' rather than refusing the whole comparison. A flat refusal with no claims is therefore inappropriate and incomplete.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "eb6220be93cf2486ccb5ff753235f1142684d7729665d944cd1ffe80abfb206a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3305,
+        "completion_tokens": 153,
+        "total_tokens": 3458,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3049,
+        "output_tokens": 153,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3856.305200024508
+    }
+  ],
+  "payload_hash": "24d28755e7cb2f8c646c30de39ae41e28d6af0b386367a91a5e8cbf0469d4043",
+  "payload": {
+    "question": "与《BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction》对比，分别说明两篇论文如何回答“Which model architecture do they use?”与“How is BERT optimized for this task?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "对比《BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction》(1908.05908) 与《Improving Fine-grained Entity Typing with Entity Linking》(1909.12079) 的模型架构（Which model architecture do they use?）以及 BERT 如何针对任务进行优化（How is BERT optimized for this task?），并说明两篇论文在架构与 BERT 优化上是否具有可比性。",
+    "evidence": [
+      {
+        "chunk_id": "c-507c4f50eaa79e8ffddf8622",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Model Description ::: Overall Framwork",
+        "text": "Figure FIGREF6 summarizes the proposed model architecture. The model takes character sequence as input and captures contextual features using BERT. A CRF layer is applied to extract entities from the sentence. To effectively transmit information between entity recognition and relation extraction, soft label embedding is built on the top of CRF logits. To solve the problem that one entity belongs to multiple triplets, a multi-sigmoid layer is applied. We find that adding an auxiliary global relation prediction task also improve the performance.",
+        "text_hash": "b351343a06f645a14e47d1da2f7ce66f6051e36fdcced7ba89ee616850a5d318",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "s4-p0",
+            "section": "Model Description ::: Overall Framwork",
+            "start": 0,
+            "end": 549,
+            "text": "Figure FIGREF6 summarizes the proposed model architecture. The model takes character sequence as input and captures contextual features using BERT. A CRF layer is applied to extract entities from the sentence. To effectively transmit information between entity recognition and relation extraction, soft label embedding is built on the top of CRF logits. To solve the problem that one entity belongs to multiple triplets, a multi-sigmoid layer is applied. We find that adding an auxiliary global relation prediction task also improve the performance.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f104344a5193cf6cee7ee29d",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Related Work ::: Joint model",
+        "text": "Neural network models have been widely used in the literature as well. Zheng et al. (2017) BIBREF10 propose a novel tagging scheme that can convert the joint extraction task to a tagging problem. This tagging based method is better than most of the existing pipelined methods, but its flexibility is limited and can not tackle the situations when (1) one entity belongs to multiple triplets (2) multiple entities have overlaps. Zeng et al. (2018) BIBREF11 propose an end2end neural model based on sequence-to-sequence learning with copy mechanism to extract relational facts from sentences, where the entities and relations could be jointly extracted. The performance of this method is limited by the word segmentation accuracy because it can not extract entities beyond the word segmentation results. Li et al. BIBREF12 (2019) cast the task as a multi-turn question answering problem, i.e., the extraction of entities and relations is transformed to the task of identifying answer spans from the context. This framework provides an elegant way to capture the hierarchical dependency of tags. However, it is also of low computational efficiency since it needs to scan all entity template questions and corresponding relation template questions for a single sentence. Bekoulis et al. (2017) BIBREF13 propose a joint neural model which performs entity recognition and relation extraction simultaneously, without the need of any manually extracted features or the use of any external tool. They model the entity recognition task using a CRF (Conditional Random Fields) layer and the relation extraction task as a multi-head selection problem since one entity can have multiple relations. The model adopted BiLSTM to extract contextual feature and propose a label embedding layer to connect the entity recognition branch and the relation classification branch. Our model is based on this framework and make three improvements:\n\n(1) BERT BIBREF14 is introduced as a feature extraction layer in place of BiLSTM. We also optimize the pre-training process of BERT by introducing a semantic-enhanced task.",
+        "text_hash": "6a144b7664f06d2ff6de7e3231cf811c7573dda51ded6e1f4df3e406e0788dff",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "s3-p1",
+            "section": "Related Work ::: Joint model",
+            "start": 0,
+            "end": 1922,
+            "text": "Neural network models have been widely used in the literature as well. Zheng et al. (2017) BIBREF10 propose a novel tagging scheme that can convert the joint extraction task to a tagging problem. This tagging based method is better than most of the existing pipelined methods, but its flexibility is limited and can not tackle the situations when (1) one entity belongs to multiple triplets (2) multiple entities have overlaps. Zeng et al. (2018) BIBREF11 propose an end2end neural model based on sequence-to-sequence learning with copy mechanism to extract relational facts from sentences, where the entities and relations could be jointly extracted. The performance of this method is limited by the word segmentation accuracy because it can not extract entities beyond the word segmentation results. Li et al. BIBREF12 (2019) cast the task as a multi-turn question answering problem, i.e., the extraction of entities and relations is transformed to the task of identifying answer spans from the context. This framework provides an elegant way to capture the hierarchical dependency of tags. However, it is also of low computational efficiency since it needs to scan all entity template questions and corresponding relation template questions for a single sentence. Bekoulis et al. (2017) BIBREF13 propose a joint neural model which performs entity recognition and relation extraction simultaneously, without the need of any manually extracted features or the use of any external tool. They model the entity recognition task using a CRF (Conditional Random Fields) layer and the relation extraction task as a multi-head selection problem since one entity can have multiple relations. The model adopted BiLSTM to extract contextual feature and propose a label embedding layer to connect the entity recognition branch and the relation classification branch. Our model is based on this framework and make three improvements:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p2",
+            "section": "Related Work ::: Joint model",
+            "start": 0,
+            "end": 172,
+            "text": "(1) BERT BIBREF14 is introduced as a feature extraction layer in place of BiLSTM. We also optimize the pre-training process of BERT by introducing a semantic-enhanced task.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-bee14e88c20dfa401e81466f",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Conclusions",
+        "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+        "text_hash": "1313b9162683208a1c708a1b1956e8c24781179508d87207a799d161dc944dc9",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 364,
+            "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-d31ec43506655415203bffe9",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Abstract",
+        "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+        "text_hash": "bf5c9090658c6f77532e89c9d48cc0b720e9aa022da46b3acc60ae4e5642f749",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 617,
+            "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-59affd016a6cbaeed876468f",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Abstract",
+        "text": "In this paper, we report our method for the Information Extraction task in 2019 Language and Intelligence Challenge. We incorporate BERT into the multi-head selection framework for joint entity-relation extraction. This model extends existing approaches from three perspectives. First, BERT is adopted as a feature extraction layer at the bottom of the multi-head selection framework. We further optimize BERT by introducing a semantic-enhanced task during BERT pre-training. Second, we introduce a large-scale Baidu Baike corpus for entity recognition pre-training, which is of weekly supervised learning since there is no actual named entity label. Third, soft label embedding is proposed to effectively transmit information between entity recognition and relation extraction. Combining these three contributions, we enhance the information extracting ability of the multi-head selection model and achieve F1-score 0.876 on testset-1 with a single model. By ensembling four variants of our model, we finally achieve F1 score 0.892 (1st place) on testset-1 and F1 score 0.8924 (2nd place) on testset-2.",
+        "text_hash": "da72050eddc3d6ec3422ed1c1d61559d4918f51ced04256bc1b6a8f257979a79",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1103,
+            "text": "In this paper, we report our method for the Information Extraction task in 2019 Language and Intelligence Challenge. We incorporate BERT into the multi-head selection framework for joint entity-relation extraction. This model extends existing approaches from three perspectives. First, BERT is adopted as a feature extraction layer at the bottom of the multi-head selection framework. We further optimize BERT by introducing a semantic-enhanced task during BERT pre-training. Second, we introduce a large-scale Baidu Baike corpus for entity recognition pre-training, which is of weekly supervised learning since there is no actual named entity label. Third, soft label embedding is proposed to effectively transmit information between entity recognition and relation extraction. Combining these three contributions, we enhance the information extracting ability of the multi-head selection model and achieve F1-score 0.876 on testset-1 with a single model. By ensembling four variants of our model, we finally achieve F1 score 0.892 (1st place) on testset-1 and F1 score 0.8924 (2nd place) on testset-2.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

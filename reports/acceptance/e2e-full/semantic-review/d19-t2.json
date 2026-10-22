@@ -1,0 +1,464 @@
+{
+  "id": "d19-t2",
+  "session_id": "d19",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 12,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "All claims are directly supported by the cited chunks from paper 1909.12079, covering the task definition, EL motivation, model architecture, limitations of EL, overfitting concerns, hinge-loss variant with noise, accuracy improvement, ablation results, BBN explanations, overfitting-technique effectiveness, and the LocAttEL result. The answer is relevant to the resolved question about model architecture evidence and retains citations without adding commonsense conclusions.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "Chunk c-83b8558faa3f4eeefb7c1c6c states FET assigns fine-grained type labels given text and mention span, and that assigned labels should be context dependent."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "Chunk c-83b8558faa3f4eeefb7c1c6c states that if a mention is correctly linked to its target entity, type information can be directly obtained from the KB."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "Chunk c-23d2fdeeb3e49fb0893362f3 states the proposed deep neural FET model flexibly predicts labels based on context, mention string, and type information from KB obtained with EL."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "Chunk c-d31ec43506655415203bffe9 states the deep neural model makes predictions based on both context and information from entity linking results."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "Chunk c-23d2fdeeb3e49fb0893362f3 states EL information should not be fully trusted since it is not always accurate, and even when linking is correct, KB type information may be incomplete or outdated."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "Chunk c-23d2fdeeb3e49fb0893362f3 states using all types of the referred entity as extra information may cause the trained model to overfit weakly labeled data."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "Chunk c-23d2fdeeb3e49fb0893362f3 states a variant of hinge loss and noise during training were designed to address overfitting; chunk c-bee14e88c20dfa401e81466f corroborates this."
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "Chunk c-d31ec43506655415203bffe9 states more than 5% absolute strict accuracy improvement over state of the art on both datasets; chunk c-23d2fdeeb3e49fb0893362f3 repeats this."
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "Chunk c-c638b6820b42cda7f300c943 states performance decreases on both datasets without EL, and on FIGER (GOLD) strict accuracy drops from 75.5 to 69.8."
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "Chunk c-c638b6820b42cda7f300c943 gives exactly three reasons: BBN has a much smaller tag set, does not allow multiple type paths making the task easier, and deepening the model already improved BBN a lot making further improvement harder."
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "Chunk c-c638b6820b42cda7f300c943 states improvement over Ours (DirectTrain) on FIGER (GOLD) indicates the overfitting-avoidance techniques are effective."
+      },
+      {
+        "claim_index": 11,
+        "supported": true,
+        "reason": "Chunk c-c638b6820b42cda7f300c943 states Ours (LocAttEL) does not outperform Ours (Full) and gives the three cited reasons: context use, dataset/entity-type dependence, and incorrect links with same type."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "aa04d4ae0d5390d16bffdc33fc9d888a1b05d2e976d13b76d840536fb239a617",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5732,
+        "completion_tokens": 888,
+        "total_tokens": 6620,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5476,
+        "output_tokens": 888,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7693.14079999458
+    }
+  ],
+  "payload_hash": "b26501e96c09866301cbea88586a87ac10acc2220acabbdc972b362c04f9d306",
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "task_definition",
+          "text": "细粒度实体类型标注（FET）的任务是：给定一段文本以及其中实体 mention 的 span，为该 mention 分配细粒度的类型标签，并且分配的标签应当依赖上下文。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+            }
+          ]
+        },
+        {
+          "key": "motivation_el",
+          "text": "论文用实体链接（EL）改进 FET：如果 mention 被正确链接到目标实体，就可以直接从知识库（KB）中获得该实体的类型信息，从而帮助模型做类型判定。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+            }
+          ]
+        },
+        {
+          "key": "model_architecture",
+          "text": "论文提出一个深度神经 FET 模型，根据上下文、mention 字符串以及通过 EL 从 KB 获得的类型信息灵活预测标签。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+            }
+          ]
+        },
+        {
+          "key": "abstract_model",
+          "text": "摘要说明该深度神经网络模型的预测同时基于上下文和来自实体链接结果的信息。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-d31ec43506655415203bffe9"
+            }
+          ]
+        },
+        {
+          "key": "el_not_fully_trusted",
+          "text": "论文指出通过 EL 获得的信息不应完全信任，因为它并不总是准确；即使链接正确，KB 中该实体的类型信息也可能不完整或过时。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+            }
+          ]
+        },
+        {
+          "key": "overfit_weak_labels",
+          "text": "用 EL 会带来训练问题：模型在把 mention 正确链接时也会把所指实体在 KB 中的全部类型作为额外信息，这可能使训练出的模型对弱标注数据过拟合。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+            }
+          ]
+        },
+        {
+          "key": "hinge_loss_noise",
+          "text": "为了解决对弱标注数据的过拟合问题，论文设计了一种 hinge loss 的变体，并在训练时引入噪声。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+            },
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-bee14e88c20dfa401e81466f"
+            }
+          ]
+        },
+        {
+          "key": "accuracy_improvement",
+          "text": "在两个常用数据集上，该模型相比当时的最优结果取得了超过 5% 的绝对 strict accuracy 提升。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-d31ec43506655415203bffe9"
+            },
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+            }
+          ]
+        },
+        {
+          "key": "ablation_el_effect",
+          "text": "通过比较 Ours (Full) 与 Ours (NoEL)，可以验证使用实体链接带来的收益：去掉 EL 部分后，两个数据集上的性能均下降；尤其在 FIGER (GOLD) 上，strict accuracy 从 75.5 降到 69.8。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-c638b6820b42cda7f300c943"
+            }
+          ]
+        },
+        {
+          "key": "why_bbn_less_improvement",
+          "text": "使用实体链接在 BBN 上带来的提升较小，论文认为原因有三点：BBN 标签集远小于 FIGER (GOLD)；BBN 不允许一个 mention 标注多条类型路径，因此任务更简单；加深模型已使 BBN 性能大幅提升，进一步改进更难。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-c638b6820b42cda7f300c943"
+            }
+          ]
+        },
+        {
+          "key": "overfit_techniques_effective",
+          "text": "在 FIGER (GOLD) 上，完整方法优于 Ours (DirectTrain)，表明为避免弱标注数据过拟合所用的技术是有效的。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-c638b6820b42cda7f300c943"
+            }
+          ]
+        },
+        {
+          "key": "advanced_el_result",
+          "text": "使用更先进 EL 系统的 Ours (LocAttEL) 并未取得优于使用论文自研 EL 方法的 Ours (Full) 的表现；论文给出的原因包括模型会结合上下文、不同 EL 方法的表现依赖数据集与实体类型，以及某些错误链接实体的类型与正确实体相同。",
+          "citations": [
+            {
+              "paper_id": "1909.12079",
+              "chunk_id": "c-c638b6820b42cda7f300c943"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "Improving Fine-grained Entity Typing with Entity Linking model architecture evidence with citations",
+    "evidence": [
+      {
+        "chunk_id": "c-d31ec43506655415203bffe9",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Abstract",
+        "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+        "text_hash": "bf5c9090658c6f77532e89c9d48cc0b720e9aa022da46b3acc60ae4e5642f749",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 617,
+            "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-83b8558faa3f4eeefb7c1c6c",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Introduction",
+        "text": "Given a piece of text and the span of an entity mention in this text, fine-grained entity typing (FET) is the task of assigning fine-grained type labels to the mention BIBREF0. The assigned labels should be context dependent BIBREF1. For example, in the sentence “Trump threatens to pull US out of World Trade Organization,” the mention “Trump” should be labeled as /person and /person/politician, although Donald Trump also had other occupations such as businessman, TV personality, etc.\n\nThis task is challenging because it usually uses a relatively large tag set, and some mentions may require the understanding of the context to be correctly labeled. Moreover, since manual annotation is very labor-intensive, existing approaches have to rely on distant supervision to train models BIBREF0, BIBREF2.\n\nThus, the use of extra information to help with the classification process becomes very important. In this paper, we improve FET with entity linking (EL). EL is helpful for a model to make typing decisions because if a mention is correctly linked to its target entity, we can directly obtain the type information about this entity in the knowledge base (KB). For example, in the sentence “There were some great discussions on a variety of issues facing Federal Way,” the mention “Federal Way” may be incorrectly labeled as a company by some FET models. Such a mistake can be avoided after linking it to the city Federal Way, Washington. For cases that require the understanding of the context, using entity linking results is also beneficial. In the aforementioned example where “Trump” is the mention, obtaining all the types of Donald Trump in the knowledge base (e.g., politician, businessman, TV personality, etc.) is still informative for inferring the correct type (i.e., politician) that fits the context, since they narrows the possible labels down.",
+        "text_hash": "80f8920937b9b6adbf6634aee89383c05ec83d41efc0f0ac36566ed07182d530",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 488,
+            "text": "Given a piece of text and the span of an entity mention in this text, fine-grained entity typing (FET) is the task of assigning fine-grained type labels to the mention BIBREF0. The assigned labels should be context dependent BIBREF1. For example, in the sentence “Trump threatens to pull US out of World Trade Organization,” the mention “Trump” should be labeled as /person and /person/politician, although Donald Trump also had other occupations such as businessman, TV personality, etc.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 313,
+            "text": "This task is challenging because it usually uses a relatively large tag set, and some mentions may require the understanding of the context to be correctly labeled. Moreover, since manual annotation is very labor-intensive, existing approaches have to rely on distant supervision to train models BIBREF0, BIBREF2.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1057,
+            "text": "Thus, the use of extra information to help with the classification process becomes very important. In this paper, we improve FET with entity linking (EL). EL is helpful for a model to make typing decisions because if a mention is correctly linked to its target entity, we can directly obtain the type information about this entity in the knowledge base (KB). For example, in the sentence “There were some great discussions on a variety of issues facing Federal Way,” the mention “Federal Way” may be incorrectly labeled as a company by some FET models. Such a mistake can be avoided after linking it to the city Federal Way, Washington. For cases that require the understanding of the context, using entity linking results is also beneficial. In the aforementioned example where “Trump” is the mention, obtaining all the types of Donald Trump in the knowledge base (e.g., politician, businessman, TV personality, etc.) is still informative for inferring the correct type (i.e., politician) that fits the context, since they narrows the possible labels down.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-23d2fdeeb3e49fb0893362f3",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Introduction",
+        "text": "However, the information obtained through EL should not be fully trusted since it is not always accurate. Even when a mention is correctly linked to an entity, the type information of this entity in the KB may be incomplete or outdated. Thus, in this paper, we propose a deep neural fine-grained entity typing model that flexibly predicts labels based on the context, the mention string, and the type information from KB obtained with EL.\n\nUsing EL also introduces a new problem for the training process. Currently, a widely used approach to create FET training samples is to use the anchor links in Wikipedia BIBREF0, BIBREF3. Each anchor link is regarded as a mention, and is weakly labeled with all the types of its referred entity (the Wikipedia page the anchor link points to) in KB. Our approach, when links the mention correctly, also uses all the types of the referred entity in KB as extra information. This may cause the trained model to overfit the weakly labeled data. We design a variant of the hinge loss and introduce noise during training to address this problem.\n\nWe conduct experiments on two commonly used FET datasets. Experimental results show that introducing information obtained through entity linking and having a deep neural model both helps to improve FET performance. Our model achieves more than 5% absolute strict accuracy improvement over the state of the art on both datasets.\n\nOur contributions are summarized as follows:\n\nWe propose a deep neural fine-grained entity typing model that utilizes type information from KB obtained through entity linking.\n\nWe address the problem that our model may overfit the weakly labeled data by using a variant of the hinge-loss and introducing noise during training.\n\nWe demonstrate the effectiveness of our approach with experimental results on commonly used FET datasets.\n\nOur code is available at https://github.com/HKUST-KnowComp/IFETEL.",
+        "text_hash": "5f085bf57c9326a4277d8b58b41082fe7ec4f0ce27e8537af1aaad4baebec7e3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 438,
+            "text": "However, the information obtained through EL should not be fully trusted since it is not always accurate. Even when a mention is correctly linked to an entity, the type information of this entity in the KB may be incomplete or outdated. Thus, in this paper, we propose a deep neural fine-grained entity typing model that flexibly predicts labels based on the context, the mention string, and the type information from KB obtained with EL.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 639,
+            "text": "Using EL also introduces a new problem for the training process. Currently, a widely used approach to create FET training samples is to use the anchor links in Wikipedia BIBREF0, BIBREF3. Each anchor link is regarded as a mention, and is weakly labeled with all the types of its referred entity (the Wikipedia page the anchor link points to) in KB. Our approach, when links the mention correctly, also uses all the types of the referred entity in KB as extra information. This may cause the trained model to overfit the weakly labeled data. We design a variant of the hinge loss and introduce noise during training to address this problem.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 327,
+            "text": "We conduct experiments on two commonly used FET datasets. Experimental results show that introducing information obtained through entity linking and having a deep neural model both helps to improve FET performance. Our model achieves more than 5% absolute strict accuracy improvement over the state of the art on both datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p6",
+            "section": "Introduction",
+            "start": 0,
+            "end": 44,
+            "text": "Our contributions are summarized as follows:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p7",
+            "section": "Introduction",
+            "start": 0,
+            "end": 129,
+            "text": "We propose a deep neural fine-grained entity typing model that utilizes type information from KB obtained through entity linking.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p8",
+            "section": "Introduction",
+            "start": 0,
+            "end": 149,
+            "text": "We address the problem that our model may overfit the weakly labeled data by using a variant of the hinge-loss and introducing noise during training.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p9",
+            "section": "Introduction",
+            "start": 0,
+            "end": 105,
+            "text": "We demonstrate the effectiveness of our approach with experimental results on commonly used FET datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p10",
+            "section": "Introduction",
+            "start": 0,
+            "end": 66,
+            "text": "Our code is available at https://github.com/HKUST-KnowComp/IFETEL.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-bee14e88c20dfa401e81466f",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Conclusions",
+        "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+        "text_hash": "1313b9162683208a1c708a1b1956e8c24781179508d87207a799d161dc944dc9",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 364,
+            "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c638b6820b42cda7f300c943",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Experiments ::: Results",
+        "text": "The experimental results are listed in Table TABREF16. As we can see, our approach performs much better than existing approaches on both datasets.\n\nThe benefit of using entity linking in our approach can be verified by comparing Ours (Full) and Ours (NoEL). The performance on both datasets decreases if the entity linking part is removed. Especially on FIGER (GOLD), the strict accuracy drops from 75.5 to 69.8. Using entity linking improves less on BBN. We think this is because of three reasons: 1) BBN has a much smaller tag set than FIGER (GOLD); 2) BBN does not allow a mention to be annotated with multiple type paths (e.g., labeling a mention with both /building and /location is not allowed), thus the task is easier; 3) By making the model deep, the performance on BBN is already improved a lot, which makes further improvement harder.\n\nThe improvement of our full approach over Ours (DirectTrain) on FIGER (GOLD) indicates that the techniques we use to avoid overfitting the weakly labeled data are also effective.\n\nOurs (LocAttEL), which uses a more advanced EL system, does not achieve better performance than Ours (Full), which uses our own EL approach. After manually checking the results of the two EL approaches and the predictions of our model on FIGER (GOLD), we think this is mainly because: 1) Our model also uses the context while making predictions. Sometimes, if it “thinks” that the type information provided by EL is incorrect, it may not use it. 2) The performances of different EL approaches also depends on the dataset and the types of entities used for evaluation. We find that on FIGER (GOLD), the approach in BIBREF19 is better at distinguishing locations and sports teams, but it may also make some mistakes that our simple EL method does not. For example, it may incorrectly link “March,” the month, to an entity whose Wikipedia description fits the context better. 3) For some mentions, although the EL system links it to an incorrect entity, the type of this entity is the same with the correct entity.",
+        "text_hash": "dd94e1c178e0bd3b9af3db1758e2208cf7985cd5791e44d6795b2d1561c15066",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s12-p0",
+            "section": "Experiments ::: Results",
+            "start": 0,
+            "end": 146,
+            "text": "The experimental results are listed in Table TABREF16. As we can see, our approach performs much better than existing approaches on both datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p1",
+            "section": "Experiments ::: Results",
+            "start": 0,
+            "end": 697,
+            "text": "The benefit of using entity linking in our approach can be verified by comparing Ours (Full) and Ours (NoEL). The performance on both datasets decreases if the entity linking part is removed. Especially on FIGER (GOLD), the strict accuracy drops from 75.5 to 69.8. Using entity linking improves less on BBN. We think this is because of three reasons: 1) BBN has a much smaller tag set than FIGER (GOLD); 2) BBN does not allow a mention to be annotated with multiple type paths (e.g., labeling a mention with both /building and /location is not allowed), thus the task is easier; 3) By making the model deep, the performance on BBN is already improved a lot, which makes further improvement harder.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p2",
+            "section": "Experiments ::: Results",
+            "start": 0,
+            "end": 178,
+            "text": "The improvement of our full approach over Ours (DirectTrain) on FIGER (GOLD) indicates that the techniques we use to avoid overfitting the weakly labeled data are also effective.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p3",
+            "section": "Experiments ::: Results",
+            "start": 0,
+            "end": 1011,
+            "text": "Ours (LocAttEL), which uses a more advanced EL system, does not achieve better performance than Ours (Full), which uses our own EL approach. After manually checking the results of the two EL approaches and the predictions of our model on FIGER (GOLD), we think this is mainly because: 1) Our model also uses the context while making predictions. Sometimes, if it “thinks” that the type information provided by EL is incorrect, it may not use it. 2) The performances of different EL approaches also depends on the dataset and the types of entities used for evaluation. We find that on FIGER (GOLD), the approach in BIBREF19 is better at distinguishing locations and sports teams, but it may also make some mistakes that our simple EL method does not. For example, it may incorrectly link “March,” the month, to an entity whose Wikipedia description fits the context better. 3) For some mentions, although the EL system links it to an incorrect entity, the type of this entity is the same with the correct entity.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

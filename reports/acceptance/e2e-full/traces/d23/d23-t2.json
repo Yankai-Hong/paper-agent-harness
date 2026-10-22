@@ -1,0 +1,648 @@
+{
+  "turn_id": "d23-t2",
+  "session_id": "d23",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.011199968867003918
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "克罗地亚控制论机器翻译项目与同期美国和苏联机器翻译研究的比较证据",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1908.08917"
+        ],
+        "resolved_entities": {
+          "paper": "A Lost Croatian Cybernetic Machine Translation Program",
+          "paper_id": "1908.08917"
+        }
+      },
+      "elapsed_ms": 2415.297899977304
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "克罗地亚控制论机器翻译项目与同期美国和苏联机器翻译研究的比较证据"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-00bd0d40eebbc956b7dfcb05",
+          "c-1070371e7d3bfe1573e5a5e8",
+          "c-495de085a178c536aca1b688",
+          "c-09c38df9c252e52acb0d549d",
+          "c-278f19cb8bb6e3a20d57ae4a",
+          "c-abb668d90226308be8e33e5f",
+          "c-4fb7583763707533165c64d2",
+          "c-a699b48de49eded300f9be23",
+          "c-bd28c872a0ec084173d1c794",
+          "c-cecf76c7b16c45dc2fcf28e9",
+          "c-6da0053c248b69da02bee6ee",
+          "c-1d02f6025a6d289a9397dc11",
+          "c-31ea01fc882855e00e4fceb3",
+          "c-a3dfe31f54c6951ee2c4db30",
+          "c-5baec571c9a5cce8d063341c",
+          "c-c0ebb32a83db827638ffff9a",
+          "c-ff20b05af75f80c57c366e5a",
+          "c-fbfcccad30731531ffb289c2",
+          "c-f7d3e28a08d809887998e4ef"
+        ]
+      },
+      "elapsed_ms": 698.8296000054106
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-00bd0d40eebbc956b7dfcb05",
+          "c-1070371e7d3bfe1573e5a5e8",
+          "c-495de085a178c536aca1b688",
+          "c-09c38df9c252e52acb0d549d",
+          "c-278f19cb8bb6e3a20d57ae4a",
+          "c-abb668d90226308be8e33e5f",
+          "c-4fb7583763707533165c64d2",
+          "c-a699b48de49eded300f9be23",
+          "c-bd28c872a0ec084173d1c794",
+          "c-cecf76c7b16c45dc2fcf28e9",
+          "c-6da0053c248b69da02bee6ee",
+          "c-1d02f6025a6d289a9397dc11",
+          "c-31ea01fc882855e00e4fceb3",
+          "c-a3dfe31f54c6951ee2c4db30",
+          "c-5baec571c9a5cce8d063341c",
+          "c-c0ebb32a83db827638ffff9a",
+          "c-ff20b05af75f80c57c366e5a",
+          "c-fbfcccad30731531ffb289c2",
+          "c-f7d3e28a08d809887998e4ef"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-abb668d90226308be8e33e5f",
+          "c-4fb7583763707533165c64d2",
+          "c-1070371e7d3bfe1573e5a5e8",
+          "c-495de085a178c536aca1b688",
+          "c-cecf76c7b16c45dc2fcf28e9"
+        ]
+      },
+      "elapsed_ms": 310.3014000225812
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-abb668d90226308be8e33e5f",
+          "c-4fb7583763707533165c64d2",
+          "c-1070371e7d3bfe1573e5a5e8",
+          "c-495de085a178c536aca1b688",
+          "c-cecf76c7b16c45dc2fcf28e9"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据（论文《A Lost Croatian Cybernetic Machine Translation Program》）直接涉及克罗地亚组与美国、苏联机器翻译研究的比较，可以依据所给片段作答并保留引用。相关要点：\n(1) 时间与投入对比：Laszlo 与 Petrović 提到美国 1954 年的原型工作、1955 年的研究论文集、苏联自 1955 年起的努力以及英国 1956 年的原型；作者据此推断资金匮乏的克罗地亚研究仅落后超级大国“约两年”，而后者在该方向投入巨大（c-4fb7583763707533165c64d2，BIBREF11）。\n(2) 硬件条件对比：与美国和苏联的同行不同，Laszlo 的团队没有实际计算机可用，成果主要停留在理论层面（c-4fb7583763707533165c64d2，BIBREF12）；论文还指出美苏都能获得最先进的计算机，政治支持使计算机可供机器翻译研究者使用，但 1950 年代末结果不佳、尚无可用系统（c-cecf76c7b16c45dc2fcf28e9，BIBREF7）。\n(3) 方法论对比：克罗地亚组主张的方法是当时“通常的逻辑方法”之外的另一条路径，即倡导控制论方法；主流 AI 学界数十年后才将其采纳为准则（c-abb668d90226308be8e33e5f，摘要）。\n(4) 与苏联方法的关系：克罗地亚组紧密跟随苏联方法，Pranjić 归纳出苏联机器翻译程序的五项基本思想（词典与算法分离、理解与生成模块分离等）作为克罗地亚方法的基础（c-495de085a178c536aca1b688，BIBREF17）；同时苏联内部存在分歧：Andreev 的统计建模是“外部”取向，Kulagina 与 Melchuk 则主张需要更多“哲学逻辑”来在符号层面建模人类思维过程（c-cecf76c7b16c45dc2fcf28e9，BIBREF6）。\n(5) 未实现的设想与结果：论文指出运用机器学习的想法从未充分发展（c-495de085a178c536aca1b688）；苏联先驱 Andreev 曾希望南斯拉夫（克罗地亚）组能做出原型，但因缺乏联邦资助未能实现（c-4fb7583763707533165c64d2，BIBREF10）。\n以上均限于所给证据，未加入常识性补充；引用以片段内出现的 BIBREF 编号及 chunk_id 标注。"
+      },
+      "elapsed_ms": 4955.966899986379
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "research_focus",
+            "text": "论文探讨的是克罗地亚语言学家Bulcsu Laszlo（南斯拉夫1950年代机器翻译先驱）及其研究组1959年和1962年两篇论文的历史意义，以及在萨格勒布大学人文与社会科学学院周围建立克罗地亚机器翻译项目的沿革。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-abb668d90226308be8e33e5f"
+              }
+            ]
+          },
+          {
+            "key": "comparison_with_us_ussr",
+            "text": "论文将克罗地亚小组的工作与美国和苏联机器翻译的起步联系起来，指出后者由冷战和当时的情报需求所驱动。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-abb668d90226308be8e33e5f"
+              }
+            ]
+          },
+          {
+            "key": "approach_difference",
+            "text": "论文指出克罗地亚小组主张的机器翻译方法不同于当时常见的逻辑方法，其倡导的控制论方法直到数十年后才被主流AI共同体采纳为规范。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-abb668d90226308be8e33e5f"
+              }
+            ]
+          },
+          {
+            "key": "state_of_the_art_as_noted",
+            "text": "Laszlo和Petrović曾评述当时的研究现状，提到美国1954年的原型工作和1955年研究论文集出版、苏联自1955年开始的工作以及英国1956年的原型；他们并未详述或引用所提到的文章。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-4fb7583763707533165c64d2"
+              }
+            ]
+          },
+          {
+            "key": "lag_estimate",
+            "text": "作者依据Laszlo和Petrović在1959年（可能1958年准备）发表的文章推断，经费匮乏的克罗地亚研究仅比投入巨大的超级大国研究落后约两年。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-4fb7583763707533165c64d2"
+              }
+            ]
+          },
+          {
+            "key": "no_computer",
+            "text": "与美国和苏联同行不同，Laszlo的小组没有实际计算机可用，成果主要停留在理论层面；由于缺乏联邦经费，原型的创建最终未能实现。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-4fb7583763707533165c64d2"
+              }
+            ]
+          },
+          {
+            "key": "military_effort_note",
+            "text": "Laszlo和Petrović指出，在其他国家，计算语言学研究主要是最高优先级的军事工作。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-4fb7583763707533165c64d2"
+              }
+            ]
+          },
+          {
+            "key": "computer_access_superpowers",
+            "text": "论文指出美国和苏联都能获得最先进的计算机，政治支持使机器翻译研究者可以使用计算机；但1950年代末成果不佳，尚未展示出可运行的系统，工作都是实现于计算机上的理论研究，被证明并非最优。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-cecf76c7b16c45dc2fcf28e9"
+              }
+            ]
+          },
+          {
+            "key": "soviet_five_ideas",
+            "text": "Pranjić分析并概括了苏联机器翻译纲领中的五个基本思想，这些思想成为克罗地亚方法的基础：词典与算法分离、理解与生成模块分离、所有词需词元化、以词元为词典键并列出其他词形、利用上下文确定多义词含义。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-495de085a178c536aca1b688"
+              }
+            ]
+          },
+          {
+            "key": "followed_soviet",
+            "text": "论文指出克罗地亚小组密切追随苏联的方法路线。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-495de085a178c536aca1b688"
+              }
+            ]
+          },
+          {
+            "key": "data_prep_tasks",
+            "text": "Finka和Laszlo设想了原型开发前的三项主要数据准备任务：按词尾到词首排序的词典（支持词干化与词元化）、词频表（聚焦数千高频词）、以及以“意义”为键、同义词为值的同义词库。",
+            "citations": [
+              {
+                "paper_id": "1908.08917",
+                "chunk_id": "c-495de085a178c536aca1b688"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 6049.367600004189
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d23",
+        "entities": {
+          "paper": "A Lost Croatian Cybernetic Machine Translation Program",
+          "paper_id": "1908.08917"
+        },
+        "facts": {
+          "lag_gap": {
+            "text": "作者指出，资金匮乏的克罗地亚研究仅落后于大力投入该领域的超级大国（美国和苏联）的研究约两年。",
+            "evidence_ids": [
+              "c-4fb7583763707533165c64d2"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "usa_ussr_context": {
+            "text": "论文将克罗地亚小组的工作与美苏两国在冷战和情报需求驱动下起步的机器翻译研究联系起来考察。",
+            "evidence_ids": [
+              "c-abb668d90226308be8e33e5f"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "no_prototype": {
+            "text": "尽管苏联机器翻译先驱 Andreev 曾希望南斯拉夫（克罗地亚）研究小组能做出原型系统，但由于缺乏联邦资助，这一目标最终未能实现。",
+            "evidence_ids": [
+              "c-4fb7583763707533165c64d2"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "state_of_art": {
+            "text": "Laszlo 和 Petrović 在 1959 年发表的文章中评述了当时的研究现状，提到美国 1954 年的原型工作、1955 年的研究论文集、苏联自 1955 年起的研究以及英国 1956 年的原型。",
+            "evidence_ids": [
+              "c-4fb7583763707533165c64d2"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "ussr_lyapunov_model": {
+            "text": "苏联以 Lyapunov、Kulagina 和 Dobrushin 为代表的信息论取向方法当时被视为控制论的，并成为克罗地亚自 1957 年起研究工作的主要范例。",
+            "evidence_ids": [
+              "c-bd28c872a0ec084173d1c794"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "ussr_four_approaches": {
+            "text": "苏联在 1950 年代末有四种主要的机器翻译研究路径，分别位于苏联科学院精密机械与计算技术研究所、以 Reformatsky 为首的 Steklov 数学研究所、Lyapunov 等人以及列宁格勒大学 Andreev 的实验实验室。",
+            "evidence_ids": [
+              "c-bd28c872a0ec084173d1c794"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "different_approach": {
+            "text": "克罗地亚小组主张的机器翻译方法不同于当时常见的逻辑方法，并倡导控制论方法，而这一方法直到数十年后才被主流 AI 界奉为规范。",
+            "evidence_ids": [
+              "c-abb668d90226308be8e33e5f"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "bar_hillel_contact": {
+            "text": "克罗地亚小组研究过 Bar-Hillel 的论文，而 Bar-Hillel 受控制论启发，于 1952 年在 MIT 组织了世界上第一次机器翻译会议。",
+            "evidence_ids": [
+              "c-1070371e7d3bfe1573e5a5e8"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "no_field_influence": {
+            "text": "克罗地亚 1950 年代的机器翻译思想对该领域的发展没有产生重大影响，但表明克罗地亚语言学家具有当时的视野和必要能力。",
+            "evidence_ids": [
+              "c-09c38df9c252e52acb0d549d"
+            ],
+            "turn_id": "d23-t1"
+          },
+          "research_focus": {
+            "text": "论文探讨的是克罗地亚语言学家Bulcsu Laszlo（南斯拉夫1950年代机器翻译先驱）及其研究组1959年和1962年两篇论文的历史意义，以及在萨格勒布大学人文与社会科学学院周围建立克罗地亚机器翻译项目的沿革。",
+            "evidence_ids": [
+              "c-abb668d90226308be8e33e5f"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "comparison_with_us_ussr": {
+            "text": "论文将克罗地亚小组的工作与美国和苏联机器翻译的起步联系起来，指出后者由冷战和当时的情报需求所驱动。",
+            "evidence_ids": [
+              "c-abb668d90226308be8e33e5f"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "approach_difference": {
+            "text": "论文指出克罗地亚小组主张的机器翻译方法不同于当时常见的逻辑方法，其倡导的控制论方法直到数十年后才被主流AI共同体采纳为规范。",
+            "evidence_ids": [
+              "c-abb668d90226308be8e33e5f"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "state_of_the_art_as_noted": {
+            "text": "Laszlo和Petrović曾评述当时的研究现状，提到美国1954年的原型工作和1955年研究论文集出版、苏联自1955年开始的工作以及英国1956年的原型；他们并未详述或引用所提到的文章。",
+            "evidence_ids": [
+              "c-4fb7583763707533165c64d2"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "lag_estimate": {
+            "text": "作者依据Laszlo和Petrović在1959年（可能1958年准备）发表的文章推断，经费匮乏的克罗地亚研究仅比投入巨大的超级大国研究落后约两年。",
+            "evidence_ids": [
+              "c-4fb7583763707533165c64d2"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "no_computer": {
+            "text": "与美国和苏联同行不同，Laszlo的小组没有实际计算机可用，成果主要停留在理论层面；由于缺乏联邦经费，原型的创建最终未能实现。",
+            "evidence_ids": [
+              "c-4fb7583763707533165c64d2"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "military_effort_note": {
+            "text": "Laszlo和Petrović指出，在其他国家，计算语言学研究主要是最高优先级的军事工作。",
+            "evidence_ids": [
+              "c-4fb7583763707533165c64d2"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "computer_access_superpowers": {
+            "text": "论文指出美国和苏联都能获得最先进的计算机，政治支持使机器翻译研究者可以使用计算机；但1950年代末成果不佳，尚未展示出可运行的系统，工作都是实现于计算机上的理论研究，被证明并非最优。",
+            "evidence_ids": [
+              "c-cecf76c7b16c45dc2fcf28e9"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "soviet_five_ideas": {
+            "text": "Pranjić分析并概括了苏联机器翻译纲领中的五个基本思想，这些思想成为克罗地亚方法的基础：词典与算法分离、理解与生成模块分离、所有词需词元化、以词元为词典键并列出其他词形、利用上下文确定多义词含义。",
+            "evidence_ids": [
+              "c-495de085a178c536aca1b688"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "followed_soviet": {
+            "text": "论文指出克罗地亚小组密切追随苏联的方法路线。",
+            "evidence_ids": [
+              "c-495de085a178c536aca1b688"
+            ],
+            "turn_id": "d23-t2"
+          },
+          "data_prep_tasks": {
+            "text": "Finka和Laszlo设想了原型开发前的三项主要数据准备任务：按词尾到词首排序的词典（支持词干化与词元化）、词频表（聚焦数千高频词）、以及以“意义”为键、同义词为值的同义词库。",
+            "evidence_ids": [
+              "c-495de085a178c536aca1b688"
+            ],
+            "turn_id": "d23-t2"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1908.08917"
+          ]
+        }
+      },
+      "elapsed_ms": 3.033400047570467
+    }
+  ],
+  "started_at": 1792667192.9896758,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "research_focus",
+        "text": "论文探讨的是克罗地亚语言学家Bulcsu Laszlo（南斯拉夫1950年代机器翻译先驱）及其研究组1959年和1962年两篇论文的历史意义，以及在萨格勒布大学人文与社会科学学院周围建立克罗地亚机器翻译项目的沿革。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-abb668d90226308be8e33e5f"
+          }
+        ]
+      },
+      {
+        "key": "comparison_with_us_ussr",
+        "text": "论文将克罗地亚小组的工作与美国和苏联机器翻译的起步联系起来，指出后者由冷战和当时的情报需求所驱动。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-abb668d90226308be8e33e5f"
+          }
+        ]
+      },
+      {
+        "key": "approach_difference",
+        "text": "论文指出克罗地亚小组主张的机器翻译方法不同于当时常见的逻辑方法，其倡导的控制论方法直到数十年后才被主流AI共同体采纳为规范。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-abb668d90226308be8e33e5f"
+          }
+        ]
+      },
+      {
+        "key": "state_of_the_art_as_noted",
+        "text": "Laszlo和Petrović曾评述当时的研究现状，提到美国1954年的原型工作和1955年研究论文集出版、苏联自1955年开始的工作以及英国1956年的原型；他们并未详述或引用所提到的文章。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-4fb7583763707533165c64d2"
+          }
+        ]
+      },
+      {
+        "key": "lag_estimate",
+        "text": "作者依据Laszlo和Petrović在1959年（可能1958年准备）发表的文章推断，经费匮乏的克罗地亚研究仅比投入巨大的超级大国研究落后约两年。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-4fb7583763707533165c64d2"
+          }
+        ]
+      },
+      {
+        "key": "no_computer",
+        "text": "与美国和苏联同行不同，Laszlo的小组没有实际计算机可用，成果主要停留在理论层面；由于缺乏联邦经费，原型的创建最终未能实现。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-4fb7583763707533165c64d2"
+          }
+        ]
+      },
+      {
+        "key": "military_effort_note",
+        "text": "Laszlo和Petrović指出，在其他国家，计算语言学研究主要是最高优先级的军事工作。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-4fb7583763707533165c64d2"
+          }
+        ]
+      },
+      {
+        "key": "computer_access_superpowers",
+        "text": "论文指出美国和苏联都能获得最先进的计算机，政治支持使机器翻译研究者可以使用计算机；但1950年代末成果不佳，尚未展示出可运行的系统，工作都是实现于计算机上的理论研究，被证明并非最优。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-cecf76c7b16c45dc2fcf28e9"
+          }
+        ]
+      },
+      {
+        "key": "soviet_five_ideas",
+        "text": "Pranjić分析并概括了苏联机器翻译纲领中的五个基本思想，这些思想成为克罗地亚方法的基础：词典与算法分离、理解与生成模块分离、所有词需词元化、以词元为词典键并列出其他词形、利用上下文确定多义词含义。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-495de085a178c536aca1b688"
+          }
+        ]
+      },
+      {
+        "key": "followed_soviet",
+        "text": "论文指出克罗地亚小组密切追随苏联的方法路线。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-495de085a178c536aca1b688"
+          }
+        ]
+      },
+      {
+        "key": "data_prep_tasks",
+        "text": "Finka和Laszlo设想了原型开发前的三项主要数据准备任务：按词尾到词首排序的词典（支持词干化与词元化）、词频表（聚焦数千高频词）、以及以“意义”为键、同义词为值的同义词库。",
+        "citations": [
+          {
+            "paper_id": "1908.08917",
+            "chunk_id": "c-495de085a178c536aca1b688"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "ad94253aba423de648b69296b7e84ff8a1fcb8f97c992b72086c0a65dacb245e",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5136,
+        "completion_tokens": 84,
+        "total_tokens": 5220,
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 5008,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5008,
+        "output_tokens": 84,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2413.294600090012
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "35ae9b97ee3135dca932eb1d7ec617fdde49abd6467e6455f215d7490a2bcc6d",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5582,
+        "completion_tokens": 580,
+        "total_tokens": 6162,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 5582,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5582,
+        "output_tokens": 580,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4955.57419990655
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "6222dc9b9e68c6304e29498b23405a5585a8d9072f18bd397629c99c442159d3",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5684,
+        "completion_tokens": 959,
+        "total_tokens": 6643,
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 5556,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5556,
+        "output_tokens": 959,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6048.983799992129
+    }
+  ]
+}

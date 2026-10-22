@@ -1,0 +1,598 @@
+{
+  "turn_id": "d09-t2",
+  "session_id": "d09",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.026899971999228
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Understanding the Radical Mind: Identifying Signals to Detect Extremist Content on Twitter 中用于检测极端内容的行为特征及其证据",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1905.08067"
+        ],
+        "resolved_entities": {
+          "paper": "Understanding the Radical Mind: Identifying Signals to Detect Extremist Content on Twitter",
+          "paper_id": "1905.08067"
+        }
+      },
+      "elapsed_ms": 2785.9255999792367
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Understanding the Radical Mind: Identifying Signals to Detect Extremist Content on Twitter 中用于检测极端内容的行为特征及其证据"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-bbf9b41be02a61155bd9d333",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-b09cb3e1017bca35035ac294",
+          "c-6ec029d3b40920ea1b9b5a88",
+          "c-e1321010cb4e591145b39338",
+          "c-b73d7e77c004a56112f29967",
+          "c-6d282fc827b834bb801ad957",
+          "c-047e900b347ed83feba417a8",
+          "c-d5f2499401c5351f97c00c60",
+          "c-72855fdc305374349719a009",
+          "c-9ec98bb818104ce3b14b56b5",
+          "c-330e5b566cdd85e2f4155c43",
+          "c-6b9030fb1f613d380f3b244e",
+          "c-68e3feef17aaf79ccccf89e4"
+        ]
+      },
+      "elapsed_ms": 606.7457000026479
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-bbf9b41be02a61155bd9d333",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-b09cb3e1017bca35035ac294",
+          "c-6ec029d3b40920ea1b9b5a88",
+          "c-e1321010cb4e591145b39338",
+          "c-b73d7e77c004a56112f29967",
+          "c-6d282fc827b834bb801ad957",
+          "c-047e900b347ed83feba417a8",
+          "c-d5f2499401c5351f97c00c60",
+          "c-72855fdc305374349719a009",
+          "c-9ec98bb818104ce3b14b56b5",
+          "c-330e5b566cdd85e2f4155c43",
+          "c-6b9030fb1f613d380f3b244e",
+          "c-68e3feef17aaf79ccccf89e4"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-120b9edabe0a4b7c2521a5ec"
+        ]
+      },
+      "elapsed_ms": 370.6815999466926
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-120b9edabe0a4b7c2521a5ec"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据支持该论文的主要发现：摘要明确指出激进用户具有可区分的文本、心理和行为特征，其中心理特征是最具区分度的特征之一，使用向量嵌入特征的文本模型显著优于 TF-IDF，并在两项实验中取得高准确率（c-0996ce97ab0b0073667dab34）；引言说明信号来自对 ISIS 宣传刊物 Dabiq 的分析，并用于检测 Twitter 上的 pro-ISIS 支持者（c-a772d00cbba5e0fde933e477）；特征工程部分说明共探索文本、心理、行为三类特征（c-d156d90baa1521acbf5ee43c）；结论说明该方法不仅依赖关键词的词法分析，还加入了语境和心理维度，并在多个数据集上验证稳健（c-ac6bbbcbbe051f1804f88f38）。但须说明：所提供的证据未给出行为特征的具体条目定义及其单独量化结果，因此不对这些细节作推断。"
+      },
+      "elapsed_ms": 5119.375900016166
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "signal_categories",
+            "text": "论文探索三类信息来识别检测极端内容的相关特征：激进语言（文本特征）、心理信号（心理特征）和行为特征。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-d156d90baa1521acbf5ee43c"
+              }
+            ]
+          },
+          {
+            "key": "user_vs_message_features",
+            "text": "这些特征中有些是基于用户的，有些是基于消息的。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-d156d90baa1521acbf5ee43c"
+              }
+            ]
+          },
+          {
+            "key": "combined_signals",
+            "text": "论文识别出包括文本、心理和行为在内的若干信号，这些信号共同用于对激进消息进行分类。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-0996ce97ab0b0073667dab34"
+              }
+            ]
+          },
+          {
+            "key": "propaganda_source",
+            "text": "特征依据来自对已知极端组织发布的宣传材料的分析，具体是分析ISIS在其英文在线杂志Dabiq中发布的内容，以计算方式揭示相关的语境文本和心理属性。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-a772d00cbba5e0fde933e477"
+              },
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-d156d90baa1521acbf5ee43c"
+              }
+            ]
+          },
+          {
+            "key": "profile_application",
+            "text": "论文据此创建一个通用的激进画像，并将其作为信号应用于Twitter上检测亲ISIS支持者。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-a772d00cbba5e0fde933e477"
+              }
+            ]
+          },
+          {
+            "key": "distinguishable_properties",
+            "text": "结果显示，激进用户在文本、心理和行为属性上确实表现出可区分的特征。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-0996ce97ab0b0073667dab34"
+              }
+            ]
+          },
+          {
+            "key": "psychological_most_distinguishing",
+            "text": "研究发现心理属性属于最具区分力的特征之一。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-0996ce97ab0b0073667dab34"
+              }
+            ]
+          },
+          {
+            "key": "embeddings_vs_tfidf",
+            "text": "使用向量嵌入特征的文本模型相较TF-IDF特征显著提升了检测效果。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-0996ce97ab0b0073667dab34"
+              }
+            ]
+          },
+          {
+            "key": "validation_accuracy",
+            "text": "论文在两个实验中验证了该方法并取得了高准确率。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-0996ce97ab0b0073667dab34"
+              }
+            ]
+          },
+          {
+            "key": "beyond_keywords",
+            "text": "与以往工作不同，这些属性不仅聚焦于消息的词汇关键词分析，还增加了语境和心理维度。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-ac6bbbcbbe051f1804f88f38"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 6868.623599992134
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d09",
+        "entities": {
+          "paper": "Understanding the Radical Mind: Identifying Signals to Detect Extremist Content on Twitter",
+          "paper_id": "1905.08067"
+        },
+        "facts": {
+          "three_feature_categories": {
+            "text": "该论文探索三类特征用于检测极端内容：文本特征、心理特征和行为特征。",
+            "evidence_ids": [
+              "c-d156d90baa1521acbf5ee43c"
+            ],
+            "turn_id": "d09-t1"
+          },
+          "behavioural_top_features": {
+            "text": "在行为特征中，贡献最大的特征包括单个用户发表提及（mentions）的次数，以及其交互网络中的 HITS hub 和 authority 排名。",
+            "evidence_ids": [
+              "c-b09cb3e1017bca35035ac294"
+            ],
+            "turn_id": "d09-t1"
+          },
+          "behavioural_interpretation": {
+            "text": "这些行为特征反映用户与他人互动的活跃程度及其从社群中获得的关注程度。",
+            "evidence_ids": [
+              "c-b09cb3e1017bca35035ac294"
+            ],
+            "turn_id": "d09-t1"
+          },
+          "signals_overall": {
+            "text": "论文识别出包括文本、心理和行为在内的多种信号，这些信号结合起来可对极端消息进行分类。",
+            "evidence_ids": [
+              "c-0996ce97ab0b0073667dab34"
+            ],
+            "turn_id": "d09-t1"
+          },
+          "signal_categories": {
+            "text": "论文探索三类信息来识别检测极端内容的相关特征：激进语言（文本特征）、心理信号（心理特征）和行为特征。",
+            "evidence_ids": [
+              "c-d156d90baa1521acbf5ee43c"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "user_vs_message_features": {
+            "text": "这些特征中有些是基于用户的，有些是基于消息的。",
+            "evidence_ids": [
+              "c-d156d90baa1521acbf5ee43c"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "combined_signals": {
+            "text": "论文识别出包括文本、心理和行为在内的若干信号，这些信号共同用于对激进消息进行分类。",
+            "evidence_ids": [
+              "c-0996ce97ab0b0073667dab34"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "propaganda_source": {
+            "text": "特征依据来自对已知极端组织发布的宣传材料的分析，具体是分析ISIS在其英文在线杂志Dabiq中发布的内容，以计算方式揭示相关的语境文本和心理属性。",
+            "evidence_ids": [
+              "c-a772d00cbba5e0fde933e477",
+              "c-d156d90baa1521acbf5ee43c"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "profile_application": {
+            "text": "论文据此创建一个通用的激进画像，并将其作为信号应用于Twitter上检测亲ISIS支持者。",
+            "evidence_ids": [
+              "c-a772d00cbba5e0fde933e477"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "distinguishable_properties": {
+            "text": "结果显示，激进用户在文本、心理和行为属性上确实表现出可区分的特征。",
+            "evidence_ids": [
+              "c-0996ce97ab0b0073667dab34"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "psychological_most_distinguishing": {
+            "text": "研究发现心理属性属于最具区分力的特征之一。",
+            "evidence_ids": [
+              "c-0996ce97ab0b0073667dab34"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "embeddings_vs_tfidf": {
+            "text": "使用向量嵌入特征的文本模型相较TF-IDF特征显著提升了检测效果。",
+            "evidence_ids": [
+              "c-0996ce97ab0b0073667dab34"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "validation_accuracy": {
+            "text": "论文在两个实验中验证了该方法并取得了高准确率。",
+            "evidence_ids": [
+              "c-0996ce97ab0b0073667dab34"
+            ],
+            "turn_id": "d09-t2"
+          },
+          "beyond_keywords": {
+            "text": "与以往工作不同，这些属性不仅聚焦于消息的词汇关键词分析，还增加了语境和心理维度。",
+            "evidence_ids": [
+              "c-ac6bbbcbbe051f1804f88f38"
+            ],
+            "turn_id": "d09-t2"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1905.08067"
+          ]
+        }
+      },
+      "elapsed_ms": 2.7762000681832433
+    }
+  ],
+  "started_at": 1792667039.5920928,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "signal_categories",
+        "text": "论文探索三类信息来识别检测极端内容的相关特征：激进语言（文本特征）、心理信号（心理特征）和行为特征。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-d156d90baa1521acbf5ee43c"
+          }
+        ]
+      },
+      {
+        "key": "user_vs_message_features",
+        "text": "这些特征中有些是基于用户的，有些是基于消息的。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-d156d90baa1521acbf5ee43c"
+          }
+        ]
+      },
+      {
+        "key": "combined_signals",
+        "text": "论文识别出包括文本、心理和行为在内的若干信号，这些信号共同用于对激进消息进行分类。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-0996ce97ab0b0073667dab34"
+          }
+        ]
+      },
+      {
+        "key": "propaganda_source",
+        "text": "特征依据来自对已知极端组织发布的宣传材料的分析，具体是分析ISIS在其英文在线杂志Dabiq中发布的内容，以计算方式揭示相关的语境文本和心理属性。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-a772d00cbba5e0fde933e477"
+          },
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-d156d90baa1521acbf5ee43c"
+          }
+        ]
+      },
+      {
+        "key": "profile_application",
+        "text": "论文据此创建一个通用的激进画像，并将其作为信号应用于Twitter上检测亲ISIS支持者。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-a772d00cbba5e0fde933e477"
+          }
+        ]
+      },
+      {
+        "key": "distinguishable_properties",
+        "text": "结果显示，激进用户在文本、心理和行为属性上确实表现出可区分的特征。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-0996ce97ab0b0073667dab34"
+          }
+        ]
+      },
+      {
+        "key": "psychological_most_distinguishing",
+        "text": "研究发现心理属性属于最具区分力的特征之一。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-0996ce97ab0b0073667dab34"
+          }
+        ]
+      },
+      {
+        "key": "embeddings_vs_tfidf",
+        "text": "使用向量嵌入特征的文本模型相较TF-IDF特征显著提升了检测效果。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-0996ce97ab0b0073667dab34"
+          }
+        ]
+      },
+      {
+        "key": "validation_accuracy",
+        "text": "论文在两个实验中验证了该方法并取得了高准确率。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-0996ce97ab0b0073667dab34"
+          }
+        ]
+      },
+      {
+        "key": "beyond_keywords",
+        "text": "与以往工作不同，这些属性不仅聚焦于消息的词汇关键词分析，还增加了语境和心理维度。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-ac6bbbcbbe051f1804f88f38"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "6fdc845ebd83ee8cc17a780df1ac339054462e245cf6b3297bdeb7c896582017",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3966,
+        "completion_tokens": 96,
+        "total_tokens": 4062,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3966,
+        "output_tokens": 96,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2781.697000027634
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "a11cd5dc0b9bf5ed76c533d0d4f3dce8257bbd81050321daa6453c89e54315a7",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4103,
+        "completion_tokens": 217,
+        "total_tokens": 4320,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4103,
+        "output_tokens": 217,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5118.993999902159
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "4bfffce3f085ff42edc259923132a4d7822624327c539cecdb95c922a5844663",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4205,
+        "completion_tokens": 683,
+        "total_tokens": 4888,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3949,
+        "output_tokens": 683,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6867.91719996836
+    }
+  ]
+}

@@ -1,0 +1,422 @@
+{
+  "id": "d03-t3",
+  "session_id": "d03",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 6,
+  "judgment": {
+    "answer_correct": false,
+    "behavior_appropriate": true,
+    "reason": "The answer correctly reports FEVER dataset size, the clinical paper's non-mention of FEVER, the label accuracies in the unsupervised QA paper, and the qualitative-only baseline comparison in the clinical paper. However, claim 3 conflates '80.2% label accuracy on the SUPPORTS label' (conclusion) with the dev/test set accuracies from the abstract, presenting the label as if it were a dataset split—a factual overreach. Additionally, the question asks how each paper answers the baseline-improvement question; for the unsupervised QA paper, the answer's statement that evidence gives only absolute label accuracy and no baseline gap is supported, but the paper's claim conflating label accuracy on SUPPORTS with dev/test figures is not supported as stated. The overall conclusion of non-comparability is reasonable given differing tasks and absent quantitative gaps, but the unsupported conflation reduces correctness.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "The cited Introduction passage states FEVER is the largest dataset and contains around 185k claims from a corpus of 5.4M Wikipedia articles."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "The cited clinical paper chunk mentions clinical notes and pathology reports from the Mayo Clinic and does not mention FEVER, consistent with the claim."
+      },
+      {
+        "claim_index": 2,
+        "supported": false,
+        "reason": "The abstract reports 80.2% on the development set and 80.25% on the test set, and the conclusion states '80.2% label accuracy on the SUPPORTS label.' The claim conflates these by calling them 'SUPPORTS label accuracy (dev/test)' and presenting 80.2%/80.25% as SUPPORTS-label accuracies, which the chunks do not state."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "The cited chunks provide only absolute label accuracies (80.2% dev, 80.25% test) and do not quantify an improvement over baselines."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "The Conclusion chunk says the approach 'consistently outperforms the existing baseline methods on standard evaluation datasets,' and the Abstract says it 'significantly outperforms baselines,' with no numeric improvement given in these cited chunks."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "The cited chunks show different tasks/datasets (FEVER fact-checking vs. Mayo Clinic clinical notes/pathology reports), dataset size only for FEVER, and no specific baseline-improvement numbers in either paper, supporting the non-comparability conclusion."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "2e34f6b90016629b2baaca71999dd9672d9656895767dc50cdc56a87cea151de",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6277,
+        "completion_tokens": 578,
+        "total_tokens": 6855,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6021,
+        "output_tokens": 578,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6056.411800091155
+    }
+  ],
+  "payload_hash": "25eb4cfb9283d968b00bc42ee5cc9b5057aea7b44454481252898758ed428195",
+  "payload": {
+    "question": "与《Clinical Information Extraction via Convolutional Neural Network》对比，分别说明两篇论文如何回答“How large is the FEVER dataset?”与“By how much did their model outperform baselines?”，并说明是否具有可比性。",
+    "answer": {
+      "claims": [
+        {
+          "key": "fever_dataset_size",
+          "text": "《Unsupervised Question Answering for Fact-Checking》指出，FEVER 是最大的数据集，包含约 185k 条 claim，来源于 5.4M 篇 Wikipedia 文章的语料。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "clinical_no_fever",
+          "text": "《Clinical Information Extraction via Convolutional Neural Network》未提及 FEVER 数据集；该论文研究的是来自 Mayo Clinic 的临床笔记与病理报告。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-09342b6b2a0eabec97459832"
+            }
+          ]
+        },
+        {
+          "key": "unsupervised_qa_label_acc",
+          "text": "《Unsupervised Question Answering for Fact-Checking》报告的标签准确率为 80.2%（开发集）和 80.25%（测试集），并称在“SUPPORTS”标签上达到 80.2% 的标签准确率。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7d59a4589df766fa1261d8c6"
+            }
+          ]
+        },
+        {
+          "key": "unsupervised_qa_no_baseline_gap",
+          "text": "所提供的《Unsupervised Question Answering for Fact-Checking》证据只给出绝对标签准确率，未说明相对基线的性能提升幅度数值。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7d59a4589df766fa1261d8c6"
+            }
+          ]
+        },
+        {
+          "key": "clinical_outperforms_baselines_qualitative",
+          "text": "《Clinical Information Extraction via Convolutional Neural Network》称其方法在标准评估数据集上持续优于现有基线，并显著优于基线，但未给出具体提升数值。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-f45dc29ea469cc573133e3c9"
+            },
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-712a82e231bc15b7c11610b4"
+            }
+          ]
+        },
+        {
+          "key": "not_comparable",
+          "text": "两篇论文涉及不同任务与数据集（事实核查的 FEVER 与临床信息抽取的临床笔记/病理报告），且仅有《Unsupervised Question Answering for Fact-Checking》提供数据集规模、两篇均未提供相对基线的具体提升数值，因此二者有关性能提升的回答不具可比性。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            },
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-09342b6b2a0eabec97459832"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            },
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-f45dc29ea469cc573133e3c9"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "对比论文《Unsupervised Question Answering for Fact-Checking》与《Clinical Information Extraction via Convolutional Neural Network》中 FEVER 数据集规模以及模型相对基线的性能提升幅度，并评估两者是否具有可比性",
+    "evidence": [
+      {
+        "chunk_id": "c-ab6380532554bfd8cf2dc78b",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Introduction",
+        "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.\n\nWikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.\n\nIn this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+        "text_hash": "1a74b3ec856c0b5535bd97a74b187eba4257ae4e9ca4fd56ab0d46e303c4d707",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 896,
+            "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 688,
+            "text": "Wikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 481,
+            "text": "In this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7d59a4589df766fa1261d8c6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Conclusion",
+        "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+        "text_hash": "5da0e3a8939dd1fb22080f0a1904a1bc665de8b33ac5767f8bccd665ad7c7def",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s9-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 750,
+            "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7c69a28e7ffcb9ebd09842b6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Abstract",
+        "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+        "text_hash": "5595b86a318b1335f1c1e3a30af59c9210577acf141fbbd35593562139a75111",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 948,
+            "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-09342b6b2a0eabec97459832",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Introduction",
+        "text": "In the past few years, there has been much interest in applying neural network based deep learning techniques to solve all kinds of natural language processing (NLP) tasks. From low level tasks such as language modeling, POS tagging, named entity recognition, and semantic role labeling BIBREF0 , BIBREF1 , to high level tasks such as machine translation, information retrieval, semantic analysis BIBREF2 , BIBREF3 , BIBREF4 and sentence relation modeling tasks such as paraphrase identification and question answering BIBREF5 , BIBREF6 , BIBREF7 . Deep representation learning has demonstrated its importance for these tasks. All the tasks get performance improvement via learning either word level representations or sentence level representations.\n\nIn this work, we brought deep representation learning technologies to the clinical domain. Specifically, we focus on clinical information extraction, using clinical notes and pathology reports from the Mayo Clinic. Our system will identify event expressions consisting of the following components:\n\nThe input of our system consists of raw clinical notes or pathology reports like below:\n\nAnd output annotations over the text that capture the key information such as event mentions and attributes. Table TABREF7 illustrates the output of clinical information extraction in details.\n\nTo solve this task, the major challenge is how to precisely identify the spans (character offsets) of the event expressions from raw clinical notes. Traditional machine learning approaches usually build a supervised classifier with features generated by the Apache clinical Text Analysis and Knowledge Extraction System (cTAKES) . For example, BluLab system BIBREF8 extracted morphological(lemma), lexical(token), and syntactic(part-of-speech) features encoded from cTAKES. Although using the domain specific information extraction tools can improve the performance, learning how to use it well for clinical domain feature engineering is still very time-consuming. In short, a simple and effective method that only leverage basic NLP modules and achieves high extraction performance is desired to save costs.",
+        "text_hash": "a4b7407ce3597b0a25328ed45d6ce51682852200f7a6df1e32f82cb94f7fc5d1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 750,
+            "text": "In the past few years, there has been much interest in applying neural network based deep learning techniques to solve all kinds of natural language processing (NLP) tasks. From low level tasks such as language modeling, POS tagging, named entity recognition, and semantic role labeling BIBREF0 , BIBREF1 , to high level tasks such as machine translation, information retrieval, semantic analysis BIBREF2 , BIBREF3 , BIBREF4 and sentence relation modeling tasks such as paraphrase identification and question answering BIBREF5 , BIBREF6 , BIBREF7 . Deep representation learning has demonstrated its importance for these tasks. All the tasks get performance improvement via learning either word level representations or sentence level representations.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 297,
+            "text": "In this work, we brought deep representation learning technologies to the clinical domain. Specifically, we focus on clinical information extraction, using clinical notes and pathology reports from the Mayo Clinic. Our system will identify event expressions consisting of the following components:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 87,
+            "text": "The input of our system consists of raw clinical notes or pathology reports like below:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 192,
+            "text": "And output annotations over the text that capture the key information such as event mentions and attributes. Table TABREF7 illustrates the output of clinical information extraction in details.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 808,
+            "text": "To solve this task, the major challenge is how to precisely identify the spans (character offsets) of the event expressions from raw clinical notes. Traditional machine learning approaches usually build a supervised classifier with features generated by the Apache clinical Text Analysis and Knowledge Extraction System (cTAKES) . For example, BluLab system BIBREF8 extracted morphological(lemma), lexical(token), and syntactic(part-of-speech) features encoded from cTAKES. Although using the domain specific information extraction tools can improve the performance, learning how to use it well for clinical domain feature engineering is still very time-consuming. In short, a simple and effective method that only leverage basic NLP modules and achieves high extraction performance is desired to save costs.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-191faab23657f930ee0bcb86",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Constructing High Quality Training Dataset",
+        "text": "The major advantage of our system is that we only leverage NLTK tokenization and a POS tagger to preprocess our training dataset. When implementing our neural network based clinical information extraction system, we found it is not easy to construct high quality training data due to the noisy format of clinical notes. Choosing the proper tokenizer is quite important for span identification. After several experiments, we found \"RegexpTokenizer\" can match our needs. This tokenizer can generate spans for each token via sophisticated regular expression like below,",
+        "text_hash": "aad40ed1103daf17ccf400ce025e8460e31d662a61433090a4fd6e825e514fe1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Constructing High Quality Training Dataset",
+            "start": 0,
+            "end": 566,
+            "text": "The major advantage of our system is that we only leverage NLTK tokenization and a POS tagger to preprocess our training dataset. When implementing our neural network based clinical information extraction system, we found it is not easy to construct high quality training data due to the noisy format of clinical notes. Choosing the proper tokenizer is quite important for span identification. After several experiments, we found \"RegexpTokenizer\" can match our needs. This tokenizer can generate spans for each token via sophisticated regular expression like below,",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f45dc29ea469cc573133e3c9",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Conclusions",
+        "text": "In this paper, we introduced a new clinical information extraction system that only leverage deep neural networks to identify event spans and their attributes from raw clinical notes. We trained deep neural networks based classifiers to extract clinical event spans. Our method attached each word to their part-of-speech tag and shape information as extra features. We then hire temporal convolution neural network to learn hidden feature representations. The entire experimental results demonstrate that our approach consistently outperforms the existing baseline methods on standard evaluation datasets.\n\nOur research proved that we can get competitive results without the help of a domain specific feature extraction toolkit, such as cTAKES. Also we only leverage basic natural language processing modules such as tokenization and part-of-speech tagging. With the help of deep representation learning, we can dramatically reduce the cost of clinical information extraction system development.",
+        "text_hash": "d142d3c8d76970ff5ad9735296ac72970260c245dfa83bb81389fbbf3cbc66ca",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s8-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 605,
+            "text": "In this paper, we introduced a new clinical information extraction system that only leverage deep neural networks to identify event spans and their attributes from raw clinical notes. We trained deep neural networks based classifiers to extract clinical event spans. Our method attached each word to their part-of-speech tag and shape information as extra features. We then hire temporal convolution neural network to learn hidden feature representations. The entire experimental results demonstrate that our approach consistently outperforms the existing baseline methods on standard evaluation datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p1",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 388,
+            "text": "Our research proved that we can get competitive results without the help of a domain specific feature extraction toolkit, such as cTAKES. Also we only leverage basic natural language processing modules such as tokenization and part-of-speech tagging. With the help of deep representation learning, we can dramatically reduce the cost of clinical information extraction system development.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-712a82e231bc15b7c11610b4",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Abstract",
+        "text": "We report an implementation of a clinical information extraction tool that leverages deep neural network to annotate event spans and their attributes from raw clinical notes and pathology reports. Our approach uses context words and their part-of-speech tags and shape information as features. Then we hire temporal (1D) convolutional neural network to learn hidden feature representations. Finally, we use Multilayer Perceptron (MLP) to predict event spans. The empirical evaluation demonstrates that our approach significantly outperforms baselines.",
+        "text_hash": "3b374779cda9647910ce923df05523f0dd0ab39d9a5e2f8581d763ba0fdb728c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 551,
+            "text": "We report an implementation of a clinical information extraction tool that leverages deep neural network to annotate event spans and their attributes from raw clinical notes and pathology reports. Our approach uses context words and their part-of-speech tags and shape information as features. Then we hire temporal (1D) convolutional neural network to learn hidden feature representations. Finally, we use Multilayer Perceptron (MLP) to predict event spans. The empirical evaluation demonstrates that our approach significantly outperforms baselines.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-b3afb024fb66311dcf9a3bea",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Introduction",
+        "text": "To address this challenge, we propose a deep neural networks based method, especially convolution neural network BIBREF0 , to learn hidden feature representations directly from raw clinical notes. More specifically, one method first extract a window of surrounding words for the candidate word. Then, we attach each word with their part-of-speech tag and shape information as extra features. Then our system deploys a temporal convolution neural network to learn hidden feature representations. Finally, our system uses Multilayer Perceptron (MLP) to predict event spans. Note that we use the same model to predict event attributes.",
+        "text_hash": "fa180c7324f27b8dad3bf3e95855604dffd8af786ecc17b9f8c736f8cee44fd5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 632,
+            "text": "To address this challenge, we propose a deep neural networks based method, especially convolution neural network BIBREF0 , to learn hidden feature representations directly from raw clinical notes. More specifically, one method first extract a window of surrounding words for the candidate word. Then, we attach each word with their part-of-speech tag and shape information as extra features. Then our system deploys a temporal convolution neural network to learn hidden feature representations. Finally, our system uses Multilayer Perceptron (MLP) to predict event spans. Note that we use the same model to predict event attributes.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

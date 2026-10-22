@@ -1,0 +1,317 @@
+{
+  "session_id": "d16-d16-t1",
+  "messages": [
+    {
+      "role": "user",
+      "content": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+      "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "two_shortcomings",
+            "text": "论文指出 seq2seq 的两个缺陷：预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整的转写。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "overall_claim",
+            "text": "作者针对这两个问题提出了实用解决方案，并在 Wall Street Journal 数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为 10.6% WER，使用 trigram 语言模型时为 6.7% WER。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "sharp_predictions",
+            "text": "论文观察到 seq2seq 模型常给出非常尖锐的预测，只需考虑少量假设即可找到最可能的转写，但高置信度会降低 beam search 所得转写的多样性。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+              }
+            ]
+          },
+          {
+            "key": "partial_transcripts_wide_beam",
+            "text": "使用语言模型时，宽 beam search 常产生不完整的转写；窄 beam 因隐式剪枝而使问题不太明显。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "three_strategies",
+            "text": "论文比较了三种防止不完整转写的策略：第一种不改变 beam search 准则，但禁止在 EOS 概率不在最可能 token 概率的设定范围内时输出 EOS。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "eos_strategy_limits",
+            "text": "该 EOS 限制策略能防止截断，但对转写中间的遗漏无效。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "length_term",
+            "text": "另一种方案是扩展 beam search 准则以促进长转写；长度相关项曾被用于 CTC 和 seq2seq，但据报道因 beam search 会在录音片段上循环而使用困难、需要额外约束。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_term",
+            "text": "为防止循环，论文提出使用覆盖（coverage）项，统计累计注意力超过某阈值的帧数。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_mechanism",
+            "text": "覆盖准则通过将累计注意力超过阈值的帧计为已选，使后续重复选择该帧不再降低解码代价，从而防止在语音上循环；覆盖在每个 beam search 迭代中基于迄今所有注意力权重重新计算。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "regularization_decoding",
+            "text": "结论指出，借助高效正则化与谨慎解码，seq2seq 语音识别方法可以与其他非 HMM 技术（如 CTC）竞争。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-584f58479e6aaaf4703e5890"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+    }
+  ],
+  "turn_count": 1,
+  "memory": {
+    "session_id": "d16-d16-t1",
+    "entities": {
+      "paper": "Towards better decoding and language model integration in sequence to sequence models"
+    },
+    "facts": {
+      "two_shortcomings": {
+        "text": "论文指出 seq2seq 的两个缺陷：预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整的转写。",
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "overall_claim": {
+        "text": "作者针对这两个问题提出了实用解决方案，并在 Wall Street Journal 数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为 10.6% WER，使用 trigram 语言模型时为 6.7% WER。",
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "sharp_predictions": {
+        "text": "论文观察到 seq2seq 模型常给出非常尖锐的预测，只需考虑少量假设即可找到最可能的转写，但高置信度会降低 beam search 所得转写的多样性。",
+        "evidence_ids": [
+          "c-0b5bc372895d6d0706b56a8e"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "partial_transcripts_wide_beam": {
+        "text": "使用语言模型时，宽 beam search 常产生不完整的转写；窄 beam 因隐式剪枝而使问题不太明显。",
+        "evidence_ids": [
+          "c-753acdce1e13381d0f0064dc"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "three_strategies": {
+        "text": "论文比较了三种防止不完整转写的策略：第一种不改变 beam search 准则，但禁止在 EOS 概率不在最可能 token 概率的设定范围内时输出 EOS。",
+        "evidence_ids": [
+          "c-753acdce1e13381d0f0064dc"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "eos_strategy_limits": {
+        "text": "该 EOS 限制策略能防止截断，但对转写中间的遗漏无效。",
+        "evidence_ids": [
+          "c-753acdce1e13381d0f0064dc"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "length_term": {
+        "text": "另一种方案是扩展 beam search 准则以促进长转写；长度相关项曾被用于 CTC 和 seq2seq，但据报道因 beam search 会在录音片段上循环而使用困难、需要额外约束。",
+        "evidence_ids": [
+          "c-753acdce1e13381d0f0064dc"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "coverage_term": {
+        "text": "为防止循环，论文提出使用覆盖（coverage）项，统计累计注意力超过某阈值的帧数。",
+        "evidence_ids": [
+          "c-753acdce1e13381d0f0064dc"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "coverage_mechanism": {
+        "text": "覆盖准则通过将累计注意力超过阈值的帧计为已选，使后续重复选择该帧不再降低解码代价，从而防止在语音上循环；覆盖在每个 beam search 迭代中基于迄今所有注意力权重重新计算。",
+        "evidence_ids": [
+          "c-753acdce1e13381d0f0064dc"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      },
+      "regularization_decoding": {
+        "text": "结论指出，借助高效正则化与谨慎解码，seq2seq 语音识别方法可以与其他非 HMM 技术（如 CTC）竞争。",
+        "evidence_ids": [
+          "c-584f58479e6aaaf4703e5890"
+        ],
+        "turn_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      }
+    },
+    "unresolved": [],
+    "summary": {
+      "discussed_papers": [
+        "1612.02695"
+      ]
+    }
+  },
+  "committed_turns": {
+    "8bf57c82f02c4291ad8e83a40b79849c": {
+      "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "two_shortcomings",
+              "text": "论文指出 seq2seq 的两个缺陷：预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整的转写。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-c1a01afddd733ef65ed6d199"
+                }
+              ]
+            },
+            {
+              "key": "overall_claim",
+              "text": "作者针对这两个问题提出了实用解决方案，并在 Wall Street Journal 数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为 10.6% WER，使用 trigram 语言模型时为 6.7% WER。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-c1a01afddd733ef65ed6d199"
+                }
+              ]
+            },
+            {
+              "key": "sharp_predictions",
+              "text": "论文观察到 seq2seq 模型常给出非常尖锐的预测，只需考虑少量假设即可找到最可能的转写，但高置信度会降低 beam search 所得转写的多样性。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+                }
+              ]
+            },
+            {
+              "key": "partial_transcripts_wide_beam",
+              "text": "使用语言模型时，宽 beam search 常产生不完整的转写；窄 beam 因隐式剪枝而使问题不太明显。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-753acdce1e13381d0f0064dc"
+                }
+              ]
+            },
+            {
+              "key": "three_strategies",
+              "text": "论文比较了三种防止不完整转写的策略：第一种不改变 beam search 准则，但禁止在 EOS 概率不在最可能 token 概率的设定范围内时输出 EOS。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-753acdce1e13381d0f0064dc"
+                }
+              ]
+            },
+            {
+              "key": "eos_strategy_limits",
+              "text": "该 EOS 限制策略能防止截断，但对转写中间的遗漏无效。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-753acdce1e13381d0f0064dc"
+                }
+              ]
+            },
+            {
+              "key": "length_term",
+              "text": "另一种方案是扩展 beam search 准则以促进长转写；长度相关项曾被用于 CTC 和 seq2seq，但据报道因 beam search 会在录音片段上循环而使用困难、需要额外约束。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-753acdce1e13381d0f0064dc"
+                }
+              ]
+            },
+            {
+              "key": "coverage_term",
+              "text": "为防止循环，论文提出使用覆盖（coverage）项，统计累计注意力超过某阈值的帧数。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-753acdce1e13381d0f0064dc"
+                }
+              ]
+            },
+            {
+              "key": "coverage_mechanism",
+              "text": "覆盖准则通过将累计注意力超过阈值的帧计为已选，使后续重复选择该帧不再降低解码代价，从而防止在语音上循环；覆盖在每个 beam search 迭代中基于迄今所有注意力权重重新计算。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-753acdce1e13381d0f0064dc"
+                }
+              ]
+            },
+            {
+              "key": "regularization_decoding",
+              "text": "结论指出，借助高效正则化与谨慎解码，seq2seq 语音识别方法可以与其他非 HMM 技术（如 CTC）竞争。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-584f58479e6aaaf4703e5890"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "8bf57c82f02c4291ad8e83a40b79849c"
+      }
+    }
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "turn_id": "d28-t4",
+  "session_id": "d28",
+  "question": "顺便查一下我明天的私人银行账户余额。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.008600065484642982
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "查询私人银行账户余额",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 2127.762999967672
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.0028999056667089462
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d28",
+        "entities": {
+          "paper": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+          "paper_id": "1705.10272"
+        },
+        "facts": {
+          "objective": {
+            "text": "论文目标是自动检测幽默陈述并在连续尺度上排序，采用Language Model方法并以Deep Learning为后续计划。",
+            "evidence_ids": [
+              "c-ab1f50c84fac89c654f4ed96"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "use_lm_ranking": {
+            "text": "因为并非所有笑话同样好笑，作者用Language Models和Deep Learning方法让潜在幽默的陈述相互排序。",
+            "evidence_ids": [
+              "c-04fd36e8ebf0badf98e5c22f"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "two_corpora": {
+            "text": "系统用两个语料库建立模型：@midnight节目中的搞笑推文集合，以及可自由用于研究的新闻数据语料库。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "scoring_rule": {
+            "text": "根据搞笑推文模型概率更高的推文被认为更好笑（更像幽默训练数据）；而根据新闻语言模型概率更低的推文被认为更好笑（最不像不搞笑的新闻语料）。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "model_features": {
+            "text": "采用标准语言建模方法，以bigrams和trigrams作为特征，并使用带modified Kneser-Ney平滑和back-off技术的KenLM作为语言建模工具。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "semeval_tasks": {
+            "text": "研究通过参加SemEval-2017 Task 6 #HashtagWars进行，包含Pairwise Comparison（Subtask A，选出两条推文中更好笑的一条）和Semi-ranking（Subtask B，将推文分为最搞笑、次九个最搞笑及其余三类）。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "results": {
+            "text": "结果显示新闻数据训练的模型明显优于推文模型，bigram模型略优于trigram；提交的新闻数据trigram模型在Subtask A排名第四、Subtask B排名第一。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "data_size": {
+            "text": "推文数据约21,000条，新闻数据约6.2 GB文本，作者认为新闻数据的显著优势源于其数据量更大。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "oov_limitation": {
+            "text": "语言模型方法的一个局限是大量out-of-vocabulary词，且无法仅靠增加训练数据解决，因为幽默依赖创造性语言使用（如基于生造词的puns）。",
+            "evidence_ids": [
+              "c-fe0545dbe9418ac897a44fc9"
+            ],
+            "turn_id": "d28-t1"
+          },
+          "goal": {
+            "text": "论文的目标是开发自动检测幽默陈述并在连续尺度上对其排序的方法，并报告了一种语言模型方法的结果。",
+            "evidence_ids": [
+              "c-ab1f50c84fac89c654f4ed96"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "why_ngram": {
+            "text": "作者采用Ngram语言模型，原因是可以利用幽默示例训练数据学习某种幽默风格，并且模型会为每个输入赋予概率，便于对陈述进行相对排序。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "task": {
+            "text": "研究首先参加了SemEval-2017 Task 6 #HashtagWars: Learning a Sense of Humor，包含子任务A（成对比较，选出两条推文中更幽默的一条）和子任务B（半排序，将某话题标签下的推文分为最幽默一条、次九条最幽默及其他）。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "scoring": {
+            "text": "系统用两个语料训练Ngram模型：@midnight节目的幽默推文集合，以及可免费用于研究的新闻语料；在幽默推文模型下概率越高被认为越幽默，而在新闻语言模型下概率越低被认为越幽默。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "features_tool": {
+            "text": "模型使用bigram和trigram作为特征，语言建模工具为KenLM，采用modified Kneser-Ney平滑和回退技术。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "result_news_advantage": {
+            "text": "结果显示，在新闻数据上训练的模型相比推文模型具有显著优势，且bigram模型略优于trigram模型。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "official_rank": {
+            "text": "提交到SemEval-2017 Task 6官方评测的新闻数据trigram语言模型在子任务A中排名第四，在子任务B中排名第一。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "data_size_reason": {
+            "text": "作者认为新闻数据相对推文数据的显著优势可能源于新闻数据量大得多：推文数据仅约21,000条，而新闻数据总计约6.2 GB文本。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "pairwise_vs_semiranking": {
+            "text": "论文指出其语言模型在成对比较中表现更好，但半排序结果明显需要更多研究来改进。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "ngram_limitation": {
+            "text": "语言模型方法的一个局限是遇到大量词表外词汇，增加训练数据量无法解决，因为幽默依赖语言的创造性使用（如基于生造词的谐音笑话）。",
+            "evidence_ids": [
+              "c-fe0545dbe9418ac897a44fc9"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "deep_learning_plan": {
+            "text": "作者认为深度学习技术可能在处理未知词、长距离依赖以及词与概念之间的非线性关系方面带来改进，并计划后续探索字符级CNN和LSTM等。",
+            "evidence_ids": [
+              "c-fe0545dbe9418ac897a44fc9"
+            ],
+            "turn_id": "d28-t2"
+          },
+          "external_knowledge": {
+            "text": "论文引用他人发现称，检测基于推文的幽默需要外部知识（如书籍电影标题、歌词、名人传记等），这是由于某些笑话依赖时事和流行文化。",
+            "evidence_ids": [
+              "c-fe0545dbe9418ac897a44fc9"
+            ],
+            "turn_id": "d28-t2"
+          }
+        },
+        "unresolved": [
+          "顺便查一下我明天的私人银行账户余额。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1705.10272"
+          ]
+        }
+      },
+      "elapsed_ms": 4.634000011719763
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792667275.2801898,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "f880c1c8610754ea8e09ad5e17aa7a101905acc7f4527996ce031569c86bf81a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7348,
+        "completion_tokens": 39,
+        "total_tokens": 7387,
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 7220,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7220,
+        "output_tokens": 39,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2125.8766999235377
+    }
+  ]
+}

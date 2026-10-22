@@ -1,0 +1,461 @@
+{
+  "id": "d11-t3",
+  "session_id": "d11",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 7,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "The answer correctly identifies the models used by each paper (UIT-ViIC: NIC and Yunjey's Pytorch-tutorial models with CNN encoder/RNN-LSTM decoder; SEVA: BERT fine-tuned via BertForTokenClassification, plus spaCy), reports SEVA's F1 of 0.89 with 80-20 split, correctly notes that the supplied UIT-ViIC evidence lacks concrete fine-tuned performance numbers while summarizing the qualitative BLEU-1 vs BLEU-2..4/CIDEr finding, and justifies non-comparability due to differing tasks, models, and metrics. All claims are supported by their cited chunks.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "The cited chunk explicitly names NIC and Yunjey's Pytorch-tutorial model as the two published encoder-decoder models used for training and evaluation."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "The same chunk states CNN first extracts image features for the encoder and RNN-LSTM embeds vectors to target sentences in the decoder."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "The conclusion chunk supports evaluation on DNN models and the BLEU-1 vs BLEU-2..4/CIDEr comparison; the cited evidence contains no concrete numeric performance values, so the statement that none are given is accurate."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "The cited chunk states BERT's pre-trained cased model, pytorch transformers/hugging face BertForTokenClassification, multi-class classification, and full fine-tuning."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "The chunk says CR was additionally implemented with spaCy, producing similar results."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "The chunk reports an F1-score of 0.89 and an 80-20 train/evaluation split."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "The cited chunks consistently show different tasks (token classification vs image captioning dataset evaluation), different models (BERT/spaCy vs NIC/Pytorch-tutorial), and different metrics (F1 vs BLEU/CIDEr), with no cross-paper benchmark provided; non-comparability follows from this evidence."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "87fcd92a7bde94f480da70536f6950bf55acfc28c453c0613d0b0daa104b7cf3",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7967,
+        "completion_tokens": 522,
+        "total_tokens": 8489,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7711,
+        "output_tokens": 522,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5904.195099952631
+    }
+  ],
+  "payload_hash": "5604e3147d1b3520231aa7b40bdf1c0ef427d584582b87241188694d083d7528",
+  "payload": {
+    "question": "与《Common-Knowledge Concept Recognition for SEVA》对比，分别说明两篇论文如何回答“What deep neural network models are used in evaluation?”与“What is the performance of fine tuned model on this dataset?”，并说明是否具有可比性。",
+    "answer": {
+      "claims": [
+        {
+          "key": "uit_models_used",
+          "text": "UIT-ViIC 论文使用两个基于编码器-解码器架构的已发表图像描述模型进行训练和评估：Neural Image Captioning (NIC) 模型，以及 Yunjey 的 Pytorch-tutorial 图像描述模型。",
+          "citations": [
+            {
+              "paper_id": "2002.00175",
+              "chunk_id": "c-6a524ef8fe27746863a8c5f0"
+            }
+          ]
+        },
+        {
+          "key": "uit_model_architecture",
+          "text": "在 UIT-ViIC 的实验中，编码器部分先用 CNN 提取图像特征，解码器部分使用 RNN-LSTM 将向量嵌入为目标句子。",
+          "citations": [
+            {
+              "paper_id": "2002.00175",
+              "chunk_id": "c-6a524ef8fe27746863a8c5f0"
+            }
+          ]
+        },
+        {
+          "key": "uit_performance",
+          "text": "UIT-ViIC 摘要及结论仅总体说明在深度神经网络模型上评估数据集并与其他数据集比较，英文集仅在 BLEU-1 上优于越南语集，越南语集在 BLEU-2 至 BLEU-4 尤其 CIDEr 上表现较好；所给证据未提供微调模型在该数据集上的具体数值性能。",
+          "citations": [
+            {
+              "paper_id": "2002.00175",
+              "chunk_id": "c-df82acb31723d02ba4213f1a"
+            },
+            {
+              "paper_id": "2002.00175",
+              "chunk_id": "c-bbd4db15d6773cfa30848a4a"
+            }
+          ]
+        },
+        {
+          "key": "seva_model_used",
+          "text": "SEVA 论文选择 BERT 进行概念识别，使用其预训练的 cased 语言模型，基于 pytorch transformers 和 hugging face 的 BertForTokenClassification 做多类分类，并进行完整微调。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "seva_additional_model",
+          "text": "SEVA 还使用 spaCy 实现概念识别，并得到相似结果。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "seva_performance",
+          "text": "SEVA 中微调后的 BERT 模型在概念识别任务上取得 F1 分数 0.89，训练与评估采用 80-20 数据划分。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "not_comparable",
+          "text": "两篇论文的任务与数据集不同（SEVA 为系统工程概念识别的词级标注 token 分类，UIT-ViIC 为越南语图像描述数据集评估），模型与指标也不同（BERT 用 F1，图像描述模型用 BLEU/CIDEr），因此两者性能不具备可比性。证据分别描述各自设置，未提供跨论文可直接比较的基准。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a"
+            },
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            },
+            {
+              "paper_id": "2002.00175",
+              "chunk_id": "c-6a524ef8fe27746863a8c5f0"
+            },
+            {
+              "paper_id": "2002.00175",
+              "chunk_id": "c-df82acb31723d02ba4213f1a"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "对比《Common-Knowledge Concept Recognition for SEVA》与《UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning》两篇论文：评估中使用了哪些深度神经网络模型？微调模型在数据集上的性能如何？两者的评估是否具有可比性？",
+    "evidence": [
+      {
+        "chunk_id": "c-bbd4db15d6773cfa30848a4a",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Abstract",
+        "text": "Image Captioning, the task of automatic generation of image captions, has attracted attentions from researchers in many fields of computer science, being computer vision, natural language processing and machine learning in recent years. This paper contributes to research on Image Captioning task in terms of extending dataset to a different language - Vietnamese. So far, there is no existed Image Captioning dataset for Vietnamese language, so this is the foremost fundamental step for developing Vietnamese Image Captioning. In this scope, we first build a dataset which contains manually written captions for images from Microsoft COCO dataset relating to sports played with balls, we called this dataset UIT-ViIC. UIT-ViIC consists of 19,250 Vietnamese captions for 3,850 images. Following that, we evaluate our dataset on deep neural network models and do comparisons with English dataset and two Vietnamese datasets built by different methods. UIT-ViIC is published on our lab website for research purposes.",
+        "text_hash": "ab064b7f9267820d00b7d4986ffd9fe31e3395decbe3f55bd4a42083468bf958",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1014,
+            "text": "Image Captioning, the task of automatic generation of image captions, has attracted attentions from researchers in many fields of computer science, being computer vision, natural language processing and machine learning in recent years. This paper contributes to research on Image Captioning task in terms of extending dataset to a different language - Vietnamese. So far, there is no existed Image Captioning dataset for Vietnamese language, so this is the foremost fundamental step for developing Vietnamese Image Captioning. In this scope, we first build a dataset which contains manually written captions for images from Microsoft COCO dataset relating to sports played with balls, we called this dataset UIT-ViIC. UIT-ViIC consists of 19,250 Vietnamese captions for 3,850 images. Following that, we evaluate our dataset on deep neural network models and do comparisons with English dataset and two Vietnamese datasets built by different methods. UIT-ViIC is published on our lab website for research purposes.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-6a524ef8fe27746863a8c5f0",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Image Captioning Models",
+        "text": "Our main goal in this section is to see if Image Captioning models could learn well with Vietnamese language. To accomplish this task, we train and evaluate our dataset with two published Image Captioning models applying encoder-decoder architecture. The models we propose are Neural Image Captioning (NIC) model BIBREF14, Image Captioning model from the Pytorch-tutorial BIBREF15 by Yunjey.\n\nOverall, CNN is first used for extracting image features for encoder part. The image features which are presented in vectors will be used as layers for decoding. For decoder part, RNN - LSTM are used to embed the vectors to target sentences using words/tokens provided in vocabulary.",
+        "text_hash": "265009cac1b6892f759547ad2259a52dcf14c6532baf76219413338d38fcbca4",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Image Captioning Models",
+            "start": 0,
+            "end": 391,
+            "text": "Our main goal in this section is to see if Image Captioning models could learn well with Vietnamese language. To accomplish this task, we train and evaluate our dataset with two published Image Captioning models applying encoder-decoder architecture. The models we propose are Neural Image Captioning (NIC) model BIBREF14, Image Captioning model from the Pytorch-tutorial BIBREF15 by Yunjey.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Image Captioning Models",
+            "start": 0,
+            "end": 283,
+            "text": "Overall, CNN is first used for extracting image features for encoder part. The image features which are presented in vectors will be used as layers for decoding. For decoder part, RNN - LSTM are used to embed the vectors to target sentences using words/tokens provided in vocabulary.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-df82acb31723d02ba4213f1a",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Conclusion and Further Improvements",
+        "text": "In this paper, we constructed a Vietnamese dataset with images from MS-COCO, relating to the category within sportball, consisting of 3,850 images with 19,250 manually-written Vietnamese captions. Next, we conducted several experiments on two popular existed Image Captioning models to evaluate their efficiency when learning two Vietnamese datasets. The results are then compared with the original MS-COCO English categorized with sportball category.\n\nOverall, we can see that English set only out-performed Vietnamese ones in BLEU-1 metric, rather, the Vietnamese sets performing well basing on BLEU-2 to BLEU-4, especially CIDEr scores. On the other hand, when UIT-ViIC is compared with the dataset having captions translated by Google, the evaluation results and the output examples suggest that Google Translation service is able to perform acceptablly even though most translated captions are not perfectly natural and linguistically friendly. As a results, we proved that manually written captions for Vietnamese dataset is currently prefered.\n\nFor future improvements, extending the UIT-ViIC's cateogry into all types of sport to verify how the dataset's size and category affect the Image Captioning models' performance is considered as our highest priority. Moreover, the human resources for dataset construction will be expanded. Second, we will continue to finetune our experiments to find out proper parameters for models, especially with encoding and decoding architectures, for better learning performance with Vietnamese dataset, especially when the categories are limited.",
+        "text_hash": "c872ccc66fd4a88e4ebdc403385ef81864c9cc845dbb5fce70dc58146dda01e2",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s14-p0",
+            "section": "Conclusion and Further Improvements",
+            "start": 0,
+            "end": 451,
+            "text": "In this paper, we constructed a Vietnamese dataset with images from MS-COCO, relating to the category within sportball, consisting of 3,850 images with 19,250 manually-written Vietnamese captions. Next, we conducted several experiments on two popular existed Image Captioning models to evaluate their efficiency when learning two Vietnamese datasets. The results are then compared with the original MS-COCO English categorized with sportball category.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s14-p1",
+            "section": "Conclusion and Further Improvements",
+            "start": 0,
+            "end": 597,
+            "text": "Overall, we can see that English set only out-performed Vietnamese ones in BLEU-1 metric, rather, the Vietnamese sets performing well basing on BLEU-2 to BLEU-4, especially CIDEr scores. On the other hand, when UIT-ViIC is compared with the dataset having captions translated by Google, the evaluation results and the output examples suggest that Google Translation service is able to perform acceptablly even though most translated captions are not perfectly natural and linguistically friendly. As a results, we proved that manually written captions for Vietnamese dataset is currently prefered.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s14-p2",
+            "section": "Conclusion and Further Improvements",
+            "start": 0,
+            "end": 537,
+            "text": "For future improvements, extending the UIT-ViIC's cateogry into all types of sport to verify how the dataset's size and category affect the Image Captioning models' performance is considered as our highest priority. Moreover, the human resources for dataset construction will be expanded. Second, we will continue to finetune our experiments to find out proper parameters for models, especially with encoding and decoding architectures, for better learning performance with Vietnamese dataset, especially when the categories are limited.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a2dd94b291eab0fed37f7ddd",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Dataset Creation ::: Dataset Analysis",
+        "text": "After finishing constructing UIT-ViIC dataset, we have a look in statistical analysis on our corpus in this section. UIT-ViIC covers 3,850 images described by 19,250 Vietnamese captions. Sticking strictly to our annotation guidelines, the majority of our captions are at the length of 10-15 tokens. We are using the term “tokens” here as a Vietnamese word can consist of one, two or even three tokens. Therefore, to apply Vietnamese properly to Image Captioning, we present a tokenization tool - PyVI BIBREF17, which is specialized for Vietnamese language tokenization, at words level. The sentence length using token-level tokenizer and word-level tokenizer are compared and illustrated in Fig. FIGREF23, we can see there are variances there. So that, we can suggest that the tokenizer performs well enough, and we can expect our Image Captioning models to perform better with Vietnamese sentences that are tokenized, as most models perform more efficiently with captions having fewer words.\n\nTable TABREF24 summarizes top three most occuring words for each part-of-speech. Our dataset vocabulary size is 1,472 word classes, including 723 nouns, 567 verbs, and 182 adjectives. It is no surprise that as our dataset is about sports with balls, the noun “bóng” (meaning “ball\") occurs most, followed by “sân” and \"cầu thủ\" (“pitch” and “athlete” respectively). We also found that the frequency of word “tennis” stands out among other adjectives, which specifies that the set covers the majority of tennis sport, followed by “bóng chày” (meaning “baseball”). Therefore, we expect our model to generate the best results for tennis images.",
+        "text_hash": "7e5255cb835703bb3deedca1138f0e7c5d65f22faa95d07127cdc2dd821f3eec",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Dataset Creation ::: Dataset Analysis",
+            "start": 0,
+            "end": 992,
+            "text": "After finishing constructing UIT-ViIC dataset, we have a look in statistical analysis on our corpus in this section. UIT-ViIC covers 3,850 images described by 19,250 Vietnamese captions. Sticking strictly to our annotation guidelines, the majority of our captions are at the length of 10-15 tokens. We are using the term “tokens” here as a Vietnamese word can consist of one, two or even three tokens. Therefore, to apply Vietnamese properly to Image Captioning, we present a tokenization tool - PyVI BIBREF17, which is specialized for Vietnamese language tokenization, at words level. The sentence length using token-level tokenizer and word-level tokenizer are compared and illustrated in Fig. FIGREF23, we can see there are variances there. So that, we can suggest that the tokenizer performs well enough, and we can expect our Image Captioning models to perform better with Vietnamese sentences that are tokenized, as most models perform more efficiently with captions having fewer words.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Dataset Creation ::: Dataset Analysis",
+            "start": 0,
+            "end": 641,
+            "text": "Table TABREF24 summarizes top three most occuring words for each part-of-speech. Our dataset vocabulary size is 1,472 word classes, including 723 nouns, 567 verbs, and 182 adjectives. It is no surprise that as our dataset is about sports with balls, the noun “bóng” (meaning “ball\") occurs most, followed by “sân” and \"cầu thủ\" (“pitch” and “athlete” respectively). We also found that the frequency of word “tennis” stands out among other adjectives, which specifies that the set covers the majority of tennis sport, followed by “bóng chày” (meaning “baseball”). Therefore, we expect our model to generate the best results for tennis images.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-27e8961780b9e393ade155f6",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Introduction",
+        "text": "Generating descriptions for multimedia contents such as images and videos, so called Image Captioning, is helpful for e-commerce companies or news agencies. For instance, in e-commerce field, people will no longer need to put much effort into understanding and describing products' images on their websites because image contents can be recognized and descriptions are automatically generated. Inspired by Horus BIBREF0 , Image Captioning system can also be integrated into a wearable device, which is able to capture surrounding images and generate descriptions as sound in real time to guide people with visually impaired.\n\nImage Captioning has attracted attentions from researchers in recent years BIBREF1, BIBREF2, BIBREF3, and there has been promising attempts dealing with language barrier in this task by extending existed dataset captions into different languages BIBREF3, BIBREF4.\n\nIn this study, generating image captions in Vietnamese language is put into consideration. One straightforward approach for this task is to translate English captions into Vietnamese by human or by using machine translation tool, Google translation. With the method of translating directly from English to Vietnamese, we found that the descriptions are sometimes confusing and unnatural to native people. Moreover, image understandings are cultural dependent, as in Western, people usually have different ways to grasp images and different vocabulary choices for describing contexts. For instance, in Fig. FIGREF2, one MS-COCO English caption introduce about \"a baseball player in motion of pitching\", which makes sense and capture accurately the main activity in the image. Though it sounds sensible in English, the sentence becomes less meaningful when we try to translate it into Vietnamese. One attempt of translating the sentence is performed by Google Translation, and the result is not as expected.\n\nTherefore, we come up with the approach of constructing a Vietnamese Image Captioning dataset with descriptions written manually by human. Composed by Vietnamese people, the sentences would be more natural and friendlier to Vietnamese users. The main resources we used from MS-COCO for our dataset are images. Besides, we consider having our dataset focus on sportball category due to several reasons:",
+        "text_hash": "b5082252199fd14cd3b6922289a0cee044faf9a93ad13886490ea33172d8d892",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 624,
+            "text": "Generating descriptions for multimedia contents such as images and videos, so called Image Captioning, is helpful for e-commerce companies or news agencies. For instance, in e-commerce field, people will no longer need to put much effort into understanding and describing products' images on their websites because image contents can be recognized and descriptions are automatically generated. Inspired by Horus BIBREF0 , Image Captioning system can also be integrated into a wearable device, which is able to capture surrounding images and generate descriptions as sound in real time to guide people with visually impaired.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 263,
+            "text": "Image Captioning has attracted attentions from researchers in recent years BIBREF1, BIBREF2, BIBREF3, and there has been promising attempts dealing with language barrier in this task by extending existed dataset captions into different languages BIBREF3, BIBREF4.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1005,
+            "text": "In this study, generating image captions in Vietnamese language is put into consideration. One straightforward approach for this task is to translate English captions into Vietnamese by human or by using machine translation tool, Google translation. With the method of translating directly from English to Vietnamese, we found that the descriptions are sometimes confusing and unnatural to native people. Moreover, image understandings are cultural dependent, as in Western, people usually have different ways to grasp images and different vocabulary choices for describing contexts. For instance, in Fig. FIGREF2, one MS-COCO English caption introduce about \"a baseball player in motion of pitching\", which makes sense and capture accurately the main activity in the image. Though it sounds sensible in English, the sentence becomes less meaningful when we try to translate it into Vietnamese. One attempt of translating the sentence is performed by Google Translation, and the result is not as expected.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 401,
+            "text": "Therefore, we come up with the approach of constructing a Vietnamese Image Captioning dataset with descriptions written manually by human. Composed by Vietnamese people, the sentences would be more natural and friendlier to Vietnamese users. The main resources we used from MS-COCO for our dataset are images. Besides, we consider having our dataset focus on sportball category due to several reasons:",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-31214b784b9f4dcaddc0adf6",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "INTRODUCTION",
+        "text": "The Systems Engineer's Virtual Assistant (SEVA) BIBREF0 was introduced with the goal to assist systems engineers (SE) in their problem-solving abilities by keeping track of large amounts of information of a NASA-specific project and using the information to answer queries from the user. In this work, we address a system element by constructing a common-knowledge concept recognition system for improving the performance of SEVA, using the static knowledge collected from the Systems Engineering Handbook BIBREF1 that is widely used in projects across the organization as domain-specific commonsense knowledge. At NASA, although there exists knowledge engines and ontologies for the SE domain such as MBSE BIBREF2, IMCE BIBREF3, and OpenCaesar BIBREF4, generic commonsense acquisition is rarely discussed; we aim to address this challenge. SE commonsense comes from years of experience and learning which involves background knowledge that goes beyond any handbook. Although constructing an assistant like SEVA system is the overarching objective, a key problem to first address is to extract elementary common-knowledge concepts using the SE handbook and domain experts. We use the term `common-knowledge' as the `commonsense' knowledge of a specific domain. This knowledge can be seen as a pivot that can be used later to collect `commonsense' knowledge for the SE domain. We propose a preliminary research study that can pave a path towards a comprehensive commonsense knowledge acquisition for an effective Artificial Intelligence (AI) application for the SE domain. Overall structure of this work is summarized in Figure 1. Implementation with demo and dataset is available at: https://github.com/jitinkrishnan/NASA-SE .",
+        "text_hash": "1e7499b4fd7e0694910dc6b9e12a8306e241def879582d4f6d1db068d157abd8",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "INTRODUCTION",
+            "start": 0,
+            "end": 1726,
+            "text": "The Systems Engineer's Virtual Assistant (SEVA) BIBREF0 was introduced with the goal to assist systems engineers (SE) in their problem-solving abilities by keeping track of large amounts of information of a NASA-specific project and using the information to answer queries from the user. In this work, we address a system element by constructing a common-knowledge concept recognition system for improving the performance of SEVA, using the static knowledge collected from the Systems Engineering Handbook BIBREF1 that is widely used in projects across the organization as domain-specific commonsense knowledge. At NASA, although there exists knowledge engines and ontologies for the SE domain such as MBSE BIBREF2, IMCE BIBREF3, and OpenCaesar BIBREF4, generic commonsense acquisition is rarely discussed; we aim to address this challenge. SE commonsense comes from years of experience and learning which involves background knowledge that goes beyond any handbook. Although constructing an assistant like SEVA system is the overarching objective, a key problem to first address is to extract elementary common-knowledge concepts using the SE handbook and domain experts. We use the term `common-knowledge' as the `commonsense' knowledge of a specific domain. This knowledge can be seen as a pivot that can be used later to collect `commonsense' knowledge for the SE domain. We propose a preliminary research study that can pave a path towards a comprehensive commonsense knowledge acquisition for an effective Artificial Intelligence (AI) application for the SE domain. Overall structure of this work is summarized in Figure 1. Implementation with demo and dataset is available at: https://github.com/jitinkrishnan/NASA-SE .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "Abstract",
+        "text": "We build a common-knowledge concept recognition system for a Systems Engineer's Virtual Assistant (SEVA) which can be used for downstream tasks such as relation extraction, knowledge graph construction, and question-answering. The problem is formulated as a token classification task similar to named entity extraction. With the help of a domain expert and text processing methods, we construct a dataset annotated at the word-level by carefully defining a labelling scheme to train a sequence model to recognize systems engineering concepts. We use a pre-trained language model and fine-tune it with the labeled dataset of concepts. In addition, we also create some essential datasets for information such as abbreviations and definitions from the systems engineering domain. Finally, we construct a simple knowledge graph using these extracted concepts along with some hyponym relations.",
+        "text_hash": "045822a3fecb7078ca20addb6229c7db27066b696cc3951a27779069cc245f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 889,
+            "text": "We build a common-knowledge concept recognition system for a Systems Engineer's Virtual Assistant (SEVA) which can be used for downstream tasks such as relation extraction, knowledge graph construction, and question-answering. The problem is formulated as a token classification task similar to named entity extraction. With the help of a domain expert and text processing methods, we construct a dataset annotated at the word-level by carefully defining a labelling scheme to train a sequence model to recognize systems engineering concepts. We use a pre-trained language model and fine-tune it with the labeled dataset of concepts. In addition, we also create some essential datasets for information such as abbreviations and definitions from the systems engineering domain. Finally, we construct a simple knowledge graph using these extracted concepts along with some hyponym relations.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-35ae853dec5dd79f61ef4980",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+        "text": "Any language model can be used for the purpose of customizing an NER problem to CR. We choose to go with BERT BIBREF16 because of its general-purpose nature and usage of contextualized word embeddings.\n\nIn the hand-labelled dataset, each word gets a label. The idea is to perform multi-class classification using BERT's pre-trained cased language model. We use pytorch transformers and hugging face as per the tutorial by BIBREF17 which uses $BertForTokenClassification$. The text is embedded as tokens and masks with a maximum token length. This embedded tokens are provided as the input to the pre-trained BERT model for a full fine-tuning. The model gives an F1-score of $0.89$ for the concept recognition task. An 80-20 data split is used for training and evaluation. Detailed performance of the CR is shown in Table 2 and 3. Additionally, we also implemented CR using spaCy BIBREF18 which also produced similar results.",
+        "text_hash": "305951aa3f60e3592031bd309facdfafa70442101c1afbb9b46439f740a25d05",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+            "start": 0,
+            "end": 201,
+            "text": "Any language model can be used for the purpose of customizing an NER problem to CR. We choose to go with BERT BIBREF16 because of its general-purpose nature and usage of contextualized word embeddings.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+            "start": 0,
+            "end": 721,
+            "text": "In the hand-labelled dataset, each word gets a label. The idea is to perform multi-class classification using BERT's pre-trained cased language model. We use pytorch transformers and hugging face as per the tutorial by BIBREF17 which uses $BertForTokenClassification$. The text is embedded as tokens and masks with a maximum token length. This embedded tokens are provided as the input to the pre-trained BERT model for a full fine-tuning. The model gives an F1-score of $0.89$ for the concept recognition task. An 80-20 data split is used for training and evaluation. Detailed performance of the CR is shown in Table 2 and 3. Additionally, we also implemented CR using spaCy BIBREF18 which also produced similar results.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-945a37a61c8991cd2adfcf07",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "CONCLUSION AND FUTURE WORK",
+        "text": "We presented a common-knowledge concept extractor for the Systems Engineer's Virtual Assistant (SEVA) system and showed how it can be beneficial for downstream tasks such as relation extraction and knowledge graph construction. We construct a word-level annotated dataset with the help of a domain expert by carefully defining a labelling scheme to train a sequence labelling task to recognize SE concepts. Further, we also construct some essential datasets from the SE domain which can be used for future research. Future directions include constructing a comprehensive common-knowledge relation extractor from SE handbook and incorporating such human knowledge into a more comprehensive machine-processable commonsense knowledge base for the SE domain.",
+        "text_hash": "30b4339feb6b6c24899392234c0f9cc2eaf6e0059778e38d27055f56b8143425",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "CONCLUSION AND FUTURE WORK",
+            "start": 0,
+            "end": 754,
+            "text": "We presented a common-knowledge concept extractor for the Systems Engineer's Virtual Assistant (SEVA) system and showed how it can be beneficial for downstream tasks such as relation extraction and knowledge graph construction. We construct a word-level annotated dataset with the help of a domain expert by carefully defining a labelling scheme to train a sequence labelling task to recognize SE concepts. Further, we also construct some essential datasets from the SE domain which can be used for future research. Future directions include constructing a comprehensive common-knowledge relation extractor from SE handbook and incorporating such human knowledge into a more comprehensive machine-processable commonsense knowledge base for the SE domain.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

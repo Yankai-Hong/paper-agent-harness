@@ -1,0 +1,317 @@
+{
+  "turn_id": "d01-t4",
+  "session_id": "d01",
+  "question": "顺便查一下我明天的私人银行账户余额。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.006200047209858894
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "查询私人银行账户余额",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 4470.986900036223
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.002500019036233425
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d01",
+        "entities": {
+          "paper": "1809.02208",
+          "paper_title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+          "paper_1": "2004.00809",
+          "paper_2": "1809.02208"
+        },
+        "facts": {
+          "bls_data_used": {
+            "text": "作者使用美国劳工统计局（BLS）数据中各类职业的女性参与比例，与翻译结果中女性代词频率进行比较。",
+            "evidence_ids": [
+              "c-6d84e20bfa1a0d5f93e73fb6"
+            ],
+            "turn_id": "d01-t1"
+          },
+          "gt_fails_real_world": {
+            "text": "作者报告称，Google Translate 的输出未能反映真实世界中女性工作者的分布，并且低估了预期频率。",
+            "evidence_ids": [
+              "c-1c78b22c818d4036c6510107",
+              "c-6d84e20bfa1a0d5f93e73fb6"
+            ],
+            "turn_id": "d01-t1"
+          },
+          "male_defaults_exceed_demographics": {
+            "text": "作者指出，即使不考虑预期的 50:50 分布，Google Translate 表现出的男性默认倾向也比仅凭职业数据所能预期的更为频繁。",
+            "evidence_ids": [
+              "c-1c78b22c818d4036c6510107"
+            ],
+            "turn_id": "d01-t1"
+          },
+          "bls_source_only": {
+            "text": "用于比较的实证数据来源是美国劳工统计局，而非性别中性语言所在国家的工作者数据。",
+            "evidence_ids": [
+              "c-6d84e20bfa1a0d5f93e73fb6",
+              "c-0ff7525d7bb39cc1411d378f"
+            ],
+            "turn_id": "d01-t1"
+          },
+          "method_comparison": {
+            "text": "作者将翻译输出的女性代词频率统计与美国劳工统计局（BLS）各职位女性参与比例数据进行了比对。",
+            "evidence_ids": [
+              "c-0ff7525d7bb39cc1411d378f",
+              "c-1c78b22c818d4036c6510107"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "no_correlation": {
+            "text": "作者将女性工作者分布与女性翻译频率进行比较，发现两个变量之间没有相关性。",
+            "evidence_ids": [
+              "c-1c78b22c818d4036c6510107"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "underestimation": {
+            "text": "数据显示谷歌翻译的输出未能反映女性工作者的真实世界分布，低估了预期频率。",
+            "evidence_ids": [
+              "c-1c78b22c818d4036c6510107",
+              "c-0ff7525d7bb39cc1411d378f"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "beyond_demographics": {
+            "text": "即使不期望50:50的代词性别分布，谷歌翻译出现男性默认的频率也高于仅凭职业数据所预期的水平。",
+            "evidence_ids": [
+              "c-1c78b22c818d4036c6510107",
+              "c-0ff7525d7bb39cc1411d378f"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "quantile_comparison": {
+            "text": "作者对每个12分位数计算女性参与频率，并对翻译女性代词频率做同样计算；谷歌翻译输出未能遵循各职位女性工作者的真实世界分布。",
+            "evidence_ids": [
+              "c-6d84e20bfa1a0d5f93e73fb6"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "inverse_distribution": {
+            "text": "翻译女性代词的分布呈一致的相反分布，女性代词集中在第一个12分位数；而BLS数据显示女性参与在第四个12分位数达到峰值，并在之后的几个分位数中仍然显著。",
+            "evidence_ids": [
+              "c-6d84e20bfa1a0d5f93e73fb6"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "averages_variance": {
+            "text": "在所有职业和语言上平均，句子以女性代词翻译的比例低于BLS报告中女性工作者参与频率的均值；翻译结果的方差也低于该报告的方差。",
+            "evidence_ids": [
+              "c-524c4c9c6f083273886d5971"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "ttest": {
+            "text": "作者进行了单侧t检验，原假设为女性参与频率不显著大于谷歌翻译对同一职位的女性代词频率；得到的p值远低于置信水平，从而拒绝原假设，结论是谷歌翻译的女性翻译频率低估了美国职位的女性参与频率。",
+            "evidence_ids": [
+              "c-524c4c9c6f083273886d5971"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "not_demographic_reflection": {
+            "text": "作者据此认为，不能将这种不对称理解为工作场所人口统计的反映，谷歌翻译中男性默认的突出程度缺乏明确解释。",
+            "evidence_ids": [
+              "c-524c4c9c6f083273886d5971",
+              "c-1c78b22c818d4036c6510107"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "data_source": {
+            "text": "所用BLS数据包含各职业类别女性参与百分比，并对员工超过5万人的职位提供女性参与比例；员工少于5万人的职位，作者假定其女性参与率等同于其上级类别。",
+            "evidence_ids": [
+              "c-c49993752c0b10ccfb6bdc75"
+            ],
+            "turn_id": "d01-t2"
+          },
+          "gt_examines_female_workers_us_bls": {
+            "text": "Assessing Gender Bias in Machine Translation 使用美国劳工统计局的详细职业表（来自美国劳工部）以及女性在各类职业中参与比例的百分比数据，并将其与女性代词译法的频率进行比较。",
+            "evidence_ids": [
+              "c-d56cdc01d43cd2975b96cb5f",
+              "c-6d84e20bfa1a0d5f93e73fb6"
+            ],
+            "turn_id": "d01-t3"
+          },
+          "gt_fails_real_world_distribution": {
+            "text": "该研究得出结论：Google Translate 的输出未能遵循女性工作者在各类职业中的真实分布，低估了预期频率，且女性工作者分布与女性译法频率之间不存在相关性。",
+            "evidence_ids": [
+              "c-6d84e20bfa1a0d5f93e73fb6",
+              "c-1c78b22c818d4036c6510107"
+            ],
+            "turn_id": "d01-t3"
+          },
+          "gt_scope_us_only": {
+            "text": "所引用的女性参与数据来自美国（美国劳工统计局），因此所述女性工作者分布考察针对的是美国职业数据。",
+            "evidence_ids": [
+              "c-d56cdc01d43cd2975b96cb5f",
+              "c-6d84e20bfa1a0d5f93e73fb6"
+            ],
+            "turn_id": "d01-t3"
+          },
+          "mapping_no_female_worker_analysis": {
+            "text": "Mapping Languages and Demographics with Georeferenced Corpora 评估地理参照语料库与真实人口和语言普查数据，其目标（确定哪个数据集最能代表人口、数据集在何处最具代表性、如何对其加权）不涉及对女性工作者真实世界分布的研究。",
+            "evidence_ids": [
+              "c-204aa49abd2af324ac170d44"
+            ],
+            "turn_id": "d01-t3"
+          },
+          "mapping_twitter_better_language_inventory": {
+            "text": "Mapping Languages and Demographics with Georeferenced Corpora 指出 Twitter 数据能更好地预测每个国家所使用的语言清单，且 Twitter 比网络抓取数据缺失的语言更少。",
+            "evidence_ids": [
+              "c-204aa49abd2af324ac170d44",
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "d01-t3"
+          },
+          "mapping_partial_explanation": {
+            "text": "该论文提出 Twitter 作为平台代表的是更富裕的人群（这一点由按 GDP 加权后匹配更好、按互联网使用加权后匹配更差所表明），并提出另一种解释，即其 Twitter 采集以城市地区为基础；但文中称这种偏差问题在该语境下是次要的。",
+            "evidence_ids": [
+              "c-9887004ca215701b79e8e570"
+            ],
+            "turn_id": "d01-t3"
+          },
+          "gt_no_twitter_hypothesis": {
+            "text": "Assessing Gender Bias in Machine Translation 聚焦于通过性别中性语言到英语的翻译度量性别偏见，但不讨论 Twitter 数据或关于各国语言清单的预测。",
+            "evidence_ids": [
+              "c-d56cdc01d43cd2975b96cb5f",
+              "c-1c78b22c818d4036c6510107"
+            ],
+            "turn_id": "d01-t3"
+          },
+          "not_directly_comparable": {
+            "text": "两篇论文在任务、数据和方法上不同：一篇评估地理参照语料库与人口和语言普查数据，另一篇通过翻译性别中性语言的职业名称来度量机器翻译中的性别偏见，因此它们对这两个问题并不是直接可比的。",
+            "evidence_ids": [
+              "c-204aa49abd2af324ac170d44",
+              "c-d56cdc01d43cd2975b96cb5f"
+            ],
+            "turn_id": "d01-t3"
+          }
+        },
+        "unresolved": [
+          "顺便查一下我明天的私人银行账户余额。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1809.02208",
+            "2004.00809"
+          ]
+        }
+      },
+      "elapsed_ms": 5.452899960801005
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792666497.0394957,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "cf94bc44ad35250dcb013e3aa30e3b35276b02ae8519c98a6d68950e23300c0f",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8124,
+        "completion_tokens": 45,
+        "total_tokens": 8169,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7868,
+        "output_tokens": 45,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4469.526000088081
+    }
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "id": "d18-t3",
+  "session_id": "d18",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": false,
+    "behavior_appropriate": false,
+    "reason": "该问题要求对比两篇论文在训练数据与模型架构方面的回答，并评估可比性。证据中同时包含两篇论文的摘要、引言、方法、结论和结果片段，提供了足够信息来回答：第一篇使用维基百科锚链接（Freebase类型映射）进行远监督训练，采用深度神经网络模型；第二篇基于SMT和NMT方法，使用历史文档语料（如El Quijote、荷兰圣经、El Conde Lucanor）进行实验，采用前缀式交互机器翻译协议。因此证据并非不足，拒绝回答不正确。同时，两篇论文分属不同任务（细粒度实体类型 vs 历史文档现代化），训练数据和模型架构均不同，可比性较低，但该判断本应基于证据说明，而非直接拒绝。",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "f61dc557f135fc8d12de677e1d2666483f671385f41a5cc97005cfc364150995",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7202,
+        "completion_tokens": 188,
+        "total_tokens": 7390,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6946,
+        "output_tokens": 188,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3949.127599946223
+    }
+  ],
+  "payload_hash": "cdb2e13afd5b49f276e3d141435ec594af6ff7ad09cdb72ae068ba6136d28069",
+  "payload": {
+    "question": "与《Improving Fine-grained Entity Typing with Entity Linking》对比，分别说明两篇论文如何回答“What kind of data is used to train the model?”与“Which model architecture do they use?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "Improving Fine-grained Entity Typing with Entity Linking 与 An Interactive Machine Translation Framework for Modernizing Historical Documents：训练数据与模型架构对比",
+    "evidence": [
+      {
+        "chunk_id": "c-d31ec43506655415203bffe9",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Abstract",
+        "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+        "text_hash": "bf5c9090658c6f77532e89c9d48cc0b720e9aa022da46b3acc60ae4e5642f749",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 617,
+            "text": "Fine-grained entity typing is a challenging problem since it usually involves a relatively large tag set and may require to understand the context of the entity mention. In this paper, we use entity linking to help with the fine-grained entity type classification process. We propose a deep neural model that makes predictions based on both the context and the information obtained from entity linking results. Experimental results on two commonly used datasets demonstrates the effectiveness of our approach. On both datasets, it achieves more than 5\\% absolute strict accuracy improvement over the state of the art.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-83b8558faa3f4eeefb7c1c6c",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Introduction",
+        "text": "Given a piece of text and the span of an entity mention in this text, fine-grained entity typing (FET) is the task of assigning fine-grained type labels to the mention BIBREF0. The assigned labels should be context dependent BIBREF1. For example, in the sentence “Trump threatens to pull US out of World Trade Organization,” the mention “Trump” should be labeled as /person and /person/politician, although Donald Trump also had other occupations such as businessman, TV personality, etc.\n\nThis task is challenging because it usually uses a relatively large tag set, and some mentions may require the understanding of the context to be correctly labeled. Moreover, since manual annotation is very labor-intensive, existing approaches have to rely on distant supervision to train models BIBREF0, BIBREF2.\n\nThus, the use of extra information to help with the classification process becomes very important. In this paper, we improve FET with entity linking (EL). EL is helpful for a model to make typing decisions because if a mention is correctly linked to its target entity, we can directly obtain the type information about this entity in the knowledge base (KB). For example, in the sentence “There were some great discussions on a variety of issues facing Federal Way,” the mention “Federal Way” may be incorrectly labeled as a company by some FET models. Such a mistake can be avoided after linking it to the city Federal Way, Washington. For cases that require the understanding of the context, using entity linking results is also beneficial. In the aforementioned example where “Trump” is the mention, obtaining all the types of Donald Trump in the knowledge base (e.g., politician, businessman, TV personality, etc.) is still informative for inferring the correct type (i.e., politician) that fits the context, since they narrows the possible labels down.",
+        "text_hash": "80f8920937b9b6adbf6634aee89383c05ec83d41efc0f0ac36566ed07182d530",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 488,
+            "text": "Given a piece of text and the span of an entity mention in this text, fine-grained entity typing (FET) is the task of assigning fine-grained type labels to the mention BIBREF0. The assigned labels should be context dependent BIBREF1. For example, in the sentence “Trump threatens to pull US out of World Trade Organization,” the mention “Trump” should be labeled as /person and /person/politician, although Donald Trump also had other occupations such as businessman, TV personality, etc.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 313,
+            "text": "This task is challenging because it usually uses a relatively large tag set, and some mentions may require the understanding of the context to be correctly labeled. Moreover, since manual annotation is very labor-intensive, existing approaches have to rely on distant supervision to train models BIBREF0, BIBREF2.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1057,
+            "text": "Thus, the use of extra information to help with the classification process becomes very important. In this paper, we improve FET with entity linking (EL). EL is helpful for a model to make typing decisions because if a mention is correctly linked to its target entity, we can directly obtain the type information about this entity in the knowledge base (KB). For example, in the sentence “There were some great discussions on a variety of issues facing Federal Way,” the mention “Federal Way” may be incorrectly labeled as a company by some FET models. Such a mistake can be avoided after linking it to the city Federal Way, Washington. For cases that require the understanding of the context, using entity linking results is also beneficial. In the aforementioned example where “Trump” is the mention, obtaining all the types of Donald Trump in the knowledge base (e.g., politician, businessman, TV personality, etc.) is still informative for inferring the correct type (i.e., politician) that fits the context, since they narrows the possible labels down.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-bee14e88c20dfa401e81466f",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Conclusions",
+        "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+        "text_hash": "1313b9162683208a1c708a1b1956e8c24781179508d87207a799d161dc944dc9",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 364,
+            "text": "We propose a deep neural model to improve fine-grained entity typing with entity linking. The problem of overfitting the weakly labeled training data is addressed by using a variant of the hinge loss and introducing noise during training. We conduct experiments on two commonly used dataset. The experimental results demonstrates the effectiveness of our approach.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-23d2fdeeb3e49fb0893362f3",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Introduction",
+        "text": "However, the information obtained through EL should not be fully trusted since it is not always accurate. Even when a mention is correctly linked to an entity, the type information of this entity in the KB may be incomplete or outdated. Thus, in this paper, we propose a deep neural fine-grained entity typing model that flexibly predicts labels based on the context, the mention string, and the type information from KB obtained with EL.\n\nUsing EL also introduces a new problem for the training process. Currently, a widely used approach to create FET training samples is to use the anchor links in Wikipedia BIBREF0, BIBREF3. Each anchor link is regarded as a mention, and is weakly labeled with all the types of its referred entity (the Wikipedia page the anchor link points to) in KB. Our approach, when links the mention correctly, also uses all the types of the referred entity in KB as extra information. This may cause the trained model to overfit the weakly labeled data. We design a variant of the hinge loss and introduce noise during training to address this problem.\n\nWe conduct experiments on two commonly used FET datasets. Experimental results show that introducing information obtained through entity linking and having a deep neural model both helps to improve FET performance. Our model achieves more than 5% absolute strict accuracy improvement over the state of the art on both datasets.\n\nOur contributions are summarized as follows:\n\nWe propose a deep neural fine-grained entity typing model that utilizes type information from KB obtained through entity linking.\n\nWe address the problem that our model may overfit the weakly labeled data by using a variant of the hinge-loss and introducing noise during training.\n\nWe demonstrate the effectiveness of our approach with experimental results on commonly used FET datasets.\n\nOur code is available at https://github.com/HKUST-KnowComp/IFETEL.",
+        "text_hash": "5f085bf57c9326a4277d8b58b41082fe7ec4f0ce27e8537af1aaad4baebec7e3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 438,
+            "text": "However, the information obtained through EL should not be fully trusted since it is not always accurate. Even when a mention is correctly linked to an entity, the type information of this entity in the KB may be incomplete or outdated. Thus, in this paper, we propose a deep neural fine-grained entity typing model that flexibly predicts labels based on the context, the mention string, and the type information from KB obtained with EL.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 639,
+            "text": "Using EL also introduces a new problem for the training process. Currently, a widely used approach to create FET training samples is to use the anchor links in Wikipedia BIBREF0, BIBREF3. Each anchor link is regarded as a mention, and is weakly labeled with all the types of its referred entity (the Wikipedia page the anchor link points to) in KB. Our approach, when links the mention correctly, also uses all the types of the referred entity in KB as extra information. This may cause the trained model to overfit the weakly labeled data. We design a variant of the hinge loss and introduce noise during training to address this problem.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 327,
+            "text": "We conduct experiments on two commonly used FET datasets. Experimental results show that introducing information obtained through entity linking and having a deep neural model both helps to improve FET performance. Our model achieves more than 5% absolute strict accuracy improvement over the state of the art on both datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p6",
+            "section": "Introduction",
+            "start": 0,
+            "end": 44,
+            "text": "Our contributions are summarized as follows:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p7",
+            "section": "Introduction",
+            "start": 0,
+            "end": 129,
+            "text": "We propose a deep neural fine-grained entity typing model that utilizes type information from KB obtained through entity linking.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p8",
+            "section": "Introduction",
+            "start": 0,
+            "end": 149,
+            "text": "We address the problem that our model may overfit the weakly labeled data by using a variant of the hinge-loss and introducing noise during training.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p9",
+            "section": "Introduction",
+            "start": 0,
+            "end": 105,
+            "text": "We demonstrate the effectiveness of our approach with experimental results on commonly used FET datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p10",
+            "section": "Introduction",
+            "start": 0,
+            "end": 66,
+            "text": "Our code is available at https://github.com/HKUST-KnowComp/IFETEL.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-3deeb7727365666f3b0b87a5",
+        "paper_id": "1909.12079",
+        "title": "Improving Fine-grained Entity Typing with Entity Linking",
+        "section": "Method ::: Model Training",
+        "text": "Following existing studies, we also generate training data by using the anchor links in Wikipedia. Each anchor link can be used as a mention. These mentions are labeled by mapping the Freebase types of the target entries to the tag set $T$ BIBREF0.\n\nSince the KB type representations we use in our FET model are also obtained through mapping Freebase types, they will perfectly match the automatically generated labels for the mentions that are correctly linked (i.e., when the entity returned by the EL algorithm and the target entry of the anchor link are the same). For example, in Figure FIGREF4, suppose the example sentence is a training sample obtained from Wikipedia, where “Donald Trump” is an anchor link points to the Wikipedia page of Donald Trump. After mapping the Freebase types of Donald Trump to the target tag set, this sample will be weakly annotated as /person/politician, /person/tv_personality, and /person/business, which is exactly the same as the type information (the “Types From KB” in Figure FIGREF4) obtained through EL. Thus, during training, when the EL system links the mention to the correct entity, the model only needs to output the types in the KB type representation. This may cause the trained model to overfit the weakly labeled training data. For most types of entities such as locations and organizations, it is fine since they usually have the same types in different contexts. But it is problematic for person mentions, as their types can be context dependent.\n\nTo address this problem, during training, if a mention is linked to a person entity by our entity linking algorithm, we add a random fine-grained person type label that does not belong to this entity while generating the KB type representation. For example, if the mention is linked to a person with types /person/actor and /person/author, a random label /person/politician may be added. This will force the model to still infer the type labels from the context even when the mention is correctly linked, since the KB type representation no longer perfectly match the weak labels.",
+        "text_hash": "345ca16e1beb9235e9633addb1e2b96083d6695bfeca4f5501c9478b1e09185e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1909.12079",
+        "spans": [
+          {
+            "paragraph_id": "s8-p0",
+            "section": "Method ::: Model Training",
+            "start": 0,
+            "end": 248,
+            "text": "Following existing studies, we also generate training data by using the anchor links in Wikipedia. Each anchor link can be used as a mention. These mentions are labeled by mapping the Freebase types of the target entries to the tag set $T$ BIBREF0.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p1",
+            "section": "Method ::: Model Training",
+            "start": 0,
+            "end": 1253,
+            "text": "Since the KB type representations we use in our FET model are also obtained through mapping Freebase types, they will perfectly match the automatically generated labels for the mentions that are correctly linked (i.e., when the entity returned by the EL algorithm and the target entry of the anchor link are the same). For example, in Figure FIGREF4, suppose the example sentence is a training sample obtained from Wikipedia, where “Donald Trump” is an anchor link points to the Wikipedia page of Donald Trump. After mapping the Freebase types of Donald Trump to the target tag set, this sample will be weakly annotated as /person/politician, /person/tv_personality, and /person/business, which is exactly the same as the type information (the “Types From KB” in Figure FIGREF4) obtained through EL. Thus, during training, when the EL system links the mention to the correct entity, the model only needs to output the types in the KB type representation. This may cause the trained model to overfit the weakly labeled training data. For most types of entities such as locations and organizations, it is fine since they usually have the same types in different contexts. But it is problematic for person mentions, as their types can be context dependent.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p2",
+            "section": "Method ::: Model Training",
+            "start": 0,
+            "end": 580,
+            "text": "To address this problem, during training, if a mention is linked to a person entity by our entity linking algorithm, we add a random fine-grained person type label that does not belong to this entity while generating the KB type representation. For example, if the mention is linked to a person with types /person/actor and /person/author, a random label /person/politician may be added. This will force the model to still infer the type labels from the context even when the mention is correctly linked, since the KB type representation no longer perfectly match the weak labels.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-12faba6617d3bb70ca950aa7",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Introduction",
+        "text": "In recent years, awareness of the importance of preserving our cultural heritage has increased. Historical documents are an important part of that heritage. In order to preserve them, there is an increased need in creating digital text versions which can be search and automatically processed BIBREF0. However, their linguistic properties create additional difficulties: due to the lack of a spelling convention, orthography changes depending on the time period and author. Furthermore, human language evolves with the passage of time, increasing the difficulty of the document's comprehension. Thus, historical documents are mostly accessible to scholars specialized in the time period in which each document was written.\n\nModernization tackles the language barrier in order to increase the accessibility of historical documents. To achieve this, it generates a new version of a historical document in the modern version of the language in which the document was originally written (fi:Shakespeare shows an example of modernizing a document). However, while modernization has been successful in order to increase the comprehension of historical documents BIBREF1, BIBREF2, it is still far from creating error-free modern versions. Therefore, this task still needs to be carried out by scholars.\n\nInteractive machine translation (IMT) fosters human–computer collaborations to generate error-free translations in a productive way BIBREF4, BIBREF5. In this work, we proposed to apply one of these protocols to historical documents modernization. We strive for creating an error-free modern version of a historical document, decreasing the human effort needed to achieve this goal.\n\nThe rest of this document is structured as follows: se:work introduces the related work. Then, in se:IMT we present our protocol. se:exp describes the experiments conducted in order to assess our proposal. The results of those experiments are presented and discussed in se:res. Finally, in se:conc, conclusions are drawn.",
+        "text_hash": "ff94572cb00c9881fd101c1b19de23780cb6d1fbd0658af23fc47e53059ed652",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 722,
+            "text": "In recent years, awareness of the importance of preserving our cultural heritage has increased. Historical documents are an important part of that heritage. In order to preserve them, there is an increased need in creating digital text versions which can be search and automatically processed BIBREF0. However, their linguistic properties create additional difficulties: due to the lack of a spelling convention, orthography changes depending on the time period and author. Furthermore, human language evolves with the passage of time, increasing the difficulty of the document's comprehension. Thus, historical documents are mostly accessible to scholars specialized in the time period in which each document was written.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 571,
+            "text": "Modernization tackles the language barrier in order to increase the accessibility of historical documents. To achieve this, it generates a new version of a historical document in the modern version of the language in which the document was originally written (fi:Shakespeare shows an example of modernizing a document). However, while modernization has been successful in order to increase the comprehension of historical documents BIBREF1, BIBREF2, it is still far from creating error-free modern versions. Therefore, this task still needs to be carried out by scholars.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 381,
+            "text": "Interactive machine translation (IMT) fosters human–computer collaborations to generate error-free translations in a productive way BIBREF4, BIBREF5. In this work, we proposed to apply one of these protocols to historical documents modernization. We strive for creating an error-free modern version of a historical document, decreasing the human effort needed to achieve this goal.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 321,
+            "text": "The rest of this document is structured as follows: se:work introduces the related work. Then, in se:IMT we present our protocol. se:exp describes the experiments conducted in order to assess our proposal. The results of those experiments are presented and discussed in se:res. Finally, in se:conc, conclusions are drawn.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e242628d1556d3af58dbaeaa",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Conclusions and Future Work",
+        "text": "In this work, we proposed a collaborative user–computer approach to create an error-free modern version of a historical document. We tested this proposal on a simulated environment, achieving significant reductions of the human effort. We built our modernization protocol based on both SMT and NMT approaches to prefix-based IMT. Although both systems yielded significant improvements for two data sets out of three, the SMT approach yielded the best results—both in terms of the human reduction and in the modernization quality of the initial system.\n\nAs a future work, we want to further research the behavior of the neural systems. For that, we would like to explore techniques for enriching the training corpus with additional data, and the incorrect generation of words due to subwords. We would also like to develop new protocols based on successful IMT approaches. Finally, we should test our proposal with real users to obtain actual measures of the effort reduction.",
+        "text_hash": "93307bb495fc0c67b2dcbaff25eef35bb5dc409163d423f784025db3f2a18b99",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Conclusions and Future Work",
+            "start": 0,
+            "end": 551,
+            "text": "In this work, we proposed a collaborative user–computer approach to create an error-free modern version of a historical document. We tested this proposal on a simulated environment, achieving significant reductions of the human effort. We built our modernization protocol based on both SMT and NMT approaches to prefix-based IMT. Although both systems yielded significant improvements for two data sets out of three, the SMT approach yielded the best results—both in terms of the human reduction and in the modernization quality of the initial system.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s13-p1",
+            "section": "Conclusions and Future Work",
+            "start": 0,
+            "end": 422,
+            "text": "As a future work, we want to further research the behavior of the neural systems. For that, we would like to explore techniques for enriching the training corpus with additional data, and the incorrect generation of words due to subwords. We would also like to develop new protocols based on successful IMT approaches. Finally, we should test our proposal with real users to obtain actual measures of the effort reduction.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-98f92e50001a68c58a20c08e",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Results",
+        "text": "ta:quality presents the quality of the modernization. Both SMT and NMT approaches were able to significantly improved the baseline. That is, the modernized documents are easier to comprehend by a contemporary reader than the original documents. An exception to this is El Conde Lucanor. The SMT approach yielded significant improvements in terms of TER, but was worse in terms of BLEU. Moreover, the NMT approach yielded worst results in terms of both BLEU and TER. Most likely, this results are due to having used the systems trained with El Quijote for modernizing El Conde Lucanor (see se:corp).\n\nWhen comparing the SMT and NMT approaches, we observe that SMT yielded the best results in all cases. This behavior was already perceived by BIBREF2 and is, most likely, due to the small size of the training corpora—a well-known problem in NMT. However, while the goal of modernization is making historical documents as easier to comprehend by contemporary people as possible, our goal is different. In this work, our goal is to obtain an error-free modern copy of a historical document. To achieve this, we proposed an interactive collaboration between a human expert and our modernizing system, in order to reduce the effort needed to generate such copy. ta:effort presents the experimental results.\n\nBoth SMT and NMT approaches yielded significant reductions of the human effort needed to modernize the Dutch Bible (up to 48 points in terms of WSR and 8 in terms of MAR) and El Quijote (up to 7 points in terms of WSR and 1 of MAR). For El Conde Lucanor, however, both approaches resulted in an increased of the effort need to generate an error-free modern version. This behavior was to be expected since the modernization quality for El Conde Lucanor was very low. Therefore, the system consistently generated wrong suffixes, resulting in the user having to make more corrections.",
+        "text_hash": "b0f8522b5860ce5ea53868f6aa140cc6fbad31751be1be821c1c60dc800e4243",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s11-p0",
+            "section": "Results",
+            "start": 0,
+            "end": 598,
+            "text": "ta:quality presents the quality of the modernization. Both SMT and NMT approaches were able to significantly improved the baseline. That is, the modernized documents are easier to comprehend by a contemporary reader than the original documents. An exception to this is El Conde Lucanor. The SMT approach yielded significant improvements in terms of TER, but was worse in terms of BLEU. Moreover, the NMT approach yielded worst results in terms of both BLEU and TER. Most likely, this results are due to having used the systems trained with El Quijote for modernizing El Conde Lucanor (see se:corp).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p1",
+            "section": "Results",
+            "start": 0,
+            "end": 701,
+            "text": "When comparing the SMT and NMT approaches, we observe that SMT yielded the best results in all cases. This behavior was already perceived by BIBREF2 and is, most likely, due to the small size of the training corpora—a well-known problem in NMT. However, while the goal of modernization is making historical documents as easier to comprehend by contemporary people as possible, our goal is different. In this work, our goal is to obtain an error-free modern copy of a historical document. To achieve this, we proposed an interactive collaboration between a human expert and our modernizing system, in order to reduce the effort needed to generate such copy. ta:effort presents the experimental results.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p2",
+            "section": "Results",
+            "start": 0,
+            "end": 581,
+            "text": "Both SMT and NMT approaches yielded significant reductions of the human effort needed to modernize the Dutch Bible (up to 48 points in terms of WSR and 8 in terms of MAR) and El Quijote (up to 7 points in terms of WSR and 1 of MAR). For El Conde Lucanor, however, both approaches resulted in an increased of the effort need to generate an error-free modern version. This behavior was to be expected since the modernization quality for El Conde Lucanor was very low. Therefore, the system consistently generated wrong suffixes, resulting in the user having to make more corrections.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

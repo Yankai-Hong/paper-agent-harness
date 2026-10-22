@@ -1,0 +1,440 @@
+{
+  "id": "d17-t2",
+  "session_id": "d17",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 12,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "The answer consists entirely of claims drawn from the cited paper chunks, with no common-sense supplementation, and all claims are supported by their cited evidence. It responds to the request for the paper's evidence on the WMT15 English-German test set (2,169 sentences) and covers the key findings (test setup, preprocessing, empty-translation/global-best issue, search errors across beam sizes, length bias, length-histogram, and conclusion).",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "Chunk c-c4953b9c4ea7ec3abed8a6e0 states experiments are on the entire English-German WMT news-test2015 test set (2,169 sentences) with a Transformer base model trained with Tensor2Tensor on WMT18 data excluding ParaCrawl, matching the claim."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "Same chunk states preprocessing includes joint subword segmentation using byte pair encoding with 32K merges and that cased BLEU scores are reported, matching the claim."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "Chunk states that for 51.8% of sentences NMT assigns the global best model score to the empty translation (a single token), matching the claim."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "Chunk states 'Even a large beam size of 100 produces 53.62% search errors,' matching the claim."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "Chunk states large beam sizes reduce search errors but BLEU drops because translations are too short, matching the claim."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "Chunk states Beam-10 yields 15.9% fewer search errors (absolute) than greedy (57.68% vs 73.58%), and Beam-100 improves only slightly (53.62%) despite being 10 times slower than beam-10, matching the claim."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "Chunk states beam search roughly follows the reference distribution though still slightly too short, while exact search has an isolated peak from empty translations, matching the claim."
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "Abstract chunk states exact search finds global best model scores for the entire WMT15 English-German test set under a Transformer base model, and beam search fails to find these global best scores in most cases even with beam size 100, matching the claim."
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "Abstract chunk states for more than 50% of sentences the model assigns its global best score to the empty translation, revealing a massive failure in accounting for adequacy, matching the claim."
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "Abstract chunk states constraining search with a minimum translation length shows the root of the empty-translation problem lies in an inherent bias towards shorter translations, matching the claim."
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "Chunk c-c018cb200993c8ef36611d4a states beam search never compares partial hypotheses of different lengths and this is one of the main sources of search errors, matching the claim."
+      },
+      {
+        "claim_index": 11,
+        "supported": true,
+        "reason": "Conclusion chunk states investigations into length-constrained exact search suggested that simple heuristics like length normalization are unlikely to remedy the problem satisfactorily, matching the claim."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "db3d00f8cc7920c21c68925a2ff5122e8bab3b3514ccd9e3ed4aa3e104a096da",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6053,
+        "completion_tokens": 781,
+        "total_tokens": 6834,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5797,
+        "output_tokens": 781,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6409.274299978279
+    }
+  ],
+  "payload_hash": "df9566c995cde500697c667e732d9ad5f51d5bc8624a148b56dac85856b270bd",
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "test_set_and_model",
+          "text": "该节实验在完整的 English-German WMT news-test2015 测试集（2,169 句）上进行，使用 Transformer base 模型，该模型用 Tensor2Tensor 在排除 ParaCrawl 的 WMT18 平行数据上训练。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "preprocessing_bleu",
+          "text": "预处理包括使用 32K merges 的 byte pair encoding 进行联合子词切分，报告的是 cased BLEU 分数。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "empty_translation_global_best",
+          "text": "对于 51.8% 的句子，NMT 将全局最佳模型分数分配给空翻译（即单个 token）。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "beam_100_search_errors",
+          "text": "即使使用 100 的大 beam size，也会产生 53.62% 的搜索错误。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "beam_size_bleu_tradeoff",
+          "text": "较大的 beam size 减少搜索错误，但 BLEU 分数下降，因为翻译过短。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "beam10_vs_greedy",
+          "text": "Beam-10 相对 greedy decoding 减少 15.9%（绝对）的搜索错误（57.68% 对 73.58%），但 Beam-100 尽管比 beam-10 慢 10 倍，搜索只略微改善（53.62% 搜索错误）。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "length_ratio_histogram",
+          "text": "长度比直方图显示：beam search 虽然仍略短，但大致跟随参考分布，而 exact search 在空翻译处有一个孤立的峰值。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "abstract_global_best_beam_fail",
+          "text": "摘要指出，在 Transformer base 模型下对整个 WMT15 English-German 测试集用精确搜索找到全局最佳模型分数，发现 beam search 在大多数情况下找不到这些全局最佳模型分数，即使 beam size 为 100 也是如此。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-e75fba389a988f777decdfb0"
+            }
+          ]
+        },
+        {
+          "key": "abstract_empty_translation_over_50",
+          "text": "摘要指出，对于超过 50% 的句子，模型实际上将其全局最佳分数分配给空翻译，揭示了神经模型在恰当建模充分性方面的大规模失败。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-e75fba389a988f777decdfb0"
+            }
+          ]
+        },
+        {
+          "key": "abstract_length_bias",
+          "text": "摘要指出，通过用最小翻译长度约束搜索，表明空翻译问题的根源在于对较短翻译的固有偏置。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-e75fba389a988f777decdfb0"
+            }
+          ]
+        },
+        {
+          "key": "beam_search_no_cross_length_comparison",
+          "text": "论文指出，beam search 从不比较不同长度的部分假设，这是搜索错误的主要来源之一。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c018cb200993c8ef36611d4a"
+            }
+          ]
+        },
+        {
+          "key": "conclusion_length_normalization",
+          "text": "结论指出，对长度受限精确搜索的研究表明，像长度归一化这样的简单启发式方法不太可能令人满意地解决该问题。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-00d41f58b53cea9f062e6619"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "On NMT Search Errors and Model Errors: Cat Got Your Tongue? 论文中关于测试集（WMT15 English-German 测试集，包含 2,169 句）的证据是什么",
+    "evidence": [
+      {
+        "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Results without Length Constraints",
+        "text": "We conduct all our experiments in this section on the entire English-German WMT news-test2015 test set (2,169 sentences) with a Transformer base BIBREF13 model trained with Tensor2Tensor BIBREF14 on parallel WMT18 data excluding ParaCrawl. Our pre-processing is as described by BIBREF15 and includes joint subword segmentation using byte pair encoding BIBREF16 with 32K merges. We report cased BLEU scores. An open-source implementation of our exact inference scheme is available in the SGNMT decoder BIBREF17 , BIBREF4 .\n\nOur main result is shown in Tab. TABREF9 . Greedy and beam search both achieve reasonable BLEU scores but rely on a high number of search errors to not be affected by a serious NMT model error: For 51.8% of the sentences, NMT assigns the global best model score to the empty translation, i.e. a single INLINEFORM0 token. Fig. FIGREF10 visualizes the relationship between BLEU and the number of search errors. Large beam sizes reduce the number of search errors, but the BLEU score drops because translations are too short. Even a large beam size of 100 produces 53.62% search errors. Fig. FIGREF11 shows that beam search effectively reduces search errors with respect to greedy decoding to some degree, but is ineffective in reducing search errors even further. For example, Beam-10 yields 15.9% fewer search errors (absolute) than greedy decoding (57.68% vs. 73.58%), but Beam-100 improves search only slightly (53.62% search errors) despite being 10 times slower than beam-10.\n\nThe problem of empty translations is also visible in the histogram over length ratios (Fig. FIGREF13 ). Beam search – although still slightly too short – roughly follows the reference distribution, but exact search has an isolated peak in INLINEFORM0 from the empty translations.",
+        "text_hash": "f813624428798bebae76bb437c23e23c9d6e676da1c5acd0b1c049ddb685308f",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "Results without Length Constraints",
+            "start": 0,
+            "end": 521,
+            "text": "We conduct all our experiments in this section on the entire English-German WMT news-test2015 test set (2,169 sentences) with a Transformer base BIBREF13 model trained with Tensor2Tensor BIBREF14 on parallel WMT18 data excluding ParaCrawl. Our pre-processing is as described by BIBREF15 and includes joint subword segmentation using byte pair encoding BIBREF16 with 32K merges. We report cased BLEU scores. An open-source implementation of our exact inference scheme is available in the SGNMT decoder BIBREF17 , BIBREF4 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p1",
+            "section": "Results without Length Constraints",
+            "start": 0,
+            "end": 978,
+            "text": "Our main result is shown in Tab. TABREF9 . Greedy and beam search both achieve reasonable BLEU scores but rely on a high number of search errors to not be affected by a serious NMT model error: For 51.8% of the sentences, NMT assigns the global best model score to the empty translation, i.e. a single INLINEFORM0 token. Fig. FIGREF10 visualizes the relationship between BLEU and the number of search errors. Large beam sizes reduce the number of search errors, but the BLEU score drops because translations are too short. Even a large beam size of 100 produces 53.62% search errors. Fig. FIGREF11 shows that beam search effectively reduces search errors with respect to greedy decoding to some degree, but is ineffective in reducing search errors even further. For example, Beam-10 yields 15.9% fewer search errors (absolute) than greedy decoding (57.68% vs. 73.58%), but Beam-100 improves search only slightly (53.62% search errors) despite being 10 times slower than beam-10.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p2",
+            "section": "Results without Length Constraints",
+            "start": 0,
+            "end": 279,
+            "text": "The problem of empty translations is also visible in the histogram over length ratios (Fig. FIGREF13 ). Beam search – although still slightly too short – roughly follows the reference distribution, but exact search has an isolated peak in INLINEFORM0 from the empty translations.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e75fba389a988f777decdfb0",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Abstract",
+        "text": "We report on search errors and model errors in neural machine translation (NMT). We present an exact inference procedure for neural sequence models based on a combination of beam search and depth-first search. We use our exact search to find the global best model scores under a Transformer base model for the entire WMT15 English-German test set. Surprisingly, beam search fails to find these global best model scores in most cases, even with a very large beam size of 100. For more than 50% of the sentences, the model in fact assigns its global best score to the empty translation, revealing a massive failure of neural models in properly accounting for adequacy. We show by constraining search with a minimum translation length that at the root of the problem of empty translations lies an inherent bias towards shorter translations. We conclude that vanilla NMT in its current form requires just the right amount of beam search errors, which, from a modelling perspective, is a highly unsatisfactory conclusion indeed, as the model often prefers an empty translation.",
+        "text_hash": "c42961fafa5cd4caa4b9e02d6c08c051ac939f2c149f860a30704df9283c876b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1072,
+            "text": "We report on search errors and model errors in neural machine translation (NMT). We present an exact inference procedure for neural sequence models based on a combination of beam search and depth-first search. We use our exact search to find the global best model scores under a Transformer base model for the entire WMT15 English-German test set. Surprisingly, beam search fails to find these global best model scores in most cases, even with a very large beam size of 100. For more than 50% of the sentences, the model in fact assigns its global best score to the empty translation, revealing a massive failure of neural models in properly accounting for adequacy. We show by constraining search with a minimum translation length that at the root of the problem of empty translations lies an inherent bias towards shorter translations. We conclude that vanilla NMT in its current form requires just the right amount of beam search errors, which, from a modelling perspective, is a highly unsatisfactory conclusion indeed, as the model often prefers an empty translation.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-466e88ad7dc3e0270fc7e8ea",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Introduction",
+        "text": "[0]Now at Google.\n\nNeural machine translation BIBREF0 , BIBREF1 , BIBREF2 assigns the probability INLINEFORM0 of a translation INLINEFORM1 of length INLINEFORM2 over the target language vocabulary INLINEFORM3 for a source sentence INLINEFORM4 of length INLINEFORM5 over the source language vocabulary INLINEFORM6 via a left-to-right factorization using the chain rule: DISPLAYFORM0 \n\nThe task of finding the most likely translation INLINEFORM0 for a given source sentence INLINEFORM1 is known as the decoding or inference problem: DISPLAYFORM0 \n\nThe NMT search space is vast as it grows exponentially with the sequence length. For example, for a common vocabulary size of INLINEFORM0 , there are already more possible translations with 20 words or less than atoms in the observable universe ( INLINEFORM1 ). Thus, complete enumeration of the search space is impossible. The size of the NMT search space is perhaps the main reason why – besides some preliminary studies BIBREF3 , BIBREF4 , BIBREF5 – analyzing search errors in NMT has received only limited attention. To the best of our knowledge, none of the previous studies were able to quantify the number of search errors in unconstrained NMT due to the lack of an exact inference scheme that – although too slow for practical MT – guarantees to find the global best model score for analysis purposes.\n\n[t!] BeamSearch INLINEFORM0 [1] INLINEFORM1 : Source sentence, INLINEFORM2 : Beam size INLINEFORM3 Initialize with empty translation prefix and zero score INLINEFORM4 INLINEFORM5 INLINEFORM6 INLINEFORM7 Hypotheses ending with INLINEFORM8 are not expanded INLINEFORM9 Add all possible continuations INLINEFORM10 Select INLINEFORM11 -best INLINEFORM12 INLINEFORM13 INLINEFORM14 \n\n[t!] DFS INLINEFORM0 [1] INLINEFORM1 : Source sentence\n\n INLINEFORM0 : Translation prefix (default: INLINEFORM1 )\n\n INLINEFORM0 : INLINEFORM1 (default: INLINEFORM2 )",
+        "text_hash": "d337b605decad9b5424b9d40d609629b18b26089211cfca0a12d41638a22169f",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 17,
+            "text": "[0]Now at Google.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 363,
+            "text": "Neural machine translation BIBREF0 , BIBREF1 , BIBREF2 assigns the probability INLINEFORM0 of a translation INLINEFORM1 of length INLINEFORM2 over the target language vocabulary INLINEFORM3 for a source sentence INLINEFORM4 of length INLINEFORM5 over the source language vocabulary INLINEFORM6 via a left-to-right factorization using the chain rule: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 160,
+            "text": "The task of finding the most likely translation INLINEFORM0 for a given source sentence INLINEFORM1 is known as the decoding or inference problem: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 809,
+            "text": "The NMT search space is vast as it grows exponentially with the sequence length. For example, for a common vocabulary size of INLINEFORM0 , there are already more possible translations with 20 words or less than atoms in the observable universe ( INLINEFORM1 ). Thus, complete enumeration of the search space is impossible. The size of the NMT search space is perhaps the main reason why – besides some preliminary studies BIBREF3 , BIBREF4 , BIBREF5 – analyzing search errors in NMT has received only limited attention. To the best of our knowledge, none of the previous studies were able to quantify the number of search errors in unconstrained NMT due to the lack of an exact inference scheme that – although too slow for practical MT – guarantees to find the global best model score for analysis purposes.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 376,
+            "text": "[t!] BeamSearch INLINEFORM0 [1] INLINEFORM1 : Source sentence, INLINEFORM2 : Beam size INLINEFORM3 Initialize with empty translation prefix and zero score INLINEFORM4 INLINEFORM5 INLINEFORM6 INLINEFORM7 Hypotheses ending with INLINEFORM8 are not expanded INLINEFORM9 Add all possible continuations INLINEFORM10 Select INLINEFORM11 -best INLINEFORM12 INLINEFORM13 INLINEFORM14 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 54,
+            "text": "[t!] DFS INLINEFORM0 [1] INLINEFORM1 : Source sentence",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p6",
+            "section": "Introduction",
+            "start": 0,
+            "end": 57,
+            "text": " INLINEFORM0 : Translation prefix (default: INLINEFORM1 )",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p7",
+            "section": "Introduction",
+            "start": 0,
+            "end": 50,
+            "text": " INLINEFORM0 : INLINEFORM1 (default: INLINEFORM2 )",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c018cb200993c8ef36611d4a",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Exact Inference for Neural Models",
+        "text": "Decoding in NMT (Eq. EQREF2 ) is usually tackled with beam search, which is a time-synchronous approximate search algorithm that builds up hypotheses from left to right. A formal algorithm description is given in Alg. SECREF1 . Beam search maintains a set of active hypotheses INLINEFORM0 . In each iteration, all hypotheses in INLINEFORM1 that do not end with the end-of-sentence symbol INLINEFORM2 are expanded and collected in INLINEFORM3 . The best INLINEFORM4 items in INLINEFORM5 constitute the set of active hypotheses INLINEFORM6 in the next iteration (line 11 in Alg. SECREF1 ), where INLINEFORM7 is the beam size. The algorithm terminates when the best hypothesis in INLINEFORM8 ends with the end-of-sentence symbol INLINEFORM9 . Hypotheses are called complete if they end with INLINEFORM10 and partial if they do not.\n\nBeam search is the ubiquitous decoding algorithm for NMT, but it is prone to search errors as the number of active hypotheses is limited by INLINEFORM0 . In particular, beam search never compares partial hypotheses of different lengths with each other. As we will see in later sections, this is one of the main sources of search errors. However, in many cases, the model score found by beam search is a reasonable approximation to the global best model score. Let INLINEFORM1 be the model score found by beam search ( INLINEFORM2 in line 12, Alg. SECREF1 ), which is a lower bound on the global best model score: INLINEFORM3 . Furthermore, since the conditionals INLINEFORM4 in Eq. EQREF1 are log-probabilities and thus non-positive, expanding a partial hypothesis is guaranteed to result in a lower model score, i.e.: DISPLAYFORM0 ",
+        "text_hash": "ea7bc53f278bf14e006f6daa8a1638baa6e0012a33a6776d170b26010e65f64e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Exact Inference for Neural Models",
+            "start": 0,
+            "end": 828,
+            "text": "Decoding in NMT (Eq. EQREF2 ) is usually tackled with beam search, which is a time-synchronous approximate search algorithm that builds up hypotheses from left to right. A formal algorithm description is given in Alg. SECREF1 . Beam search maintains a set of active hypotheses INLINEFORM0 . In each iteration, all hypotheses in INLINEFORM1 that do not end with the end-of-sentence symbol INLINEFORM2 are expanded and collected in INLINEFORM3 . The best INLINEFORM4 items in INLINEFORM5 constitute the set of active hypotheses INLINEFORM6 in the next iteration (line 11 in Alg. SECREF1 ), where INLINEFORM7 is the beam size. The algorithm terminates when the best hypothesis in INLINEFORM8 ends with the end-of-sentence symbol INLINEFORM9 . Hypotheses are called complete if they end with INLINEFORM10 and partial if they do not.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Exact Inference for Neural Models",
+            "start": 0,
+            "end": 832,
+            "text": "Beam search is the ubiquitous decoding algorithm for NMT, but it is prone to search errors as the number of active hypotheses is limited by INLINEFORM0 . In particular, beam search never compares partial hypotheses of different lengths with each other. As we will see in later sections, this is one of the main sources of search errors. However, in many cases, the model score found by beam search is a reasonable approximation to the global best model score. Let INLINEFORM1 be the model score found by beam search ( INLINEFORM2 in line 12, Alg. SECREF1 ), which is a lower bound on the global best model score: INLINEFORM3 . Furthermore, since the conditionals INLINEFORM4 in Eq. EQREF1 are log-probabilities and thus non-positive, expanding a partial hypothesis is guaranteed to result in a lower model score, i.e.: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-00d41f58b53cea9f062e6619",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Conclusion",
+        "text": "We have presented an exact inference scheme for NMT. Exact search may not be practical, but it allowed us to discover deficiencies in widely used NMT models. We linked deteriorating BLEU scores of large beams with the reduction of search errors and showed that the model often prefers the empty translation – an evidence of NMT's failure to properly model adequacy. Our investigations into length constrained exact search suggested that simple heuristics like length normalization are unlikely to remedy the problem satisfactorily.",
+        "text_hash": "56d85152abe37455e364022d0aa89ed5d8168fe5f28f96255cbdee0740b2187b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 531,
+            "text": "We have presented an exact inference scheme for NMT. Exact search may not be practical, but it allowed us to discover deficiencies in widely used NMT models. We linked deteriorating BLEU scores of large beams with the reduction of search errors and showed that the model often prefers the empty translation – an evidence of NMT's failure to properly model adequacy. Our investigations into length constrained exact search suggested that simple heuristics like length normalization are unlikely to remedy the problem satisfactorily.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

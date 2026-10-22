@@ -1,0 +1,504 @@
+{
+  "session_id": "d17",
+  "messages": [
+    {
+      "role": "user",
+      "content": "请检索以下问题的相关原文：关于论文《On NMT Search Errors and Model Errors: Cat Got Your Tongue?》，what is the test set size?",
+      "turn_id": "d17-t1"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "test_set_size",
+            "text": "实验在完整的 English-German WMT news-test2015 测试集上进行，该测试集包含 2,169 句。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "test_set_name",
+            "text": "论文使用 WMT15 English-German 测试集来寻找 Transformer base 模型下的全局最佳模型分数。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-e75fba389a988f777decdfb0"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "d17-t1"
+    },
+    {
+      "role": "user",
+      "content": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "turn_id": "d17-t2"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "test_set_and_model",
+            "text": "该节实验在完整的 English-German WMT news-test2015 测试集（2,169 句）上进行，使用 Transformer base 模型，该模型用 Tensor2Tensor 在排除 ParaCrawl 的 WMT18 平行数据上训练。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "preprocessing_bleu",
+            "text": "预处理包括使用 32K merges 的 byte pair encoding 进行联合子词切分，报告的是 cased BLEU 分数。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "empty_translation_global_best",
+            "text": "对于 51.8% 的句子，NMT 将全局最佳模型分数分配给空翻译（即单个 token）。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "beam_100_search_errors",
+            "text": "即使使用 100 的大 beam size，也会产生 53.62% 的搜索错误。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "beam_size_bleu_tradeoff",
+            "text": "较大的 beam size 减少搜索错误，但 BLEU 分数下降，因为翻译过短。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "beam10_vs_greedy",
+            "text": "Beam-10 相对 greedy decoding 减少 15.9%（绝对）的搜索错误（57.68% 对 73.58%），但 Beam-100 尽管比 beam-10 慢 10 倍，搜索只略微改善（53.62% 搜索错误）。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "length_ratio_histogram",
+            "text": "长度比直方图显示：beam search 虽然仍略短，但大致跟随参考分布，而 exact search 在空翻译处有一个孤立的峰值。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+              }
+            ]
+          },
+          {
+            "key": "abstract_global_best_beam_fail",
+            "text": "摘要指出，在 Transformer base 模型下对整个 WMT15 English-German 测试集用精确搜索找到全局最佳模型分数，发现 beam search 在大多数情况下找不到这些全局最佳模型分数，即使 beam size 为 100 也是如此。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-e75fba389a988f777decdfb0"
+              }
+            ]
+          },
+          {
+            "key": "abstract_empty_translation_over_50",
+            "text": "摘要指出，对于超过 50% 的句子，模型实际上将其全局最佳分数分配给空翻译，揭示了神经模型在恰当建模充分性方面的大规模失败。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-e75fba389a988f777decdfb0"
+              }
+            ]
+          },
+          {
+            "key": "abstract_length_bias",
+            "text": "摘要指出，通过用最小翻译长度约束搜索，表明空翻译问题的根源在于对较短翻译的固有偏置。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-e75fba389a988f777decdfb0"
+              }
+            ]
+          },
+          {
+            "key": "beam_search_no_cross_length_comparison",
+            "text": "论文指出，beam search 从不比较不同长度的部分假设，这是搜索错误的主要来源之一。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-c018cb200993c8ef36611d4a"
+              }
+            ]
+          },
+          {
+            "key": "conclusion_length_normalization",
+            "text": "结论指出，对长度受限精确搜索的研究表明，像长度归一化这样的简单启发式方法不太可能令人满意地解决该问题。",
+            "citations": [
+              {
+                "paper_id": "1908.10090",
+                "chunk_id": "c-00d41f58b53cea9f062e6619"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "d17-t2"
+    },
+    {
+      "role": "user",
+      "content": "与《An Interactive Machine Translation Framework for Modernizing Historical Documents》对比，分别说明两篇论文如何回答“what is the test set size?”与“What kind of data is used to train the model?”，并说明是否具有可比性。",
+      "turn_id": "d17-t3"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "d17-t3"
+    },
+    {
+      "role": "user",
+      "content": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。",
+      "turn_id": "d17-t4"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "clarify",
+        "claims": [],
+        "text": "请明确所指论文或比较对象。"
+      },
+      "turn_id": "d17-t4"
+    }
+  ],
+  "turn_count": 4,
+  "memory": {
+    "session_id": "d17",
+    "entities": {
+      "paper": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+      "test_set": "WMT15 English-German news-test2015 (2,169 sentences)",
+      "model": "Transformer base"
+    },
+    "facts": {
+      "test_set_size": {
+        "text": "实验在完整的 English-German WMT news-test2015 测试集上进行，该测试集包含 2,169 句。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t1"
+      },
+      "test_set_name": {
+        "text": "论文使用 WMT15 English-German 测试集来寻找 Transformer base 模型下的全局最佳模型分数。",
+        "evidence_ids": [
+          "c-e75fba389a988f777decdfb0"
+        ],
+        "turn_id": "d17-t1"
+      },
+      "test_set_and_model": {
+        "text": "该节实验在完整的 English-German WMT news-test2015 测试集（2,169 句）上进行，使用 Transformer base 模型，该模型用 Tensor2Tensor 在排除 ParaCrawl 的 WMT18 平行数据上训练。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "preprocessing_bleu": {
+        "text": "预处理包括使用 32K merges 的 byte pair encoding 进行联合子词切分，报告的是 cased BLEU 分数。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "empty_translation_global_best": {
+        "text": "对于 51.8% 的句子，NMT 将全局最佳模型分数分配给空翻译（即单个 token）。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "beam_100_search_errors": {
+        "text": "即使使用 100 的大 beam size，也会产生 53.62% 的搜索错误。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "beam_size_bleu_tradeoff": {
+        "text": "较大的 beam size 减少搜索错误，但 BLEU 分数下降，因为翻译过短。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "beam10_vs_greedy": {
+        "text": "Beam-10 相对 greedy decoding 减少 15.9%（绝对）的搜索错误（57.68% 对 73.58%），但 Beam-100 尽管比 beam-10 慢 10 倍，搜索只略微改善（53.62% 搜索错误）。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "length_ratio_histogram": {
+        "text": "长度比直方图显示：beam search 虽然仍略短，但大致跟随参考分布，而 exact search 在空翻译处有一个孤立的峰值。",
+        "evidence_ids": [
+          "c-c4953b9c4ea7ec3abed8a6e0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "abstract_global_best_beam_fail": {
+        "text": "摘要指出，在 Transformer base 模型下对整个 WMT15 English-German 测试集用精确搜索找到全局最佳模型分数，发现 beam search 在大多数情况下找不到这些全局最佳模型分数，即使 beam size 为 100 也是如此。",
+        "evidence_ids": [
+          "c-e75fba389a988f777decdfb0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "abstract_empty_translation_over_50": {
+        "text": "摘要指出，对于超过 50% 的句子，模型实际上将其全局最佳分数分配给空翻译，揭示了神经模型在恰当建模充分性方面的大规模失败。",
+        "evidence_ids": [
+          "c-e75fba389a988f777decdfb0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "abstract_length_bias": {
+        "text": "摘要指出，通过用最小翻译长度约束搜索，表明空翻译问题的根源在于对较短翻译的固有偏置。",
+        "evidence_ids": [
+          "c-e75fba389a988f777decdfb0"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "beam_search_no_cross_length_comparison": {
+        "text": "论文指出，beam search 从不比较不同长度的部分假设，这是搜索错误的主要来源之一。",
+        "evidence_ids": [
+          "c-c018cb200993c8ef36611d4a"
+        ],
+        "turn_id": "d17-t2"
+      },
+      "conclusion_length_normalization": {
+        "text": "结论指出，对长度受限精确搜索的研究表明，像长度归一化这样的简单启发式方法不太可能令人满意地解决该问题。",
+        "evidence_ids": [
+          "c-00d41f58b53cea9f062e6619"
+        ],
+        "turn_id": "d17-t2"
+      }
+    },
+    "unresolved": [
+      "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+    ],
+    "summary": {
+      "discussed_papers": [
+        "1908.10090"
+      ]
+    }
+  },
+  "committed_turns": {
+    "d17-t1": {
+      "question": "请检索以下问题的相关原文：关于论文《On NMT Search Errors and Model Errors: Cat Got Your Tongue?》，what is the test set size?",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "test_set_size",
+              "text": "实验在完整的 English-German WMT news-test2015 测试集上进行，该测试集包含 2,169 句。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "test_set_name",
+              "text": "论文使用 WMT15 English-German 测试集来寻找 Transformer base 模型下的全局最佳模型分数。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-e75fba389a988f777decdfb0"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "d17-t1"
+      }
+    },
+    "d17-t2": {
+      "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "test_set_and_model",
+              "text": "该节实验在完整的 English-German WMT news-test2015 测试集（2,169 句）上进行，使用 Transformer base 模型，该模型用 Tensor2Tensor 在排除 ParaCrawl 的 WMT18 平行数据上训练。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "preprocessing_bleu",
+              "text": "预处理包括使用 32K merges 的 byte pair encoding 进行联合子词切分，报告的是 cased BLEU 分数。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "empty_translation_global_best",
+              "text": "对于 51.8% 的句子，NMT 将全局最佳模型分数分配给空翻译（即单个 token）。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "beam_100_search_errors",
+              "text": "即使使用 100 的大 beam size，也会产生 53.62% 的搜索错误。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "beam_size_bleu_tradeoff",
+              "text": "较大的 beam size 减少搜索错误，但 BLEU 分数下降，因为翻译过短。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "beam10_vs_greedy",
+              "text": "Beam-10 相对 greedy decoding 减少 15.9%（绝对）的搜索错误（57.68% 对 73.58%），但 Beam-100 尽管比 beam-10 慢 10 倍，搜索只略微改善（53.62% 搜索错误）。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "length_ratio_histogram",
+              "text": "长度比直方图显示：beam search 虽然仍略短，但大致跟随参考分布，而 exact search 在空翻译处有一个孤立的峰值。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+                }
+              ]
+            },
+            {
+              "key": "abstract_global_best_beam_fail",
+              "text": "摘要指出，在 Transformer base 模型下对整个 WMT15 English-German 测试集用精确搜索找到全局最佳模型分数，发现 beam search 在大多数情况下找不到这些全局最佳模型分数，即使 beam size 为 100 也是如此。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-e75fba389a988f777decdfb0"
+                }
+              ]
+            },
+            {
+              "key": "abstract_empty_translation_over_50",
+              "text": "摘要指出，对于超过 50% 的句子，模型实际上将其全局最佳分数分配给空翻译，揭示了神经模型在恰当建模充分性方面的大规模失败。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-e75fba389a988f777decdfb0"
+                }
+              ]
+            },
+            {
+              "key": "abstract_length_bias",
+              "text": "摘要指出，通过用最小翻译长度约束搜索，表明空翻译问题的根源在于对较短翻译的固有偏置。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-e75fba389a988f777decdfb0"
+                }
+              ]
+            },
+            {
+              "key": "beam_search_no_cross_length_comparison",
+              "text": "论文指出，beam search 从不比较不同长度的部分假设，这是搜索错误的主要来源之一。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-c018cb200993c8ef36611d4a"
+                }
+              ]
+            },
+            {
+              "key": "conclusion_length_normalization",
+              "text": "结论指出，对长度受限精确搜索的研究表明，像长度归一化这样的简单启发式方法不太可能令人满意地解决该问题。",
+              "citations": [
+                {
+                  "paper_id": "1908.10090",
+                  "chunk_id": "c-00d41f58b53cea9f062e6619"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "d17-t2"
+      }
+    },
+    "d17-t3": {
+      "question": "与《An Interactive Machine Translation Framework for Modernizing Historical Documents》对比，分别说明两篇论文如何回答“what is the test set size?”与“What kind of data is used to train the model?”，并说明是否具有可比性。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "d17-t3"
+      }
+    },
+    "d17-t4": {
+      "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。",
+      "result": {
+        "answer": {
+          "decision": "clarify",
+          "claims": [],
+          "text": "请明确所指论文或比较对象。"
+        },
+        "trace_id": "d17-t4"
+      }
+    }
+  }
+}

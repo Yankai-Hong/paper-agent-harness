@@ -1,0 +1,409 @@
+{
+  "id": "d16-t2",
+  "session_id": "d16",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 11,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "该回答逐条引用了论文摘要、语言模型集成、标签平滑与邻域平滑、部分转写问题及覆盖项等章节的具体证据，未从常识补充结论，且覆盖了过度自信和不完整转写两个问题的解决方案证据。所有声明均能在对应引用块中找到支持。",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "摘要块 c-c1a01afddd733ef65ed6d199 原文明确写道 “We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used”，与声明一致。"
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "块 c-8df66f805cb20dd4b2c01daf 原文写道 “We have identified two challenges in adding the language model. First, due to model overconfidence deviations from the best guess of the network drastically changed the term ... which made balancing the terms ... difficult. Second, incomplete transcripts were produced unless a recording coverage term was added”，与声明相符。"
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "块 c-2a97da9c8e3dd5b7f857934d 原文说明训练代价计算时平滑真实标签分布、将部分概率质量分配给非正确类别，阻止模型把所有概率集中到单个 token，并使误差函数不易饱和，与声明一致。"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "同块原文写道 “we propose a neighborhood smoothing scheme that uses the temporal structure of the transcripts: the remaining ... probability mass is assigned to tokens neighboring in the transcript”，与声明相符。"
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "同块原文报告两个效果：模型被正则化且贪心解码错误率降低近 3 个百分点；预测熵更高，beam search 无需温度控制即可发现好解；并且由于训练和评估都使用了该平滑设置，无需控制 EOS token 发射，与声明一致。"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "块 c-753acdce1e13381d0f0064dc 原文写道 wide beam searches 常产生不完整转写；表中 ground truth 同时被网络和语言模型认为最不可能；宽度 100 beam search 配 trigram 语言模型找到的第二条转写缺少话语开头，与声明相符。"
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "同块原文描述第一种策略不改变 beam search 准则，而是禁止发射 EOS token，除非其概率处于最可能 token 概率的一定范围内；该策略防止截断但对转写中间遗漏无效，与声明一致。"
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "同块原文提出覆盖项，统计累计注意力超过阈值的帧数；一旦累计注意力超过阈值该帧即计为已选中，后续再次选中该帧不会降低解码代价，与声明相符。"
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "同块原文写道 “In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step”，与声明一致。"
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "块 c-8df66f805cb20dd4b2c01daf 原文说明该式是条件与无条件概率相乘的启发式，作者尝试加入内在语言模型抑制项，用恒定单独训练的偏置向量替换编码语音来估计 speller 的语言建模能力，得到每字符困惑度约 6.5，且未观察到该扩展带来一致收益，与声明相符。"
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "摘要块 c-c1a01afddd733ef65ed6d199 原文报告在 Wall Street Journal 数据集上，不使用单独语言模型为 10.6% WER，配合 trigram 语言模型为 6.7% WER，与声明一致。"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "cd55e7bd7e0d11aebe850fa5a206d328ae1331ae84023a6a5f5551bda374334a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5859,
+        "completion_tokens": 899,
+        "total_tokens": 6758,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5603,
+        "output_tokens": 899,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7939.063600031659
+    }
+  ],
+  "payload_hash": "268bba37f738a85dc4ce2cf3bf1957f3661b118e5ef9605a2a3576393bf7d163",
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "two_shortcomings",
+          "text": "论文观察到该基于注意力的seq2seq语音识别系统有两个缺点：预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整转写（incomplete transcriptions）。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        },
+        {
+          "key": "lm_integration_challenges",
+          "text": "作者在加入语言模型时识别出两个挑战：第一，由于模型过度自信，偏离网络最佳猜测的偏差会剧烈改变相应项，使得公式中各项的平衡变得困难；第二，除非加入录音覆盖（coverage）项，否则会产生不完整转写。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-8df66f805cb20dd4b2c01daf"
+            }
+          ]
+        },
+        {
+          "key": "label_smoothing_mechanism",
+          "text": "论文将标签平滑描述为防止模型过度自信的方案：在计算训练代价时平滑真实标签分布，把一部分概率质量分配给非正确类别，从而阻止模型把所有概率质量集中到单个token上，并使误差函数不易饱和。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+            }
+          ]
+        },
+        {
+          "key": "neighborhood_smoothing",
+          "text": "论文提出一种邻域平滑方案，利用转写的时间结构，把剩余概率质量分配给转写中相邻的token。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+            }
+          ]
+        },
+        {
+          "key": "smoothing_effects",
+          "text": "作者报告了两个效果：模型被正则化，贪心解码的错误率降低近3个百分点；网络预测的熵更高，使beam search无需温度控制即可发现好的解，并且由于训练和评估都使用了该平滑设置，不需要控制EOS token的发射。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+            }
+          ]
+        },
+        {
+          "key": "incomplete_transcript_failure",
+          "text": "论文指出，当使用语言模型时，宽beam search常常产生不完整转写；在表中的失败示例里，真实转写同时是网络和语言模型认为最不可能的转写，宽度100的beam search配合trigram语言模型找到的第二条转写缺少了话语开头。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "eos_forbidding_strategy",
+          "text": "第一种防止不完整转写的策略不改变beam search准则，而是禁止发射EOS token，除非其概率处于最可能token概率的一定范围内；该策略可防止截断，但对转写中间的遗漏无效。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_term",
+          "text": "为促进更长转写并防止beam search在录音部分上循环，论文提出使用覆盖项，统计累计注意力超过某阈值的帧数；一旦累计注意力超过阈值，该帧即计为已选中，后续再次选中该帧不会降低解码代价。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_recomputation",
+          "text": "在其实现中，覆盖项在每次beam search迭代时使用截至该步产生的全部注意力权重重新计算。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "intrinsic_lm_suppression",
+          "text": "作者尝试通过加入内在语言模型抑制项来为beam search准则（条件与无条件概率相乘的启发式）提供依据，并用恒定、单独训练的偏置向量替换编码语音来估计speller的语言建模能力，得到每字符困惑度约为6.5，但未观察到该beam search准则扩展带来一致收益。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-8df66f805cb20dd4b2c01daf"
+            }
+          ]
+        },
+        {
+          "key": "wer_results",
+          "text": "论文报告在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为10.6% WER，配合trigram语言模型时为6.7% WER。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "论文 Towards better decoding and language model integration in sequence to sequence models 中针对过度自信和不完整转写缺点提出的解决方案的证据是什么",
+    "evidence": [
+      {
+        "chunk_id": "c-c1a01afddd733ef65ed6d199",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Abstract",
+        "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+        "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 782,
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-8df66f805cb20dd4b2c01daf",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Language Model Integration",
+        "text": "The simplest solution to include a separate language model is to extend the beam search cost with a language modeling term BIBREF11 , BIBREF3 , BIBREF14 : DISPLAYFORM0 \n\nwhere coverage refers to a term that promotes longer transcripts described it in detail in Section SECREF16 .\n\nWe have identified two challenges in adding the language model. First, due to model overconfidence deviations from the best guess of the network drastically changed the term INLINEFORM0 , which made balancing the terms in eq. ( EQREF11 ) difficult. Second, incomplete transcripts were produced unless a recording coverage term was added.\n\nEquation ( EQREF11 ) is a heuristic involving the multiplication of a conditional and unconditional probabilities of the transcript INLINEFORM0 . We have tried to justify it by adding an intrinsic language model suppression term INLINEFORM1 that would transform INLINEFORM2 into INLINEFORM3 . We have estimated the language modeling capability of the speller INLINEFORM4 by replacing the encoded speech with a constant, separately trained, biasing vector. The per character perplexity obtained was about 6.5 and we didn't observe consistent gains from this extension of the beam search criterion.",
+        "text_hash": "779d24d75ac4a15600eb3776411db4e8372475e4e695000ea8a9b627b15a1336",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 168,
+            "text": "The simplest solution to include a separate language model is to extend the beam search cost with a language modeling term BIBREF11 , BIBREF3 , BIBREF14 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 109,
+            "text": "where coverage refers to a term that promotes longer transcripts described it in detail in Section SECREF16 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p2",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 337,
+            "text": "We have identified two challenges in adding the language model. First, due to model overconfidence deviations from the best guess of the network drastically changed the term INLINEFORM0 , which made balancing the terms in eq. ( EQREF11 ) difficult. Second, incomplete transcripts were produced unless a recording coverage term was added.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p3",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 596,
+            "text": "Equation ( EQREF11 ) is a heuristic involving the multiplication of a conditional and unconditional probabilities of the transcript INLINEFORM0 . We have tried to justify it by adding an intrinsic language model suppression term INLINEFORM1 that would transform INLINEFORM2 into INLINEFORM3 . We have estimated the language modeling capability of the speller INLINEFORM4 by replacing the encoded speech with a constant, separately trained, biasing vector. The per character perplexity obtained was about 6.5 and we didn't observe consistent gains from this extension of the beam search criterion.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-753acdce1e13381d0f0064dc",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Solutions to Partial Transcripts Problem",
+        "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+        "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 602,
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 911,
+            "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 369,
+            "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a30dc1a770cb3f6b7bc5f850",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Experiments",
+        "text": "We conducted all experiments on the Wall Street Journal dataset, training on si284, validating on dev93 and evaluating on eval92 set. The models were trained on 80-dimensional mel-scale filterbanks extracted every 10ms form 25ms windows, extended with their temporal first and second order differences and per-speaker mean and variance normalization. Our character set consisted of lowercase letters, the space, the apostrophe, a noise marker, and start- and end- of sequence tokens. For comparison with previously published results, experiments involving language models used an extended-vocabulary trigram language model built by the Kaldi WSJ s5 recipe BIBREF17 . We have use the FST framework to compose the language model with a \"spelling lexicon\" BIBREF5 , BIBREF11 , BIBREF18 . All models were implemented using the Tensorflow framework BIBREF19 .\n\nOur base configuration implemented the Listener using 4 bidirectional LSTM layers of 256 units per direction (512 total), interleaved with 3 time-pooling layers which resulted in an 8-fold reduction of the input sequence length, approximately equating the length of hidden activations to the number of characters in the transcript. The Speller was a single LSTM layer with 256 units. Input characters were embedded into 30 dimensions. The attention MLP used 128 hidden units, previous attention weights were accessed using 3 convolutional filters spanning 100 frames. LSTM weights were initialized uniformly over the range INLINEFORM0 . Networks were trained using 8 asynchronous replica workers each employing the ADAM algorithm BIBREF20 with default parameters and the learning rate set initially to INLINEFORM1 , then reduced to INLINEFORM2 and INLINEFORM3 after 400k and 500k training steps, respectively. Static Gaussian weight noise with standard deviation 0.075 was applied to all weight matrices after 20000 training steps. We have also used a small weight decay of INLINEFORM4 .",
+        "text_hash": "a2607700b9bdd0e9d32f96a2a206e197cbcf75ca237b325c6c2abfe62a823f8a",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s11-p0",
+            "section": "Experiments",
+            "start": 0,
+            "end": 854,
+            "text": "We conducted all experiments on the Wall Street Journal dataset, training on si284, validating on dev93 and evaluating on eval92 set. The models were trained on 80-dimensional mel-scale filterbanks extracted every 10ms form 25ms windows, extended with their temporal first and second order differences and per-speaker mean and variance normalization. Our character set consisted of lowercase letters, the space, the apostrophe, a noise marker, and start- and end- of sequence tokens. For comparison with previously published results, experiments involving language models used an extended-vocabulary trigram language model built by the Kaldi WSJ s5 recipe BIBREF17 . We have use the FST framework to compose the language model with a \"spelling lexicon\" BIBREF5 , BIBREF11 , BIBREF18 . All models were implemented using the Tensorflow framework BIBREF19 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p1",
+            "section": "Experiments",
+            "start": 0,
+            "end": 1087,
+            "text": "Our base configuration implemented the Listener using 4 bidirectional LSTM layers of 256 units per direction (512 total), interleaved with 3 time-pooling layers which resulted in an 8-fold reduction of the input sequence length, approximately equating the length of hidden activations to the number of characters in the transcript. The Speller was a single LSTM layer with 256 units. Input characters were embedded into 30 dimensions. The attention MLP used 128 hidden units, previous attention weights were accessed using 3 convolutional filters spanning 100 frames. LSTM weights were initialized uniformly over the range INLINEFORM0 . Networks were trained using 8 asynchronous replica workers each employing the ADAM algorithm BIBREF20 with default parameters and the learning rate set initially to INLINEFORM1 , then reduced to INLINEFORM2 and INLINEFORM3 after 400k and 500k training steps, respectively. Static Gaussian weight noise with standard deviation 0.075 was applied to all weight matrices after 20000 training steps. We have also used a small weight decay of INLINEFORM4 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2a97da9c8e3dd5b7f857934d",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Label Smoothing Prevents Overconfidence",
+        "text": "A elegant solution to model overconfidence was problem proposed for the Inception image recognition architecture BIBREF15 . For the purpose of computing the training cost the ground-truth label distribution is smoothed, with some fraction of the probability mass assigned to classes other than the correct one. This in turn prevents the model from learning to concentrate all probability mass on a single token. Additionally, the model receives more training signal because the error function cannot easily saturate.\n\nOriginally uniform label smoothing scheme was proposed in which the model is trained to assign INLINEFORM0 probability mass to he correct label, and spread the INLINEFORM1 probability mass uniformly over all classes BIBREF15 . Better results can be obtained with unigram smoothing which distributes the remaining probability mass proportionally to the marginal probability of classes BIBREF16 . In this contribution we propose a neighborhood smoothing scheme that uses the temporal structure of the transcripts: the remaining INLINEFORM2 probability mass is assigned to tokens neighboring in the transcript. Intuitively, this smoothing scheme helps the model to recover from beam search errors: the network is more likely to make mistakes that simply skip a character of the transcript.\n\nWe have repeated the analysis of SoftMax temperature on beam search accuracy on a network trained with neighborhood smoothing in Figure FIGREF13 . We can observe two effects. First, the model is regularized and greedy decoding leads to nearly 3 percentage smaller error rate. Second, the entropy of network predictions is higher, allowing beam search to discover good solutions without the need for temperature control. Moreover, the since model is trained and evaluated with INLINEFORM0 we didn't have to control the emission of EOS token.",
+        "text_hash": "83a9322bf047af9b2a337bc9f81e1065e1beeb3dd36a61a76df83c2e93619280",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s9-p0",
+            "section": "Label Smoothing Prevents Overconfidence",
+            "start": 0,
+            "end": 516,
+            "text": "A elegant solution to model overconfidence was problem proposed for the Inception image recognition architecture BIBREF15 . For the purpose of computing the training cost the ground-truth label distribution is smoothed, with some fraction of the probability mass assigned to classes other than the correct one. This in turn prevents the model from learning to concentrate all probability mass on a single token. Additionally, the model receives more training signal because the error function cannot easily saturate.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s9-p1",
+            "section": "Label Smoothing Prevents Overconfidence",
+            "start": 0,
+            "end": 786,
+            "text": "Originally uniform label smoothing scheme was proposed in which the model is trained to assign INLINEFORM0 probability mass to he correct label, and spread the INLINEFORM1 probability mass uniformly over all classes BIBREF15 . Better results can be obtained with unigram smoothing which distributes the remaining probability mass proportionally to the marginal probability of classes BIBREF16 . In this contribution we propose a neighborhood smoothing scheme that uses the temporal structure of the transcripts: the remaining INLINEFORM2 probability mass is assigned to tokens neighboring in the transcript. Intuitively, this smoothing scheme helps the model to recover from beam search errors: the network is more likely to make mistakes that simply skip a character of the transcript.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s9-p2",
+            "section": "Label Smoothing Prevents Overconfidence",
+            "start": 0,
+            "end": 540,
+            "text": "We have repeated the analysis of SoftMax temperature on beam search accuracy on a network trained with neighborhood smoothing in Figure FIGREF13 . We can observe two effects. First, the model is regularized and greedy decoding leads to nearly 3 percentage smaller error rate. Second, the entropy of network predictions is higher, allowing beam search to discover good solutions without the need for temperature control. Moreover, the since model is trained and evaluated with INLINEFORM0 we didn't have to control the emission of EOS token.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

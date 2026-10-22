@@ -1,0 +1,239 @@
+{
+  "turn_id": "d05-t4",
+  "session_id": "d05",
+  "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.012899981811642647
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "compare",
+        "standalone_query": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering 与 A computational linguistic study of personal recovery in bipolar disorder 的评估指标、以及双相情感障碍个体识别方法分别是什么？两篇是否具有可比性？",
+        "needs_clarification": true,
+        "paper_ids": [
+          "1908.11053",
+          "1906.01010"
+        ],
+        "resolved_entities": {
+          "它": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering (1908.11053)",
+          "对比论文": "A computational linguistic study of personal recovery in bipolar disorder (1906.01010)",
+          "比较指标": "未确定"
+        }
+      },
+      "elapsed_ms": 3827.390400110744
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "clarify"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "clarify",
+        "claims": [],
+        "text": "请明确所指论文或比较对象。"
+      },
+      "elapsed_ms": 0.001500011421740055
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "clarify"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d05",
+        "entities": {
+          "paper": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering",
+          "paper_id": "1908.11053"
+        },
+        "facts": {
+          "f1_metric": {
+            "text": "端到端查询生成的评估指标为平均 F1 分数（average F1-scores）。",
+            "evidence_ids": [
+              "c-daf5d703e596aabb1fd2bc1b"
+            ],
+            "turn_id": "d05-t1"
+          },
+          "precision_recall": {
+            "text": "分析中报告了 precision 与 recall，例如增加训练数据时，基于查询子结构的方法在 precision 和 recall 上均获得稳定提升。",
+            "evidence_ids": [
+              "c-e3d8e85b61e47d299326d16b"
+            ],
+            "turn_id": "d05-t1"
+          },
+          "topk_metric": {
+            "text": "评估中使用 top-1 与 top-5 输出中正确生成查询的比例作为指标。",
+            "evidence_ids": [
+              "c-e3d8e85b61e47d299326d16b"
+            ],
+            "turn_id": "d05-t1"
+          },
+          "datasets": {
+            "text": "实验使用两个数据集：LC-QuAD（含3,253个问题，在DBpedia 2016-04上有非空结果）和QALD-5（含311个问题，在DBpedia 2015-10上有非空结果）。",
+            "evidence_ids": [
+              "c-05d777500a51e5fb8c20b32b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "cross_validation": {
+            "text": "每个数据集采用5折交叉验证，训练集70%、开发集10%、测试集20%。",
+            "evidence_ids": [
+              "c-05d777500a51e5fb8c20b32b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "metric_f1": {
+            "text": "端到端查询生成任务的评估指标是平均F1分数（average F1-scores），结果报告在Table TABREF35中，且均以gold标准实体/关系链接结果作为输入。",
+            "evidence_ids": [
+              "c-daf5d703e596aabb1fd2bc1b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "outperforms_baselines": {
+            "text": "在LC-QuAD与QALD-5两个数据集上，SubQG均优于所有对比方法（SINA、NLIWOD、SQG、CompQA），且相较CompQA在复杂问题上取得了更显著的提升。",
+            "evidence_ids": [
+              "c-daf5d703e596aabb1fd2bc1b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "qald5_lower": {
+            "text": "QALD-5上的结果不如LC-QuAD高，原因是QALD-5包含11%的非常困难问题（需要Regex、数值比较等复杂过滤条件），超出该方法能力，同时训练数据规模显著更小。",
+            "evidence_ids": [
+              "c-c81b2f5db39faa2220e61c0b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "top1_top5_noisy_linking": {
+            "text": "在将每个mention的正确链接结果与EARL生成的top-5候选混合的噪声设定下，首个输出的precision下降11.4%，但在85%的情况下仍能在top-5中生成正确答案。",
+            "evidence_ids": [
+              "c-e3d8e85b61e47d299326d16b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "top1_top5_earl_only": {
+            "text": "仅使用EARL链接结果时性能大幅下降，原因是82.8%的问题上EARL只给出部分正确结果；若只看剩余问题，top-1和top-5输出中正确生成查询的比例分别为73.2%和84.8%。",
+            "evidence_ids": [
+              "c-e3d8e85b61e47d299326d16b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "precision_recall_vs_training": {
+            "text": "在LC-QuAD上测试不同训练数据规模：随着训练数据增加，基于查询子结构的方法在precision和recall上均获得稳定提升；合并模块（merging）会略微损害整体precision，但对recall提升更大，尤其在训练数据很少时。",
+            "evidence_ids": [
+              "c-e3d8e85b61e47d299326d16b"
+            ],
+            "turn_id": "d05-t2"
+          },
+          "substructure_ablation": {
+            "text": "按Table TABREF39的结果，完整版SubQG在两个数据集上均取得最佳结果；去掉子结构的Rank w/o substructures性能相对较低，尤其在训练数据不足时（QALD-5上）。",
+            "evidence_ids": [
+              "c-888ad445b4684a4dd148f450"
+            ],
+            "turn_id": "d05-t2"
+          }
+        },
+        "unresolved": [
+          "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1908.11053"
+          ]
+        }
+      },
+      "elapsed_ms": 2.8781999135389924
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792667028.9452748,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "clarify",
+  "answer": {
+    "decision": "clarify",
+    "claims": [],
+    "text": "请明确所指论文或比较对象。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 12,
+      "request_hash": "3b0e0d6893474f6d5b9749a5890745e361ae26667ef7e7adbe45c391c6e58414",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5891,
+        "completion_tokens": 158,
+        "total_tokens": 6049,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5891,
+        "output_tokens": 158,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3825.5587000166997
+    }
+  ]
+}

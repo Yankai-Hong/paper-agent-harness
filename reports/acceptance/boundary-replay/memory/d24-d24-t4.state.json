@@ -1,0 +1,451 @@
+{
+  "session_id": "d24-d24-t4",
+  "messages": [
+    {
+      "role": "user",
+      "content": "关于论文《Hungarian Layer: Logics Empowered Neural Architecture》，Which dataset(s) do they train on?",
+      "turn_id": "48a025dbb5844879a33311435aeb013c"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "training_dataset",
+            "text": "论文在公开基准数据集“Quora Question Pairs”上开展实验，用于释义识别（paraphrase identification）任务。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "experiment_dataset",
+            "text": "实验部分说明，模型性能在著名的公开基准数据集“Quora Question Pairs”上进行验证。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-daafca6e27d47b75a48e6301"
+              }
+            ]
+          },
+          {
+            "key": "case_study_dataset",
+            "text": "案例研究在“Quora Question Pairs”的实际设定下进行，用于释义识别。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-f2c31c48060de190a862f031"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "48a025dbb5844879a33311435aeb013c"
+    },
+    {
+      "role": "user",
+      "content": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "dataset_used",
+            "text": "该论文在公开基准数据集 “Quora Question Pairs” 上进行实验，用于释义识别（paraphrase identification）任务。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "model_pipeline",
+            "text": "模型在该任务上分三步执行：先用 BiLSTM 将输入句子解析为隐藏表示，再由 Hungarian layer 利用这些隐藏表示提取对齐的非匹配部分，最后用余弦相似度对这些对齐的非匹配部分度量以做最终判别。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "results_claim",
+            "text": "作者称实验结果表明其模型广泛且显著地优于其他基线，称这验证了其关于对齐非匹配部分的理论，并说明方法的有效性。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "abstract_sota_claim",
+            "text": "摘要中作者称大量实验显示其模型大幅优于其他最先进基线。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+              }
+            ]
+          },
+          {
+            "key": "alignment_perspective",
+            "text": "论文提出一种释义识别的新视角，聚焦两个句子的对齐非匹配部分，并提出 Hungarian layer 来提取这些部分；该方法可在两个序列间实现硬性且排他的对齐，同时通过端到端反向传播学习参数。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "attention_weakness",
+            "text": "作者认为传统的注意力机制加权技术虽能挑出最相似/最不相似部分，但在建模对齐非匹配部分方面较弱，而这些部分是识别释义的关键证据。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-960c4cb907b38a179597b601"
+              }
+            ]
+          },
+          {
+            "key": "hungarian_exclusiveness",
+            "text": "在该方法中，句子匹配中的对齐被表述为任务分配问题并由 Hungarian 算法求解；该算法以排他方式给出理论上最优的对齐关系，这种排他性刻画了对齐非匹配部分。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-960c4cb907b38a179597b601"
+              }
+            ]
+          },
+          {
+            "key": "training_backprop",
+            "text": "为训练 Hungarian layer，作者以动态构建计算图的方式修改反向传播：前向传播依据对齐位置对动态构建 Hungarian layer 与下一层之间的连接，反向传播则沿这些动态构建的连接进行。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-f1c9938e8916274c07715a88"
+              }
+            ]
+          },
+          {
+            "key": "end_to_end_optimization",
+            "text": "由于计算图在前向传播中已动态构建，反向过程可沿动态构建的层间连接传播，从而优化框架仍能以端到端方式调整神经架构的参数。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-f1c9938e8916274c07715a88"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+    },
+    {
+      "role": "user",
+      "content": "与《A Study on Neural Network Language Modeling》对比，分别说明两篇论文如何回答“Which dataset(s) do they train on?”与“What languages are used for the experiments?”，并说明是否具有可比性。",
+      "turn_id": "4a174d98fdb443b9ae0f0e9d25643453"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "4a174d98fdb443b9ae0f0e9d25643453"
+    },
+    {
+      "role": "user",
+      "content": "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。",
+      "turn_id": "75942499d85a4c9784704506c678f025"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "75942499d85a4c9784704506c678f025"
+    }
+  ],
+  "turn_count": 4,
+  "memory": {
+    "session_id": "d24-d24-t4",
+    "entities": {
+      "paper": "Hungarian Layer: Logics Empowered Neural Architecture",
+      "paper_id": "1712.02555",
+      "dataset": "Quora Question Pairs",
+      "task": "paraphrase identification"
+    },
+    "facts": {
+      "training_dataset": {
+        "text": "论文在公开基准数据集“Quora Question Pairs”上开展实验，用于释义识别（paraphrase identification）任务。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "48a025dbb5844879a33311435aeb013c"
+      },
+      "experiment_dataset": {
+        "text": "实验部分说明，模型性能在著名的公开基准数据集“Quora Question Pairs”上进行验证。",
+        "evidence_ids": [
+          "c-daafca6e27d47b75a48e6301"
+        ],
+        "turn_id": "48a025dbb5844879a33311435aeb013c"
+      },
+      "case_study_dataset": {
+        "text": "案例研究在“Quora Question Pairs”的实际设定下进行，用于释义识别。",
+        "evidence_ids": [
+          "c-f2c31c48060de190a862f031"
+        ],
+        "turn_id": "48a025dbb5844879a33311435aeb013c"
+      },
+      "dataset_used": {
+        "text": "该论文在公开基准数据集 “Quora Question Pairs” 上进行实验，用于释义识别（paraphrase identification）任务。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "model_pipeline": {
+        "text": "模型在该任务上分三步执行：先用 BiLSTM 将输入句子解析为隐藏表示，再由 Hungarian layer 利用这些隐藏表示提取对齐的非匹配部分，最后用余弦相似度对这些对齐的非匹配部分度量以做最终判别。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "results_claim": {
+        "text": "作者称实验结果表明其模型广泛且显著地优于其他基线，称这验证了其关于对齐非匹配部分的理论，并说明方法的有效性。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "abstract_sota_claim": {
+        "text": "摘要中作者称大量实验显示其模型大幅优于其他最先进基线。",
+        "evidence_ids": [
+          "c-e02ebd81f0f8210ef85fd8bf"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "alignment_perspective": {
+        "text": "论文提出一种释义识别的新视角，聚焦两个句子的对齐非匹配部分，并提出 Hungarian layer 来提取这些部分；该方法可在两个序列间实现硬性且排他的对齐，同时通过端到端反向传播学习参数。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "attention_weakness": {
+        "text": "作者认为传统的注意力机制加权技术虽能挑出最相似/最不相似部分，但在建模对齐非匹配部分方面较弱，而这些部分是识别释义的关键证据。",
+        "evidence_ids": [
+          "c-960c4cb907b38a179597b601"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "hungarian_exclusiveness": {
+        "text": "在该方法中，句子匹配中的对齐被表述为任务分配问题并由 Hungarian 算法求解；该算法以排他方式给出理论上最优的对齐关系，这种排他性刻画了对齐非匹配部分。",
+        "evidence_ids": [
+          "c-960c4cb907b38a179597b601"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "training_backprop": {
+        "text": "为训练 Hungarian layer，作者以动态构建计算图的方式修改反向传播：前向传播依据对齐位置对动态构建 Hungarian layer 与下一层之间的连接，反向传播则沿这些动态构建的连接进行。",
+        "evidence_ids": [
+          "c-f1c9938e8916274c07715a88"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      },
+      "end_to_end_optimization": {
+        "text": "由于计算图在前向传播中已动态构建，反向过程可沿动态构建的层间连接传播，从而优化框架仍能以端到端方式调整神经架构的参数。",
+        "evidence_ids": [
+          "c-f1c9938e8916274c07715a88"
+        ],
+        "turn_id": "b1495d203ccd4e0ea713231715cbcd52"
+      }
+    },
+    "unresolved": [
+      "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。"
+    ],
+    "summary": {
+      "discussed_papers": [
+        "1712.02555"
+      ]
+    }
+  },
+  "committed_turns": {
+    "48a025dbb5844879a33311435aeb013c": {
+      "question": "关于论文《Hungarian Layer: Logics Empowered Neural Architecture》，Which dataset(s) do they train on?",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "training_dataset",
+              "text": "论文在公开基准数据集“Quora Question Pairs”上开展实验，用于释义识别（paraphrase identification）任务。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            },
+            {
+              "key": "experiment_dataset",
+              "text": "实验部分说明，模型性能在著名的公开基准数据集“Quora Question Pairs”上进行验证。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-daafca6e27d47b75a48e6301"
+                }
+              ]
+            },
+            {
+              "key": "case_study_dataset",
+              "text": "案例研究在“Quora Question Pairs”的实际设定下进行，用于释义识别。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-f2c31c48060de190a862f031"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "48a025dbb5844879a33311435aeb013c"
+      }
+    },
+    "b1495d203ccd4e0ea713231715cbcd52": {
+      "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "dataset_used",
+              "text": "该论文在公开基准数据集 “Quora Question Pairs” 上进行实验，用于释义识别（paraphrase identification）任务。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            },
+            {
+              "key": "model_pipeline",
+              "text": "模型在该任务上分三步执行：先用 BiLSTM 将输入句子解析为隐藏表示，再由 Hungarian layer 利用这些隐藏表示提取对齐的非匹配部分，最后用余弦相似度对这些对齐的非匹配部分度量以做最终判别。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            },
+            {
+              "key": "results_claim",
+              "text": "作者称实验结果表明其模型广泛且显著地优于其他基线，称这验证了其关于对齐非匹配部分的理论，并说明方法的有效性。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            },
+            {
+              "key": "abstract_sota_claim",
+              "text": "摘要中作者称大量实验显示其模型大幅优于其他最先进基线。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+                }
+              ]
+            },
+            {
+              "key": "alignment_perspective",
+              "text": "论文提出一种释义识别的新视角，聚焦两个句子的对齐非匹配部分，并提出 Hungarian layer 来提取这些部分；该方法可在两个序列间实现硬性且排他的对齐，同时通过端到端反向传播学习参数。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            },
+            {
+              "key": "attention_weakness",
+              "text": "作者认为传统的注意力机制加权技术虽能挑出最相似/最不相似部分，但在建模对齐非匹配部分方面较弱，而这些部分是识别释义的关键证据。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-960c4cb907b38a179597b601"
+                }
+              ]
+            },
+            {
+              "key": "hungarian_exclusiveness",
+              "text": "在该方法中，句子匹配中的对齐被表述为任务分配问题并由 Hungarian 算法求解；该算法以排他方式给出理论上最优的对齐关系，这种排他性刻画了对齐非匹配部分。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-960c4cb907b38a179597b601"
+                }
+              ]
+            },
+            {
+              "key": "training_backprop",
+              "text": "为训练 Hungarian layer，作者以动态构建计算图的方式修改反向传播：前向传播依据对齐位置对动态构建 Hungarian layer 与下一层之间的连接，反向传播则沿这些动态构建的连接进行。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-f1c9938e8916274c07715a88"
+                }
+              ]
+            },
+            {
+              "key": "end_to_end_optimization",
+              "text": "由于计算图在前向传播中已动态构建，反向过程可沿动态构建的层间连接传播，从而优化框架仍能以端到端方式调整神经架构的参数。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-f1c9938e8916274c07715a88"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "b1495d203ccd4e0ea713231715cbcd52"
+      }
+    },
+    "4a174d98fdb443b9ae0f0e9d25643453": {
+      "question": "与《A Study on Neural Network Language Modeling》对比，分别说明两篇论文如何回答“Which dataset(s) do they train on?”与“What languages are used for the experiments?”，并说明是否具有可比性。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "4a174d98fdb443b9ae0f0e9d25643453"
+      }
+    },
+    "75942499d85a4c9784704506c678f025": {
+      "question": "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "75942499d85a4c9784704506c678f025"
+      }
+    }
+  }
+}

@@ -1,0 +1,577 @@
+{
+  "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa",
+  "session_id": "d13-d13-t4",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.0073999399319291115
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Polyglot Semantic Role Labeling：构建语义角色标注器时结合了哪些资源、是否需要平行数据、标注差异如何处理、模型训练方式以及评估语言",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1805.11598"
+        ],
+        "resolved_entities": {
+          "paper": "1805.11598",
+          "paper_title": "Polyglot Semantic Role Labeling"
+        }
+      },
+      "elapsed_ms": 2688.4110999526456
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Polyglot Semantic Role Labeling：构建语义角色标注器时结合了哪些资源、是否需要平行数据、标注差异如何处理、模型训练方式以及评估语言"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-7b26dbacfa8fd36fd1a3764e",
+          "c-3210a13443119c0f9b29ab8f",
+          "c-0e4670be40fbb93589dc7767",
+          "c-36d3fb4d80efb0798f42f613",
+          "c-6c86cedc783cec95e28397e8",
+          "c-c0833bf14f99f4badbdb1f45"
+        ]
+      },
+      "elapsed_ms": 13.951099943369627
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-7b26dbacfa8fd36fd1a3764e",
+          "c-3210a13443119c0f9b29ab8f",
+          "c-0e4670be40fbb93589dc7767",
+          "c-36d3fb4d80efb0798f42f613",
+          "c-6c86cedc783cec95e28397e8",
+          "c-c0833bf14f99f4badbdb1f45"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-bb02e8199a80bde6c03e4d79"
+        ]
+      },
+      "elapsed_ms": 0.004699919372797012
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-bb02e8199a80bde6c03e4d79"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "The resolved question is fully supported by the supplied evidence from paper 1805.11598: (1) combined resources are training data and multilingual word vectors across CoNLL 2009 languages, with supervision from English added to monolingual parsers (c-ab37506cf0e270f6ab4a5722); (2) no parallel data is required (c-8b21bd8c4c41f76753d2758d, c-f04cb29df42fdbc211d852cf); (3) annotation dissimilarity is handled without alignment, using parameter sharing/simple data combination (c-ab37506cf0e270f6ab4a5722, c-f04cb29df42fdbc211d852cf); (4) training is polyglot training of one model on multiple languages with variants such as language ID and language-specific LSTMs (c-ab37506cf0e270f6ab4a5722, c-bb02e8199a80bde6c03e4d79); (5) evaluation is on seven CoNLL 2009 languages, with improvements notable for low-resource languages and little/no gain for Czech and Chinese (c-ab37506cf0e270f6ab4a5722, c-bb02e8199a80bde6c03e4d79). No external knowledge is added."
+      },
+      "elapsed_ms": 3246.4940999634564
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "resources_used",
+            "text": "构建该多语种语义角色标注器时，结合了 CoNLL 2009 共享任务中一对语言的资源，训练时组合多个语言的训练数据。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+              },
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-f04cb29df42fdbc211d852cf"
+              }
+            ]
+          },
+          {
+            "key": "multilingual_vectors",
+            "text": "模型使用多语种词向量，并在多个语言上组合训练数据。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-f04cb29df42fdbc211d852cf"
+              }
+            ]
+          },
+          {
+            "key": "language_supervision",
+            "text": "为 CoNLL 2009 数据集中的每个语言训练若干解析器：一个传统的单语版本，以及额外纳入该数据集英文部分监督的变体。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+              }
+            ]
+          },
+          {
+            "key": "no_parallel_data",
+            "text": "该方法在没有平行数据的情况下进行，并允许在无需跨语言对齐、无需共享标注、也无需平行数据的情况下共享。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+              },
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-f04cb29df42fdbc211d852cf"
+              }
+            ]
+          },
+          {
+            "key": "annotation_differences",
+            "text": "CoNLL 2009 的语义标签空间完全是各语言特有的，语言间标注并不相似；论文指出跨语言统计强度的共享不依赖标注惯例的显式对齐，可以仅通过参数共享实现。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+              },
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+              }
+            ]
+          },
+          {
+            "key": "training_method",
+            "text": "论文所采用的多语种训练方法是：使用多语种词向量，并跨语言组合训练数据。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-f04cb29df42fdbc211d852cf"
+              }
+            ]
+          },
+          {
+            "key": "model_type",
+            "text": "模型是类似 marcheggiani2017lstm 的简单 LSTM 模型，基于词元向量与谓词向量的组合来标注语义依存。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-a386f8ac42eeacc565dfa3e3"
+              }
+            ]
+          },
+          {
+            "key": "evaluation_languages",
+            "text": "评估使用 CoNLL 2009 数据集，该数据集包含七种语言；结果讨论涉及捷克语、德语、日语、加泰罗尼亚语和中文等语言。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+              },
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+              }
+            ]
+          },
+          {
+            "key": "performance_result",
+            "text": "简单多语种训练在多数语言上优于单语训练，但捷克语未见性能变化；训练样本最少的语言（德语、日语、加泰罗尼亚语）提升最大，而捷克语、中文等大数据集语言提升很小或没有提升。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 5292.817899957299
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d13-d13-t4",
+        "entities": {
+          "paper": "1805.11598",
+          "paper_title": "Polyglot Semantic Role Labeling"
+        },
+        "facts": {
+          "combined_resources": {
+            "text": "The polyglot semantic role labeler is built by combining resources from a pair of languages in the CoNLL 2009 shared task.",
+            "evidence_ids": [
+              "c-8b21bd8c4c41f76753d2758d"
+            ],
+            "turn_id": "46629ed58c0c46268e2f91894e4bfda9"
+          },
+          "parsers_variants": {
+            "text": "The authors train several parsers for each language in the CoNLL 2009 dataset: a traditional monolingual version and variants that additionally incorporate supervision from the English portion of the dataset.",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722"
+            ],
+            "turn_id": "46629ed58c0c46268e2f91894e4bfda9"
+          },
+          "dataset_languages": {
+            "text": "The CoNLL 2009 dataset includes seven different languages, whose semantic label spaces are entirely language-specific.",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722"
+            ],
+            "turn_id": "46629ed58c0c46268e2f91894e4bfda9"
+          },
+          "polyglot_training_basis": {
+            "text": "The polyglot training approach trains one model on multiple languages, sharing statistical strength across languages through parameter sharing rather than explicit annotation alignment.",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722"
+            ],
+            "turn_id": "46629ed58c0c46268e2f91894e4bfda9"
+          },
+          "resources_used": {
+            "text": "构建该多语种语义角色标注器时，结合了 CoNLL 2009 共享任务中一对语言的资源，训练时组合多个语言的训练数据。",
+            "evidence_ids": [
+              "c-8b21bd8c4c41f76753d2758d",
+              "c-f04cb29df42fdbc211d852cf"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "multilingual_vectors": {
+            "text": "模型使用多语种词向量，并在多个语言上组合训练数据。",
+            "evidence_ids": [
+              "c-f04cb29df42fdbc211d852cf"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "language_supervision": {
+            "text": "为 CoNLL 2009 数据集中的每个语言训练若干解析器：一个传统的单语版本，以及额外纳入该数据集英文部分监督的变体。",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "no_parallel_data": {
+            "text": "该方法在没有平行数据的情况下进行，并允许在无需跨语言对齐、无需共享标注、也无需平行数据的情况下共享。",
+            "evidence_ids": [
+              "c-8b21bd8c4c41f76753d2758d",
+              "c-f04cb29df42fdbc211d852cf"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "annotation_differences": {
+            "text": "CoNLL 2009 的语义标签空间完全是各语言特有的，语言间标注并不相似；论文指出跨语言统计强度的共享不依赖标注惯例的显式对齐，可以仅通过参数共享实现。",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722",
+              "c-8b21bd8c4c41f76753d2758d"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "training_method": {
+            "text": "论文所采用的多语种训练方法是：使用多语种词向量，并跨语言组合训练数据。",
+            "evidence_ids": [
+              "c-f04cb29df42fdbc211d852cf"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "model_type": {
+            "text": "模型是类似 marcheggiani2017lstm 的简单 LSTM 模型，基于词元向量与谓词向量的组合来标注语义依存。",
+            "evidence_ids": [
+              "c-a386f8ac42eeacc565dfa3e3"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "evaluation_languages": {
+            "text": "评估使用 CoNLL 2009 数据集，该数据集包含七种语言；结果讨论涉及捷克语、德语、日语、加泰罗尼亚语和中文等语言。",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722",
+              "c-bb02e8199a80bde6c03e4d79"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          },
+          "performance_result": {
+            "text": "简单多语种训练在多数语言上优于单语训练，但捷克语未见性能变化；训练样本最少的语言（德语、日语、加泰罗尼亚语）提升最大，而捷克语、中文等大数据集语言提升很小或没有提升。",
+            "evidence_ids": [
+              "c-bb02e8199a80bde6c03e4d79"
+            ],
+            "turn_id": "750bd1ec88b64f73b4e9dedf1feb5faa"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1805.11598"
+          ]
+        }
+      },
+      "elapsed_ms": 8.323699934408069
+    }
+  ],
+  "started_at": 1792666966.1504142,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "resources_used",
+        "text": "构建该多语种语义角色标注器时，结合了 CoNLL 2009 共享任务中一对语言的资源，训练时组合多个语言的训练数据。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+          },
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-f04cb29df42fdbc211d852cf"
+          }
+        ]
+      },
+      {
+        "key": "multilingual_vectors",
+        "text": "模型使用多语种词向量，并在多个语言上组合训练数据。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-f04cb29df42fdbc211d852cf"
+          }
+        ]
+      },
+      {
+        "key": "language_supervision",
+        "text": "为 CoNLL 2009 数据集中的每个语言训练若干解析器：一个传统的单语版本，以及额外纳入该数据集英文部分监督的变体。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+          }
+        ]
+      },
+      {
+        "key": "no_parallel_data",
+        "text": "该方法在没有平行数据的情况下进行，并允许在无需跨语言对齐、无需共享标注、也无需平行数据的情况下共享。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+          },
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-f04cb29df42fdbc211d852cf"
+          }
+        ]
+      },
+      {
+        "key": "annotation_differences",
+        "text": "CoNLL 2009 的语义标签空间完全是各语言特有的，语言间标注并不相似；论文指出跨语言统计强度的共享不依赖标注惯例的显式对齐，可以仅通过参数共享实现。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+          },
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+          }
+        ]
+      },
+      {
+        "key": "training_method",
+        "text": "论文所采用的多语种训练方法是：使用多语种词向量，并跨语言组合训练数据。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-f04cb29df42fdbc211d852cf"
+          }
+        ]
+      },
+      {
+        "key": "model_type",
+        "text": "模型是类似 marcheggiani2017lstm 的简单 LSTM 模型，基于词元向量与谓词向量的组合来标注语义依存。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-a386f8ac42eeacc565dfa3e3"
+          }
+        ]
+      },
+      {
+        "key": "evaluation_languages",
+        "text": "评估使用 CoNLL 2009 数据集，该数据集包含七种语言；结果讨论涉及捷克语、德语、日语、加泰罗尼亚语和中文等语言。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+          },
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+          }
+        ]
+      },
+      {
+        "key": "performance_result",
+        "text": "简单多语种训练在多数语言上优于单语训练，但捷克语未见性能变化；训练样本最少的语言（德语、日语、加泰罗尼亚语）提升最大，而捷克语、中文等大数据集语言提升很小或没有提升。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "85a952478687dac5724e296037239d982f3ec104754ff7c79b001d9c7aef053e",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4417,
+        "completion_tokens": 98,
+        "total_tokens": 4515,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4289,
+        "output_tokens": 98,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2687.1853000484407
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "9195a30979825a168d7386d36ef473ff90ff9b97d64ac9272be3d6d837cf2240",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3991,
+        "completion_tokens": 305,
+        "total_tokens": 4296,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3991,
+        "output_tokens": 305,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3246.204899973236
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "99fee3e9dd4a871ac502299650d7e467c35bc66f469c23fd5af4cf3675c97a83",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4093,
+        "completion_tokens": 836,
+        "total_tokens": 4929,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3965,
+        "output_tokens": 836,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5292.488000006415
+    }
+  ]
+}

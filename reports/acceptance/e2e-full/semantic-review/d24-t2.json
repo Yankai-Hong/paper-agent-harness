@@ -1,0 +1,402 @@
+{
+  "id": "d24-t2",
+  "session_id": "d24",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 10,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "All ten claims are traceable to their cited chunks and accurately reflect the original evidence, including the three-step pipeline, the Quora Question Pairs experiments, the development-set threshold binarization, the cosine score range interpretation, and the case study examples and conclusion. The answer stays grounded in the paper and does not add commonsense conclusions.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "The cited chunk explicitly states experiments are conducted on the public benchmark dataset 'Quora Question Pairs' for paraphrase identification."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "The chunk describes exactly three steps: BiLSTM parsing into hidden representations, Hungarian layer extracting aligned unmatched parts, then cosine similarity for final discrimination."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "The chunk states the model outperforms other baselines extensively and significantly, verifying the theory about aligned unmatched parts and illustrating effectiveness."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "The chunk states a threshold learned in the development dataset is applied to binary the cosine similarity as paraphrase/non-paraphrase for further accuracy evaluation."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "The chunk states the output ranges in the given interval with one value meaning similar/paraphrase and the other meaning otherwise; the specific -1/1 values correspond to the masked INLINEFORM placeholders consistent with cosine similarity."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "The chunk describes the case study in the practical setting of Quora Question Pairs, with slashed grids for matched and crossed grids for unmatched parts, and marks pairwise similarity below a threshold as unmatched."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "The chunk gives exactly these two sentences for example (a) and states most aligned parts matched while minor aligned unmatched parts are similar, justifying paraphrase."
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "The chunk states example (b) has two conflicting unmatched parts 'imported/unknown' and 'Austria/Japan', thus classified as non-paraphrase."
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "The chunk concludes the case study justifies the assumption that 'the aligned unmatched parts are semantically critical'."
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "The chunk states attention is a soft-max weighting technique that can pick out most similar/dissimilar parts but is weak in modeling aligned unmatched parts, which are crucial evidence to identify paraphrase."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "e82d703d892afc6dbedc34bb53108f009d39b05186deef92275056231606eb0a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5295,
+        "completion_tokens": 577,
+        "total_tokens": 5872,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5039,
+        "output_tokens": 577,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6171.338099986315
+    }
+  ],
+  "payload_hash": "1338d3323758da5f61d15b3fcdf33ecfe6f1f1c80fb819c5bcf3a7e1dff39b87",
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "experiment_dataset_task",
+          "text": "论文在公开基准数据集“Quora Question Pairs”上进行实验，任务为释义识别（paraphrase identification）。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-70876748d6ad7c5c4f480427"
+            }
+          ]
+        },
+        {
+          "key": "pipeline_three_steps",
+          "text": "模型分三步完成任务：先用 BiLSTM 将输入句子解析为隐表示；再由 Hungarian layer 利用隐表示抽取对齐的未匹配部分；最后用余弦相似度度量这些对齐的未匹配部分以作最终判别。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-70876748d6ad7c5c4f480427"
+            }
+          ]
+        },
+        {
+          "key": "outperforms_baselines",
+          "text": "实验结果显示该模型在 Quora Question Pairs 上显著且大幅优于其他基线，作者称这验证了其关于“对齐的未匹配部分”的理论并说明了方法的有效性。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-70876748d6ad7c5c4f480427"
+            }
+          ]
+        },
+        {
+          "key": "binary_threshold_dev",
+          "text": "为进一步评估准确率，论文还使用一个在开发集（development dataset）上学习得到的阈值，将余弦相似度二值化为“释义/非释义”。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-486c0ce43082d60933f2417a"
+            }
+          ]
+        },
+        {
+          "key": "cosine_range_interpretation",
+          "text": "输出余弦匹配分数的取值范围为 [-1,1]，取值 1 表示两句相似/为释义，取值 -1 表示相反。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-486c0ce43082d60933f2417a"
+            }
+          ]
+        },
+        {
+          "key": "case_study_setting",
+          "text": "论文在“Quora Question Pairs”实际场景下做了案例研究：斜线网格表示对齐的匹配部分，叉形网格表示对齐的未匹配部分；案例研究将对相似度低于某阈值的配对标记为未匹配。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-f2c31c48060de190a862f031"
+            }
+          ]
+        },
+        {
+          "key": "case_paraphrase_example",
+          "text": "案例 (a) 的两句为“What is your review of Hidden Figures (2016 movie)”与“What are your impressions of Hidden Figures (2017 movie)”，多数对齐部分匹配、少量对齐未匹配部分相似，模型据此判为释义。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-f2c31c48060de190a862f031"
+            }
+          ]
+        },
+        {
+          "key": "case_nonparaphrase_example",
+          "text": "案例 (b) 中“imported/unknown”与“Austria/Japan”两处未匹配部分相互冲突，因此被判为非释义。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-f2c31c48060de190a862f031"
+            }
+          ]
+        },
+        {
+          "key": "case_study_conclusion",
+          "text": "论文总结该案例研究支持其假设：“对齐的未匹配部分在语义上是关键的”。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-f2c31c48060de190a862f031"
+            }
+          ]
+        },
+        {
+          "key": "motivation_aligned_unmatched",
+          "text": "论文认为注意力这类 soft-max 加权技术虽能挑出最相似/最不相似的部分，却弱于建模“对齐的未匹配部分”，而后者是识别释义的关键证据。",
+          "citations": [
+            {
+              "paper_id": "1712.02555",
+              "chunk_id": "c-960c4cb907b38a179597b601"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "Hungarian Layer: Logics Empowered Neural Architecture 中关于释义识别在 Quora Question Pairs 数据集上的证据及开发集阈值二值化余弦相似度的证据",
+    "evidence": [
+      {
+        "chunk_id": "c-70876748d6ad7c5c4f480427",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Introduction",
+        "text": "Specifically, our model performs this task in three steps. First, our model applies BiLSTM to parse the input sentences into hidden representations. Then, Hungarian layer leverages the hidden representations to extract the aligned unmatched parts. Last, we apply cosine similarity to metric the aligned unmatched parts for a final discrimination. Regarding the training process of Hungarian layer, we modify the back-propagation algorithm in both directions. In the forward pass, Hungarian layer works out the alignment relationship, according to which, the computational graph is dynamically constructed, as demonstrated in Figure FIGREF13 . Once the computational graph has been dynamically constructed, the backward propagation could be performed as usual in a conventional graph.\n\nWe conduct our experiments on the public benchmark dataset of “Quora Question Pairs” for the task of paraphrase identification. Experimental results demonstrate that our model outperforms other baselines extensively and significantly, which verifies our theory about the aligned unmatched parts and illustrates the effectiveness of our methodology.\n\nContributions. (1.) We offer a new perspective for paraphrase identification, which focuses on the aligned unmatched parts of two sentences. Accordingly, we propose the Hungarian layer to extract the aligned unmatched parts. The proposed method can achieve hard and exclusive alignments between two sequences, while we can learn parameters by end-to-end back-propagation. (2.) Our model outperforms other baselines extensively, verifying the effectiveness of our theory and method.\n\nOrganization. In Section 2, we survey the related work of paraphrase identification and dynamic differentiable computational graphs. In Section 3, we introduce our neural architecture. In Section 4, we conduct the experiments. In Section 5, we conclude our paper and publish our codes.",
+        "text_hash": "cd6c61ebe2220f0fbf0d775d0ccdfc67ad6c47ee343245f44ed51d84132ba018",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 783,
+            "text": "Specifically, our model performs this task in three steps. First, our model applies BiLSTM to parse the input sentences into hidden representations. Then, Hungarian layer leverages the hidden representations to extract the aligned unmatched parts. Last, we apply cosine similarity to metric the aligned unmatched parts for a final discrimination. Regarding the training process of Hungarian layer, we modify the back-propagation algorithm in both directions. In the forward pass, Hungarian layer works out the alignment relationship, according to which, the computational graph is dynamically constructed, as demonstrated in Figure FIGREF13 . Once the computational graph has been dynamically constructed, the backward propagation could be performed as usual in a conventional graph.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 348,
+            "text": "We conduct our experiments on the public benchmark dataset of “Quora Question Pairs” for the task of paraphrase identification. Experimental results demonstrate that our model outperforms other baselines extensively and significantly, which verifies our theory about the aligned unmatched parts and illustrates the effectiveness of our methodology.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p6",
+            "section": "Introduction",
+            "start": 0,
+            "end": 481,
+            "text": "Contributions. (1.) We offer a new perspective for paraphrase identification, which focuses on the aligned unmatched parts of two sentences. Accordingly, we propose the Hungarian layer to extract the aligned unmatched parts. The proposed method can achieve hard and exclusive alignments between two sequences, while we can learn parameters by end-to-end back-propagation. (2.) Our model outperforms other baselines extensively, verifying the effectiveness of our theory and method.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p7",
+            "section": "Introduction",
+            "start": 0,
+            "end": 285,
+            "text": "Organization. In Section 2, we survey the related work of paraphrase identification and dynamic differentiable computational graphs. In Section 3, we introduce our neural architecture. In Section 4, we conduct the experiments. In Section 5, we conclude our paper and publish our codes.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-486c0ce43082d60933f2417a",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Neural Architecture",
+        "text": "where INLINEFORM0 is the matching score, INLINEFORM1 is the length of vector and INLINEFORM2 / INLINEFORM3 is the corresponding source/target part of the final sentence representation INLINEFORM4 . Thus, our output ranges in INLINEFORM5 , where INLINEFORM6 means the two sentences are similar/paraphrase, and INLINEFORM7 means otherwise. For further evaluation of accuracy, we also apply a threshold learned in the development dataset to binary the cosine similarity as paraphrase/non-paraphrase. Notably, the introduction of concatenation layer facilitates the inference and training of Hungarian layer.",
+        "text_hash": "83ec54cc3476222164b7004444fc2b9e69ae2b03821650844afd6b66d3e9140b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s7-p13",
+            "section": "Neural Architecture",
+            "start": 0,
+            "end": 604,
+            "text": "where INLINEFORM0 is the matching score, INLINEFORM1 is the length of vector and INLINEFORM2 / INLINEFORM3 is the corresponding source/target part of the final sentence representation INLINEFORM4 . Thus, our output ranges in INLINEFORM5 , where INLINEFORM6 means the two sentences are similar/paraphrase, and INLINEFORM7 means otherwise. For further evaluation of accuracy, we also apply a threshold learned in the development dataset to binary the cosine similarity as paraphrase/non-paraphrase. Notably, the introduction of concatenation layer facilitates the inference and training of Hungarian layer.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e02ebd81f0f8210ef85fd8bf",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Abstract",
+        "text": "Neural architecture is a purely numeric framework, which fits the data as a continuous function. However, lacking of logic flow (e.g. \\textit{if, for, while}), traditional algorithms (e.g. \\textit{Hungarian algorithm, A$^*$ searching, decision tress algorithm}) could not be embedded into this paradigm, which limits the theories and applications. In this paper, we reform the calculus graph as a dynamic process, which is guided by logic flow. Within our novel methodology, traditional algorithms could empower numerical neural network. Specifically, regarding the subject of sentence matching, we reformulate this issue as the form of task-assignment, which is solved by Hungarian algorithm. First, our model applies BiLSTM to parse the sentences. Then Hungarian layer aligns the matching positions. Last, we transform the matching results for soft-max regression by another BiLSTM. Extensive experiments show that our model outperforms other state-of-the-art baselines substantially.",
+        "text_hash": "bd2993e5655895ce6ae998c491a61285e653c6326528693698a1836ebbf17bd1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 986,
+            "text": "Neural architecture is a purely numeric framework, which fits the data as a continuous function. However, lacking of logic flow (e.g. \\textit{if, for, while}), traditional algorithms (e.g. \\textit{Hungarian algorithm, A$^*$ searching, decision tress algorithm}) could not be embedded into this paradigm, which limits the theories and applications. In this paper, we reform the calculus graph as a dynamic process, which is guided by logic flow. Within our novel methodology, traditional algorithms could empower numerical neural network. Specifically, regarding the subject of sentence matching, we reformulate this issue as the form of task-assignment, which is solved by Hungarian algorithm. First, our model applies BiLSTM to parse the sentences. Then Hungarian layer aligns the matching positions. Last, we transform the matching results for soft-max regression by another BiLSTM. Extensive experiments show that our model outperforms other state-of-the-art baselines substantially.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-960c4cb907b38a179597b601",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Introduction",
+        "text": "Traditional alignment methods take advantage of attention mechanism BIBREF2 , which is a soft-max weighting technique. Weighting technique could pick out the most similar/dissimilar parts, but is weak in modeling the aligned unmatched parts, which are the crucial evidence to identify paraphrase. For the input sentences in Figure FIGREF1 , the weight between “Sunday” and “run” is lower than the weight between “yard” and “inside”, but the former weight is not the evidence of paraphrase/non-paraphrase, because the former two words that are most dissimilar should not be aligned for an inappropriate comparison.\n\nTo extract the aligned unmatched parts, in this paper, we embed Hungarian algorithm BIBREF5 into neural architecture as Hungarian layer (Algorithm SECREF7 ). Illustrated in Figure FIGREF1 , the alignment in sentence matching could be formulated as the task-assignment problem, which is tackled by Hungarian algorithm. Simply, Hungarian algorithm works out the theoretically optimal alignment relationship in an exclusive manner and the exclusiveness characterizes the aligned unmatched parts. For the example in Figure FIGREF1 , because Hungarian layer allocates the aligned pairs with exclusiveness, the matched parts (i.e (Sunday, weekend), (boy, child), run) are aligned firstly, then the word “yard” would be assigned to the word “inside” with a negative similarity, making a strong evidence for discrimination.",
+        "text_hash": "5508e2e9d375fae20b4b238028b3dea325b69fcdd28e64c42e0894df5f95b6f5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 613,
+            "text": "Traditional alignment methods take advantage of attention mechanism BIBREF2 , which is a soft-max weighting technique. Weighting technique could pick out the most similar/dissimilar parts, but is weak in modeling the aligned unmatched parts, which are the crucial evidence to identify paraphrase. For the input sentences in Figure FIGREF1 , the weight between “Sunday” and “run” is lower than the weight between “yard” and “inside”, but the former weight is not the evidence of paraphrase/non-paraphrase, because the former two words that are most dissimilar should not be aligned for an inappropriate comparison.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 815,
+            "text": "To extract the aligned unmatched parts, in this paper, we embed Hungarian algorithm BIBREF5 into neural architecture as Hungarian layer (Algorithm SECREF7 ). Illustrated in Figure FIGREF1 , the alignment in sentence matching could be formulated as the task-assignment problem, which is tackled by Hungarian algorithm. Simply, Hungarian algorithm works out the theoretically optimal alignment relationship in an exclusive manner and the exclusiveness characterizes the aligned unmatched parts. For the example in Figure FIGREF1 , because Hungarian layer allocates the aligned pairs with exclusiveness, the matched parts (i.e (Sunday, weekend), (boy, child), run) are aligned firstly, then the word “yard” would be assigned to the word “inside” with a negative similarity, making a strong evidence for discrimination.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f2c31c48060de190a862f031",
+        "paper_id": "1712.02555",
+        "title": "Hungarian Layer: Logics Empowered Neural Architecture",
+        "section": "Case Study",
+        "text": "We have conducted a case study in the practical setting of “Quora Question Pairs” with our model for paraphrase identification. Illustrated in Figure FIGREF18 , the slashed grids correspond to the aligned matched parts, while the crossed ones indicate the aligned unmatched parts. Notably, we mark the pairwise similarity below INLINEFORM0 as unmatched in this case study.\n\nFor the example of (a), there exist two input sentences: “What is your review of Hidden Figures -LRB- 2016 movie -RRB-” and “What are your impressions of Hidden Figures -LRB- 2017 movie -RRB-”. From our case analysis, most of the aligned parts are matched, while minor aligned unmatched parts are similar. Thus, our method justifies the two sentences as paraphrase. This is accorded to our assumption.\n\nFor the example of (b), there exist two input sentences: “Why is saltwater taffy candy imported in Austria” and “Why is salt water taffy candy unknown in Japan”. There are two unmatched parts that “imported/unknown” and “Austria/Japan”, which are conflicted. Thus, the case is classified as non-paraphrase.\n\nFor the example of (c), the two sentences are: “How can I stop being addicted to love” and “How can I stop being so addicted to my phone”. From our case analysis, there is an extreme conflict that “love/phone”, making this case non-paraphrase, according to our assumption.\n\nFor the example of (d), the two sentences are: “Is a(n) APK file just a hidden app” and “Where do APK files get stored in Android Studio”. As we know, there are too many conflicts in this case, making a very dissimilar score as non-paraphrase.\n\nIn summary, this case study justifies our assumption that “the aligned unmatched parts are semantically critical”.",
+        "text_hash": "e9bc88e24b4d7687da45d1cacf1ff845178c8fc9df954483f175bc720d6e68f3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1712.02555",
+        "spans": [
+          {
+            "paragraph_id": "s12-p0",
+            "section": "Case Study",
+            "start": 0,
+            "end": 372,
+            "text": "We have conducted a case study in the practical setting of “Quora Question Pairs” with our model for paraphrase identification. Illustrated in Figure FIGREF18 , the slashed grids correspond to the aligned matched parts, while the crossed ones indicate the aligned unmatched parts. Notably, we mark the pairwise similarity below INLINEFORM0 as unmatched in this case study.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p1",
+            "section": "Case Study",
+            "start": 0,
+            "end": 401,
+            "text": "For the example of (a), there exist two input sentences: “What is your review of Hidden Figures -LRB- 2016 movie -RRB-” and “What are your impressions of Hidden Figures -LRB- 2017 movie -RRB-”. From our case analysis, most of the aligned parts are matched, while minor aligned unmatched parts are similar. Thus, our method justifies the two sentences as paraphrase. This is accorded to our assumption.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p2",
+            "section": "Case Study",
+            "start": 0,
+            "end": 306,
+            "text": "For the example of (b), there exist two input sentences: “Why is saltwater taffy candy imported in Austria” and “Why is salt water taffy candy unknown in Japan”. There are two unmatched parts that “imported/unknown” and “Austria/Japan”, which are conflicted. Thus, the case is classified as non-paraphrase.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p3",
+            "section": "Case Study",
+            "start": 0,
+            "end": 272,
+            "text": "For the example of (c), the two sentences are: “How can I stop being addicted to love” and “How can I stop being so addicted to my phone”. From our case analysis, there is an extreme conflict that “love/phone”, making this case non-paraphrase, according to our assumption.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p4",
+            "section": "Case Study",
+            "start": 0,
+            "end": 243,
+            "text": "For the example of (d), the two sentences are: “Is a(n) APK file just a hidden app” and “Where do APK files get stored in Android Studio”. As we know, there are too many conflicts in this case, making a very dissimilar score as non-paraphrase.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p5",
+            "section": "Case Study",
+            "start": 0,
+            "end": 114,
+            "text": "In summary, this case study justifies our assumption that “the aligned unmatched parts are semantically critical”.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

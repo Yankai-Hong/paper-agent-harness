@@ -1,0 +1,333 @@
+{
+  "id": "d20-t2",
+  "session_id": "d20",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 7,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "All claims are directly supported by the cited chunks: BERT as feature layer replacing BiLSTM, semantic-enhanced pretraining, the three technologies (enhanced BERT pretraining, soft label embedding, NER pretraining), soft label embedding feed into two FC layers, multi-head selection with multi-sigmoid and cross-entropy L_rel, and the reported F1 scores. The paper's abstract and conclusion confirm these statements.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "c-77b and c-f104 both state BERT is used as feature extraction layer in place of BiLSTM; c-59aff confirms BERT adopted at bottom of multi-head selection framework. Contextual feature per character is stated in c-77b."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "c-59aff, c-f104 and c-77b all state the semantic-enhanced task is introduced during BERT pre-training to further optimize BERT."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "c-0f3b lists enhanced BERT pre-training, soft label embedding and NER pre-training as the three main technologies introduced to improve performance."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "c-59aff says soft label embedding transmits information between entity recognition and relation extraction; c-3fd5 states soft label embedding of the ith token is fed into two separate fully connected layers to obtain subject and object representations."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "c-3fd5 formulates relation classification as multi-head selection because each token has multiple heads/relations; because same entity pair have multiple relations, multi-sigmoid is used and cross-entropy loss L_rel minimized."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "c-59aff abstract reports F1 0.876 on testset-1 with a single model, and after ensembling four variants, F1 0.892 (1st) on testset-1 and 0.8924 (2nd) on testset-2."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "c-0f3b states they analyze the problem, find most entities are involved in multiple triplets, and incorporate BERT into multi-head selection for joint entity-relation extraction."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "6dfd338b2a12af2d06a93be3a2d1bab1b83325e8386afdb30efb5072a97b735d",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4734,
+        "completion_tokens": 533,
+        "total_tokens": 5267,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4478,
+        "output_tokens": 533,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6132.6965999323875
+    }
+  ],
+  "payload_hash": "e0f9582daf5ac4aa8ca5610c871b25b3d07477f7ae9a4da6e952407f1bad5146",
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "bert_as_feature_layer",
+          "text": "该论文将 BERT 作为特征提取层置于 multi-head selection 框架的底部，替代原工作中的 BiLSTM，用于为每个字符提取上下文特征。",
+          "citations": [
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-59affd016a6cbaeed876468f"
+            },
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-f104344a5193cf6cee7ee29d"
+            },
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-77b182970420dff76e4cd9a1"
+            }
+          ]
+        },
+        {
+          "key": "semantic_enhanced_pretraining",
+          "text": "为进一步优化 BERT，作者在 BERT 预训练阶段引入了一个语义增强（semantic-enhanced）任务。",
+          "citations": [
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-59affd016a6cbaeed876468f"
+            },
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-f104344a5193cf6cee7ee29d"
+            },
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-77b182970420dff76e4cd9a1"
+            },
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-0f3bf35195202e464e2739cc"
+            }
+          ]
+        },
+        {
+          "key": "three_improvements_summary",
+          "text": "结论将增强的 BERT 预训练、soft label embedding 和 NER 预训练列为提升性能的三项主要技术。",
+          "citations": [
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-0f3bf35195202e464e2739cc"
+            }
+          ]
+        },
+        {
+          "key": "soft_label_embedding",
+          "text": "论文提出 soft label embedding，用于在实体识别与关系抽取之间有效传递信息；关系分类中，第 i 个 token 的 soft label embedding 被送入两个独立全连接层，得到 subject 表示与 object 表示。",
+          "citations": [
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-59affd016a6cbaeed876468f"
+            },
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-3fd51d54d4cee4f5bef3a97a"
+            }
+          ]
+        },
+        {
+          "key": "multi_head_relation_prediction",
+          "text": "关系分类被建模为 multi-head selection 问题（同一 token 可有多个 head，即与其他多个 token 存在关系）；由于同一实体对可能有多个关系，采用 multi-sigmoid 层进行关系预测，并在训练中最小化交叉熵损失 L_rel。",
+          "citations": [
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-3fd51d54d4cee4f5bef3a97a"
+            }
+          ]
+        },
+        {
+          "key": "reported_results",
+          "text": "单模型在 testset-1 上取得 F1 0.876；集成四个模型变体后，最终在 testset-1 上取得 F1 0.892（第 1 名），在 testset-2 上取得 F1 0.8924（第 2 名）。",
+          "citations": [
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-59affd016a6cbaeed876468f"
+            }
+          ]
+        },
+        {
+          "key": "problem_motivation",
+          "text": "作者分析问题后发现大多数实体参与多个三元组，因此将 BERT 融入 multi-head selection 框架以进行联合实体-关系抽取。",
+          "citations": [
+            {
+              "paper_id": "1908.05908",
+              "chunk_id": "c-0f3bf35195202e464e2739cc"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction: how BERT is optimized for the task, with supporting evidence and citations",
+    "evidence": [
+      {
+        "chunk_id": "c-59affd016a6cbaeed876468f",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Abstract",
+        "text": "In this paper, we report our method for the Information Extraction task in 2019 Language and Intelligence Challenge. We incorporate BERT into the multi-head selection framework for joint entity-relation extraction. This model extends existing approaches from three perspectives. First, BERT is adopted as a feature extraction layer at the bottom of the multi-head selection framework. We further optimize BERT by introducing a semantic-enhanced task during BERT pre-training. Second, we introduce a large-scale Baidu Baike corpus for entity recognition pre-training, which is of weekly supervised learning since there is no actual named entity label. Third, soft label embedding is proposed to effectively transmit information between entity recognition and relation extraction. Combining these three contributions, we enhance the information extracting ability of the multi-head selection model and achieve F1-score 0.876 on testset-1 with a single model. By ensembling four variants of our model, we finally achieve F1 score 0.892 (1st place) on testset-1 and F1 score 0.8924 (2nd place) on testset-2.",
+        "text_hash": "da72050eddc3d6ec3422ed1c1d61559d4918f51ced04256bc1b6a8f257979a79",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1103,
+            "text": "In this paper, we report our method for the Information Extraction task in 2019 Language and Intelligence Challenge. We incorporate BERT into the multi-head selection framework for joint entity-relation extraction. This model extends existing approaches from three perspectives. First, BERT is adopted as a feature extraction layer at the bottom of the multi-head selection framework. We further optimize BERT by introducing a semantic-enhanced task during BERT pre-training. Second, we introduce a large-scale Baidu Baike corpus for entity recognition pre-training, which is of weekly supervised learning since there is no actual named entity label. Third, soft label embedding is proposed to effectively transmit information between entity recognition and relation extraction. Combining these three contributions, we enhance the information extracting ability of the multi-head selection model and achieve F1-score 0.876 on testset-1 with a single model. By ensembling four variants of our model, we finally achieve F1 score 0.892 (1st place) on testset-1 and F1 score 0.8924 (2nd place) on testset-2.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-0f3bf35195202e464e2739cc",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Conclusion",
+        "text": "In this paper, we report our solution to the information extraction task in 2019 Language and Intelligence Challenge. We first analyze the problem and find that most entities are involved in multiple triplets. To solve this problem, we incorporate BERT into the multi-head selection framework for joint entity-relation extraction. Enhanced BERT pre-training, soft label embedding and NER pre-training are three main technologies we introduce to further improve the performance. Experimental results show that our method achieves competitive performance: F1 score 0.892 (1st place) on the test set 1 and F1 score 0.8924 (2nd place) on the test set 2.",
+        "text_hash": "0d2b5f78316a96b42f312bfdc5f79f3bb6cd8e92a3f4429e95ab3883505dad85",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "s21-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 649,
+            "text": "In this paper, we report our solution to the information extraction task in 2019 Language and Intelligence Challenge. We first analyze the problem and find that most entities are involved in multiple triplets. To solve this problem, we incorporate BERT into the multi-head selection framework for joint entity-relation extraction. Enhanced BERT pre-training, soft label embedding and NER pre-training are three main technologies we introduce to further improve the performance. Experimental results show that our method achieves competitive performance: F1 score 0.892 (1st place) on the test set 1 and F1 score 0.8924 (2nd place) on the test set 2.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f104344a5193cf6cee7ee29d",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Related Work ::: Joint model",
+        "text": "Neural network models have been widely used in the literature as well. Zheng et al. (2017) BIBREF10 propose a novel tagging scheme that can convert the joint extraction task to a tagging problem. This tagging based method is better than most of the existing pipelined methods, but its flexibility is limited and can not tackle the situations when (1) one entity belongs to multiple triplets (2) multiple entities have overlaps. Zeng et al. (2018) BIBREF11 propose an end2end neural model based on sequence-to-sequence learning with copy mechanism to extract relational facts from sentences, where the entities and relations could be jointly extracted. The performance of this method is limited by the word segmentation accuracy because it can not extract entities beyond the word segmentation results. Li et al. BIBREF12 (2019) cast the task as a multi-turn question answering problem, i.e., the extraction of entities and relations is transformed to the task of identifying answer spans from the context. This framework provides an elegant way to capture the hierarchical dependency of tags. However, it is also of low computational efficiency since it needs to scan all entity template questions and corresponding relation template questions for a single sentence. Bekoulis et al. (2017) BIBREF13 propose a joint neural model which performs entity recognition and relation extraction simultaneously, without the need of any manually extracted features or the use of any external tool. They model the entity recognition task using a CRF (Conditional Random Fields) layer and the relation extraction task as a multi-head selection problem since one entity can have multiple relations. The model adopted BiLSTM to extract contextual feature and propose a label embedding layer to connect the entity recognition branch and the relation classification branch. Our model is based on this framework and make three improvements:\n\n(1) BERT BIBREF14 is introduced as a feature extraction layer in place of BiLSTM. We also optimize the pre-training process of BERT by introducing a semantic-enhanced task.",
+        "text_hash": "6a144b7664f06d2ff6de7e3231cf811c7573dda51ded6e1f4df3e406e0788dff",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "s3-p1",
+            "section": "Related Work ::: Joint model",
+            "start": 0,
+            "end": 1922,
+            "text": "Neural network models have been widely used in the literature as well. Zheng et al. (2017) BIBREF10 propose a novel tagging scheme that can convert the joint extraction task to a tagging problem. This tagging based method is better than most of the existing pipelined methods, but its flexibility is limited and can not tackle the situations when (1) one entity belongs to multiple triplets (2) multiple entities have overlaps. Zeng et al. (2018) BIBREF11 propose an end2end neural model based on sequence-to-sequence learning with copy mechanism to extract relational facts from sentences, where the entities and relations could be jointly extracted. The performance of this method is limited by the word segmentation accuracy because it can not extract entities beyond the word segmentation results. Li et al. BIBREF12 (2019) cast the task as a multi-turn question answering problem, i.e., the extraction of entities and relations is transformed to the task of identifying answer spans from the context. This framework provides an elegant way to capture the hierarchical dependency of tags. However, it is also of low computational efficiency since it needs to scan all entity template questions and corresponding relation template questions for a single sentence. Bekoulis et al. (2017) BIBREF13 propose a joint neural model which performs entity recognition and relation extraction simultaneously, without the need of any manually extracted features or the use of any external tool. They model the entity recognition task using a CRF (Conditional Random Fields) layer and the relation extraction task as a multi-head selection problem since one entity can have multiple relations. The model adopted BiLSTM to extract contextual feature and propose a label embedding layer to connect the entity recognition branch and the relation classification branch. Our model is based on this framework and make three improvements:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p2",
+            "section": "Related Work ::: Joint model",
+            "start": 0,
+            "end": 172,
+            "text": "(1) BERT BIBREF14 is introduced as a feature extraction layer in place of BiLSTM. We also optimize the pre-training process of BERT by introducing a semantic-enhanced task.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-77b182970420dff76e4cd9a1",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Model Description ::: BERT for Feature Extraction",
+        "text": "BERT (Bidirectional Encoder Representations from Transformers) BIBREF14 is a new language representation model, which uses bidirectional transformers to pre-train a large unlabeled corpus, and fine-tunes the pre-trained model on other tasks. BERT has been widely used and shows great improvement on various natural language processing tasks, e.g., word segmentation, named entity recognition, sentiment analysis, and question answering. We use BERT to extract contextual feature for each character instead of BiLSTM in the original work BIBREF13. To further improve the performance, we optimize the pre-training process of BERT by introducing a semantic-enhanced task.",
+        "text_hash": "f1e975c41944b220e15ea3b059cd991db608f29e7e93b94ae99e63652fd853d0",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Model Description ::: BERT for Feature Extraction",
+            "start": 0,
+            "end": 668,
+            "text": "BERT (Bidirectional Encoder Representations from Transformers) BIBREF14 is a new language representation model, which uses bidirectional transformers to pre-train a large unlabeled corpus, and fine-tunes the pre-trained model on other tasks. BERT has been widely used and shows great improvement on various natural language processing tasks, e.g., word segmentation, named entity recognition, sentiment analysis, and question answering. We use BERT to extract contextual feature for each character instead of BiLSTM in the original work BIBREF13. To further improve the performance, we optimize the pre-training process of BERT by introducing a semantic-enhanced task.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-3fd51d54d4cee4f5bef3a97a",
+        "paper_id": "1908.05908",
+        "title": "BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction",
+        "section": "Model Description ::: Relation Classification as Multi-Head Selection",
+        "text": "We formulated the relation classification task as a multi-head selection problem, since each token in the sentence has multiple heads, i.e., multiple relations with other tokens. Soft label embedding of the $ i_{th}$ token $ h_{i}$ is feed into two separate fully connected layers to get the subject representation $ h_{i}^{s}$ and object representation $ h_{i}^{o}$. Given the $ i_{th}$ token ($ h_{i}^{s}$, $ h_{i}^{o}$) and the $ j_{th}$ token ($ h_{j}^{s}$, $ h_{j}^{o}$) , our task is to predict their relation:\n\nwhere $f(\\cdot )$ means neural network, $ r_{i,j}$ is the relation when the $ i_{th}$ token is subject and the $ j_{th}$ token is object, $ r_{j,i}$ is the relation when the $ j_{th}$ token is subject and the $ i_{th}$ token is object. Since the same entity pair have multiple relations, we adopt multi-sigmoid layer for the relation prediction. We minimize the cross-entropy loss $L_{rel}$ during training:\n\nwhere $K$ is the sequence length and $y_{i,j}$ is ground truth relation label.",
+        "text_hash": "424e4f4e0e9dc25d5d6f338f8ee27d9cbafbc4f24f5f66ba848fccfe8bc772a5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.05908",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Model Description ::: Relation Classification as Multi-Head Selection",
+            "start": 0,
+            "end": 516,
+            "text": "We formulated the relation classification task as a multi-head selection problem, since each token in the sentence has multiple heads, i.e., multiple relations with other tokens. Soft label embedding of the $ i_{th}$ token $ h_{i}$ is feed into two separate fully connected layers to get the subject representation $ h_{i}^{s}$ and object representation $ h_{i}^{o}$. Given the $ i_{th}$ token ($ h_{i}^{s}$, $ h_{i}^{o}$) and the $ j_{th}$ token ($ h_{j}^{s}$, $ h_{j}^{o}$) , our task is to predict their relation:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Model Description ::: Relation Classification as Multi-Head Selection",
+            "start": 0,
+            "end": 407,
+            "text": "where $f(\\cdot )$ means neural network, $ r_{i,j}$ is the relation when the $ i_{th}$ token is subject and the $ j_{th}$ token is object, $ r_{j,i}$ is the relation when the $ j_{th}$ token is subject and the $ i_{th}$ token is object. Since the same entity pair have multiple relations, we adopt multi-sigmoid layer for the relation prediction. We minimize the cross-entropy loss $L_{rel}$ during training:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Model Description ::: Relation Classification as Multi-Head Selection",
+            "start": 0,
+            "end": 78,
+            "text": "where $K$ is the sequence length and $y_{i,j}$ is ground truth relation label.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}
