@@ -19,4 +19,4 @@
 
 当前验收记录：[最终验收](../reports/FINAL_REPORT.md)、[真实检索结果](../reports/qasper-suite/RESULTS.md)、[真实 API 评测](../reports/LIVE_EVAL_RESULTS.md)。
 
-配套报告：[消融](../reports/ABLATION_RESULTS.md)、[记忆](../reports/MEMORY_EVAL_RESULTS.md)、[可靠性](../reports/RELIABILITY_RESULTS.md)、[未完成项](../reports/REMAINING_ISSUES.md)。
+配套报告：[消融](../reports/ABLATION_RESULTS.md)、[记忆](../reports/MEMORY_EVAL_RESULTS.md)、[可靠性](../reports/RELIABILITY_RESULTS.md)。未完成项清单与复现计划为内部记录，未随仓库发布。

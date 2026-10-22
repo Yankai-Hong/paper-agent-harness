@@ -16,7 +16,7 @@
 - DeepSeek / OpenAI-compatible Chat Completions 接入，ask/chat、会话恢复、请求上限、结构校验与 usage 记录。
 - 批量多轮运行、消融与独立标注评分入口；30×4 来源可追溯的待复核对话草稿。
 
-**验收状态：** 本轮修复评测历史与统计、API 有限重试、归档按需召回和记忆幂等提交。实际验收以 [最终报告](reports/FINAL_REPORT.md)、[真实 API 结果](reports/LIVE_EVAL_RESULTS.md)、[剩余问题](reports/REMAINING_ISSUES.md) 为准。QASPER 检索标注与草稿多轮标签分开；未经人工复核的标签、模型 Judge 和离线故障测试不能作为人工 gold。原 data/models/indexes/.env 均直接复用。
+**验收状态：** 本轮修复评测历史与统计、API 有限重试、归档按需召回和记忆幂等提交。实际验收以 [最终报告](reports/FINAL_REPORT.md)、[真实 API 结果](reports/LIVE_EVAL_RESULTS.md) 为准；剩余问题清单为内部记录，未随仓库发布。QASPER 检索标注与草稿多轮标签分开；未经人工复核的标签、模型 Judge 和离线故障测试不能作为人工 gold。原 data/models/indexes/.env 均直接复用。
 
 **本轮入口：** 原目录运行 `.venv-gpu/Scripts/python.exe -m pytest -q`；完整复现命令见 [评测协议](docs/evaluation.md)。`eval ablation --output 新目录` 会真实执行配置矩阵并消耗 API；`eval compare A B --metric behavior_match` 读取逐例结果做配对簇 Bootstrap。正式数据修订在 `data/eval/v0.3/`，旧版本保留。
 
@@ -199,7 +199,7 @@ chat 支持 /corpus、/trace、/memory、/quit。相同 session 恢复事实和�
 | API 适配 | [API](docs/api.md) | providers.py |
 | 运行/标注/评分 | [评测](docs/evaluation.md) | scripts/、task_metrics.py |
 
-主计划：[REPRODUCTION_PLAN.md](REPRODUCTION_PLAN.md)。当前执行状态见 [reports/FINAL_REPORT.md](reports/FINAL_REPORT.md)。
+复现计划、上游复用审查与 references/ 快照为内部文档，未随仓库发布；当前执行状态见 [reports/FINAL_REPORT.md](reports/FINAL_REPORT.md)。
 
 
 ## 许可

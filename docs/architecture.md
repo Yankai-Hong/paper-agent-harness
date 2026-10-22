@@ -1,6 +1,6 @@
 # 架构与七阶段
 
-这是以 learn-claude-code 的 messages/tool loop 和上下文管理思想为基准的领域实现，并非上游已经拥有论文问答。固定上游 SHA 为 `ce8f9f186058939da54c9d6fead78dfb5d0fd6c3`。原始选定文件保存在 [references](../references/learn-claude-code/SNAPSHOT.md)，复用审查见 [基准审查](../LEARN_CLAUDE_CODE_REVIEW.md)。
+这是以 learn-claude-code 的 messages/tool loop 和上下文管理思想为基准的领域实现，并非上游已经拥有论文问答。固定上游 SHA 为 `ce8f9f186058939da54c9d6fead78dfb5d0fd6c3`。原始选定文件保存在内部快照 `references/learn-claude-code/`，复用审查见内部文档 `LEARN_CLAUDE_CODE_REVIEW.md`（两者均未随仓库发布；上游来源与固定版本见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) 与 [upstream.lock](../upstream.lock)）。
 
 ```mermaid
 flowchart LR
