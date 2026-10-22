@@ -1,0 +1,301 @@
+"""Seven-stage domain orchestration; new code, not an upstream feature.
+
+reasoner.structured(stage, payload) must return schema-compatible dictionaries.
+Offline tests inject a scripted reasoner. No API invocation exists by default.
+"""
+from dataclasses import dataclass, field, asdict
+from contextlib import contextmanager
+from pathlib import Path
+import time
+import uuid
+import math
+import copy
+import json
+
+from .memory import SessionMemory, ContextArchive, validate_citations
+from .storage import write_json, safe_id, digest
+
+STAGES = ("Guardrails", "NLU", "Retrieve", "Rerank", "Reflect", "Generate", "Memory")
+
+
+@dataclass
+class PaperAgentState:
+    session_id: str
+    messages: list = field(default_factory=list)
+    turn_count: int = 0
+    memory: SessionMemory = None
+    committed_turns: dict = field(default_factory=dict)
+
+    def __post_init__(self):
+        safe_id(self.session_id)
+        if self.memory is None:
+            self.memory = SessionMemory(self.session_id)
+
+    @classmethod
+    def load(cls, root, session_id):
+        import json
+        snapshot = Path(root)/f"{safe_id(session_id)}.state.json"
+        if snapshot.exists():
+            data = json.loads(snapshot.read_text(encoding="utf-8"))
+            if data["session_id"] != session_id:
+                raise ValueError("Session identity mismatch")
+            data["memory"] = SessionMemory(**data["memory"])
+            return cls(**data)
+        path = Path(root)/f"{safe_id(session_id)}.history.json"
+        history = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        return cls(session_id, history.get("messages", []), history.get("turn_count", 0),
+                   SessionMemory.load(root, session_id))
+
+    def save(self, root):
+        # A single atomic snapshot is authoritative, avoiding split history/memory commits.
+        write_json(Path(root)/f"{self.session_id}.state.json", asdict(self))
+
+
+class TurnTrace:
+    def __init__(self, session_id, question):
+        self.value = {"turn_id": uuid.uuid4().hex, "session_id": session_id, "question": question,
+                      "status": "running", "stages": [], "started_at": time.time()}
+
+    @contextmanager
+    def stage(self, name, inputs=None, attempt=1):
+        entry = {"stage": name, "attempt": attempt, "input": inputs, "status": "running"}
+        self.value["stages"].append(entry)
+        started = time.perf_counter()
+        try:
+            yield entry
+            entry["status"] = "ok"
+        except Exception as exc:
+            entry.update(status="error", error=f"{type(exc).__name__}: {exc}")
+            raise
+        finally:
+            entry["elapsed_ms"] = (time.perf_counter()-started)*1000
+
+    def finish(self, root):
+        visited = {s["stage"] for s in self.value["stages"]}
+        for name in STAGES:
+            if name not in visited:
+                self.value["stages"].append({"stage": name, "status": "skipped",
+                                              "reason": self.value["status"], "elapsed_ms": 0})
+        write_json(Path(root)/f"{self.value['turn_id']}.json", self.value)
+
+
+class PaperPipeline:
+    def __init__(self, retriever, reasoner, trace_dir, memory_dir, mode="rerank", rewrite=True, reflect=True,
+                 compact=True, memory_strategy="bounded", archive_recall=True, max_retrieval_attempts=2,
+                 allow_degraded=True):
+        self.retriever, self.reasoner = retriever, reasoner
+        self.trace_dir, self.memory_dir = Path(trace_dir), Path(memory_dir)
+        self.mode, self.rewrite, self.reflect = mode, rewrite, reflect
+        self.compact = compact
+        if memory_strategy not in {"bounded", "semantic"}:
+            raise ValueError("Unknown memory strategy")
+        self.memory_strategy = memory_strategy
+        self.archive_recall = archive_recall
+        self.max_retrieval_attempts = max_retrieval_attempts
+        self.allow_degraded = allow_degraded
+
+    def run(self, question, state, turn_id=None):
+        turn_id = safe_id(turn_id or uuid.uuid4().hex)
+        if turn_id in state.committed_turns:
+            committed = state.committed_turns[turn_id]
+            if committed["question"] != question:
+                raise ValueError("turn_id already committed with a different question")
+            return {**committed["result"], "replayed_commit": True}
+        original = copy.deepcopy(state)
+        if self.reasoner is None:
+            raise RuntimeError("No reasoner configured; use offline search/eval commands")
+        trace = TurnTrace(state.session_id, question)
+        if turn_id is not None:
+            trace.value["turn_id"] = safe_id(turn_id)
+        trace.value.update(corpus_hash=self.retriever.metadata.get("corpus_hash"), mode=self.mode,
+                           rewrite=self.rewrite, reflect=self.reflect, compact=self.compact,
+                           memory_strategy=self.memory_strategy)
+        call_start = len(getattr(self.reasoner, "calls", []))
+        trace.value.update(degraded=False, degradation_reasons=[], commit_status="uncommitted")
+        state.turn_count += 1
+        answer = {"decision": "error", "claims": []}
+        try:
+            with trace.stage("Guardrails", {"question": question}) as event:
+                if not question.strip() or len(question) > 20000:
+                    raise ValueError("Question must contain 1..20000 characters")
+                if any(ord(ch) < 32 and ch not in "\t\n\r" for ch in question):
+                    raise ValueError("Question contains unsupported control characters")
+                event["output"] = {"accepted": True}
+            with trace.stage("NLU", {"question": question}) as event:
+                recalled = ContextArchive(self.memory_dir/"archives").search(
+                    state.session_id, question, current_memory=state.memory) if self.archive_recall else []
+                trace.value["archive_recall"] = recalled
+                catalog = list({c["paper_id"]: {"paper_id": c["paper_id"], "title": c.get("title", "")}
+                                for c in self.retriever.by_id.values()}.values())
+                nlu = self.reasoner.structured("nlu", {"question": question,
+                    "memory": asdict(state.memory), "recent_messages": state.messages[-8:] if self.compact else state.messages,
+                    "paper_catalog": catalog, "historical_context_not_evidence": recalled})
+                if nlu.get("intent") not in {"search", "fact", "explain", "compare", "out_of_scope"}:
+                    raise ValueError("Invalid intent")
+                if not isinstance(nlu.get("standalone_query"), str) or not nlu["standalone_query"].strip():
+                    raise ValueError("Missing standalone query")
+                if nlu.get("paper_ids") is not None:
+                    known = {p["paper_id"] for p in catalog}
+                    if not isinstance(nlu["paper_ids"], list) or any(p not in known for p in nlu["paper_ids"]):
+                        raise ValueError("NLU returned unknown paper IDs")
+                event["output"] = nlu
+                if self.archive_recall:
+                    extra = ContextArchive(self.memory_dir/"archives").search(
+                        state.session_id, nlu["standalone_query"], current_memory=state.memory,
+                        paper_ids=nlu.get("paper_ids"))
+                    merged, seen, used = [], set(), 0
+                    for record in recalled + extra:
+                        key = (record["kind"], record.get("turn_id"), digest(record["content"]))
+                        size = len(json.dumps(record, ensure_ascii=False))
+                        if key not in seen and len(merged) < 6 and used + size <= 5000:
+                            merged.append(record)
+                            seen.add(key)
+                            used += size
+                    recalled = merged
+                    trace.value["archive_recall"] = recalled
+            evidence = []
+            decision = "refuse" if nlu["intent"] == "out_of_scope" else "clarify" if nlu.get("needs_clarification") else "search"
+            query = nlu["standalone_query"] if self.rewrite else question
+            if decision == "search":
+                for attempt in range(1, self.max_retrieval_attempts + 1):
+                    with trace.stage("Retrieve", {"query": query}, attempt) as event:
+                        # Separate spans reflect real component work, not seven LLM calls.
+                        retrieval_mode = "hybrid" if self.mode == "rerank" else self.mode
+                        try:
+                            result = self.retriever.search(query, mode=retrieval_mode, top_k=30,
+                                                           paper_ids=nlu.get("paper_ids"))
+                        except Exception as exc:
+                            if not self.allow_degraded or retrieval_mode != "hybrid":
+                                raise
+                            result = None
+                            for fallback in ("bm25", "dense"):
+                                try:
+                                    result = self.retriever.search(query, mode=fallback, top_k=30, paper_ids=nlu.get("paper_ids"))
+                                    break
+                                except Exception:
+                                    continue
+                            if result is None:
+                                raise
+                            event.update(degraded=True, reason="retrieval_route_failed", fallback=fallback, error_type=type(exc).__name__)
+                        event["output"] = {"candidate_ids": result["candidate_ids"]}
+                    with trace.stage("Rerank", {"candidate_ids": result["candidate_ids"]}, attempt) as event:
+                        candidates = result["hits"]
+                        if self.mode == "rerank" and candidates:
+                            try:
+                                if self.retriever.reranker is None:
+                                    raise ValueError("Cross-encoder required")
+                                scores = self.retriever.reranker.score(query, [c["text"] for c in candidates])
+                                if len(scores) != len(candidates) or not all(math.isfinite(s) for s in scores):
+                                    raise ValueError("Invalid reranker scores")
+                                candidates = [c for _, c in sorted(zip(scores, candidates),
+                                              key=lambda v: (-v[0], v[1]["chunk_id"]))]
+                            except Exception as exc:
+                                if not self.allow_degraded:
+                                    raise
+                                event.update(degraded=True, reason="reranker_unavailable", error_type=type(exc).__name__)
+                        # Retain first retrieval evidence when filling gaps on retry.
+                        evidence = list({c["chunk_id"]: c for c in evidence + candidates[:5]}.values())
+                        event["output"] = {"evidence_ids": [c["chunk_id"] for c in evidence]}
+                    with trace.stage("Reflect", {"evidence_ids": [c["chunk_id"] for c in evidence]}, attempt) as event:
+                        verdict = self.reasoner.structured("reflect", {"question": question, "evidence": evidence,
+                            "resolved_question": nlu["standalone_query"],
+                            "attempt": attempt, "intent": nlu["intent"],
+                            "historical_context_not_evidence": recalled}) if self.reflect else {"decision": "answer"}
+                        decision = verdict.get("decision")
+                        if decision not in {"answer", "retrieve_again", "clarify", "refuse"}:
+                            raise ValueError("Invalid reflection decision")
+                        if decision == "retrieve_again" and attempt == self.max_retrieval_attempts:
+                            decision = "refuse"
+                            verdict = {**verdict, "decision": decision, "reason_code": "retrieval_budget_exhausted"}
+                        event["output"] = verdict
+                    if decision != "retrieve_again":
+                        break
+                    query = verdict.get("next_query", "")
+                    if not isinstance(query, str) or not query.strip():
+                        raise ValueError("Reflection must specify next_query")
+            with trace.stage("Generate", {"decision": decision}) as event:
+                if decision == "answer":
+                    if not evidence:
+                        decision = "refuse"
+                        answer = {"decision": decision, "text": "语料中没有足够证据。", "claims": []}
+                    else:
+                        answer = self.reasoner.structured("generate", {"question": question,
+                            "resolved_question": nlu["standalone_query"], "evidence": evidence,
+                            "historical_context_not_evidence": recalled})
+                        if not answer.get("claims"):
+                            raise ValueError("Answer must include claims")
+                        try:
+                            validate_citations(answer["claims"], evidence)
+                        except ValueError:
+                            event.update(degraded=True, reason="citation_validation_failed")
+                            # Controlled refusal: invalid citations are never silently repaired.
+                            decision = "refuse"
+                            answer = {"decision": decision, "reason_code": "citation_validation_failed",
+                                      "text": "当前证据无法支撑可靠引用，因此不给出结论。", "claims": []}
+                        else:
+                            event["citation_validation"] = {"id_valid": True, "source_consistent": True, "semantic_support": "not_evaluated"}
+                            answer["decision"] = "answer"
+                else:
+                    answer = {"decision": decision, "claims": [], "text":
+                        "请明确所指论文或比较对象。" if decision == "clarify" else "当前语料证据不足或请求超出论文库范围。"}
+                event["output"] = answer
+            with trace.stage("Memory", {"decision": answer["decision"]}) as event:
+                if answer["decision"] == "answer":
+                    facts = [{"key": c.get("key", c["text"]), "text": c["text"],
+                              "evidence_ids": [r["chunk_id"] for r in c["citations"]]} for c in answer["claims"]]
+                    state.memory.update(nlu.get("resolved_entities", {}), facts, [],
+                                        [c["chunk_id"] for c in evidence])
+                    for fact in facts:
+                        state.memory.facts[fact["key"]]["turn_id"] = turn_id
+                    state.memory.summary["discussed_papers"] = list(dict.fromkeys(
+                        state.memory.summary.get("discussed_papers", []) + [c["paper_id"] for c in evidence]))
+                else:
+                    state.memory.unresolved = [question]
+                state.messages.extend([{"role": "user", "content": question, "turn_id": turn_id},
+                                       {"role": "assistant", "content": answer, "turn_id": turn_id}])
+                if self.compact:
+                    if self.memory_strategy == "semantic":
+                        from .compaction import semantic_compact_state
+                        try:
+                            event["compaction"] = semantic_compact_state(state, self.memory_dir/"archives", self.reasoner)
+                        except Exception as exc:
+                            event.update(degraded=True, reason="semantic_compaction_failed")
+                            # Graceful fallback: semantic summary failure must not lose the turn.
+                            event["compaction_fallback"] = {"from": "semantic", "to": "bounded",
+                                                            "error": f"{type(exc).__name__}: {exc}"}
+                            event["compaction"] = compact_state(state, self.memory_dir/"archives")
+                    else:
+                        event["compaction"] = compact_state(state, self.memory_dir/"archives")
+                state.committed_turns[turn_id] = {"question": question, "result": {"answer": answer, "trace_id": turn_id}}
+                state.save(self.memory_dir)
+                trace.value["commit_status"] = "committed"
+                event["output"] = asdict(state.memory)
+            trace.value.update(status="completed", decision=answer["decision"], answer=answer)
+            return {"answer": answer, "trace_id": trace.value["turn_id"]}
+        except Exception:
+            state.__dict__.update(original.__dict__)
+            trace.value["status"] = "error"
+            raise
+        finally:
+            degraded = [s.get("reason") for s in trace.value["stages"] if s.get("degraded")]
+            trace.value.update(degraded=bool(degraded), degradation_reasons=degraded)
+            trace.value["api_calls"] = getattr(self.reasoner, "calls", [])[call_start:]
+            trace.finish(self.trace_dir)
+
+
+def compact_state(state, archive_dir, max_facts=40, max_entities=20, max_messages=8):
+    """Deterministic bounded working memory; archive evicted state, no LLM summary claim."""
+    if len(state.memory.facts) <= max_facts and len(state.memory.entities) <= max_entities and len(state.messages) <= max_messages:
+        return {"compressed": False}
+    before = len(json.dumps({"memory": asdict(state.memory), "messages": state.messages}, ensure_ascii=False))
+    archive_id = ContextArchive(archive_dir).store({"memory": asdict(state.memory), "messages": state.messages, "turn_count": state.turn_count})
+    state.memory.facts = dict(list(state.memory.facts.items())[-max_facts:]) if max_facts else {}
+    state.memory.entities = dict(list(state.memory.entities.items())[-max_entities:]) if max_entities else {}
+    state.messages = state.messages[-max_messages:] if max_messages else []
+    after = len(json.dumps({"memory": asdict(state.memory), "messages": state.messages}, ensure_ascii=False))
+    return {"compressed": True, "archive_id": archive_id, "method": "bounded_recent_state",
+            "context_chars_before": before, "context_chars_after": after,
+            "token_estimate_before": math.ceil(before/4), "token_estimate_after": math.ceil(after/4),
+            "token_measurement": "character estimate; not API token usage",
+            "retained_facts": list(state.memory.facts), "retained_entities": list(state.memory.entities),
+            "retained_fact_consistency": True}
