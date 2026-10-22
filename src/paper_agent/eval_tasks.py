@@ -95,9 +95,11 @@ def run_intent(reasoner, rows):
             nlu = reasoner("nlu", payload)
             predictions[row_id] = nlu["intent"]
             per_case.append({"id": row_id, "intent": nlu["intent"], "error": None,
+                             "session_id": row.get("session_id", row_id), "correct": nlu["intent"] == row["intent"],
                              "standalone_query": nlu.get("standalone_query")})
         except Exception as exc:
-            per_case.append({"id": row_id, "intent": None, "error": f"{type(exc).__name__}: {exc}"})
+            per_case.append({"id": row_id, "intent": None, "session_id": row.get("session_id", row_id),
+                             "correct": False, "error": f"{type(exc).__name__}: {exc}"})
     return predictions, per_case
 
 
@@ -162,9 +164,13 @@ def rewrite_metrics(rows, predictions):
             continue
         required = row.get("required_entities") or []
         resolved = pred.get("resolved_entities") or {}
-        retained = [e for e in required if e.casefold() in pred.get("standalone_query", "").casefold()
-                    or e in (pred.get("paper_ids") or []) or e in resolved.values()]
-        if required:
+        aliases = row.get("required_entity_aliases", {})
+        text = json.dumps([pred.get("standalone_query", ""), pred.get("paper_ids", []), resolved], ensure_ascii=False)
+        def normalize(value):
+            import re
+            return " ".join(re.findall(r"\w+", str(value).casefold()))
+        retained = [e for e in required if any(normalize(a) in normalize(text) for a in aliases.get(e, [e]))]
+        if required and row.get("entity_preservation_applicable", True):
             entity_retention.append(len(retained) / len(required))
         if "expected_entity" in row:
             coref_correct += (resolved.get(row["expected_entity"]) == row.get("expected_target"))
@@ -175,6 +181,7 @@ def rewrite_metrics(rows, predictions):
             semantic_kept.append(overlap / denom)
             total += 1
     return {"n": len(rows), "entity_retention_rate": float(np.mean(entity_retention)) if entity_retention else None,
+            "entity_applicable_cases": len(entity_retention),
             "coreference_accuracy": rate(coref_correct, sum("expected_entity" in r for r in rows)),
             "token_overlap_with_expected": float(np.mean(semantic_kept)) if semantic_kept else None,
             "note": "Token overlap is a diagnostic, not a standalone semantic-preservation measure."}
@@ -183,7 +190,7 @@ def rewrite_metrics(rows, predictions):
 # --- boundary ---------------------------------------------------------------
 
 def run_boundary(pipeline_factory, rows, mode="replay"):
-    """pipeline_factory(session_id) -> PaperPipeline; runs each row as an isolated turn."""
+    """Isolate each case; replay user history or inject explicitly marked context."""
     if mode not in {"replay", "context-only"}:
         raise ValueError("Unknown boundary mode")
     predictions, per_case = {}, []
@@ -203,10 +210,12 @@ def run_boundary(pipeline_factory, rows, mode="replay"):
             result = pipeline.run(row["question"], state)
             predictions[row_id] = result["answer"]["decision"]
             per_case.append({"id": row_id, "decision": result["answer"]["decision"],
+                             "correct": result["answer"]["decision"] == row.get("decision"),
                              "error": None, "mode": mode, "session_id": row.get("session_id", row_id),
                              "trace_id": result.get("trace_id")})
         except Exception as exc:
             per_case.append({"id": row_id, "mode": mode, "session_id": row.get("session_id", row_id),
+                             "correct": False,
                              "decision": None, "error": f"{type(exc).__name__}: {exc}"})
     return predictions, per_case
 
@@ -245,7 +254,7 @@ def boundary_metrics(rows, predictions):
 # --- memory -----------------------------------------------------------------
 
 def run_memory(pipeline_factory, rows):
-    """Run dialogs through a pipeline per session, then compare final memory to checkpoints."""
+    """Run sessions in turn order and capture memory at each checkpoint, not only at the end."""
     per_session = defaultdict(list)
     for row in rows:
         per_session[row["session_id"]].append(row)

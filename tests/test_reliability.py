@@ -125,6 +125,14 @@ def test_connect_budget_does_not_limit_header_wait():
     from paper_agent.providers import post_json
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self):
+            if self.path == '/trickle':
+                try:
+                    for byte in b'HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{}':
+                        self.wfile.write(bytes([byte]))
+                        self.wfile.flush()
+                        time.sleep(.01)
+                except OSError: pass
+                return
             time.sleep(.08)
             self.send_response(200)
             self.end_headers()
@@ -138,6 +146,9 @@ def test_connect_budget_does_not_limit_header_wait():
     try:
         assert post_json(url, {}, {}, 1, connect_timeout=.03) == {"ok":True}
         with pytest.raises(ProviderTransportError): post_json(url, {}, {}, .03, connect_timeout=.01)
+        started=time.monotonic()
+        with pytest.raises(ProviderTransportError): post_json(url+'/trickle', {}, {}, .06, connect_timeout=.03)
+        assert time.monotonic()-started < .3
     finally:
         server.shutdown()
         server.server_close()

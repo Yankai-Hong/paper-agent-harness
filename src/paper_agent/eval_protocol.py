@@ -62,11 +62,19 @@ def compare_runs(path_a, path_b, metric="behavior_match", seed=42):
         rows = read_jsonl(filename)
         metrics_path = root / "metrics.json"
         metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
+        metadata_path = root / "case_metadata.json"
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8")) if metadata_path.exists() else {}
         details = {r["query_id"]:r for r in metrics.get("per_query", [])}
         for r in rows:
+            identifier = r.get("id", r.get("turn_id", r.get("query_id")))
+            meta = metadata.get(identifier, {})
+            if "session_id" not in r and meta.get("session_id"):
+                r["session_id"] = meta["session_id"]
+            if "correct" not in r and "expected_label" in meta:
+                r["correct"] = not r.get("error") and r.get("intent", r.get("decision")) == meta["expected_label"]
             if r.get("query_id") in details:
                 r.update(details[r["query_id"]])
-                r["session_id"] = (r.get("paper_ids") or [r["query_id"]])[0]
+                r["session_id"] = r.get("source_paper_id", meta.get("source_paper_id", (r.get("paper_ids") or [r["query_id"]])[0]))
         indexed = {}
         for r in rows:
             key = (r.get("session_id", ""), r.get("id", r.get("turn_id", r.get("query_id"))))

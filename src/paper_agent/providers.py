@@ -8,6 +8,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPHandler, HTTPSHandler
 import http.client
+import threading
+import socket
 
 from jsonschema import validate
 
@@ -111,10 +113,27 @@ class ProviderTransportError(RuntimeError):
 def post_json(url, body, headers, timeout, connect_timeout=None):
     request = Request(url, json.dumps(body, ensure_ascii=False).encode("utf-8"), headers, method="POST")
     deadline = time.monotonic() + timeout
+    connections = []
+    expired = threading.Event()
+    def abort_request():
+        expired.set()
+        for connection in connections:
+            if connection.sock is not None:
+                try:
+                    connection.sock.shutdown(socket.SHUT_RDWR)
+                except OSError:
+                    pass
+                connection.close()
+    timer = threading.Timer(timeout, abort_request)
+    timer.daemon = True
     class ConnectionBudget:
         def connect(self):
+            connections.append(self)
             self.timeout = min(timeout, connect_timeout or timeout)
             super().connect()
+            if expired.is_set() or time.monotonic() >= deadline:
+                self.close()
+                raise TimeoutError("Request total timeout")
             self.sock.settimeout(max(0.001, deadline-time.monotonic()))
     class HTTPConnection(ConnectionBudget, http.client.HTTPConnection):
         pass
@@ -127,6 +146,7 @@ def post_json(url, body, headers, timeout, connect_timeout=None):
         def https_open(self, req):
             return self.do_open(HTTPSConnection, req, context=self._context, check_hostname=self._check_hostname)
     try:
+        timer.start()
         with build_opener(NoRedirect, BudgetHTTPHandler, BudgetHTTPSHandler).open(request, timeout=timeout) as response:
             parts = []
             while True:
@@ -142,7 +162,9 @@ def post_json(url, body, headers, timeout, connect_timeout=None):
     except HTTPError as exc:
         raise ProviderTransportError(status=exc.code) from None
     except (URLError, TimeoutError, OSError) as exc:
-        raise ProviderTransportError(kind=type(getattr(exc, "reason", exc)).__name__) from None
+        raise ProviderTransportError(kind="TimeoutError" if expired.is_set() else type(getattr(exc, "reason", exc)).__name__) from None
+    finally:
+        timer.cancel()
 
 
 class CompatibleReasoner:

@@ -61,9 +61,9 @@ def evaluate_retriever(retriever, queries_path, output, mode="bm25", top_k=5, ca
         try:
             result = retriever.search(query["query"], mode=mode, top_k=max(10, top_k),
                                       candidate_k=candidate_k, paper_ids=query.get("paper_ids"))
-            predictions.append({"query_id": query["query_id"], **result})
+            predictions.append({"query_id": query["query_id"], "source_paper_id":query.get("source_paper_id", query["query_id"]), **result})
         except Exception as exc:
-            predictions.append({"query_id": query["query_id"], "hits": [],
+            predictions.append({"query_id": query["query_id"], "source_paper_id":query.get("source_paper_id", query["query_id"]), "hits": [],
                                 "error": f"{type(exc).__name__}: {exc}"})
     metrics = retrieval_metrics(queries, predictions, top_k)
     at10 = retrieval_metrics(queries, predictions, 10)

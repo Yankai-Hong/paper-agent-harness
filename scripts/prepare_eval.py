@@ -30,6 +30,7 @@ def prepare(source_qasper="data/qasper", source_dialogues="data/dialogues-draft"
     write_jsonl(out / "retrieval.jsonl", retrieval)
 
     dialogues = read_jsonl(Path(source_dialogues) / "dialogues.jsonl")
+    titles = {p["paper_id"]:p["title"] for p in read_jsonl(Path(source_qasper)/"papers.jsonl")}
 
     # 2. Dialogs: full 30x4 source-linked drafts.
     write_jsonl(out / "dialogs.jsonl", dialogues)
@@ -48,6 +49,8 @@ def prepare(source_qasper="data/qasper", source_dialogues="data/dialogues-draft"
                 "session_id": r["session_id"], "turn": r["turn"],
                 "history": session_history(dialogues, r),
                 "required_entities": r["source_paper_ids"],
+                "required_entity_aliases": {p:[p, titles[p]] for p in r["source_paper_ids"]},
+                "entity_preservation_applicable": r["turn"] in {2, 3},
                 "expected_query": None,
                 "review_status": "draft_unreviewed",
                 "label_source": "expected standalone query requires human review"}

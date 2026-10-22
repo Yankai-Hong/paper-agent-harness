@@ -54,7 +54,7 @@ def table(headers, rows):
 
 def summarize():
     roots = [p.parent for p in ROOT.rglob("metrics.json") if "traces" not in p.parts and "retrieval" not in str(p)]
-    runs = {str(p.relative_to(ROOT)): {"metrics":load(p/"metrics.json"), "telemetry":telemetry(p),
+    runs = {p.relative_to(ROOT).as_posix(): {"metrics":load(p/"metrics.json"), "telemetry":telemetry(p),
              "semantic":load(p/"semantic-summary.json")} for p in roots}
     queries = read_jsonl("data/qasper/retrieval.jsonl")
     clusters = [q["source_paper_id"] for q in queries]

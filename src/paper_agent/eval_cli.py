@@ -8,8 +8,8 @@ Subcommands:
   eval boundary    pipeline answer/refuse/clarify decisions against gold labels
   eval memory      memory checkpoint consistency after multi-turn runs
   eval e2e         end-to-end pipeline run + optional LLM-as-Judge
-  eval compare     diff two saved metric.json files
-  eval ablation    print the ablation matrix to run (thin wrapper)
+  eval compare     pair saved case outcomes and cluster-bootstrap differences
+  eval ablation    execute the configured matrix in independent output directories
 
 All metrics are written to <output>/metrics.json plus per-case files; LLM calls are
 recorded to <output>/api_calls.json. API keys are never persisted.

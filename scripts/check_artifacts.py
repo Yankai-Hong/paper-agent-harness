@@ -22,7 +22,7 @@ if broken:
 queries = read_jsonl(root/'data/qasper/retrieval.jsonl')
 verified = {}
 for mode in ['bm25', 'dense', 'hybrid', 'rerank']:
-    directory = root/'reports/qasper-suite'/mode
+    directory = root/'reports/acceptance/retrieval-v2'/mode
     predictions = read_jsonl(directory/'predictions.jsonl')
     recorded = json.loads((directory/'metrics.json').read_text(encoding='utf-8'))
     recomputed = retrieval_metrics(queries, predictions)
@@ -30,7 +30,7 @@ for mode in ['bm25', 'dense', 'hybrid', 'rerank']:
         if recomputed[key] != recorded[key]:
             raise ValueError(f'Metric mismatch for {mode}/{key}')
     verified[mode] = {key: recomputed[key] for key in ['Recall@5', 'Hit@5', 'errors', 'missing']}
-test_xml = ET.parse(root/'reports/implementation-tests.xml')
+test_xml = ET.parse(root/'reports/acceptance-tests.xml')
 suites = list(test_xml.getroot().iter('testsuite'))
 test_counts = {key: sum(int(s.get(key, 0)) for s in suites) for key in ['tests', 'errors', 'failures', 'skipped']}
 if test_counts['errors'] or test_counts['failures']:
@@ -38,11 +38,11 @@ if test_counts['errors'] or test_counts['failures']:
 manifest = json.loads((root/'data/dialogues-draft/manifest.json').read_text(encoding='utf-8'))
 assert len(read_jsonl(root/'data/dialogues-draft/dialogues.jsonl')) == 120
 assert manifest['valid_for_effectiveness_claims'] is False
-write_json(root/'reports/delivery-verification.json', {'tests': test_counts,
+write_json(root/'reports/acceptance/delivery-verification.json', {'tests': test_counts,
     'checked_document_files': len(documents), 'broken_local_links': broken,
     'retrieval_metrics_recomputed_from_saved_predictions': verified,
     'dialogue_draft_status': manifest['status'],
     'verification_api_calls': 0,
-    'not_verified': ['real provider connectivity', 'generation semantic quality',
-                     'independently reviewed multi-turn gold', 'memory quality and token savings']})
+    'not_verified': ['independently reviewed multi-turn gold', 'human-reviewed semantic support',
+                     'generalized long-term memory quality; only limited development experiments run']})
 print('Documentation links, saved retrieval metrics, test report and draft status verified.')

@@ -81,3 +81,20 @@ def test_ablation_executes_config_matrix(tmp_path, monkeypatch):
     assert len(calls) == 2 and calls[0].no_reflect and not calls[1].no_reflect
     assert calls[0].output != calls[1].output
     assert all(r["status"] == "completed" for r in result)
+
+
+def test_entity_metric_accepts_title_alias_and_reports_denominator():
+    from paper_agent.eval_tasks import rewrite_metrics
+    rows = [{"id":"a", "required_entities":["123.456"], "required_entity_aliases":{"123.456":["123.456", "Example Paper"]}},
+            {"id":"b", "required_entities":["123.456"], "entity_preservation_applicable":False}]
+    result = rewrite_metrics(rows, {"a":{"standalone_query":"Example Paper methods"}})
+    assert result["entity_retention_rate"] == 1 and result["entity_applicable_cases"] == 1 and result["n"] == 2
+
+
+def test_compare_legacy_metadata_preserves_session_cluster(tmp_path):
+    from paper_agent.storage import write_json
+    for name, labels in [("a",["fact","search"]),("b",["fact","fact"])]:
+        write_jsonl(tmp_path/name/"per_case.jsonl", [{"id":str(i),"intent":v} for i,v in enumerate(labels)])
+        write_json(tmp_path/name/"case_metadata.json",{str(i):{"session_id":"s","expected_label":"fact"} for i in range(2)})
+    result=compare_runs(tmp_path/"a",tmp_path/"b","correct")
+    assert result["paired"]["clusters"] == 1 and result["paired"]["mean"] == .5
