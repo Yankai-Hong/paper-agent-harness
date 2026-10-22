@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="4" time="0.165" timestamp="2026-10-22T00:07:09.699610+08:00" hostname="Jacky"><testcase classname="references.learn-claude-code.tests.test_s08_context_compact" name="test_glob_double_star_matches_files_at_any_depth" time="0.009"><failure message="AssertionError: assert {'one\\one.py...y', 'root.py'} == {'one/one.py'...y', 'root.py'}&#10;  &#10;  Extra items in the left set:&#10;  'one\\two\\deep.py'&#10;  'one\\one.py'&#10;  Extra items in the right set:&#10;  'one/two/deep.py'&#10;  'one/one.py'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.test-tmp/upstream-run2/test_glob_double_star_matches_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000210BCC99270&gt;
+
+    def test_glob_double_star_matches_files_at_any_depth(tmp_path, monkeypatch):
+        (tmp_path / "root.py").write_text("")
+        (tmp_path / "one").mkdir()
+        (tmp_path / "one" / "one.py").write_text("")
+        (tmp_path / "one" / "two").mkdir()
+        (tmp_path / "one" / "two" / "deep.py").write_text("")
+        lesson = load_lesson(monkeypatch, tmp_path)
+    
+        matches = set(lesson["run_glob"]("**/*.py").splitlines())
+    
+&gt;       assert matches == {"root.py", "one/one.py", "one/two/deep.py"}
+E       AssertionError: assert {'one\\one.py...y', 'root.py'} == {'one/one.py'...y', 'root.py'}
+E         
+E         Extra items in the left set:
+E         'one\\two\\deep.py'
+E         'one\\one.py'
+E         Extra items in the right set:
+E         'one/two/deep.py'
+E         'one/one.py'
+E         Use -v to get more diff
+
+C:\Users\40533\Desktop\nano-cc\references\learn-claude-code\tests\test_s08_context_compact.py:39: AssertionError</failure></testcase><testcase classname="references.learn-claude-code.tests.test_s08_context_compact" name="test_prepare_preserves_tool_results_while_context_is_within_limit" time="0.007" /><testcase classname="references.learn-claude-code.tests.test_s08_context_compact" name="test_prepare_micro_compacts_tool_results_after_context_exceeds_limit" time="0.025" /><testcase classname="references.learn-claude-code.tests.test_s08_context_compact" name="test_prepare_persists_oversized_unseen_result_before_full_compact" time="0.050" /></testsuite></testsuites>
