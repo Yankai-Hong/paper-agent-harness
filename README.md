@@ -200,3 +200,12 @@ chat 支持 /corpus、/trace、/memory、/quit。相同 session 恢复事实和�
 | 运行/标注/评分 | [评测](docs/evaluation.md) | scripts/、task_metrics.py |
 
 主计划：[REPRODUCTION_PLAN.md](REPRODUCTION_PLAN.md)。当前执行状态见 [reports/FINAL_REPORT.md](reports/FINAL_REPORT.md)。
+
+
+## 许可
+
+本项目自有代码采用 [MIT License](LICENSE)。
+
+- 上游 [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) 的移植部分（`src/paper_agent/runtime.py`、`src/paper_agent/memory.py`、`tests/test_upstream_compact_portable.py`）保留其 MIT 声明，全文见 [licenses/learn-claude-code-LICENSE](licenses/learn-claude-code-LICENSE)。
+- BGE-M3 / bge-reranker-v2-m3 权重与 QASPER v0.3 数据不随本仓库发布，遵循各自的模型卡与数据许可；来源、固定版本与许可记录见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+- `models/`、`indexes/`、`runs/`、`data/qasper/`、`references/` 与 `.env` 均已排除，不随仓库分发。
