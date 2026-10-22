@@ -1,0 +1,93 @@
+{
+  "turn_id": "d16-t1",
+  "official_query_id": "6c4e1a1ccc0c5c48115864a6928385c248f4d8ad",
+  "payload_hash": "7824a432ce718d76f2451268edae91e835e1971afff60317ba263da410c9d5f5",
+  "source": "QASPER official answer alternatives",
+  "judge_type": "separate_request_same_model_not_human",
+  "model": "deepseek-flash",
+  "judgment": {
+    "answer_correct": true,
+    "rewrite_preserves_question": true,
+    "reason": "The answer covers the official solutions: label smoothing (smoothed ground-truth label distribution), forbidding EOS emission, length-promoting beam search terms, and the coverage criterion to prevent looping. The rewrite about decoding and language model integration matches the paper's two shortcomings (overconfidence and incomplete transcripts with language models) and is preserved in the standalone query. Claim 2 about WER results is plausibly from cited abstract text but not central; all other claims are directly supported.",
+    "claims": [
+      {
+        "index": 0,
+        "supported": true,
+        "reason": "Cited abstract explicitly states the two shortcomings: overconfidence in predictions and tendency to produce incomplete transcriptions when language models are used."
+      },
+      {
+        "index": 1,
+        "supported": true,
+        "reason": "Cited abstract states practical solutions to both problems achieving 10.6% WER without separate language models and 6.7% WER with trigram language model on WSJ."
+      },
+      {
+        "index": 2,
+        "supported": true,
+        "reason": "Cited text states seq2seq models often yield very sharp predictions with few hypotheses needed, and high confidence reduces diversity of beam search transcripts."
+      },
+      {
+        "index": 3,
+        "supported": true,
+        "reason": "Cited text states label smoothing was proposed as efficient regularizer, prevents saturating SoftMax nonlinearity and improves gradient flow to lower layers."
+      },
+      {
+        "index": 4,
+        "supported": true,
+        "reason": "Cited text describes global normalization as expensive since each training step requires beam search inference, and questions whether it can be approximated by locally normalized models with regularization such as label smoothing."
+      },
+      {
+        "index": 5,
+        "supported": true,
+        "reason": "Cited text compares three strategies, proposes coverage term to prevent looping, and states the decode-time coverage penalty is most similar to Google Translation system."
+      },
+      {
+        "index": 6,
+        "supported": true,
+        "reason": "Cited text states first strategy forbids emitting EOS unless probability within set range of most probable token; prevents truncations but inefficient against middle omissions."
+      },
+      {
+        "index": 7,
+        "supported": true,
+        "reason": "Cited text states length-dependent term was proposed for CTC and seq2seq but difficult due to beam search looping and need for additional constraints."
+      },
+      {
+        "index": 8,
+        "supported": true,
+        "reason": "Cited text explains coverage term counts frames with cumulative attention above threshold, counted frame selections don't reduce decoding cost, and coverage recomputed each beam search iteration."
+      },
+      {
+        "index": 9,
+        "supported": true,
+        "reason": "Cited conclusion sentence states with efficient regularization and careful decoding, seq2seq can be competitive with other non-HMM techniques such as CTC."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "judge",
+      "model_requested": "deepseek-flash",
+      "status": "ok",
+      "request_hash": "f99c0249ef355bbd1b641a301a7d600e70becc3d34d7da5f1b0176951a8df3c2",
+      "model_returned": "deepseek-flash",
+      "usage_raw": {
+        "prompt_tokens": 4865,
+        "completion_tokens": 577,
+        "total_tokens": 5442,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 4737
+      },
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4737,
+        "output_tokens": 577,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3280.046100029722
+    }
+  ]
+}
