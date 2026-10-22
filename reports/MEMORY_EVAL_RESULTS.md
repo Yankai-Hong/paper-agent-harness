@@ -4,11 +4,11 @@
 
 | 组 | 检查点通过/总数 | 压缩轮 | 召回轮/记录 | API次数 | 已知token | P50/P95 ms | Judge质量/95% CI |
 |---|---|---|---|---|---|---|---|
-| ablations\memory-bounded | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 0/0 | 62 | 394238 | 13869/18136 | 95.00% [90.00%, 100.00%] |
-| ablations\memory-full | {'correct': 20, 'total': 20, 'rate': 1.0} | 0 | 0/0 | 61 | 430178 | 14499/18387 | 100.00% [100.00%, 100.00%] |
-| ablations\memory-recall | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 10/37 | 71 | 554433 | 15047/21364 | 未知 |
-| ablations\memory-semantic | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 0/0 | 73 | 525947 | 17177/21700 | 未知 |
-| memory-recall-v2 | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 10/54 | 72 | 556321 | 14858/19614 | 未知 |
+| ablations/memory-bounded | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 0/0 | 62 | 394238 | 13869/18136 | 95.00% [90.00%, 100.00%] |
+| ablations/memory-full | {'correct': 20, 'total': 20, 'rate': 1.0} | 0 | 0/0 | 61 | 430178 | 14499/18387 | 100.00% [100.00%, 100.00%] |
+| ablations/memory-recall | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 10/37 | 71 | 554433 | 15047/21364 | 未知 |
+| ablations/memory-semantic | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 0/0 | 73 | 525947 | 17177/21700 | 95.00% [90.00%, 100.00%] |
+| memory-recall-v2 | {'correct': 20, 'total': 20, 'rate': 1.0} | 12 | 10/54 | 72 | 556321 | 14858/19614 | 85.00% [80.00%, 90.00%] |
 
 memory-recall-v2 是修复两次召回覆盖问题后的独立重跑，旧 memory-recall 保留；应使用 v2 与 semantic 对照。压缩 tokens 是实际全阶段 usage（包括摘要/重试），不能只用字符估计声称成本节省。token 比较和 checkpoint 配对 CI 见 acceptance/summary.json、paired-comparisons.json。
 

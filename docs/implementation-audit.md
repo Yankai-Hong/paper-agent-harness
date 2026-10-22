@@ -18,3 +18,5 @@
 | 数据 | 新版本、非空检查点、静态审阅清单 | 草稿不提升为人工 gold |
 
 实际文件/函数改动、真实运行分母、token、延迟和未完成项以 reports/FINAL_REPORT.md 及配套报告为准。原七阶段名称、BM25/BGE/FAISS/RRF/Cross-Encoder、轻量 Harness 保留，没有引入额外服务或数据库。tool_loop 仍为独立 Harness，七阶段没有改成模型原生工具调用。
+
+本轮实际 API 数据冻结为 v0.3；后续 v0.4 补充显式 history session/turn 元数据、论文 ID/标题别名和实体指标适用范围。v0.4 的 Rewrite 分数是对保存的 v0.3 预测离线重算（`reports/acceptance/rewrite/rescored-v04.json`），不是新 API 实验；两版均保留草稿标签与原始结果。

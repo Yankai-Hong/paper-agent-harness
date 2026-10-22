@@ -12,14 +12,14 @@ Boundary Replay 55 条：一致率 90.91% [80.70%, 98.25%]；拒答 Precision 80
 
 | 运行 | 执行轮/调用 | 已知总 token | 未知 usage 调用 | P50/P95 ms | 降级轮 |
 |---|---|---|---|---|---|
-| ablations\memory-bounded | 20/62 | 394238 | 0 | 13869/18136 | 0 |
-| ablations\memory-full | 20/61 | 430178 | 0 | 14499/18387 | 0 |
-| ablations\memory-recall | 20/71 | 554433 | 0 | 15047/21364 | 0 |
-| ablations\memory-semantic | 20/73 | 525947 | 1 | 17177/21700 | 0 |
-| ablations\reflect-disabled | 12/21 | 108294 | 0 | 9621/13798 | 0 |
-| ablations\reflect-enabled | 12/28 | 140337 | 0 | 14419/22509 | 0 |
-| ablations\reflect-no-second | 12/27 | 130739 | 0 | 9819/13326 | 0 |
-| ablations\reflect-retrieve-again | 12/30 | 146895 | 0 | 10494/17553 | 0 |
+| ablations/memory-bounded | 20/62 | 394238 | 0 | 13869/18136 | 0 |
+| ablations/memory-full | 20/61 | 430178 | 0 | 14499/18387 | 0 |
+| ablations/memory-recall | 20/71 | 554433 | 0 | 15047/21364 | 0 |
+| ablations/memory-semantic | 20/73 | 525947 | 1 | 17177/21700 | 0 |
+| ablations/reflect-disabled | 12/21 | 108294 | 0 | 9621/13798 | 0 |
+| ablations/reflect-enabled | 12/28 | 140337 | 0 | 14419/22509 | 0 |
+| ablations/reflect-no-second | 12/27 | 130739 | 0 | 9819/13326 | 0 |
+| ablations/reflect-retrieve-again | 12/30 | 146895 | 0 | 10494/17553 | 0 |
 | boundary-replay | 145/380 | 1890572 | 0 | 11677/19484 | 0 |
 | e2e-full | 120/298 | 1574990 | 0 | 12386/22473 | 0 |
 | e2e-smoke | 4/10 | 54163 | 0 | 17013/27145 | 0 |

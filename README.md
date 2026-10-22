@@ -209,3 +209,5 @@ chat 支持 /corpus、/trace、/memory、/quit。相同 session 恢复事实和�
 - 上游 [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) 的移植部分（`src/paper_agent/runtime.py`、`src/paper_agent/memory.py`、`tests/test_upstream_compact_portable.py`）保留其 MIT 声明，全文见 [licenses/learn-claude-code-LICENSE](licenses/learn-claude-code-LICENSE)。
 - BGE-M3 / bge-reranker-v2-m3 权重与 QASPER v0.3 数据不随本仓库发布，遵循各自的模型卡与数据许可；来源、固定版本与许可记录见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 - `models/`、`indexes/`、`runs/`、`data/qasper/`、`references/` 与 `.env` 均已排除，不随仓库分发。
+
+本轮实际 API 数据冻结为 v0.3；后续 v0.4 补充显式 history session/turn 元数据、论文 ID/标题别名和实体指标适用范围。v0.4 的 Rewrite 分数是对保存的 v0.3 预测离线重算（`reports/acceptance/rewrite/rescored-v04.json`），不是新 API 实验；两版均保留草稿标签与原始结果。

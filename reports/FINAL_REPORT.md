@@ -1,97 +1,61 @@
-# 最终验收报告
+# nano-cc 本轮最终交付报告
 
-日期：2026-10-22。目标：在保留现有七阶段架构的前提下，审计、补齐并实测科研论文多轮检索问答 Agent，交付可复现、可追踪、可比较的评测闭环。本报告按「汇报格式」逐项说明。
+结论：工程正确性修正与核心开发实验已完成；人工金标、独立语义复核和充分的长期记忆质量验证未完成，尚不满足全部科研验收条件。旧报告保存在 history/pre-acceptance，所有结果均来自本目录实际产物。
 
-## 1. 实际修改的文件及原因
+## 实际修改
 
-### 新增
-| 文件 | 原因 |
+| 文件/函数 | 修改 |
 |---|---|
-| `docs/implementation-audit.md` | 阶段 A 审计报告：七阶段逐项核对、缺陷与修改建议 |
-| `src/paper_agent/judge.py` | LLM-as-Judge（6 维结构化评分 + 调用记录，隐藏实验组标签） |
-| `src/paper_agent/eval_tasks.py` | 意图/改写/边界/记忆评测指标与任务运行器 |
-| `src/paper_agent/eval_cli.py` | 统一 `eval` 子命令族 |
-| `configs/evaluation.json` | 统一评测配置（数据集、模型、Top-K、Reflect/记忆开关、seed、Judge） |
-| `data/eval/`（6 个 jsonl + README + manifest） | 阶段 D 自建数据集，明确标签来源与审核状态 |
-| `scripts/api_smoke.py`、`scripts/api_diag_text.py` | 真实 API smoke test 与 400 诊断 |
-| `scripts/prepare_eval.py` | 生成 `data/eval/`（无模型调用） |
-| `scripts/verify_c_fixes.py` | 阶段 C 修复的独立验证 |
-| `reports/LIVE_EVAL_RESULTS.md` | 真实 API 评测结果记录 |
+| scripts/prepare_eval.py · session_history/prepare | 同 session 严格过去历史；版本保护；长记忆非空检查点；ID/标题别名与适用范围 |
+| eval_tasks.py · bootstrap_ci/run_boundary/run_rewrite/run_memory | 正确有放回簇抽样；Replay/Context-only；拒绝污染历史；逐轮记忆检查 |
+| eval_protocol.py · assess/success_metrics/compare_runs | 三类成功率、未知质量、逐例配对差值与 CI、缺失/失败/配置报告 |
+| eval_cli.py · cmd_ablation/cmd_compare/cmd_e2e | 真实执行矩阵、保存有效配置、会话并行与逐会话结果、API参数覆盖 |
+| providers.py · APIConfig/post_json/CompatibleReasoner | 连接与总超时、有限重试/结构修复、状态分类、token/未知成本记录 |
+| pipeline.py · PaperAgentState/PaperPipeline.run/compact_state | 单快照原子提交、turn_id 幂等/回滚、组件降级、归档上下文与合并修复 |
+| memory.py · SessionMemory.load/ContextArchive.search | 新旧快照读取、会话隔离、关键词/实体/论文/时间召回、旧事实标记 |
+| compaction.py · semantic_compact_state | 保留讨论论文元数据、归档 turn 序、压缩观测字段 |
+| evaluation.py · retrieval_metrics/evaluate_retriever | Recall@10、MRR、nDCG 及完整排名 |
+| tests/test_eval_corrections.py、test_reliability.py、test_providers.py | 统计、历史、幂等、降级、超时、归档和长对话回归 |
+| 新增 retest_budget/audit_eval_data/judge_acceptance/review_rewrite/quality_statistics/summarize_acceptance/finalize_acceptance 脚本 | 真实探针、静态审核、辅助评审、统计与可重复生成报告 |
+| configs/evaluation.json、README、docs 全部组件页 | 执行矩阵、协议、运行边界和实测配置同步 |
 
-### 修改
-| 文件 | 变更 |
-|---|---|
-| `src/paper_agent/pipeline.py` | Guardrails 增控制字符校验；引用校验失败改为受控拒答（`citation_validation_failed`）；语义压缩失败回退到确定性裁剪（`compaction_fallback`） |
-| `src/paper_agent/cli.py` | `eval` 改为子命令族，保留 ask/chat/search/shell 交互入口 |
-| `tests/test_core.py` | 新增 3 个回归测试（控制字符/引用拒答/压缩回退） |
-| `docs/api.md`、`docs/generation.md`、`docs/memory.md`、`docs/evaluation.md`、`docs/README.md`、`README.md` | 与真实源码和实测结果对齐 |
+七阶段及原 Harness、BM25/BGE/FAISS/RRF/Cross-Encoder 保留；未下载模型、重建原索引或替换 .env，未新增外部数据库/服务。
 
-## 2. 核心架构是否符合参考截图
+## 验证与数据
 
-七阶段 `Guardrails → NLU → Retrieve → Rerank → Reflect → Generate → Memory` 与参考截图一致，保留 `PaperAgentState`、`PaperPipeline.run()`、`TurnTrace`、检索/记忆模块整体架构，未做结构性重构。二次检索上限、引用 ID 校验、会话记忆与归档均保留。新增的是统一的评测层（eval 子命令 + Judge + data/eval），不改变主流程。
+原依赖环境最新 61 项测试全部通过，见 acceptance-tests.xml。Mock 与真实调用分开。真实数据为 v0.3（Intent 100、Rewrite 90、Boundary 55、30×4 E2E、Memory 子集 2×10）。v0.4 仅改进历史元数据/实体别名标签，保留草稿状态；其 Rewrite 使用 v0.3 保存预测做离线重新评分，未冒充新 API 实验。
 
-## 3. 各模块实现与验证状态
+OpenCode t3：2048 截断，4096/8192 成功；4096+disabled 实测 reasoning_tokens=0。四轮回归4/4完成；全量 execution 120/120，70-turn 视图从完整历史运行取分。全量阶段 API 298 次、已知 token 1574990，P50/P95 12386/22473 ms。
 
-| 模块 | 实现 | 验证方式 |
+E2E 行为与草稿标签一致率 74.17% [66.67%, 80.83%]。严格规则 task/pipeline 已满足条件下界均 30/120，另 59 条质量未知；不能把 completed/total 当综合成功率。辅助 Judge 答案质量 85.00% [78.33%, 90.83%]；结合草稿行为条件的临时 Pipeline Success 70.00% [61.67%, 77.50%]。这些不是人工验证的正式指标。
+
+引用 ID 与来源结构均 499/499；语义支持 437/439，Unsupported Claim Rate 0.46%（同模型评审）。全部执行/质量失败和不一致案例保存，而不是从分母移除。
+
+## 算法结果与成本
+
+检索 Recall@5：66.26% / 73.94% / 74.24% / 77.61%，新四组复测与旧记录一致。Hybrid−Dense +0.30pp，95% CI [-7.40,+6.95]；Rerank−Hybrid +3.38pp，CI [-4.29,+11.04]，均不能声称显著。完整 Recall@10/MRR/nDCG、互补案例与排名变动见 ABLATION_RESULTS.md。
+
+Reflect 12 turns：禁用/一次反思/允许二检的辅助答案质量为 83.33% / 83.33% / 66.67%，未证实二检增益。Memory 20 turns/组：完整/裁剪/语义/语义+召回v2 的辅助质量为 100% / 95% / 95% / 85%；结构检查点均20/20，不能当作事实语义全正确。
+
+| 比较 | 辅助质量差值/95% CI | 全阶段token变化 |
 |---|---|---|
-| Guardrails | 空/超长/控制字符校验，入 trace | 新增测试 + 独立脚本 |
-| NLU | 五分类 + 指代 + 论文范围 + 澄清 | 真实 API（25 条意图 + 4 轮会话） |
-| Retrieve/Rerank | BM25/FAISS/RRF/Cross-Encoder | 真实 GPU 四组基线 |
-| Reflect | answer/retrieve_again/clarify/refuse + 二次检索上限 | 离线测试 + 真实会话（t3 触发二次检索） |
-| Generate | claims + citations + 结构校验 | 真实 API；引用失败改受控拒答 |
-| Memory | 会话隔离/事实/实体/归档/两种压缩 | 离线测试 + 压缩回退验证 |
-| 可观测 | TurnTrace + api_calls + usage | 真实 trace 已落盘 |
-| 评测 | eval 子命令 + Judge + data/eval | 真实运行（intent/e2e） |
+| ablations/reflect-retrieve-again minus ablations/reflect-disabled | -16.67% [-25.00%, 0.00%] | +35.64% |
+| ablations/reflect-retrieve-again minus ablations/reflect-enabled | -16.67% [-25.00%, 0.00%] | +4.67% |
+| ablations/memory-bounded minus ablations/memory-full | -5.00% [-10.00%, 0.00%] | -8.35% |
+| ablations/memory-semantic minus ablations/memory-full | -5.00% [-10.00%, 0.00%] | +22.26% |
+| memory-recall-v2 minus ablations/memory-semantic | -10.00% [-20.00%, 0.00%] | +5.78% |
 
-## 4. OpenCode 真实 API 调用情况
+成本账本：已保存请求下界 1681 次，已知 token 7988049，usage 未知 7 次。包括诊断、重跑和 Judge，不能当作一次部署对话的成本。剩余额度与币值成本未知，详见 acceptance/cost-ledger.json。
 
-- 配置：`API_BASE_URL=https://opencode.ai/zen/go/v1`，`MODEL_ID=deepseek-v4.1-flash`（`.env` 已配置，未改凭证）。
-- Smoke test **通过**：文本生成 + JSON 结构化输出，`model_returned` 一致，usage 可用（`reports/api-smoke/latest.json`）。
-- 关键发现：①端点每次请求要求 `x-opencode-session` 头（缺失→400）；②`deepseek-v4.1-flash` 是推理模型，`reasoning_tokens` 计入 `max_tokens`，2048 预算对复杂比较题/长答案不足（见 §5）。
+## 复现与剩余验收
 
-## 5. 评测指标、基线与置信区间
-
-### 检索基线（既有 GPU 结果，未变更，Recall@5，已知论文范围，段落覆盖代理）
-| 配置 | Recall@5 | Hit@5 |
-|---|---:|---:|
-| BM25 | 66.26% | 68.00% |
-| Dense | 73.94% | 78.00% |
-| Hybrid+RRF | 74.24% | 77.00% |
-| Hybrid+RRF+Rerank | 77.61% | 81.00% |
-
-hybrid−dense +0.30pp，rerank−hybrid +3.38pp；按论文聚类的配对 bootstrap 95% 区间均跨零（`reports/qasper-suite/paired_comparison.json`），不声称显著。
-
-### 意图分类（25 条平衡子集，draft 标签，`reports/runs/intent-25-*/metrics.json`）
-Accuracy 84.0%（21/25），Macro-F1 0.837；混淆集中在 fact↔search 与 fact→out_of_scope。**这是与草稿标签的一致率，不是人工 gold 准确率。**
-
-### 端到端 4 轮（`reports/runs/e2e-d01-*/`）
-3/4 完成（t1 answer、t2 answer 且指代正确、t4 越界正确拒答），t3 跨论文比较 generate 截断（`finish_reason=length`，`reasoning_tokens=2048` 耗尽预算）。Judge 2/3 成功（t1、t4 全维度 5 分，t4 `appropriate_abstention` 正确）。
-
-**结论**：对推理模型应提高 `API_MAX_TOKENS`（≥4096）或设 `API_THINKING=disabled`；当前 2048 对简单问题足够，对长/复杂答案不足。
-
-## 6. 记忆压缩的质量与 token 成本对比
-
-**未正式评测**。原因：需要长会话压力集（30×4 默认不触发压缩），且需人工核对事实保留与 token 成本。本次仅验证了语义压缩失败回退到确定性裁剪的机制（`verify_c_fixes.py`）。截图中的 80.3% 一致性 / 34% token 降幅保持「待复测」，未填入本项目结果。
-
-## 7. 未完成任务与原因
-
-1. **人工复核标签**：意图/边界/改写/记忆标签为 `draft_unreviewed`，需独立审阅后才能作为 gold（任务要求，无法由 agent 替代人工）。
-2. **记忆压缩质量+token 对比**：需长会话压力集与人工事实核对。
-3. **Reflect 消融、完整 70-turn 端到端、多轮批量**：未运行（API 配额与时间；且草稿标签未复核，结果不具 gold 意义）。
-4. **git commit 记录**：仓库无 `.git`，无法提供 commit hash。
-5. **pytest 在本沙箱无法运行**：`tmp_path` fixture 因工作区继承的 ACL（`Low Mandatory Level` + DENY）无法列出临时目录；代码本身在先前环境 29 测试通过（`reports/implementation-tests.xml`），本次新增 3 测试与 3 处修复通过独立脚本验证。
-
-## 8. 从干净环境复现
+完整命令见 docs/evaluation.md。原目录使用 `.venv-gpu/Scripts/python.exe`；已有 data/models/indexes/.env 直接复用。先 pytest，再 smoke/小回归；检索用 --reuse-index；真实任务显式 --max-tokens 4096 --thinking disabled。报告重算不调用 API：
 
 ```powershell
-python -m pip install -e '.[models,api,dev]'
-python -m pytest -q                       # 29 + 3 新增测试
-python scripts/prepare_qasper.py --papers 100 --queries 100
-python scripts/prepare_eval.py            # 生成 data/eval/
-python scripts/run_retrieval_suite.py --device cuda:0   # 四组检索基线
-python -m paper_agent.cli eval smoke --env-file .env
-python -m paper_agent.cli eval intent data/eval/intent.jsonl --output runs/intent --env-file .env
-python -m paper_agent.cli eval e2e data/eval/d01-4turns.jsonl --index indexes/bge --mode rerank --judge --env-file .env --output runs/e2e
+.venv-gpu/Scripts/python.exe scripts/quality_statistics.py
+.venv-gpu/Scripts/python.exe scripts/summarize_acceptance.py
+.venv-gpu/Scripts/python.exe scripts/finalize_acceptance.py
+.venv-gpu/Scripts/python.exe scripts/check_artifacts.py
 ```
 
-所有运行产物保留在 `reports/runs/`、`reports/api-smoke/`，历史报告不覆盖。
+待完成项目见 REMAINING_ISSUES.md：人工金标/引用复核、正式证据不足子集、真实长期事实更新与召回精确率、更多自然长会话。已执行核心消融不等于已证明增益；不把未审核草稿、Mock 或参考截图当项目科研成果。

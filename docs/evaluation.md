@@ -52,3 +52,5 @@ $py = '.\.venv-gpu\Scripts\python.exe'
 ```
 
 直接复用 data、models、indexes、.env，不需要重新下载、重建或覆盖凭证。70-turn 是完整对话运行后的计分视图，不能省略所依赖的历史轮次。真实 token 包含失败和重试；无 usage 的超时请求成本未知，不能报告成零。P50/P95 是本机当次延迟，不是服务保证。所有实际结果、限制和未完成项见 reports 中的本轮报告。
+
+本轮实际 API 数据冻结为 v0.3；后续 v0.4 补充显式 history session/turn 元数据、论文 ID/标题别名和实体指标适用范围。v0.4 的 Rewrite 分数是对保存的 v0.3 预测离线重算（`reports/acceptance/rewrite/rescored-v04.json`），不是新 API 实验；两版均保留草稿标签与原始结果。

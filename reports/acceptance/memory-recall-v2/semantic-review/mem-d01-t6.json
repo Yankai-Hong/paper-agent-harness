@@ -1,0 +1,360 @@
+{
+  "id": "mem-d01-t6",
+  "session_id": "d01",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 9,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "所有8条主张均能由其引用片段支持。回答准确区分了论文实际考察的对象（以美国BLS女性参与比例作为参照，而非性别中性语言使用国家的女性工作者分布），并正确指出证据未提供的数值与因果机制，回应了核对可回答与不可回答部分的要求。",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "摘要片段（c-0ff7525d7bb39cc1411d378f）明确说明研究以BLS职业列表构建句子，并将代词统计与BLS各职业女性参与频率进行对比，与主张一致。"
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "结论片段（c-1c78b22c818d4036c6510107）明确写到，比较女性工作者分布与女性译文频率后发现两者之间“no correlation”。"
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "同一结论片段指出GT输出“fail to reflect the real-world distribution of female workers, under-estimating the expected frequency”，并且男性默认频率高于仅凭职业数据所能预期的水平；摘要片段佐证GT未能复现真实女性分布。"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "摘要片段明确写有12种性别中性语言（如匈牙利语、中文、约鲁巴语等），构建“He/She is an Engineer”类句子并通过Google Translate API译为英语。"
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "结论片段报告匈牙利语在男女代词之间比中文更均衡，且约鲁巴语和巴斯克语常译为性别中性代词，与主张一致。"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "引言片段（c-10f671efdbe25a3af88930ca）明确举例nurse和baker译为女性代词、engineer和CEO译为男性代词，与主张一致。"
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "两个引用片段仅涉及美国BLS数据，未提供性别中性语言使用国家中女性工作者的真实分布数据，因此主张成立。"
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "所引摘要与结论片段只给出定性结论（无相关性、低估预期频率），未列出具体职业代词频率、相关系数或差异幅度等数值。"
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "讨论片段（c-28e1e33419f3d6c8090b9bba）讨论的是训练数据敏感性与“训练后去除偏见”的工程建议，未给出实验性因果解释，因此主张成立。"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "092246a92ad2aa2442f87502a8da314eff667ff2ab8cb41cc3b1571d815e4173",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4851,
+        "completion_tokens": 604,
+        "total_tokens": 5455,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4723,
+        "output_tokens": 604,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5338.7010000878945
+    }
+  ],
+  "payload_hash": "37bc2daf3d0ffdead0dce617a3cc27221837b27313dce26d2141a3f582d5dcbe",
+  "payload": {
+    "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+    "answer": {
+      "claims": [
+        {
+          "key": "can_bls_reference",
+          "text": "作者以U.S. Bureau of Labor Statistics（BLS）的职业列表和各职业女性参与比例数据为参照，将Google Translate译文中的女性代词频率与实际女性工作者分布进行比较。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            },
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-1c78b22c818d4036c6510107"
+            }
+          ]
+        },
+        {
+          "key": "can_no_correlation",
+          "text": "作者报告比较女性工作者分布与女性译文频率后发现两者之间没有相关性。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-1c78b22c818d4036c6510107"
+            }
+          ]
+        },
+        {
+          "key": "can_underestimate",
+          "text": "作者指出Google Translate的输出未能反映现实中的女性工作者分布，并低估了预期频率，男性默认出现频率高于仅凭职业数据所能预期的水平。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-1c78b22c818d4036c6510107"
+            },
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            }
+          ]
+        },
+        {
+          "key": "can_language_scope",
+          "text": "实验在12种性别中性语言（如匈牙利语、中文、约鲁巴语等）上构建“He/She is an Engineer”类句子并通过Google Translate API译为英语。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            }
+          ]
+        },
+        {
+          "key": "can_language_differences",
+          "text": "作者报告不同语言对机器性别偏见有显著影响，例如匈牙利语的男女代词比例比中文更均衡，约鲁巴语和巴斯克语常译为性别中性代词。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-1c78b22c818d4036c6510107"
+            }
+          ]
+        },
+        {
+          "key": "can_stereotype_examples",
+          "text": "论文给出的示例与刻板性别角色假设一致：nurse和baker被译为女性代词，engineer和CEO被译为男性代词。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-10f671efdbe25a3af88930ca"
+            }
+          ]
+        },
+        {
+          "key": "cannot_neutral_country_distribution",
+          "text": "所提供的证据只提到使用美国BLS的女性参与比例数据，未给出性别中性语言使用国家中女性工作者的真实分布数据，因此无法回答这些国家的女性工作者分布。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            },
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-1c78b22c818d4036c6510107"
+            }
+          ]
+        },
+        {
+          "key": "cannot_specific_values",
+          "text": "所提供片段未给出具体统计数值（如各职业代词频率、相关系数或差异幅度），因此无法依据这些片段回答具体数值。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-0ff7525d7bb39cc1411d378f"
+            },
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-1c78b22c818d4036c6510107"
+            }
+          ]
+        },
+        {
+          "key": "cannot_causal_mechanism",
+          "text": "所提供证据未给出性别偏见产生的实验性因果解释，讨论部分只提出模型应在初始训练后去除偏见，无法据此确定因果机制。",
+          "citations": [
+            {
+              "paper_id": "1809.02208",
+              "chunk_id": "c-28e1e33419f3d6c8090b9bba"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "论文1809.02208：作者是否考察了性别中性语言使用国家中女性工作者的真实分布？基于原文证据指出可回答与不可回答部分并保留引用",
+    "evidence": [
+      {
+        "chunk_id": "c-0ff7525d7bb39cc1411d378f",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Abstract",
+        "text": "Recently there has been a growing concern about machine bias, where trained statistical models grow to reflect controversial societal asymmetries, such as gender or racial bias. A significant number of AI tools have recently been suggested to be harmfully biased towards some minority, with reports of racist criminal behavior predictors, Iphone X failing to differentiate between two Asian people and Google photos' mistakenly classifying black people as gorillas. Although a systematic study of such biases can be difficult, we believe that automated translation tools can be exploited through gender neutral languages to yield a window into the phenomenon of gender bias in AI. In this paper, we start with a comprehensive list of job positions from the U.S. Bureau of Labor Statistics (BLS) and used it to build sentences in constructions like\"He/She is an Engineer\"in 12 different gender neutral languages such as Hungarian, Chinese, Yoruba, and several others. We translate these sentences into English using the Google Translate API, and collect statistics about the frequency of female, male and gender-neutral pronouns in the translated output. We show that GT exhibits a strong tendency towards male defaults, in particular for fields linked to unbalanced gender distribution such as STEM jobs. We ran these statistics against BLS' data for the frequency of female participation in each job position, showing that GT fails to reproduce a real-world distribution of female workers. We provide experimental evidence that even if one does not expect in principle a 50:50 pronominal gender distribution, GT yields male defaults much more frequently than what would be expected from demographic data alone. We are hopeful that this work will ignite a debate about the need to augment current statistical translation tools with debiasing techniques which can already be found in the scientific literature.",
+        "text_hash": "da329b45f168b0651f821b46a1c9cc5c468b59157bca0ace603590899a2467c5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1909,
+            "text": "Recently there has been a growing concern about machine bias, where trained statistical models grow to reflect controversial societal asymmetries, such as gender or racial bias. A significant number of AI tools have recently been suggested to be harmfully biased towards some minority, with reports of racist criminal behavior predictors, Iphone X failing to differentiate between two Asian people and Google photos' mistakenly classifying black people as gorillas. Although a systematic study of such biases can be difficult, we believe that automated translation tools can be exploited through gender neutral languages to yield a window into the phenomenon of gender bias in AI. In this paper, we start with a comprehensive list of job positions from the U.S. Bureau of Labor Statistics (BLS) and used it to build sentences in constructions like\"He/She is an Engineer\"in 12 different gender neutral languages such as Hungarian, Chinese, Yoruba, and several others. We translate these sentences into English using the Google Translate API, and collect statistics about the frequency of female, male and gender-neutral pronouns in the translated output. We show that GT exhibits a strong tendency towards male defaults, in particular for fields linked to unbalanced gender distribution such as STEM jobs. We ran these statistics against BLS' data for the frequency of female participation in each job position, showing that GT fails to reproduce a real-world distribution of female workers. We provide experimental evidence that even if one does not expect in principle a 50:50 pronominal gender distribution, GT yields male defaults much more frequently than what would be expected from demographic data alone. We are hopeful that this work will ignite a debate about the need to augment current statistical translation tools with debiasing techniques which can already be found in the scientific literature.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-10f671efdbe25a3af88930ca",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Introduction",
+        "text": "With this in mind, we propose a quantitative analysis of the phenomenon of gender bias in machine translation. We illustrate how this can be done by simply exploiting Google Translate to map sentences from a gender neutral language into English. As Figure FIGREF1 exemplifies, this approach produces results consistent with the hypothesis that sentences about stereotypical gender roles are translated accordingly with high probability: nurse and baker are translated with female pronouns while engineer and CEO are translated with male ones.",
+        "text_hash": "a3ee9d14a261b6eb07237b7589a2b68dd2c63baa1c63720fc8c99155560d48db",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s0-p8",
+            "section": "Introduction",
+            "start": 0,
+            "end": 542,
+            "text": "With this in mind, we propose a quantitative analysis of the phenomenon of gender bias in machine translation. We illustrate how this can be done by simply exploiting Google Translate to map sentences from a gender neutral language into English. As Figure FIGREF1 exemplifies, this approach produces results consistent with the hypothesis that sentences about stereotypical gender roles are translated accordingly with high probability: nurse and baker are translated with female pronouns while engineer and CEO are translated with male ones.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-1c78b22c818d4036c6510107",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Conclusions",
+        "text": "Our results seem to suggest that this phenomenon extends beyond the scope of the workplace, with the proportion of female pronouns varying significantly according to adjectives used to describe a person. Adjectives such as Shy and Desirable are translated with a larger proportion of female pronouns, while Guilty and Cruel are almost exclusively translated with male ones. Different languages also seemingly have a significant impact in machine gender bias, with Hungarian exhibiting a better equilibrium between male and female pronouns than, for instance, Chinese. Some languages such as Yoruba and Basque were found to translate sentences with gender neutral pronouns very often, although this is the exception rather than the rule and Basque also exhibits a high frequency of phrases for which we could not automatically extract a gender pronoun.\n\nIn order to strengthen our results, we ran pronominal gender translation statistics against the U.S. Bureau of Labor Statistics data on the frequency of women participation for each job position. Although Google Translate exhibits male defaults, this phenomenon may merely reflect the unequal distribution of male and female workers in some job positions. To test this hypothesis, we compared the distribution of female workers with the frequency of female translations, finding no correlation between said variables. Our data shows that Google Translate outputs fail to reflect the real-world distribution of female workers, under-estimating the expected frequency. That is to say that even if we do not expect a 50:50 distribution of translated gender pronouns, Google Translate exhibits male defaults in a greater frequency that job occupation data alone would suggest. The prominence of male defaults in Google Translate is therefore to the best of our knowledge yet lacking a clear justification.",
+        "text_hash": "42a04a601c73a84cd22334cb2decf741bebdfa89470283a981bc567919caaf0e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 851,
+            "text": "Our results seem to suggest that this phenomenon extends beyond the scope of the workplace, with the proportion of female pronouns varying significantly according to adjectives used to describe a person. Adjectives such as Shy and Desirable are translated with a larger proportion of female pronouns, while Guilty and Cruel are almost exclusively translated with male ones. Different languages also seemingly have a significant impact in machine gender bias, with Hungarian exhibiting a better equilibrium between male and female pronouns than, for instance, Chinese. Some languages such as Yoruba and Basque were found to translate sentences with gender neutral pronouns very often, although this is the exception rather than the rule and Basque also exhibits a high frequency of phrases for which we could not automatically extract a gender pronoun.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 1001,
+            "text": "In order to strengthen our results, we ran pronominal gender translation statistics against the U.S. Bureau of Labor Statistics data on the frequency of women participation for each job position. Although Google Translate exhibits male defaults, this phenomenon may merely reflect the unequal distribution of male and female workers in some job positions. To test this hypothesis, we compared the distribution of female workers with the frequency of female translations, finding no correlation between said variables. Our data shows that Google Translate outputs fail to reflect the real-world distribution of female workers, under-estimating the expected frequency. That is to say that even if we do not expect a 50:50 distribution of translated gender pronouns, Google Translate exhibits male defaults in a greater frequency that job occupation data alone would suggest. The prominence of male defaults in Google Translate is therefore to the best of our knowledge yet lacking a clear justification.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-28e1e33419f3d6c8090b9bba",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Discussion",
+        "text": "In addition, one should note that further evidence is mounting about the kind of bias examined in this paper: it is becoming clear that this is a statistical phenomenon independent from any proprietary tool. In this context, the research carried out in BIBREF24 presents a very convincing argument for the sensitivity of word embeddings to gender bias in the training dataset. This suggests that machine translation engineers should be especially aware of their training data when designing a system. It is not feasible to train these models on unbiased texts, as they are probably scarce. What must be done instead is to engineer solutions to remove bias from the system after an initial training, which seems to be the goal of Google Translate's recent efforts. Fortunately, as BIBREF24 also show, debiasing can be implemented with relatively low effort and modest resources. The technology to promote social justice on machine translation in particular and machine learning in general is often already available. The most significant effort which must be taken in this context is to promote social awareness on these issues so that society can be invited into the conversation.",
+        "text_hash": "a3ec0cad0bd050a3eec367fa6c0cb731a3606f0b53c9ea70b1216645e57809d4",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s9-p4",
+            "section": "Discussion",
+            "start": 0,
+            "end": 1180,
+            "text": "In addition, one should note that further evidence is mounting about the kind of bias examined in this paper: it is becoming clear that this is a statistical phenomenon independent from any proprietary tool. In this context, the research carried out in BIBREF24 presents a very convincing argument for the sensitivity of word embeddings to gender bias in the training dataset. This suggests that machine translation engineers should be especially aware of their training data when designing a system. It is not feasible to train these models on unbiased texts, as they are probably scarce. What must be done instead is to engineer solutions to remove bias from the system after an initial training, which seems to be the goal of Google Translate's recent efforts. Fortunately, as BIBREF24 also show, debiasing can be implemented with relatively low effort and modest resources. The technology to promote social justice on machine translation in particular and machine learning in general is often already available. The most significant effort which must be taken in this context is to promote social awareness on these issues so that society can be invited into the conversation.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2ab6973ccffa7e26bc0322bb",
+        "paper_id": "1809.02208",
+        "title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+        "section": "Rationale for language exceptions",
+        "text": "While it is possible to construct gender neutral sentences in two of the languages omitted in our experiments (namely Korean and Nepali), we have chosen to omit them for the following reasons:\n\nWe faced technical difficulties to form templates and automatically translate sentences with the right-to-left, top-to-bottom nature of the script and, as such, we have decided not to include it in our experiments.\n\nDue to Nepali having a rather complex grammar, with possible male/female gender demarcations on the phrases and due to none of the authors being fluent or able to reach someone fluent in the language, we were not confident enough in our ability to produce the required templates. Bengali was almost discarded under the same rationale, but we have decided to keep it because of our sentence template for Bengali has a simple grammatical structure which does not require any kind of inflection.\n\nOne can construct gender neutral phrases in Korean by omitting the gender pronoun; in fact, this is the default procedure. However, the expressiveness of this omission depends on the context of the sentence being clear, which is not possible in the way we frame phrases.",
+        "text_hash": "fedcda93a64b8282e4e933a8408d7b64423aafcd8606f6ac1a57227cc76e09bb",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1809.02208",
+        "spans": [
+          {
+            "paragraph_id": "s4-p0",
+            "section": "Rationale for language exceptions",
+            "start": 0,
+            "end": 192,
+            "text": "While it is possible to construct gender neutral sentences in two of the languages omitted in our experiments (namely Korean and Nepali), we have chosen to omit them for the following reasons:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p1",
+            "section": "Rationale for language exceptions",
+            "start": 0,
+            "end": 214,
+            "text": "We faced technical difficulties to form templates and automatically translate sentences with the right-to-left, top-to-bottom nature of the script and, as such, we have decided not to include it in our experiments.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p2",
+            "section": "Rationale for language exceptions",
+            "start": 0,
+            "end": 492,
+            "text": "Due to Nepali having a rather complex grammar, with possible male/female gender demarcations on the phrases and due to none of the authors being fluent or able to reach someone fluent in the language, we were not confident enough in our ability to produce the required templates. Bengali was almost discarded under the same rationale, but we have decided to keep it because of our sentence template for Bengali has a simple grammatical structure which does not require any kind of inflection.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p3",
+            "section": "Rationale for language exceptions",
+            "start": 0,
+            "end": 270,
+            "text": "One can construct gender neutral phrases in Korean by omitting the gender pronoun; in fact, this is the default procedure. However, the expressiveness of this omission depends on the context of the sentence being clear, which is not possible in the way we frame phrases.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}
