@@ -1,0 +1,589 @@
+{
+  "turn_id": "c7452c3c61784ea29d498bd152d97f1a",
+  "session_id": "d15-d15-t4",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.006500049494206905
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora 中 NMT 模型、SMT 对比及从可比语料抽取平行句对的证据",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1806.09652"
+        ],
+        "resolved_entities": {
+          "paper": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        }
+      },
+      "elapsed_ms": 2801.885199965909
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora 中 NMT 模型、SMT 对比及从可比语料抽取平行句对的证据"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-2de814ddcd37609de37a6670",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-03eb48d6b0f5e69885835a45",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-8a4b729b48561645af3437bf",
+          "c-278ad02ec178a2aa94b5e9d0",
+          "c-46c2afcbb7205384ef1596a4",
+          "c-e63db193b77a701b1a303a7e",
+          "c-8dad3bcc508acc296707d5fa",
+          "c-cb82b97d01dcb120f9968ca8",
+          "c-40a65b4f16ad6c9a09e7ec3e",
+          "c-a018f125f2922810bde8f7f2"
+        ]
+      },
+      "elapsed_ms": 9.755300008691847
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-2de814ddcd37609de37a6670",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-03eb48d6b0f5e69885835a45",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-8a4b729b48561645af3437bf",
+          "c-278ad02ec178a2aa94b5e9d0",
+          "c-46c2afcbb7205384ef1596a4",
+          "c-e63db193b77a701b1a303a7e",
+          "c-8dad3bcc508acc296707d5fa",
+          "c-cb82b97d01dcb120f9968ca8",
+          "c-40a65b4f16ad6c9a09e7ec3e",
+          "c-a018f125f2922810bde8f7f2"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-2de814ddcd37609de37a6670",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-03eb48d6b0f5e69885835a45"
+        ]
+      },
+      "elapsed_ms": 0.0036999117583036423
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-2de814ddcd37609de37a6670",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-03eb48d6b0f5e69885835a45"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据来自论文 1806.09652，足以说明该文在可比语料抽取平行句对、以及 NMT 与 SMT 对比方面的发现：(1) 摘要称用端到端 Siamese 双向 RNN 从 Wikipedia 多语文章中生成平行句，并且在使用所抽取数据集后，英–印地语与英–泰米尔语两个低资源语言对在 NMT 与短语式 SMT 系统上的 BLEU 均较仅用有限双语语料训练有所提升（c-1dd6dc3c2f7d9eb29dc26d9f）；(2) 引言说明动机是低资源 MT 存在高 OOV、覆盖不足，并提出神经式平行句抽取，通过比较有无抽取句对时的 BLEU 来验证效果，且模型端到端学习、只需少量 bootstrap 平行句（c-2de814ddcd37609de37a6670）；(3) 机器翻译实验部分说明用贪心解码按翻译概率排序抽取高精度句对来训练系统，SMT 用 Moses 配置，NMT 用 OpenNMT 的 transformer，并指出两个语言对的 NMT BLEU 均高于 SMT（c-0377bffbf88cf9ead25b03ff）。需注意：具体 BLEU 数值在 Table TABREF23 中，证据文本未给出数字，故不应补充具体分数；也不应加入常识性结论。"
+      },
+      "elapsed_ms": 5239.154600072652
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "parallel_extraction_method",
+            "text": "该论文使用端到端 Siamese 双向循环神经网络从维基百科的可比多语种文章中生成平行句对。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+              }
+            ]
+          },
+          {
+            "key": "bleu_improvement",
+            "text": "与仅使用为这些语言对收集的有限双语语料训练相比，使用所采集的数据集提高了 NMT 和基于短语的 SMT 系统在英语–印地语和英语–泰米尔语上的 BLEU 分数。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+              }
+            ]
+          },
+          {
+            "key": "oov_motivation",
+            "text": "该工作旨在通过利用互联网上不断增多的多语种内容来丰富双语词典，从而解决低资源机器翻译系统中的高 OOV 率问题。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-2de814ddcd37609de37a6670"
+              }
+            ]
+          },
+          {
+            "key": "no_feature_engineering",
+            "text": "与需要文档结构专门元数据或大量手工设计特征的先前方法相比，用于抽取平行句对的神经模型仅使用小规模平行句对引导集进行端到端学习；论文称其无需特征工程，也无需预先存在的翻译系统。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-2de814ddcd37609de37a6670"
+              },
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-713c262decd20b8f527dcc24"
+              }
+            ]
+          },
+          {
+            "key": "smt_contrast_prior_work",
+            "text": "相关工作指出，此前大多数自动句子对齐工作使用预先存在的翻译系统，或使用依赖词重叠等表层特征的 Maximum Entropy 分类器，而这些是低资源语言对所不具备的。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-713c262decd20b8f527dcc24"
+              }
+            ]
+          },
+          {
+            "key": "prior_reliance_translation_system",
+            "text": "论文指出，使用已有翻译系统抽取平行句子的方法，在初始缺乏良好源侧翻译系统时不可行（如本研究的情况）。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-03eb48d6b0f5e69885835a45"
+              }
+            ]
+          },
+          {
+            "key": "mt_training_data",
+            "text": "作为机器翻译系统的训练数据集，论文使用了通过贪婪解码抽取、按翻译概率对句对排序得到的高精度句子。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "smt_setup",
+            "text": "基于短语的 SMT 系统使用 Moses 训练，采用 grow-diag-final-and 短语抽取启发式、词汇化重排序和 Batch MIRA 调参（Moses 默认参数），并使用 KenLM 训练带 Kneser-Ney 平滑的 5-gram 语言模型；据此在英–泰米尔语和英–印地语上分别训练了使用与不使用抽取平行句对的 SMT 系统。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "nmt_setup",
+            "text": "神经机器翻译模型使用 OpenNMT 的 TensorFlow 实现，采用基于注意力的 transformer 架构。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "nmt_vs_smt_bleu",
+            "text": "论文报告，对英–泰米尔语和英–印地语两个语言对，NMT 模型的 BLEU 分数均高于 SMT 模型（见其表）。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7216.107500018552
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d15-d15-t4",
+        "entities": {
+          "paper": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        },
+        "facts": {
+          "nmt_model": {
+            "text": "用于训练神经机器翻译模型时，作者使用了 OpenNMT 的 TensorFlow 实现，并采用基于注意力的 transformer 架构。",
+            "evidence_ids": [
+              "c-0377bffbf88cf9ead25b03ff"
+            ],
+            "turn_id": "b9b9f90bbbcb44858738ff3ffe13877e"
+          },
+          "smt_comparison": {
+            "text": "作者同时用 Moses 训练了基于短语的 SMT 系统（使用 grow-diag-final-and 短语抽取、词汇化重排序、Batch MIRA 调参，以及 KenLM 训练的 5-gram Kneser-Ney 平滑语言模型），用于与 NMT 对比。",
+            "evidence_ids": [
+              "c-0377bffbf88cf9ead25b03ff"
+            ],
+            "turn_id": "b9b9f90bbbcb44858738ff3ffe13877e"
+          },
+          "extraction_model": {
+            "text": "用于从可比语料中抽取平行句对的模型是端到端的 Siamese 双向循环神经网络（Siamese BiRNN 编码器，使用 GRU 作为激活函数）。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f",
+              "c-1ef4f6dc83e93c39e90f82dc"
+            ],
+            "turn_id": "b9b9f90bbbcb44858738ff3ffe13877e"
+          },
+          "language_pairs": {
+            "text": "实验覆盖英语–印地语和英语–泰米尔语两个低资源语言对。",
+            "evidence_ids": [
+              "c-278ad02ec178a2aa94b5e9d0"
+            ],
+            "turn_id": "b9b9f90bbbcb44858738ff3ffe13877e"
+          },
+          "parallel_extraction_method": {
+            "text": "该论文使用端到端 Siamese 双向循环神经网络从维基百科的可比多语种文章中生成平行句对。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "bleu_improvement": {
+            "text": "与仅使用为这些语言对收集的有限双语语料训练相比，使用所采集的数据集提高了 NMT 和基于短语的 SMT 系统在英语–印地语和英语–泰米尔语上的 BLEU 分数。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "oov_motivation": {
+            "text": "该工作旨在通过利用互联网上不断增多的多语种内容来丰富双语词典，从而解决低资源机器翻译系统中的高 OOV 率问题。",
+            "evidence_ids": [
+              "c-2de814ddcd37609de37a6670"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "no_feature_engineering": {
+            "text": "与需要文档结构专门元数据或大量手工设计特征的先前方法相比，用于抽取平行句对的神经模型仅使用小规模平行句对引导集进行端到端学习；论文称其无需特征工程，也无需预先存在的翻译系统。",
+            "evidence_ids": [
+              "c-2de814ddcd37609de37a6670",
+              "c-713c262decd20b8f527dcc24"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "smt_contrast_prior_work": {
+            "text": "相关工作指出，此前大多数自动句子对齐工作使用预先存在的翻译系统，或使用依赖词重叠等表层特征的 Maximum Entropy 分类器，而这些是低资源语言对所不具备的。",
+            "evidence_ids": [
+              "c-713c262decd20b8f527dcc24"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "prior_reliance_translation_system": {
+            "text": "论文指出，使用已有翻译系统抽取平行句子的方法，在初始缺乏良好源侧翻译系统时不可行（如本研究的情况）。",
+            "evidence_ids": [
+              "c-03eb48d6b0f5e69885835a45"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "mt_training_data": {
+            "text": "作为机器翻译系统的训练数据集，论文使用了通过贪婪解码抽取、按翻译概率对句对排序得到的高精度句子。",
+            "evidence_ids": [
+              "c-0377bffbf88cf9ead25b03ff"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "smt_setup": {
+            "text": "基于短语的 SMT 系统使用 Moses 训练，采用 grow-diag-final-and 短语抽取启发式、词汇化重排序和 Batch MIRA 调参（Moses 默认参数），并使用 KenLM 训练带 Kneser-Ney 平滑的 5-gram 语言模型；据此在英–泰米尔语和英–印地语上分别训练了使用与不使用抽取平行句对的 SMT 系统。",
+            "evidence_ids": [
+              "c-0377bffbf88cf9ead25b03ff"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "nmt_setup": {
+            "text": "神经机器翻译模型使用 OpenNMT 的 TensorFlow 实现，采用基于注意力的 transformer 架构。",
+            "evidence_ids": [
+              "c-0377bffbf88cf9ead25b03ff"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          },
+          "nmt_vs_smt_bleu": {
+            "text": "论文报告，对英–泰米尔语和英–印地语两个语言对，NMT 模型的 BLEU 分数均高于 SMT 模型（见其表）。",
+            "evidence_ids": [
+              "c-0377bffbf88cf9ead25b03ff"
+            ],
+            "turn_id": "c7452c3c61784ea29d498bd152d97f1a"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1806.09652"
+          ]
+        }
+      },
+      "elapsed_ms": 3.1180999940261245
+    }
+  ],
+  "started_at": 1792723151.6003182,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "parallel_extraction_method",
+        "text": "该论文使用端到端 Siamese 双向循环神经网络从维基百科的可比多语种文章中生成平行句对。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+          }
+        ]
+      },
+      {
+        "key": "bleu_improvement",
+        "text": "与仅使用为这些语言对收集的有限双语语料训练相比，使用所采集的数据集提高了 NMT 和基于短语的 SMT 系统在英语–印地语和英语–泰米尔语上的 BLEU 分数。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+          }
+        ]
+      },
+      {
+        "key": "oov_motivation",
+        "text": "该工作旨在通过利用互联网上不断增多的多语种内容来丰富双语词典，从而解决低资源机器翻译系统中的高 OOV 率问题。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-2de814ddcd37609de37a6670"
+          }
+        ]
+      },
+      {
+        "key": "no_feature_engineering",
+        "text": "与需要文档结构专门元数据或大量手工设计特征的先前方法相比，用于抽取平行句对的神经模型仅使用小规模平行句对引导集进行端到端学习；论文称其无需特征工程，也无需预先存在的翻译系统。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-2de814ddcd37609de37a6670"
+          },
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-713c262decd20b8f527dcc24"
+          }
+        ]
+      },
+      {
+        "key": "smt_contrast_prior_work",
+        "text": "相关工作指出，此前大多数自动句子对齐工作使用预先存在的翻译系统，或使用依赖词重叠等表层特征的 Maximum Entropy 分类器，而这些是低资源语言对所不具备的。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-713c262decd20b8f527dcc24"
+          }
+        ]
+      },
+      {
+        "key": "prior_reliance_translation_system",
+        "text": "论文指出，使用已有翻译系统抽取平行句子的方法，在初始缺乏良好源侧翻译系统时不可行（如本研究的情况）。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-03eb48d6b0f5e69885835a45"
+          }
+        ]
+      },
+      {
+        "key": "mt_training_data",
+        "text": "作为机器翻译系统的训练数据集，论文使用了通过贪婪解码抽取、按翻译概率对句对排序得到的高精度句子。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "smt_setup",
+        "text": "基于短语的 SMT 系统使用 Moses 训练，采用 grow-diag-final-and 短语抽取启发式、词汇化重排序和 Batch MIRA 调参（Moses 默认参数），并使用 KenLM 训练带 Kneser-Ney 平滑的 5-gram 语言模型；据此在英–泰米尔语和英–印地语上分别训练了使用与不使用抽取平行句对的 SMT 系统。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "nmt_setup",
+        "text": "神经机器翻译模型使用 OpenNMT 的 TensorFlow 实现，采用基于注意力的 transformer 架构。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "nmt_vs_smt_bleu",
+        "text": "论文报告，对英–泰米尔语和英–印地语两个语言对，NMT 模型的 BLEU 分数均高于 SMT 模型（见其表）。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "a37ffe1ebaa4f4e3e377bf6a2d63de80407eead62514820c9feac104d3c5bdf0",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4431,
+        "completion_tokens": 108,
+        "total_tokens": 4539,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4431,
+        "output_tokens": 108,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2800.6420999299735
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "7287db7a131e872884246e27eeacaf574f3958a7efe8d1589a06b23a4ea634d5",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4641,
+        "completion_tokens": 328,
+        "total_tokens": 4969,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4641,
+        "output_tokens": 328,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5238.862999947742
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "f6c4291d5f5a1cd1ba77e92a9652de710e2c4e3dfe1cefb755eb7d3fa3979761",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4743,
+        "completion_tokens": 924,
+        "total_tokens": 5667,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4743,
+        "output_tokens": 924,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7215.755700017326
+    }
+  ]
+}

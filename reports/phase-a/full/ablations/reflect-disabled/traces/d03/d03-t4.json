@@ -1,0 +1,257 @@
+{
+  "turn_id": "d03-t4",
+  "session_id": "d03",
+  "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.008100061677396297
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "私有未公开实验 run-02 的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "experiment": "run-02"
+        }
+      },
+      "elapsed_ms": 6577.879299991764
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.00300002284348011
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d03",
+        "entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking",
+          "paper_id": "1910.07154",
+          "paper1": "Unsupervised Question Answering for Fact-Checking",
+          "paper1_id": "1910.07154",
+          "paper2": "Clinical Information Extraction via Convolutional Neural Network",
+          "paper2_id": "1603.09381",
+          "dataset": "FEVER"
+        },
+        "facts": {
+          "fever_labels": {
+            "text": "FEVER 的 claim 依据证据集被标注为“SUPPORTS”“REFUTES”或“NOT ENOUGH INFO”。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "cloze_conversion": {
+            "text": "论文将 FEVER 数据集转换为 Cloze-task，做法是掩蔽 claim 中出现的命名实体。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "label_subset": {
+            "text": "该分类器目前只能将 claim 分类为“SUPPORTS”和“MANUAL_REVIEW”。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "not_all_labels": {
+            "text": "作者说明其无监督模型并不支持所有标签，仅针对“SUPPORTS”标签报告标签准确率。",
+            "evidence_ids": [
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "qg_accuracy": {
+            "text": "问题生成任务在将 FEVER 数据集转换为 Cloze-task 时达到约 90% 的准确率。",
+            "evidence_ids": [
+              "c-7d59a4589df766fa1261d8c6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "label_accuracy": {
+            "text": "该方法在转换后数据集的开发集上达到 80.2% 的标签准确率，在测试集上达到 80.25%。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "per_claim_questions": {
+            "text": "平均每条 claim 生成 3 个问题。",
+            "evidence_ids": [
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "thresholds": {
+            "text": "在 φ = 0.76 时，4 个问题中至少 3 个需回答正确；在 φ = 0.67 时，3 个问题中至少 2 个需回答正确，claim 才会被分类为“SUPPORTS”。",
+            "evidence_ids": [
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "fever_size": {
+            "text": "Unsupervised Question Answering for Fact-Checking 报告 FEVER 是最大的数据集，包含约 185k 条 claims，来自 5.4M 篇维基百科文章的语料库。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "uqafc_accuracy": {
+            "text": "该模型的分类器在变换后数据集的 development set 上达到 80.2% 的 label accuracy，在 test set 上达到 80.25%。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "uqafc_label_scope": {
+            "text": "该分类器目前只能将 claims 分为 \"SUPPORTS\" 和 \"MANUAL_REVIEW\"，其 80.2% 的 label accuracy 是针对 \"SUPPORTS\" 标签报告的。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6",
+              "c-7d59a4589df766fa1261d8c6"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "clinical_no_fever": {
+            "text": "Clinical Information Extraction via Convolutional Neural Network 未讨论 FEVER 数据集；它聚焦于使用 Mayo Clinic 的临床笔记和病理报告进行临床信息抽取。",
+            "evidence_ids": [
+              "c-09342b6b2a0eabec97459832"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "clinical_no_baseline_gain": {
+            "text": "所提供证据未报告该临床信息抽取模型相对于基线的任何定量提升。",
+            "evidence_ids": [
+              "c-09342b6b2a0eabec97459832",
+              "c-191faab23657f930ee0bcb86"
+            ],
+            "turn_id": "d03-t3"
+          },
+          "not_comparable": {
+            "text": "两篇论文处理不同任务（对维基百科 claims 进行事实核查 vs. 从临床文本中进行信息抽取）并使用不同数据集，因此它们的规模和性能数字不能直接比较。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b",
+              "c-09342b6b2a0eabec97459832"
+            ],
+            "turn_id": "d03-t3"
+          }
+        },
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154",
+            "1603.09381"
+          ]
+        }
+      },
+      "elapsed_ms": 4.856400075368583
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792723983.234379,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": false,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "14b6c2fa7cc0fc6930d157c4e00befbf59f6f3d6845b1701addd9099b305889a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6274,
+        "completion_tokens": 53,
+        "total_tokens": 6327,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6018,
+        "output_tokens": 53,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6576.138899894431
+    }
+  ]
+}

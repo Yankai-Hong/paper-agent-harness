@@ -1,0 +1,446 @@
+{
+  "id": "mem-d04-t8",
+  "session_id": "d04",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 7,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "该回答正确地将问题拆分为原文证据可回答与不可回答两部分，并保留了来源引用。可回答部分（作者称显著优于基线、RUN 4/5 在每项任务每个指标上超过 memorization baseline、精确率高但召回低且归因于 accuracy-oriented 目标、P/R/F 指标及字符偏移精确匹配评分规则）均能由其引用片段直接支持。不可回答部分（具体数值提升幅度、表中逐指标数值、基线绝对分数）确实不在所给证据中，判断合理。所有 claim 均获支持，回答相关且完整。",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "c-712a82e231bc15b7c11610b4 摘要称 significantly outperforms baselines；c-f45dc29ea469cc573133e3c9 结论称 consistently outperforms existing baseline methods on standard evaluation datasets，均直接支持。"
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "c-a0309b4d3fb3a7dc29b07966 原文称 initial submits RUN 4 and 5 outperformed the memorization baseline on every metric on every task，完全对应。"
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "同一片段称精确率接近最高报告值、召回较低，主要原因是训练目标函数 accuracy-oriented，均被直接支持。"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "c-6a221f2d3e712d4ab9ceba6f 说明使用标准 P/R/F 指标、事件跨度按字符偏移元组精确匹配计分、属性需偏移正确且值正确才计分，与 claim 一致。"
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "引用的两个片段均只给出定性比较，未含具体数值提升幅度，故不可回答判断成立。"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "片段提到 Table TABREF28/29 但未列出表内数值，无法逐指标报告，判断正确。"
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "证据未提供基线绝对性能分数，仅称优于基线，无法计算相对提升，判断合理。"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "649f66e75c6fda8ab145ae607b5cb987d86ba0ca7cec134474ea16e099b6ccf9",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6008,
+        "completion_tokens": 519,
+        "total_tokens": 6527,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5880,
+        "output_tokens": 519,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6203.61110009253
+    }
+  ],
+  "payload_hash": "676ef7158a46203bbdee015cec8bd08f489ac4e74ae6b2563812a816362f17dd",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": true, \"behavior_appropriate\": true, \"reason\": \"该回答正确地将问题拆分为原文证据可回答与不可回答两部分，并保留了来源引用。可回答部分（作者称显著优于基线、RUN 4/5 在每项任务每个指标上超过 memorization baseline、精确率高但召回低且归因于 accuracy-oriented 目标、P/R/F 指标及字符偏移精确匹配评分规则）均能由其引用片段直接支持。不可回答部分（具体数值提升幅度、表中逐指标数值、基线绝对分数）确实不在所给证据中，判断合理。所有 claim 均获支持，回答相关且完整。\", \"claims\": [{\"claim_index\": 0, \"supported\": true, \"reason\": \"c-712a82e231bc15b7c11610b4 摘要称 significantly outperforms baselines；c-f45dc29ea469cc573133e3c9 结论称 consistently outperforms existing baseline methods on standard evaluation datasets，均直接支持。\"}, {\"claim_index\": 1, \"supported\": true, \"reason\": \"c-a0309b4d3fb3a7dc29b07966 原文称 initial submits RUN 4 and 5 outperformed the memorization baseline on every metric on every task，完全对应。\"}, {\"claim_index\": 2, \"supported\": true, \"reason\": \"同一片段称精确率接近最高报告值、召回较低，主要原因是训练目标函数 accuracy-oriented，均被直接支持。\"}, {\"claim_index\": 3, \"supported\": true, \"reason\": \"c-6a221f2d3e712d4ab9ceba6f 说明使用标准 P/R/F 指标、事件跨度按字符偏移元组精确匹配计分、属性需偏移正确且值正确才计分，与 claim 一致。\"}, {\"claim_index\": 4, \"supported\": true, \"reason\": \"引用的两个片段均只给出定性比较，未含具体数值提升幅度，故不可回答判断成立。\"}, {\"claim_index\": 5, \"supported\": true, \"reason\": \"片段提到 Table TABREF28/29 但未列出表内数值，无法逐指标报告，判断正确。\"}, {\"claim_index\": 6, \"supported\": true, \"reason\": \"证据未提供基线绝对性能分数，仅称优于基线，无法计算相对提升，判断合理。\"}]}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 6008,
+        "completion_tokens": 519,
+        "total_tokens": 6527,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+    "answer": {
+      "claims": [
+        {
+          "key": "can_answer_direction",
+          "text": "原文证据能回答的部分：可以确认作者报告其方法显著优于基线、并在标准评测数据集上持续优于已有基线方法。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-712a82e231bc15b7c11610b4"
+            },
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-f45dc29ea469cc573133e3c9"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_comparison_level",
+          "text": "原文证据能回答的部分：可以确认在事件表达任务上，初始提交 RUN 4 和 RUN 5 在每项任务的每个指标上都超过了 memorization baseline。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-a0309b4d3fb3a7dc29b07966"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_qualitative_recall",
+          "text": "原文证据能回答的部分：可以确认事件跨度识别的精确率接近最高报告值，但系统召回率较低，作者给出的主要原因是训练目标函数以准确率为导向。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-a0309b4d3fb3a7dc29b07966"
+            }
+          ]
+        },
+        {
+          "key": "can_answer_metrics_definition",
+          "text": "原文证据能回答的部分：可以确认评测使用标准的精确率(P)、召回率(R)和 F 值指标，事件跨度按字符偏移元组精确匹配才计分，属性需事件偏移正确且属性值正确才计分。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-6a221f2d3e712d4ab9ceba6f"
+            }
+          ]
+        },
+        {
+          "key": "cannot_answer_numeric_gain",
+          "text": "原文证据不能回答的部分：所给证据未包含任何具体的数值提升幅度（如精确率、召回率或 F 值的具体差值或百分比），因此无法给出模型相对基线的量化提升数字。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-712a82e231bc15b7c11610b4"
+            },
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-a0309b4d3fb3a7dc29b07966"
+            }
+          ]
+        },
+        {
+          "key": "cannot_answer_per_metric_table",
+          "text": "原文证据不能回答的部分：证据提到表 TABREF28 和 TABREF29 展示结果，但未给出表中具体数值，因此无法逐指标报告提升幅度。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-a0309b4d3fb3a7dc29b07966"
+            }
+          ]
+        },
+        {
+          "key": "cannot_answer_baseline_absolute",
+          "text": "原文证据不能回答的部分：证据未给出基线方法的绝对性能分数，故无法计算相对提升。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-a0309b4d3fb3a7dc29b07966"
+            },
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-6a221f2d3e712d4ab9ceba6f"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "Clinical Information Extraction via Convolutional Neural Network (1603.09381) 中模型相对基线提升了多少（提升幅度），原文证据能回答与不能回答的部分及来源引用",
+    "evidence": [
+      {
+        "chunk_id": "c-712a82e231bc15b7c11610b4",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Abstract",
+        "text": "We report an implementation of a clinical information extraction tool that leverages deep neural network to annotate event spans and their attributes from raw clinical notes and pathology reports. Our approach uses context words and their part-of-speech tags and shape information as features. Then we hire temporal (1D) convolutional neural network to learn hidden feature representations. Finally, we use Multilayer Perceptron (MLP) to predict event spans. The empirical evaluation demonstrates that our approach significantly outperforms baselines.",
+        "text_hash": "3b374779cda9647910ce923df05523f0dd0ab39d9a5e2f8581d763ba0fdb728c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 551,
+            "text": "We report an implementation of a clinical information extraction tool that leverages deep neural network to annotate event spans and their attributes from raw clinical notes and pathology reports. Our approach uses context words and their part-of-speech tags and shape information as features. Then we hire temporal (1D) convolutional neural network to learn hidden feature representations. Finally, we use Multilayer Perceptron (MLP) to predict event spans. The empirical evaluation demonstrates that our approach significantly outperforms baselines.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-191faab23657f930ee0bcb86",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Constructing High Quality Training Dataset",
+        "text": "The major advantage of our system is that we only leverage NLTK tokenization and a POS tagger to preprocess our training dataset. When implementing our neural network based clinical information extraction system, we found it is not easy to construct high quality training data due to the noisy format of clinical notes. Choosing the proper tokenizer is quite important for span identification. After several experiments, we found \"RegexpTokenizer\" can match our needs. This tokenizer can generate spans for each token via sophisticated regular expression like below,",
+        "text_hash": "aad40ed1103daf17ccf400ce025e8460e31d662a61433090a4fd6e825e514fe1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Constructing High Quality Training Dataset",
+            "start": 0,
+            "end": 566,
+            "text": "The major advantage of our system is that we only leverage NLTK tokenization and a POS tagger to preprocess our training dataset. When implementing our neural network based clinical information extraction system, we found it is not easy to construct high quality training data due to the noisy format of clinical notes. Choosing the proper tokenizer is quite important for span identification. After several experiments, we found \"RegexpTokenizer\" can match our needs. This tokenizer can generate spans for each token via sophisticated regular expression like below,",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-09342b6b2a0eabec97459832",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Introduction",
+        "text": "In the past few years, there has been much interest in applying neural network based deep learning techniques to solve all kinds of natural language processing (NLP) tasks. From low level tasks such as language modeling, POS tagging, named entity recognition, and semantic role labeling BIBREF0 , BIBREF1 , to high level tasks such as machine translation, information retrieval, semantic analysis BIBREF2 , BIBREF3 , BIBREF4 and sentence relation modeling tasks such as paraphrase identification and question answering BIBREF5 , BIBREF6 , BIBREF7 . Deep representation learning has demonstrated its importance for these tasks. All the tasks get performance improvement via learning either word level representations or sentence level representations.\n\nIn this work, we brought deep representation learning technologies to the clinical domain. Specifically, we focus on clinical information extraction, using clinical notes and pathology reports from the Mayo Clinic. Our system will identify event expressions consisting of the following components:\n\nThe input of our system consists of raw clinical notes or pathology reports like below:\n\nAnd output annotations over the text that capture the key information such as event mentions and attributes. Table TABREF7 illustrates the output of clinical information extraction in details.\n\nTo solve this task, the major challenge is how to precisely identify the spans (character offsets) of the event expressions from raw clinical notes. Traditional machine learning approaches usually build a supervised classifier with features generated by the Apache clinical Text Analysis and Knowledge Extraction System (cTAKES) . For example, BluLab system BIBREF8 extracted morphological(lemma), lexical(token), and syntactic(part-of-speech) features encoded from cTAKES. Although using the domain specific information extraction tools can improve the performance, learning how to use it well for clinical domain feature engineering is still very time-consuming. In short, a simple and effective method that only leverage basic NLP modules and achieves high extraction performance is desired to save costs.",
+        "text_hash": "a4b7407ce3597b0a25328ed45d6ce51682852200f7a6df1e32f82cb94f7fc5d1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 750,
+            "text": "In the past few years, there has been much interest in applying neural network based deep learning techniques to solve all kinds of natural language processing (NLP) tasks. From low level tasks such as language modeling, POS tagging, named entity recognition, and semantic role labeling BIBREF0 , BIBREF1 , to high level tasks such as machine translation, information retrieval, semantic analysis BIBREF2 , BIBREF3 , BIBREF4 and sentence relation modeling tasks such as paraphrase identification and question answering BIBREF5 , BIBREF6 , BIBREF7 . Deep representation learning has demonstrated its importance for these tasks. All the tasks get performance improvement via learning either word level representations or sentence level representations.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 297,
+            "text": "In this work, we brought deep representation learning technologies to the clinical domain. Specifically, we focus on clinical information extraction, using clinical notes and pathology reports from the Mayo Clinic. Our system will identify event expressions consisting of the following components:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 87,
+            "text": "The input of our system consists of raw clinical notes or pathology reports like below:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 192,
+            "text": "And output annotations over the text that capture the key information such as event mentions and attributes. Table TABREF7 illustrates the output of clinical information extraction in details.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 808,
+            "text": "To solve this task, the major challenge is how to precisely identify the spans (character offsets) of the event expressions from raw clinical notes. Traditional machine learning approaches usually build a supervised classifier with features generated by the Apache clinical Text Analysis and Knowledge Extraction System (cTAKES) . For example, BluLab system BIBREF8 extracted morphological(lemma), lexical(token), and syntactic(part-of-speech) features encoded from cTAKES. Although using the domain specific information extraction tools can improve the performance, learning how to use it well for clinical domain feature engineering is still very time-consuming. In short, a simple and effective method that only leverage basic NLP modules and achieves high extraction performance is desired to save costs.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f45dc29ea469cc573133e3c9",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Conclusions",
+        "text": "In this paper, we introduced a new clinical information extraction system that only leverage deep neural networks to identify event spans and their attributes from raw clinical notes. We trained deep neural networks based classifiers to extract clinical event spans. Our method attached each word to their part-of-speech tag and shape information as extra features. We then hire temporal convolution neural network to learn hidden feature representations. The entire experimental results demonstrate that our approach consistently outperforms the existing baseline methods on standard evaluation datasets.\n\nOur research proved that we can get competitive results without the help of a domain specific feature extraction toolkit, such as cTAKES. Also we only leverage basic natural language processing modules such as tokenization and part-of-speech tagging. With the help of deep representation learning, we can dramatically reduce the cost of clinical information extraction system development.",
+        "text_hash": "d142d3c8d76970ff5ad9735296ac72970260c245dfa83bb81389fbbf3cbc66ca",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s8-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 605,
+            "text": "In this paper, we introduced a new clinical information extraction system that only leverage deep neural networks to identify event spans and their attributes from raw clinical notes. We trained deep neural networks based classifiers to extract clinical event spans. Our method attached each word to their part-of-speech tag and shape information as extra features. We then hire temporal convolution neural network to learn hidden feature representations. The entire experimental results demonstrate that our approach consistently outperforms the existing baseline methods on standard evaluation datasets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p1",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 388,
+            "text": "Our research proved that we can get competitive results without the help of a domain specific feature extraction toolkit, such as cTAKES. Also we only leverage basic natural language processing modules such as tokenization and part-of-speech tagging. With the help of deep representation learning, we can dramatically reduce the cost of clinical information extraction system development.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-b3afb024fb66311dcf9a3bea",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Introduction",
+        "text": "To address this challenge, we propose a deep neural networks based method, especially convolution neural network BIBREF0 , to learn hidden feature representations directly from raw clinical notes. More specifically, one method first extract a window of surrounding words for the candidate word. Then, we attach each word with their part-of-speech tag and shape information as extra features. Then our system deploys a temporal convolution neural network to learn hidden feature representations. Finally, our system uses Multilayer Perceptron (MLP) to predict event spans. Note that we use the same model to predict event attributes.",
+        "text_hash": "fa180c7324f27b8dad3bf3e95855604dffd8af786ecc17b9f8c736f8cee44fd5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 632,
+            "text": "To address this challenge, we propose a deep neural networks based method, especially convolution neural network BIBREF0 , to learn hidden feature representations directly from raw clinical notes. More specifically, one method first extract a window of surrounding words for the candidate word. Then, we attach each word with their part-of-speech tag and shape information as extra features. Then our system deploys a temporal convolution neural network to learn hidden feature representations. Finally, our system uses Multilayer Perceptron (MLP) to predict event spans. Note that we use the same model to predict event attributes.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a0309b4d3fb3a7dc29b07966",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Results and Discussions",
+        "text": "Table TABREF28 shows results on the event expression tasks. Our initial submits RUN 4 and 5 outperformed the memorization baseline on every metric on every task. The precision of event span identification is close to the max report. However, our system got lower recall. One of the main reason is that our training objective function is accuracy-oriented. Table TABREF29 shows results on the phase 2 subtask.",
+        "text_hash": "2ac909ed2083580b6d79a3581cfb1e3e318567eab57b33afb6c970d03a0fc65c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "Results and Discussions",
+            "start": 0,
+            "end": 408,
+            "text": "Table TABREF28 shows results on the event expression tasks. Our initial submits RUN 4 and 5 outperformed the memorization baseline on every metric on every task. The precision of event span identification is close to the max report. However, our system got lower recall. One of the main reason is that our training objective function is accuracy-oriented. Table TABREF29 shows results on the phase 2 subtask.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-6a221f2d3e712d4ab9ceba6f",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Evaluation Metrics",
+        "text": "All of the tasks were evaluated using the standard metrics of precision(P), recall(R) and INLINEFORM0 : DISPLAYFORM0 \n\nwhere INLINEFORM0 is the set of items predicted by the system and INLINEFORM1 is the set of items manually annotated by the humans. Applying these metrics of the tasks only requires a definition of what is considered an \"item\" for each task. For evaluating the spans of event expressions, items were tuples of character offsets. Thus, system only received credit for identifying events with exactly the same character offsets as the manually annotated ones. For evaluating the attributes of event expression types, items were tuples of (begin, end, value) where begin and end are character offsets and value is the value that was given to the relevant attribute. Thus, systems only received credit for an event attribute if they both found an event with correct character offsets and then assigned the correct value for that attribute BIBREF10 .",
+        "text_hash": "81694821bd7c29ecc67f108b68a7ba5beab3c0a7ff0a0ed6b8b0486445128c1b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Evaluation Metrics",
+            "start": 0,
+            "end": 117,
+            "text": "All of the tasks were evaluated using the standard metrics of precision(P), recall(R) and INLINEFORM0 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Evaluation Metrics",
+            "start": 0,
+            "end": 845,
+            "text": "where INLINEFORM0 is the set of items predicted by the system and INLINEFORM1 is the set of items manually annotated by the humans. Applying these metrics of the tasks only requires a definition of what is considered an \"item\" for each task. For evaluating the spans of event expressions, items were tuples of character offsets. Thus, system only received credit for identifying events with exactly the same character offsets as the manually annotated ones. For evaluating the attributes of event expression types, items were tuples of (begin, end, value) where begin and end are character offsets and value is the value that was given to the relevant attribute. Thus, systems only received credit for an event attribute if they both found an event with correct character offsets and then assigned the correct value for that attribute BIBREF10 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-fdc54e8ab4786c5ca1135b9b",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Temporal Convolutional Neural Network",
+        "text": "The way we use temporal convlution neural network for event span and attribute classification is similar with the approach proposed by BIBREF0 . Generally speaking, we can consider a word as represented by INLINEFORM0 discrete features INLINEFORM1 , where INLINEFORM2 is the dictionary for the INLINEFORM3 feature. In our scenario, we just use three features such as token mention, pos tag and word shape. Note that word shape features are used to represent the abstract letter pattern of the word by mapping lower-case letters to “x”, upper-case to “X”, numbers to “d”, and retaining punctuation. We associate to each feature a lookup table. Given a word, a feature vector is then obtained by concatenating all lookup table outputs. Then a clinical snippet is transformed into a word embedding matrix. The matrix can be fed to further 1-dimension convolutional neural network and max pooling layers. Below we will briefly introduce core concepts of Convoluational Neural Network (CNN).\n\nTemporal Convolution applies one-dimensional convolution over the input sequence. The one-dimensional convolution is an operation between a vector of weights INLINEFORM0 and a vector of inputs viewed as a sequence INLINEFORM1 . The vector INLINEFORM2 is the filter of the convolution. Concretely, we think of INLINEFORM3 as the input sentence and INLINEFORM4 as a single feature value associated with the INLINEFORM5 -th word in the sentence. The idea behind the one-dimensional convolution is to take the dot product of the vector INLINEFORM6 with each INLINEFORM7 -gram in the sentence INLINEFORM8 to obtain another sequence INLINEFORM9 : DISPLAYFORM0 ",
+        "text_hash": "12d35c8fa302ed4cf2126e6284f93f257b9dcb41731f1a1192f634295f1a5229",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s3-p0",
+            "section": "Temporal Convolutional Neural Network",
+            "start": 0,
+            "end": 986,
+            "text": "The way we use temporal convlution neural network for event span and attribute classification is similar with the approach proposed by BIBREF0 . Generally speaking, we can consider a word as represented by INLINEFORM0 discrete features INLINEFORM1 , where INLINEFORM2 is the dictionary for the INLINEFORM3 feature. In our scenario, we just use three features such as token mention, pos tag and word shape. Note that word shape features are used to represent the abstract letter pattern of the word by mapping lower-case letters to “x”, upper-case to “X”, numbers to “d”, and retaining punctuation. We associate to each feature a lookup table. Given a word, a feature vector is then obtained by concatenating all lookup table outputs. Then a clinical snippet is transformed into a word embedding matrix. The matrix can be fed to further 1-dimension convolutional neural network and max pooling layers. Below we will briefly introduce core concepts of Convoluational Neural Network (CNN).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p1",
+            "section": "Temporal Convolutional Neural Network",
+            "start": 0,
+            "end": 654,
+            "text": "Temporal Convolution applies one-dimensional convolution over the input sequence. The one-dimensional convolution is an operation between a vector of weights INLINEFORM0 and a vector of inputs viewed as a sequence INLINEFORM1 . The vector INLINEFORM2 is the filter of the convolution. Concretely, we think of INLINEFORM3 as the input sentence and INLINEFORM4 as a single feature value associated with the INLINEFORM5 -th word in the sentence. The idea behind the one-dimensional convolution is to take the dot product of the vector INLINEFORM6 with each INLINEFORM7 -gram in the sentence INLINEFORM8 to obtain another sequence INLINEFORM9 : DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

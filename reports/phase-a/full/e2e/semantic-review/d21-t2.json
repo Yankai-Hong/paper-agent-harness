@@ -1,0 +1,254 @@
+{
+  "id": "d21-t2",
+  "session_id": "d21",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "问题要求引用论文原文证据来回答“考虑了多少部电视剧”。提供的证据仅包含摘要、引言、基础文本处理和结论片段，均未给出电视剧的具体数量。因此回答拒答并说明证据不足，是恰当的。",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "52db3bcb9fb579134997adaf01284ca52a1ac88fc550e9eb3b495d38475edd70",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4539,
+        "completion_tokens": 71,
+        "total_tokens": 4610,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4283,
+        "output_tokens": 71,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3453.4606999950483
+    }
+  ],
+  "payload_hash": "2b04c5264817367527a684053d0bae077493e6e393a1456170d15367798665ff",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": true, \"behavior_appropriate\": true, \"reason\": \"问题要求引用论文原文证据来回答“考虑了多少部电视剧”。提供的证据仅包含摘要、引言、基础文本处理和结论片段，均未给出电视剧的具体数量。因此回答拒答并说明证据不足，是恰当的。\", \"claims\": []}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4539,
+        "completion_tokens": 71,
+        "total_tokens": 4610,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews 中用于回答“考虑了多少部电视剧”的原文证据是什么",
+    "evidence": [
+      {
+        "chunk_id": "c-bc5cf6361e6021a506623c74",
+        "paper_id": "1611.02378",
+        "title": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews",
+        "section": "Conclusion",
+        "text": "In this paper, a surrogate-based approach is proposed to make TV series review classification more generic among reviews from different TV series. Based on the topic modeling results, we define eight generic categories and manually label the collected TV series' reviews. Then with the help of Baidu Encyclopedia, TV series' specific information like roles' and actors' names are substituted by common tags within TV series domain. Our experimental results showed that such strategy combined with feature selection did improve the performance of classifications. Through this way, one may build classifiers on already collected TV series reviews, and then successfully classify those from new TV series. Our approach has broad implications on processing movie reviews as well. Since movie reviews and TV series reviews share many common characteristics, this approach can be easily applied to understand movie reviews and help movie producers to better process and classify consumers' movie review with higher accuracy.",
+        "text_hash": "f08eb13ab9694dff024028b92fa717177297f7fb121968a338b8fff52ababbce",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.02378",
+        "spans": [
+          {
+            "paragraph_id": "s15-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 1019,
+            "text": "In this paper, a surrogate-based approach is proposed to make TV series review classification more generic among reviews from different TV series. Based on the topic modeling results, we define eight generic categories and manually label the collected TV series' reviews. Then with the help of Baidu Encyclopedia, TV series' specific information like roles' and actors' names are substituted by common tags within TV series domain. Our experimental results showed that such strategy combined with feature selection did improve the performance of classifications. Through this way, one may build classifiers on already collected TV series reviews, and then successfully classify those from new TV series. Our approach has broad implications on processing movie reviews as well. Since movie reviews and TV series reviews share many common characteristics, this approach can be easily applied to understand movie reviews and help movie producers to better process and classify consumers' movie review with higher accuracy.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-209a786c2e84da279a4cf326",
+        "paper_id": "1611.02378",
+        "title": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews",
+        "section": "Basic Text Processing",
+        "text": "Based on the collected reviews, we are ready to build a rough classifier. Before feeding the reviews into a classifier, we applied two common procedures: tokenization and stop words removal for all the reviews. We also applied a common text processing technique to make our reviews more generic. We replaced the roles' and actors/actresses' names in the reviews with some common tokens like role_i, actor_j, where i and j are determined by their importance in this TV series. Therefore, we have the following inference DISPLAYFORM0 \n\n where INLINEFORM0 is a function which map a role's or actor's index into its importance. However, in practice, it is not a trivial task to infer the importance of all actors and actresses. We rely on data onBaidu Encyclopedia, which is the Chinese version of Wikipedia. For each movie or TV series, Baidu Encyclopedia has all the required information, which includes the level of importance for each role and actor in the show. Actor/actress in a leading role will be listed at first, followed by the ones in a supporting role and other players. Thus we can build a crawler to collect such information, and replace the corresponding words in reviews with generic tags.\n\nAfterwards, word sequence of each review can be manipulated with tokenization and stop words removal. Each sequence is broken up into a vector of unigram-based tokens using NLPIR BIBREF12 , which is a very powerful tool supporting sentence segmentation in Chinese. Stop words are words that do not contribute to the meaning of the whole sentence and are usually filtered out before following data processing. Since our reviews are collected from online websites which may include lots of forum words, for this particular domain, we include common forum words in addition to the basic Chinese stop words. Shown below are some typical examples in English that are widely used in Chinese forums. INLINEFORM0 \n\n These two processes will help us remove significant amount of noise in the data.",
+        "text_hash": "93288d8518583264f904269f58e6621463ac7ede878e304ad59ef2ba5f5e6dfe",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.02378",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "Basic Text Processing",
+            "start": 0,
+            "end": 532,
+            "text": "Based on the collected reviews, we are ready to build a rough classifier. Before feeding the reviews into a classifier, we applied two common procedures: tokenization and stop words removal for all the reviews. We also applied a common text processing technique to make our reviews more generic. We replaced the roles' and actors/actresses' names in the reviews with some common tokens like role_i, actor_j, where i and j are determined by their importance in this TV series. Therefore, we have the following inference DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "Basic Text Processing",
+            "start": 0,
+            "end": 669,
+            "text": " where INLINEFORM0 is a function which map a role's or actor's index into its importance. However, in practice, it is not a trivial task to infer the importance of all actors and actresses. We rely on data onBaidu Encyclopedia, which is the Chinese version of Wikipedia. For each movie or TV series, Baidu Encyclopedia has all the required information, which includes the level of importance for each role and actor in the show. Actor/actress in a leading role will be listed at first, followed by the ones in a supporting role and other players. Thus we can build a crawler to collect such information, and replace the corresponding words in reviews with generic tags.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p2",
+            "section": "Basic Text Processing",
+            "start": 0,
+            "end": 705,
+            "text": "Afterwards, word sequence of each review can be manipulated with tokenization and stop words removal. Each sequence is broken up into a vector of unigram-based tokens using NLPIR BIBREF12 , which is a very powerful tool supporting sentence segmentation in Chinese. Stop words are words that do not contribute to the meaning of the whole sentence and are usually filtered out before following data processing. Since our reviews are collected from online websites which may include lots of forum words, for this particular domain, we include common forum words in addition to the basic Chinese stop words. Shown below are some typical examples in English that are widely used in Chinese forums. INLINEFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p3",
+            "section": "Basic Text Processing",
+            "start": 0,
+            "end": 81,
+            "text": " These two processes will help us remove significant amount of noise in the data.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-73d11df2bfaba0b8419013e4",
+        "paper_id": "1611.02378",
+        "title": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews",
+        "section": "Abstract",
+        "text": "With the emerging of various online video platforms like Youtube, Youku and LeTV, online TV series' reviews become more and more important both for viewers and producers. Customers rely heavily on these reviews before selecting TV series, while producers use them to improve the quality. As a result, automatically classifying reviews according to different requirements evolves as a popular research topic and is essential in our daily life. In this paper, we focused on reviews of hot TV series in China and successfully trained generic classifiers based on eight predefined categories. The experimental results showed promising performance and effectiveness of its generalization to different TV series.",
+        "text_hash": "193c5808340ff4dec20451977dfa250b0fbbe697cf851b065396d0efa66a2d9e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.02378",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 706,
+            "text": "With the emerging of various online video platforms like Youtube, Youku and LeTV, online TV series' reviews become more and more important both for viewers and producers. Customers rely heavily on these reviews before selecting TV series, while producers use them to improve the quality. As a result, automatically classifying reviews according to different requirements evolves as a popular research topic and is essential in our daily life. In this paper, we focused on reviews of hot TV series in China and successfully trained generic classifiers based on eight predefined categories. The experimental results showed promising performance and effectiveness of its generalization to different TV series.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a2852542aba88bb26092d9fe",
+        "paper_id": "1611.02378",
+        "title": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews",
+        "section": "Introduction",
+        "text": "Besides flourishing of movie/TV series, there are differences of aspect focuses between product and TV series reviews. When a reviewer writes a movie/TV series review, he or she not only care about the TV elements like actor/actress, visual effect, dialogues and music, but also related teams consisted of director, screenwriter, producer, etc. However, with product reviews, few reviewers care about the corresponding backstage teams. What they do care and will comment about are only product related issues like drawbacks of the product functions, or which aspect of the merchandise they like or dislike. Moreover, most of recent researchers' work has been focused on English texts due to its simpler grammatical structure and less vocabulary, as compared with Chinese. Therefore, Chinese movie reviews not only provide more content based information, but also raise more technical challenges. With bloom of Chinese movies, automatic classification of Chinese movie reviews is really essential and meaningful.\n\nIn this paper, we proposed several strategies to make our classifiers generalizable to agnostic TV series. First, TV series roles' and actors/actresses' names are substituted by generic tags like role_i and player_j, where i and j defines their importance in this movie. On top of such kind of words, feature tokens are further manipulated by feature selection techniques like DRC or INLINEFORM0 , in order to make it more generic. We also experimented with different feature sizes with multiple classifiers in order to alleviate overfitting with high dimension features.\n\nThe remainder of this paper is organized as follows. Section 2 describes some related work. Section 3 states our problem and details our proposed procedure of approaching the problem. In Section 4, experimental results are provided and discussed. Finally, the conclusions are presented in Section 5.",
+        "text_hash": "6336da3b43214786b0c84d9fa02a824796a29155d79ba79c0dfed9f00031dbfe",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.02378",
+        "spans": [
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1011,
+            "text": "Besides flourishing of movie/TV series, there are differences of aspect focuses between product and TV series reviews. When a reviewer writes a movie/TV series review, he or she not only care about the TV elements like actor/actress, visual effect, dialogues and music, but also related teams consisted of director, screenwriter, producer, etc. However, with product reviews, few reviewers care about the corresponding backstage teams. What they do care and will comment about are only product related issues like drawbacks of the product functions, or which aspect of the merchandise they like or dislike. Moreover, most of recent researchers' work has been focused on English texts due to its simpler grammatical structure and less vocabulary, as compared with Chinese. Therefore, Chinese movie reviews not only provide more content based information, but also raise more technical challenges. With bloom of Chinese movies, automatic classification of Chinese movie reviews is really essential and meaningful.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 571,
+            "text": "In this paper, we proposed several strategies to make our classifiers generalizable to agnostic TV series. First, TV series roles' and actors/actresses' names are substituted by generic tags like role_i and player_j, where i and j defines their importance in this movie. On top of such kind of words, feature tokens are further manipulated by feature selection techniques like DRC or INLINEFORM0 , in order to make it more generic. We also experimented with different feature sizes with multiple classifiers in order to alleviate overfitting with high dimension features.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 299,
+            "text": "The remainder of this paper is organized as follows. Section 2 describes some related work. Section 3 states our problem and details our proposed procedure of approaching the problem. In Section 4, experimental results are provided and discussed. Finally, the conclusions are presented in Section 5.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2af279c146e10a003126d90d",
+        "paper_id": "1611.02378",
+        "title": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews",
+        "section": "Introduction",
+        "text": "With Web 2.0's development, more and more commercial websites, such as Amazon, Youtube and Youku, encourage users to post product reviews on their platforms BIBREF0 , BIBREF1 . These reviews are helpful for both readers and product manufacturers. For example, for TV or movie producers, online reviews indicates the aspects that viewers like and/or dislike. This information facilitates producers' production process. When producing future films TV series, they can tailer their shows to better accommodate consumers' tastes. For manufacturers, reviews may reveal customers' preference and feedback on product functions, which help manufacturers to improve their products in future development. On the other hand, consumers can evaluate the quality of product or TV series based on online reviews, which help them make final decisions of whether to buy or watch it. However, there are thousands of reviews emerging every day. Given the limited time and attention consumers have, it is impossible for them to allocate equal amount of attention to all the reviews. Moreover, some readers may be only interested in certain aspects of a product or TV series. It's been a waste of time to look at other irrelevant ones. As a result, automatic classification of reviews is essential for the review platforms to provide a better perception of the review contents to the users.\n\nMost of the existing review studies focus on product reviews in English. While in this paper, we focus on reviews of hot Chinese movies or TV series, which owns some unique characteristics. First, Table TABREF1 shows Chinese movies' development BIBREF2 in recent years. The growth of box office and viewers is dramatically high in these years, which provides substantial reviewer basis for the movie/TV series review data. Moreover, the State Administration of Radio Film and Television also announced that the size of the movie market in China is at the 2nd place right after the North America market. In BIBREF2 , it also has been predicted that the movie market in China may eventually become the largest movie market in the world within the next 5-10 years. Therefore, it is of great interest to researchers, practitioners and investors to understand the movie market in China.",
+        "text_hash": "f4a94474f440aea4afe3b507d130ad82d019de6a0fc83100f572b63893e0241f",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1611.02378",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1369,
+            "text": "With Web 2.0's development, more and more commercial websites, such as Amazon, Youtube and Youku, encourage users to post product reviews on their platforms BIBREF0 , BIBREF1 . These reviews are helpful for both readers and product manufacturers. For example, for TV or movie producers, online reviews indicates the aspects that viewers like and/or dislike. This information facilitates producers' production process. When producing future films TV series, they can tailer their shows to better accommodate consumers' tastes. For manufacturers, reviews may reveal customers' preference and feedback on product functions, which help manufacturers to improve their products in future development. On the other hand, consumers can evaluate the quality of product or TV series based on online reviews, which help them make final decisions of whether to buy or watch it. However, there are thousands of reviews emerging every day. Given the limited time and attention consumers have, it is impossible for them to allocate equal amount of attention to all the reviews. Moreover, some readers may be only interested in certain aspects of a product or TV series. It's been a waste of time to look at other irrelevant ones. As a result, automatic classification of reviews is essential for the review platforms to provide a better perception of the review contents to the users.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 881,
+            "text": "Most of the existing review studies focus on product reviews in English. While in this paper, we focus on reviews of hot Chinese movies or TV series, which owns some unique characteristics. First, Table TABREF1 shows Chinese movies' development BIBREF2 in recent years. The growth of box office and viewers is dramatically high in these years, which provides substantial reviewer basis for the movie/TV series review data. Moreover, the State Administration of Radio Film and Television also announced that the size of the movie market in China is at the 2nd place right after the North America market. In BIBREF2 , it also has been predicted that the movie market in China may eventually become the largest movie market in the world within the next 5-10 years. Therefore, it is of great interest to researchers, practitioners and investors to understand the movie market in China.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

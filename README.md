@@ -1,5 +1,7 @@
 # 科研论文检索 Agent 复现
 
+最新 Phase A 评测：[数据审核](reports/PHASE_A_AUDIT_REPORT.md)、[Claim/Citation](reports/CLAIM_CITATION_EVAL.md)、[完整回归](reports/PHASE_A_FINAL_REPORT.md)。来源规则修订集为 `data/eval/v0.6`；人工金标仍待补充，模型 Judge 仅为 provisional。历史 `reports/acceptance` 不代表本轮最新源码结果。
+
 基于 [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) 的工具循环与上下文机制，实现本地论文多轮检索问答：Query 改写、混合检索、重排、证据反思、引用生成和会话记忆。不额外添加 Web UI 或多 Agent。源码来源、固定版本和修改范围见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)、[upstream.lock](upstream.lock)。
 
 组件文档总入口：[docs/README.md](docs/README.md)。真实检索评测：[RESULTS.md](reports/qasper-suite/RESULTS.md)。
@@ -16,9 +18,9 @@
 - DeepSeek / OpenAI-compatible Chat Completions 接入，ask/chat、会话恢复、请求上限、结构校验与 usage 记录。
 - 批量多轮运行、消融与独立标注评分入口；30×4 来源可追溯的待复核对话草稿。
 
-**验收状态：** 本轮修复评测历史与统计、API 有限重试、归档按需召回和记忆幂等提交。实际验收以 [最终报告](reports/FINAL_REPORT.md)、[真实 API 结果](reports/LIVE_EVAL_RESULTS.md) 为准；剩余问题清单为内部记录，未随仓库发布。QASPER 检索标注与草稿多轮标签分开；未经人工复核的标签、模型 Judge 和离线故障测试不能作为人工 gold。原 data/models/indexes/.env 均直接复用。
+**验收状态：** 已实现评测历史与统计修复、API 有限重试、归档按需召回和记忆幂等提交。最新实际验收以 [Phase A 最终报告](reports/PHASE_A_FINAL_REPORT.md) 为准；其中列出失败与未完成项。QASPER 检索标注与草稿多轮标签分开；未经人工复核的标签、模型 Judge 和离线故障测试不能作为人工 gold。原 data/models/indexes/.env 均直接复用。
 
-**本轮入口：** 原目录运行 `.venv-gpu/Scripts/python.exe -m pytest -q`；完整复现命令见 [评测协议](docs/evaluation.md)。`eval ablation --output 新目录` 会真实执行配置矩阵并消耗 API；`eval compare A B --metric behavior_match` 读取逐例结果做配对簇 Bootstrap。正式数据修订在 `data/eval/v0.3/`，旧版本保留。
+**本轮入口：** 原目录运行 `.venv-gpu/Scripts/python.exe -m pytest -q`；完整复现命令见 [评测协议](docs/evaluation.md)。`eval ablation --output 新目录` 会真实执行配置矩阵并消耗 API；`eval compare A B --metric behavior_match` 读取逐例结果做配对簇 Bootstrap。v0.3 为历史开发集，v0.6 为当前来源规则审核集，均不能整体称为人工金标。
 
 ## 真实检索结果
 
@@ -184,6 +186,8 @@ chat 支持 /corpus、/trace、/memory、/quit。相同 session 恢复事实和�
 支持 --no-rewrite、--no-reflect、--no-compact 及四种 --mode；每次只改一个因素，用新输出目录。口径、审阅要求、记忆实验限制见 [评测与复现](docs/evaluation.md)。
 
 ## 组件说明
+
+可选三层记忆已接入原七阶段 Pipeline：`MEMORY_BACKEND=three_layer` 使用 Redis 工作状态、SQLite 事实版本及提交快照、Chroma 情景召回；默认 legacy 保持已有评测配置兼容。安装、引用边界、旧状态迁移及故障恢复见 [记忆文档](docs/memory.md)，本轮实际验证见 [升级报告](reports/MEMORY_UPGRADE_REPORT.md)。
 
 | 组件 | 文档 | 实现 |
 |---|---|---|

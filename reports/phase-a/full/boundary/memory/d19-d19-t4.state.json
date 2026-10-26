@@ -1,0 +1,540 @@
+{
+  "session_id": "d19-d19-t4",
+  "messages": [
+    {
+      "role": "user",
+      "content": "请检索以下问题的相关原文：关于论文《Improving Fine-grained Entity Typing with Entity Linking》，Which model architecture do they use?",
+      "turn_id": "ede659bde85b4052a8bc77a6669b0a6e"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "model_type",
+            "text": "论文提出的是一种深度神经模型（deep neural model），基于上下文以及实体链接结果所获得的信息进行预测。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-d31ec43506655415203bffe9"
+              }
+            ]
+          },
+          {
+            "key": "model_inputs",
+            "text": "该深度神经细粒度实体类型模型根据上下文、mention 字符串以及通过实体链接从知识库（KB）获得的类型信息灵活预测标签。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "lstm_mlp",
+            "text": "完整模型使用 BiLSTM 层和 MLP；其中一个变体（NonDeep）仅使用一层 BiLSTM 并用 dense layer 替换 MLP。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-4ea9198a20a3bd90e19484db"
+              }
+            ]
+          },
+          {
+            "key": "loss_noise",
+            "text": "为缓解对弱标注数据的过拟合，模型使用了 hinge loss 的变体并在训练中引入噪声。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-bee14e88c20dfa401e81466f"
+              },
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "ede659bde85b4052a8bc77a6669b0a6e"
+    },
+    {
+      "role": "user",
+      "content": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "task_and_motivation",
+            "text": "细粒度实体类型标注（FET）通常使用较大的标签集，且部分 mention 需要理解上下文才能正确标注；由于人工标注成本高，现有方法需依赖远程监督训练模型。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+              }
+            ]
+          },
+          {
+            "key": "el_helps_typing",
+            "text": "论文用实体链接（EL）改进 FET：若 mention 被正确链接到目标实体，可直接从知识库（KB）获得该实体的类型信息；在需要上下文理解的案例中，KB 中的实体类型可缩小可能标签范围。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+              }
+            ]
+          },
+          {
+            "key": "model_inputs",
+            "text": "论文提出的深度神经细粒度实体类型标注模型基于上下文、mention 字符串以及通过 EL 得到的 KB 类型信息来灵活预测标签。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "el_info_not_trusted",
+            "text": "论文指出 EL 得到的信息不应完全信任：EL 并不总是准确，即使 mention 被正确链接，该实体在 KB 中的类型信息也可能不完整或过时。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "weak_label_overfit",
+            "text": "传统方法用 Wikipedia 锚链接构建 FET 训练样本，每个锚链接作为 mention，并用其指向实体在 KB 中的所有类型进行弱标注；论文方法在正确链接时同样把所引用实体的全部 KB 类型作为额外信息，可能导致模型对弱标注数据过拟合。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "hinge_noise",
+            "text": "为缓解过拟合弱标注数据的问题，论文设计了 hinge loss 的变体，并在训练过程中引入噪声。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              },
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-bee14e88c20dfa401e81466f"
+              }
+            ]
+          },
+          {
+            "key": "overall_result",
+            "text": "实验结果显示，引入通过实体链接获得的信息以及使用深度神经网络模型都有助于提升 FET 性能；模型在两个常用数据集上相比当时最好结果取得超过 5% 的绝对 strict accuracy 提升。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+              }
+            ]
+          },
+          {
+            "key": "abstract_result",
+            "text": "摘要指出，该模型在两个常用数据集上相比当时最好结果取得超过 5% 的绝对 strict accuracy 提升。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-d31ec43506655415203bffe9"
+              }
+            ]
+          },
+          {
+            "key": "bilstm_mlp_variants",
+            "text": "论文对比的自身变体中，Ours (NonDeep) 使用一层 BiLSTM 并用一个 dense layer 替代 MLP；这表明完整模型在结构上包含 BiLSTM 与 MLP，而非深度版本改为单层 BiLSTM 加 dense layer。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-4ea9198a20a3bd90e19484db"
+              }
+            ]
+          },
+          {
+            "key": "noel_variant",
+            "text": "Ours (NoEL) 不使用实体链接，即移除 KB 类型表示和实体链接置信度分数，并以 DirectTrain 方式训练模型。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-4ea9198a20a3bd90e19484db"
+              }
+            ]
+          },
+          {
+            "key": "directtrain_noise",
+            "text": "Ours (DirectTrain) 在获取 KB 类型表示时不添加随机 person 类型，且将 λ_P 设为 1。",
+            "citations": [
+              {
+                "paper_id": "1909.12079",
+                "chunk_id": "c-4ea9198a20a3bd90e19484db"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+    },
+    {
+      "role": "user",
+      "content": "与《BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction》对比，分别说明两篇论文如何回答“Which model architecture do they use?”与“How is BERT optimized for this task?”，并说明是否具有可比性。",
+      "turn_id": "f52369aae5044e93a1ece25b784daca3"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "f52369aae5044e93a1ece25b784daca3"
+    },
+    {
+      "role": "user",
+      "content": "顺便查一下我明天的私人银行账户余额。",
+      "turn_id": "43eacd2c79fd4c048ee9ad3ba4702ef0"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "43eacd2c79fd4c048ee9ad3ba4702ef0"
+    }
+  ],
+  "turn_count": 4,
+  "memory": {
+    "session_id": "d19-d19-t4",
+    "entities": {
+      "paper": "Improving Fine-grained Entity Typing with Entity Linking (1909.12079)"
+    },
+    "facts": {
+      "model_type": {
+        "text": "论文提出的是一种深度神经模型（deep neural model），基于上下文以及实体链接结果所获得的信息进行预测。",
+        "evidence_ids": [
+          "c-d31ec43506655415203bffe9"
+        ],
+        "turn_id": "ede659bde85b4052a8bc77a6669b0a6e"
+      },
+      "lstm_mlp": {
+        "text": "完整模型使用 BiLSTM 层和 MLP；其中一个变体（NonDeep）仅使用一层 BiLSTM 并用 dense layer 替换 MLP。",
+        "evidence_ids": [
+          "c-4ea9198a20a3bd90e19484db"
+        ],
+        "turn_id": "ede659bde85b4052a8bc77a6669b0a6e"
+      },
+      "loss_noise": {
+        "text": "为缓解对弱标注数据的过拟合，模型使用了 hinge loss 的变体并在训练中引入噪声。",
+        "evidence_ids": [
+          "c-bee14e88c20dfa401e81466f",
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "ede659bde85b4052a8bc77a6669b0a6e"
+      },
+      "task_and_motivation": {
+        "text": "细粒度实体类型标注（FET）通常使用较大的标签集，且部分 mention 需要理解上下文才能正确标注；由于人工标注成本高，现有方法需依赖远程监督训练模型。",
+        "evidence_ids": [
+          "c-83b8558faa3f4eeefb7c1c6c"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "el_helps_typing": {
+        "text": "论文用实体链接（EL）改进 FET：若 mention 被正确链接到目标实体，可直接从知识库（KB）获得该实体的类型信息；在需要上下文理解的案例中，KB 中的实体类型可缩小可能标签范围。",
+        "evidence_ids": [
+          "c-83b8558faa3f4eeefb7c1c6c"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "model_inputs": {
+        "text": "论文提出的深度神经细粒度实体类型标注模型基于上下文、mention 字符串以及通过 EL 得到的 KB 类型信息来灵活预测标签。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "el_info_not_trusted": {
+        "text": "论文指出 EL 得到的信息不应完全信任：EL 并不总是准确，即使 mention 被正确链接，该实体在 KB 中的类型信息也可能不完整或过时。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "weak_label_overfit": {
+        "text": "传统方法用 Wikipedia 锚链接构建 FET 训练样本，每个锚链接作为 mention，并用其指向实体在 KB 中的所有类型进行弱标注；论文方法在正确链接时同样把所引用实体的全部 KB 类型作为额外信息，可能导致模型对弱标注数据过拟合。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "hinge_noise": {
+        "text": "为缓解过拟合弱标注数据的问题，论文设计了 hinge loss 的变体，并在训练过程中引入噪声。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3",
+          "c-bee14e88c20dfa401e81466f"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "overall_result": {
+        "text": "实验结果显示，引入通过实体链接获得的信息以及使用深度神经网络模型都有助于提升 FET 性能；模型在两个常用数据集上相比当时最好结果取得超过 5% 的绝对 strict accuracy 提升。",
+        "evidence_ids": [
+          "c-23d2fdeeb3e49fb0893362f3"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "abstract_result": {
+        "text": "摘要指出，该模型在两个常用数据集上相比当时最好结果取得超过 5% 的绝对 strict accuracy 提升。",
+        "evidence_ids": [
+          "c-d31ec43506655415203bffe9"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "bilstm_mlp_variants": {
+        "text": "论文对比的自身变体中，Ours (NonDeep) 使用一层 BiLSTM 并用一个 dense layer 替代 MLP；这表明完整模型在结构上包含 BiLSTM 与 MLP，而非深度版本改为单层 BiLSTM 加 dense layer。",
+        "evidence_ids": [
+          "c-4ea9198a20a3bd90e19484db"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "noel_variant": {
+        "text": "Ours (NoEL) 不使用实体链接，即移除 KB 类型表示和实体链接置信度分数，并以 DirectTrain 方式训练模型。",
+        "evidence_ids": [
+          "c-4ea9198a20a3bd90e19484db"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      },
+      "directtrain_noise": {
+        "text": "Ours (DirectTrain) 在获取 KB 类型表示时不添加随机 person 类型，且将 λ_P 设为 1。",
+        "evidence_ids": [
+          "c-4ea9198a20a3bd90e19484db"
+        ],
+        "turn_id": "59a0eef44e20422b9dee4246cb175ba8"
+      }
+    },
+    "unresolved": [
+      "顺便查一下我明天的私人银行账户余额。"
+    ],
+    "summary": {
+      "discussed_papers": [
+        "1909.12079"
+      ]
+    }
+  },
+  "committed_turns": {
+    "ede659bde85b4052a8bc77a6669b0a6e": {
+      "question": "请检索以下问题的相关原文：关于论文《Improving Fine-grained Entity Typing with Entity Linking》，Which model architecture do they use?",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "model_type",
+              "text": "论文提出的是一种深度神经模型（deep neural model），基于上下文以及实体链接结果所获得的信息进行预测。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-d31ec43506655415203bffe9"
+                }
+              ]
+            },
+            {
+              "key": "model_inputs",
+              "text": "该深度神经细粒度实体类型模型根据上下文、mention 字符串以及通过实体链接从知识库（KB）获得的类型信息灵活预测标签。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "lstm_mlp",
+              "text": "完整模型使用 BiLSTM 层和 MLP；其中一个变体（NonDeep）仅使用一层 BiLSTM 并用 dense layer 替换 MLP。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-4ea9198a20a3bd90e19484db"
+                }
+              ]
+            },
+            {
+              "key": "loss_noise",
+              "text": "为缓解对弱标注数据的过拟合，模型使用了 hinge loss 的变体并在训练中引入噪声。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-bee14e88c20dfa401e81466f"
+                },
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "ede659bde85b4052a8bc77a6669b0a6e"
+      }
+    },
+    "59a0eef44e20422b9dee4246cb175ba8": {
+      "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "task_and_motivation",
+              "text": "细粒度实体类型标注（FET）通常使用较大的标签集，且部分 mention 需要理解上下文才能正确标注；由于人工标注成本高，现有方法需依赖远程监督训练模型。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+                }
+              ]
+            },
+            {
+              "key": "el_helps_typing",
+              "text": "论文用实体链接（EL）改进 FET：若 mention 被正确链接到目标实体，可直接从知识库（KB）获得该实体的类型信息；在需要上下文理解的案例中，KB 中的实体类型可缩小可能标签范围。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-83b8558faa3f4eeefb7c1c6c"
+                }
+              ]
+            },
+            {
+              "key": "model_inputs",
+              "text": "论文提出的深度神经细粒度实体类型标注模型基于上下文、mention 字符串以及通过 EL 得到的 KB 类型信息来灵活预测标签。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "el_info_not_trusted",
+              "text": "论文指出 EL 得到的信息不应完全信任：EL 并不总是准确，即使 mention 被正确链接，该实体在 KB 中的类型信息也可能不完整或过时。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "weak_label_overfit",
+              "text": "传统方法用 Wikipedia 锚链接构建 FET 训练样本，每个锚链接作为 mention，并用其指向实体在 KB 中的所有类型进行弱标注；论文方法在正确链接时同样把所引用实体的全部 KB 类型作为额外信息，可能导致模型对弱标注数据过拟合。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "hinge_noise",
+              "text": "为缓解过拟合弱标注数据的问题，论文设计了 hinge loss 的变体，并在训练过程中引入噪声。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                },
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-bee14e88c20dfa401e81466f"
+                }
+              ]
+            },
+            {
+              "key": "overall_result",
+              "text": "实验结果显示，引入通过实体链接获得的信息以及使用深度神经网络模型都有助于提升 FET 性能；模型在两个常用数据集上相比当时最好结果取得超过 5% 的绝对 strict accuracy 提升。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-23d2fdeeb3e49fb0893362f3"
+                }
+              ]
+            },
+            {
+              "key": "abstract_result",
+              "text": "摘要指出，该模型在两个常用数据集上相比当时最好结果取得超过 5% 的绝对 strict accuracy 提升。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-d31ec43506655415203bffe9"
+                }
+              ]
+            },
+            {
+              "key": "bilstm_mlp_variants",
+              "text": "论文对比的自身变体中，Ours (NonDeep) 使用一层 BiLSTM 并用一个 dense layer 替代 MLP；这表明完整模型在结构上包含 BiLSTM 与 MLP，而非深度版本改为单层 BiLSTM 加 dense layer。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-4ea9198a20a3bd90e19484db"
+                }
+              ]
+            },
+            {
+              "key": "noel_variant",
+              "text": "Ours (NoEL) 不使用实体链接，即移除 KB 类型表示和实体链接置信度分数，并以 DirectTrain 方式训练模型。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-4ea9198a20a3bd90e19484db"
+                }
+              ]
+            },
+            {
+              "key": "directtrain_noise",
+              "text": "Ours (DirectTrain) 在获取 KB 类型表示时不添加随机 person 类型，且将 λ_P 设为 1。",
+              "citations": [
+                {
+                  "paper_id": "1909.12079",
+                  "chunk_id": "c-4ea9198a20a3bd90e19484db"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "59a0eef44e20422b9dee4246cb175ba8"
+      }
+    },
+    "f52369aae5044e93a1ece25b784daca3": {
+      "question": "与《BERT-Based Multi-Head Selection for Joint Entity-Relation Extraction》对比，分别说明两篇论文如何回答“Which model architecture do they use?”与“How is BERT optimized for this task?”，并说明是否具有可比性。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "f52369aae5044e93a1ece25b784daca3"
+      }
+    },
+    "43eacd2c79fd4c048ee9ad3ba4702ef0": {
+      "question": "顺便查一下我明天的私人银行账户余额。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "43eacd2c79fd4c048ee9ad3ba4702ef0"
+      }
+    }
+  }
+}

@@ -1,0 +1,178 @@
+[
+  {
+    "name": "tests",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "--junitxml=reports\\phase-a\\full\\tests.xml"
+    ],
+    "started_utc": "2026-10-23T02:25:52.990381+00:00",
+    "elapsed_seconds": 6.90897798538208,
+    "returncode": 0
+  },
+  {
+    "name": "intent",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "-m",
+      "paper_agent.cli",
+      "eval",
+      "intent",
+      "data/eval/v0.6/intent.jsonl",
+      "--output",
+      "reports\\phase-a\\full\\intent",
+      "--max-tokens",
+      "4096",
+      "--thinking",
+      "disabled",
+      "--workers",
+      "4"
+    ],
+    "started_utc": "2026-10-23T02:25:59.905359+00:00",
+    "elapsed_seconds": 289.08004355430603,
+    "returncode": 0
+  },
+  {
+    "name": "rewrite",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "-m",
+      "paper_agent.cli",
+      "eval",
+      "rewrite",
+      "data/eval/v0.6/query_rewrite.jsonl",
+      "--output",
+      "reports\\phase-a\\full\\rewrite",
+      "--max-tokens",
+      "4096",
+      "--thinking",
+      "disabled",
+      "--workers",
+      "4"
+    ],
+    "started_utc": "2026-10-23T02:30:48.988385+00:00",
+    "elapsed_seconds": 262.902973651886,
+    "returncode": 0
+  },
+  {
+    "name": "retrieval",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "scripts/run_retrieval_suite.py",
+      "--reuse-index",
+      "--output",
+      "reports\\phase-a\\full\\retrieval"
+    ],
+    "started_utc": "2026-10-23T02:35:11.893541+00:00",
+    "elapsed_seconds": 70.59897089004517,
+    "returncode": 0
+  },
+  {
+    "name": "boundary",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "-m",
+      "paper_agent.cli",
+      "eval",
+      "boundary",
+      "data/eval/v0.6/boundary.jsonl",
+      "--output",
+      "reports\\phase-a\\full\\boundary",
+      "--index",
+      "indexes/bge",
+      "--mode",
+      "bm25",
+      "--max-tokens",
+      "4096",
+      "--thinking",
+      "disabled",
+      "--workers",
+      "4"
+    ],
+    "started_utc": "2026-10-23T02:36:22.495510+00:00",
+    "elapsed_seconds": 474.7791473865509,
+    "returncode": 0
+  },
+  {
+    "name": "memory",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "-m",
+      "paper_agent.cli",
+      "eval",
+      "memory",
+      "data/eval/v0.6/memory.jsonl",
+      "--output",
+      "reports\\phase-a\\full\\memory",
+      "--index",
+      "indexes/bge",
+      "--mode",
+      "bm25",
+      "--max-tokens",
+      "4096",
+      "--thinking",
+      "disabled",
+      "--workers",
+      "4"
+    ],
+    "started_utc": "2026-10-23T02:44:17.279806+00:00",
+    "elapsed_seconds": 430.91828870773315,
+    "returncode": 0
+  },
+  {
+    "name": "ablations",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "-m",
+      "paper_agent.cli",
+      "eval",
+      "ablation",
+      "--config",
+      "configs/phase-a.json",
+      "--output",
+      "reports\\phase-a\\full\\ablations"
+    ],
+    "started_utc": "2026-10-23T02:51:28.201099+00:00",
+    "elapsed_seconds": 1584.83589053154,
+    "returncode": 0
+  },
+  {
+    "name": "e2e",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "-m",
+      "paper_agent.cli",
+      "eval",
+      "e2e",
+      "data/eval/v0.6/dialogs.jsonl",
+      "--output",
+      "reports\\phase-a\\full\\e2e",
+      "--index",
+      "indexes/bge",
+      "--mode",
+      "bm25",
+      "--max-tokens",
+      "4096",
+      "--thinking",
+      "disabled",
+      "--workers",
+      "4"
+    ],
+    "started_utc": "2026-10-23T03:17:53.040128+00:00",
+    "elapsed_seconds": 357.4125394821167,
+    "returncode": 0
+  },
+  {
+    "name": "claims",
+    "command": [
+      "C:\\Users\\40533\\Desktop\\nano-cc\\.venv-gpu\\Scripts\\python.exe",
+      "scripts/evaluate_claims.py",
+      "reports\\phase-a\\full\\e2e"
+    ],
+    "started_utc": "2026-10-23T03:23:50.457522+00:00",
+    "elapsed_seconds": 9291.45519208908,
+    "returncode": 0
+  }
+]

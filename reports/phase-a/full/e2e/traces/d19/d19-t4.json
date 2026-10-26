@@ -1,0 +1,183 @@
+{
+  "turn_id": "d19-t4",
+  "session_id": "d19",
+  "question": "顺便查一下我明天的私人银行账户余额。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.012199976481497288
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "查询私人银行账户余额",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 2860.456300084479
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.002400018274784088
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d19",
+        "entities": {
+          "paper": "Improving Fine-grained Entity Typing with Entity Linking",
+          "paper_id": "1909.12079"
+        },
+        "facts": {
+          "model_type": {
+            "text": "该论文提出的是一个深度神经模型，基于上下文和实体链接结果两方面信息来进行预测。",
+            "evidence_ids": [
+              "c-d31ec43506655415203bffe9"
+            ],
+            "turn_id": "d19-t1"
+          },
+          "model_inputs": {
+            "text": "模型基于上下文、mention 字符串以及通过实体链接从知识库获得的类型信息来灵活预测标签。",
+            "evidence_ids": [
+              "c-23d2fdeeb3e49fb0893362f3"
+            ],
+            "turn_id": "d19-t1"
+          },
+          "components_bilstm_mlp": {
+            "text": "模型包含 BiLSTM 层和 MLP；其中变体 Ours (NonDeep) 使用一层 BiLSTM 并用 dense 层替代 MLP。",
+            "evidence_ids": [
+              "c-4ea9198a20a3bd90e19484db"
+            ],
+            "turn_id": "d19-t1"
+          },
+          "full_model_el": {
+            "text": "完整模型 Ours (Full) 使用作者自有的基于 commonness 的实体链接方法。",
+            "evidence_ids": [
+              "c-4ea9198a20a3bd90e19484db"
+            ],
+            "turn_id": "d19-t1"
+          },
+          "training_loss": {
+            "text": "通过使用 hinge loss 的变体并在训练中引入噪声，缓解对弱标注训练数据的过拟合问题。",
+            "evidence_ids": [
+              "c-bee14e88c20dfa401e81466f"
+            ],
+            "turn_id": "d19-t1"
+          }
+        },
+        "unresolved": [
+          "顺便查一下我明天的私人银行账户余额。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1909.12079"
+          ]
+        }
+      },
+      "elapsed_ms": 11.587199987843633
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792725679.2399035,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 8,
+      "request_hash": "f628ce0f5441ceee24fdf918ca7e2e976527d0a46397e80b250ff209be84b835",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4362,
+        "completion_tokens": 45,
+        "total_tokens": 4407,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4362,
+        "output_tokens": 45,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2857.932999962941
+    }
+  ]
+}

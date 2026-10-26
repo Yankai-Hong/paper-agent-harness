@@ -1,0 +1,404 @@
+{
+  "id": "d16-t2",
+  "session_id": "d16",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 11,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "答案严格依据所提供的证据，逐条保留引用，未从常识补充结论；各条声明均可在对应 chunk 中找到支持，且与问题要求的机制（温度缩放、EOS 约束、长度项、覆盖度项）一致。",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "摘要原文明确：观察到两个缺陷——预测过度自信，以及使用语言模型时倾向于产生不完整转录。"
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "引言原文称 seq2seq 模型常给出非常尖锐的预测、只需少数假设即可找到最可能转录，但高置信度降低了束搜索所得转录的多样性。"
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "Beam Search 小节原文说明使用束搜索近似搜索，模型通过发出特殊 EOS 标记表示转录被认为结束。"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "原文称温度变化不影响最可能字符的选择，因此各策略贪婪解码准确率相同；随温度升高束搜索找到更好解，但需注意防止转录被截断。"
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "原文称不想改变束搜索代价，而是约束仅在 EOS 概率处于距最可能标记很窄范围内时才发出 EOS，并对比默认、更尖锐与更平滑分布。"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "原文明确：使用语言模型时宽束搜索常产生不完整转录；窄束下因隐式假设剪枝问题不太明显。"
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "原文称第一种策略不改变束搜索准则、禁止在 EOS 概率不在设定范围内时发出 EOS；该策略能防止截断，但对转录中部遗漏（如表中所示失败案例）效果不佳。"
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "原文称另一做法是扩展束搜索准则以倾向较长转录；依赖长度的项曾用于 CTC 与 seq2seq，但据报道使用困难，因为束搜索会在录音某些部分循环，需要额外约束。"
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "原文称为防止循环提出覆盖度项，统计累计注意力超过阈值的帧数；某帧累计注意力越过阈值即被视为已选中，后续再次选中该帧不会降低解码代价。"
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "原文明确覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。"
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "摘要原文给出 WSJ 数据集上不使用单独语言模型 10.6% WER、结合三元语言模型 6.7% WER。"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "a888558a62bc063c91888cf367a0b456d783035e06d8dfb2ae1a144dd26046b0",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4876,
+        "completion_tokens": 632,
+        "total_tokens": 5508,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4620,
+        "output_tokens": 632,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7036.2926999805495
+    }
+  ],
+  "payload_hash": "45664e4a9cbdd0b9235e93cc86908319bdafe3ed177426d98a85ad6bbceb7ede",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": true, \"behavior_appropriate\": true, \"reason\": \"答案严格依据所提供的证据，逐条保留引用，未从常识补充结论；各条声明均可在对应 chunk 中找到支持，且与问题要求的机制（温度缩放、EOS 约束、长度项、覆盖度项）一致。\", \"claims\": [{\"claim_index\": 0, \"supported\": true, \"reason\": \"摘要原文明确：观察到两个缺陷——预测过度自信，以及使用语言模型时倾向于产生不完整转录。\"}, {\"claim_index\": 1, \"supported\": true, \"reason\": \"引言原文称 seq2seq 模型常给出非常尖锐的预测、只需少数假设即可找到最可能转录，但高置信度降低了束搜索所得转录的多样性。\"}, {\"claim_index\": 2, \"supported\": true, \"reason\": \"Beam Search 小节原文说明使用束搜索近似搜索，模型通过发出特殊 EOS 标记表示转录被认为结束。\"}, {\"claim_index\": 3, \"supported\": true, \"reason\": \"原文称温度变化不影响最可能字符的选择，因此各策略贪婪解码准确率相同；随温度升高束搜索找到更好解，但需注意防止转录被截断。\"}, {\"claim_index\": 4, \"supported\": true, \"reason\": \"原文称不想改变束搜索代价，而是约束仅在 EOS 概率处于距最可能标记很窄范围内时才发出 EOS，并对比默认、更尖锐与更平滑分布。\"}, {\"claim_index\": 5, \"supported\": true, \"reason\": \"原文明确：使用语言模型时宽束搜索常产生不完整转录；窄束下因隐式假设剪枝问题不太明显。\"}, {\"claim_index\": 6, \"supported\": true, \"reason\": \"原文称第一种策略不改变束搜索准则、禁止在 EOS 概率不在设定范围内时发出 EOS；该策略能防止截断，但对转录中部遗漏（如表中所示失败案例）效果不佳。\"}, {\"claim_index\": 7, \"supported\": true, \"reason\": \"原文称另一做法是扩展束搜索准则以倾向较长转录；依赖长度的项曾用于 CTC 与 seq2seq，但据报道使用困难，因为束搜索会在录音某些部分循环，需要额外约束。\"}, {\"claim_index\": 8, \"supported\": true, \"reason\": \"原文称为防止循环提出覆盖度项，统计累计注意力超过阈值的帧数；某帧累计注意力越过阈值即被视为已选中，后续再次选中该帧不会降低解码代价。\"}, {\"claim_index\": 9, \"supported\": true, \"reason\": \"原文明确覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。\"}, {\"claim_index\": 10, \"supported\": true, \"reason\": \"摘要原文给出 WSJ 数据集上不使用单独语言模型 10.6% WER、结合三元语言模型 6.7% WER。\"}]}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4876,
+        "completion_tokens": 632,
+        "total_tokens": 5508,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "two_shortcomings",
+          "text": "该论文分析了基于注意力的 seq2seq 语音识别系统，观察到两个缺陷：预测过度自信，以及在使用语言模型时倾向于产生不完整的转录。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        },
+        {
+          "key": "overconfidence_mechanism",
+          "text": "seq2seq 模型常常给出非常尖锐的预测，只需考虑很少几个假设就能找到最可能的转录，但这种高置信度降低了束搜索所获转录的多样性。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+            }
+          ]
+        },
+        {
+          "key": "eos_via_beam_search",
+          "text": "解码时用束搜索近似搜索，模型通过发出特殊的 EOS（序列结束）标记来表示转录被认为已经结束。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-2d0c32cb8b39156b7f3fa54c"
+            }
+          ]
+        },
+        {
+          "key": "temperature_effect",
+          "text": "温度变化不影响对最可能字符的选择，因此各策略的贪婪解码准确率相同；随着温度升高，束搜索能发现更好的解，但必须注意防止转录被截断。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-10d1ebcc07738e41f14a4005"
+            }
+          ]
+        },
+        {
+          "key": "eos_constraint_for_overconfidence",
+          "text": "在不改变束搜索代价的前提下，作者约束搜索仅在 EOS 标记的概率处于距最可能标记很窄的范围内时才发出 EOS；并对比了默认设置、更尖锐的分布与更平滑的分布。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-10d1ebcc07738e41f14a4005"
+            }
+          ]
+        },
+        {
+          "key": "incomplete_transcripts_setting",
+          "text": "使用语言模型时，宽束搜索常产生不完整的转录；窄束下由于隐式的假设剪枝，该问题不太明显。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "eos_strategy_limitation",
+          "text": "第一种策略不改变束搜索准则，但在 EOS 标记的概率不在最可能标记的设定范围内时禁止发出 EOS；该策略能防止截断，但对转录中部的遗漏（如文中所示失败案例）效果不佳。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "length_term",
+          "text": "另一做法是扩展束搜索准则以倾向于较长的转录；依赖转录长度的项曾被用于 CTC 与 seq2seq 网络，但据报道其使用困难，因为束搜索会在录音的某些部分循环，需要额外约束。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_term",
+          "text": "为防止循环，作者提出覆盖度项，统计累计注意力超过某一阈值的帧数；一旦某帧的累计注意力越过该阈值，该帧即被视为已选中，后续再次选中该帧不会降低解码代价。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_recompute",
+          "text": "在其实现中，覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "wer_results",
+          "text": "在 Wall Street Journal 数据集上，不使用单独语言模型时达到 10.6% WER，结合三元语言模型时达到 6.7% WER。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "论文 Towards better decoding and language model integration in sequence to sequence models 中，针对 seq2seq 的过度自信和语言模型下转录不完整这两个缺陷，提出了哪些解决方案及其机制（温度缩放、EOS 约束、长度项、覆盖度项）？",
+    "evidence": [
+      {
+        "chunk_id": "c-c1a01afddd733ef65ed6d199",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Abstract",
+        "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+        "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 782,
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2d0c32cb8b39156b7f3fa54c",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Decoding: Beam Search",
+        "text": "Decoding new utterances amounts to finding the character sequence INLINEFORM0 that is most probable under the distribution computed by the network: DISPLAYFORM0 \n\nDue to the recurrent formulation of the speller function, the most probable transcript cannot be found exactly using the Viterbi algorithm. Instead, approximate search methods are used. Typically, best results are obtained using beam search. The search begins with the set (beam) of hypotheses containing only the empty transcript. At every step, candidate transcripts are formed by extending hypothesis in the beam by one character. The candidates are then scored using the model, and a certain number of top-scoring candidates forms the new beam. The model indicates that a transcript is considered to be finished by emitting a special EOS (end-of-sequence) token.",
+        "text_hash": "83e5f52188550c16a5c088d66ccc17699583825077cf2414292a38743d40feab",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Decoding: Beam Search",
+            "start": 0,
+            "end": 161,
+            "text": "Decoding new utterances amounts to finding the character sequence INLINEFORM0 that is most probable under the distribution computed by the network: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Decoding: Beam Search",
+            "start": 0,
+            "end": 666,
+            "text": "Due to the recurrent formulation of the speller function, the most probable transcript cannot be found exactly using the Viterbi algorithm. Instead, approximate search methods are used. Typically, best results are obtained using beam search. The search begins with the set (beam) of hypotheses containing only the empty transcript. At every step, candidate transcripts are formed by extending hypothesis in the beam by one character. The candidates are then scored using the model, and a certain number of top-scoring candidates forms the new beam. The model indicates that a transcript is considered to be finished by emitting a special EOS (end-of-sequence) token.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-0b5bc372895d6d0706b56a8e",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Introduction",
+        "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.\n\nUnderstanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+        "text_hash": "28420c534a7cb4dbf7ddb929f504b7226ec7d22b3e9800a277b4c4c3a3376c90",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1148,
+            "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 568,
+            "text": "Understanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-10d1ebcc07738e41f14a4005",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Impact of Model Overconfidence",
+        "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+        "text_hash": "85395b43efbdd516c21e9d70a5be7168aa04220e6a55148342a1e45710d8f8f2",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s8-p4",
+            "section": "Impact of Model Overconfidence",
+            "start": 0,
+            "end": 768,
+            "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-753acdce1e13381d0f0064dc",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Solutions to Partial Transcripts Problem",
+        "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+        "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 602,
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 911,
+            "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 369,
+            "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

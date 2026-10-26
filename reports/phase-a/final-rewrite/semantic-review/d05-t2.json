@@ -1,0 +1,80 @@
+{
+  "id": "d05-t2",
+  "session_id": "d05",
+  "error": null,
+  "payload": {
+    "original_question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "history": [
+      {
+        "role": "user",
+        "content": "请检索以下问题的相关原文：关于论文《Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering》，What are their evaluation metrics?",
+        "turn_id": "d05-t1",
+        "session_id": "d05",
+        "turn": 1
+      }
+    ],
+    "standalone_query": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering 评估指标 证据 原文引用",
+    "source_rule_reference_not_unique": "请解释论文《Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering》对于问题“What are their evaluation metrics?”的原文证据，保留引用；不能从常识补充结论。",
+    "expected_action": null
+  },
+  "judgment": {
+    "semantic_preserved": true,
+    "coreference_resolved": true,
+    "reason": "The standalone query resolves '刚才那篇论文' and '这个问题' via history to the named paper and the evaluation metrics question, matching the source rule. Core constraints are preserved: evidence from the paper, retaining citations, and no common-sense supplementation. 'What are their evaluation metrics?' is retained in meaning and the required paper identity is explicit. No unsupported additions or omissions."
+  },
+  "calls": [
+    {
+      "stage": "rewrite_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "07193a5d99c263884443da687f44234a67c45a013bb2c32ad83d9d50d4e05039",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 377,
+        "completion_tokens": 99,
+        "total_tokens": 476,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 249,
+        "output_tokens": 99,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2826.018500025384
+    }
+  ],
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"semantic_preserved\": true, \"coreference_resolved\": true, \"reason\": \"The standalone query resolves '刚才那篇论文' and '这个问题' via history to the named paper and the evaluation metrics question, matching the source rule. Core constraints are preserved: evidence from the paper, retaining citations, and no common-sense supplementation. 'What are their evaluation metrics?' is retained in meaning and the required paper identity is explicit. No unsupported additions or omissions.\"}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 377,
+        "completion_tokens": 99,
+        "total_tokens": 476,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    }
+  ]
+}

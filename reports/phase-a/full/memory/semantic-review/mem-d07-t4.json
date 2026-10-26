@@ -1,0 +1,542 @@
+{
+  "id": "mem-d07-t4",
+  "session_id": "d07",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 11,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "答案准确梳理了论文的五个特征子组及代表性特征，所有可回答部分的表述均能在所引 chunk 中找到依据；同时合理指出了证据中缺 Table 6 完整清单、特征权重/消融数值、具体 NLP 工具名称等无法回答的部分，并保留了引用，符合“指出能回答与不能回答部分”的要求。",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "c-95d315be 明确说明特征基于先前文献和一本瑞典语 L2 语法书开发，并分为 length-based、lexical、morphological、syntactic、semantic 五个子组。"
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "c-95d315be 列出句子 token 数(#1)、字符数(#4)、超过十三个字符的超长词以及传统瑞典语可读性公式 LIX，与表述一致。"
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "c-95d315be 描述 Kelly 词表提供 CEFR 等级与词频、基于网络文本语料且独立于数据集，使用每千词 IncSc，涵盖各 CEFR 等级、高于文本/句子等级的词(#12-#13)、不在列表的词(#14)、未找到词元的 token(#15)及平均对数频率(#16)，均可对应。"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "c-56c4d684 列出形态特征包含类别变异比与 IncSc、标点/小品词/从属和并列连词(#34,#51)、中性名词 IncSc、不同动词形式比率(#52-#56)、双对数和平方根 TTR、名词比率、代词与介词比率、两项词汇密度(#48,#49)以及关系结构(#57)，表述基本一致。"
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "c-56c4d684 列出依存弧长度(深度)和方向(#17-#21)、分裂句中关系从句 IncSc(#26)以及前/后修饰语 IncSc，与表述吻合。"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "c-56c4d684 说明语义特征基于 SALDO，采用每 token 平均义项数及每名词平均名词义项数。"
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "c-f16421f0 指出仅用词频特征在文档层面几乎与全部特征组合同样有预测力，而句子层面全部特征组合带来 7% 准确率差异；c-002c247f 亦支持文档层面 Lex 0.8 F 接近 All 0.81 F。"
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "c-619fec3b 摘要明确为瑞典语第二语言学习材料在 5 点量表上的首个复杂性预测方法，并非英语。"
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "c-95d315be 仅引用 Table 6 而未给出完整特征清单，证据中确实缺少全部编号条目的完整定义，因此该无法回答的判断成立。"
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "证据仅给出子组层面的 F 值和准确率对比，未给出各单个特征的权重、系数或逐一消融数值，故无法回答逐特征贡献。"
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "c-61d8664e 只说课程书带有 POS 和依存标签，c-cbb7f9f0 只泛提使用 POS 标注器和依存句法分析器的信息，未详述具体工具名称及版本配置。"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "d09191befebd33aa978d576eedf2bfe45154c6bbba9ccaccd5dee7e2293c4c83",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8893,
+        "completion_tokens": 839,
+        "total_tokens": 9732,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 8765,
+        "output_tokens": 839,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7605.679500033148
+    }
+  ],
+  "payload_hash": "1bfe21efd8364ec909a3050a1b17d3c3e4d0a5cd909a2c58f6909ea4d9a32eea",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": true, \"behavior_appropriate\": true, \"reason\": \"答案准确梳理了论文的五个特征子组及代表性特征，所有可回答部分的表述均能在所引 chunk 中找到依据；同时合理指出了证据中缺 Table 6 完整清单、特征权重/消融数值、具体 NLP 工具名称等无法回答的部分，并保留了引用，符合“指出能回答与不能回答部分”的要求。\", \"claims\": [{\"claim_index\": 0, \"supported\": true, \"reason\": \"c-95d315be 明确说明特征基于先前文献和一本瑞典语 L2 语法书开发，并分为 length-based、lexical、morphological、syntactic、semantic 五个子组。\"}, {\"claim_index\": 1, \"supported\": true, \"reason\": \"c-95d315be 列出句子 token 数(#1)、字符数(#4)、超过十三个字符的超长词以及传统瑞典语可读性公式 LIX，与表述一致。\"}, {\"claim_index\": 2, \"supported\": true, \"reason\": \"c-95d315be 描述 Kelly 词表提供 CEFR 等级与词频、基于网络文本语料且独立于数据集，使用每千词 IncSc，涵盖各 CEFR 等级、高于文本/句子等级的词(#12-#13)、不在列表的词(#14)、未找到词元的 token(#15)及平均对数频率(#16)，均可对应。\"}, {\"claim_index\": 3, \"supported\": true, \"reason\": \"c-56c4d684 列出形态特征包含类别变异比与 IncSc、标点/小品词/从属和并列连词(#34,#51)、中性名词 IncSc、不同动词形式比率(#52-#56)、双对数和平方根 TTR、名词比率、代词与介词比率、两项词汇密度(#48,#49)以及关系结构(#57)，表述基本一致。\"}, {\"claim_index\": 4, \"supported\": true, \"reason\": \"c-56c4d684 列出依存弧长度(深度)和方向(#17-#21)、分裂句中关系从句 IncSc(#26)以及前/后修饰语 IncSc，与表述吻合。\"}, {\"claim_index\": 5, \"supported\": true, \"reason\": \"c-56c4d684 说明语义特征基于 SALDO，采用每 token 平均义项数及每名词平均名词义项数。\"}, {\"claim_index\": 6, \"supported\": true, \"reason\": \"c-f16421f0 指出仅用词频特征在文档层面几乎与全部特征组合同样有预测力，而句子层面全部特征组合带来 7% 准确率差异；c-002c247f 亦支持文档层面 Lex 0.8 F 接近 All 0.81 F。\"}, {\"claim_index\": 7, \"supported\": true, \"reason\": \"c-619fec3b 摘要明确为瑞典语第二语言学习材料在 5 点量表上的首个复杂性预测方法，并非英语。\"}, {\"claim_index\": 8, \"supported\": true, \"reason\": \"c-95d315be 仅引用 Table 6 而未给出完整特征清单，证据中确实缺少全部编号条目的完整定义，因此该无法回答的判断成立。\"}, {\"claim_index\": 9, \"supported\": true, \"reason\": \"证据仅给出子组层面的 F 值和准确率对比，未给出各单个特征的权重、系数或逐一消融数值，故无法回答逐特征贡献。\"}, {\"claim_index\": 10, \"supported\": true, \"reason\": \"c-61d8664e 只说课程书带有 POS 和依存标签，c-cbb7f9f0 只泛提使用 POS 标注器和依存句法分析器的信息，未详述具体工具名称及版本配置。\"}]}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 8893,
+        "completion_tokens": 839,
+        "total_tokens": 9732,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+    "answer": {
+      "claims": [
+        {
+          "key": "feature_source",
+          "text": "论文的特征基于先前文献和一本面向瑞典语L2学习者的语法书开发，特征集分为五个子组：长度、词汇、形态、句法和语义特征。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-95d315be5888ab22f7efbd62"
+            }
+          ]
+        },
+        {
+          "key": "length_features",
+          "text": "长度特征包括句子长度（token 数和字符数）、超长词（超过13个字符）以及传统瑞典语可读性公式 LIX。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-95d315be5888ab22f7efbd62"
+            }
+          ]
+        },
+        {
+          "key": "lexical_features",
+          "text": "词汇特征使用 Kelly 词表（提供每个词元的 CEFR 等级和频率，基于网络文本语料，独立于本数据集），并采用每千词的发生率分数（IncSc），包括各 CEFR 等级词的发生率、高于文本/句子 CEFR 等级的词、不在 Kelly 列表中的 token、未找到词元的 token 以及平均对数频率。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-95d315be5888ab22f7efbd62"
+            }
+          ]
+        },
+        {
+          "key": "morphological_features",
+          "text": "形态特征包括各类词类的变异比与发生率、标点/小品词/从属和并列连词的发生率、中性名词的发生率、不同动词形式与所有动词的比率、双对数和平方根 TTR、名词比率、代词与介词的比率、两种词汇密度特征以及关系结构（关系副词、限定词、代词和所有格）。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+            }
+          ]
+        },
+        {
+          "key": "syntactic_features",
+          "text": "句法特征包括依存弧的长度（深度）和方向、分裂句中关系从句的发生率以及前修饰语和后修饰语（如形容词和介词短语）的发生率。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+            }
+          ]
+        },
+        {
+          "key": "semantic_features",
+          "text": "语义特征基于瑞典语词汇语义资源 SALDO，包括每个 token 的平均义项数以及每个名词的平均名词义项数。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+            }
+          ]
+        },
+        {
+          "key": "feature_effect_doc_vs_sent",
+          "text": "在文档层面，仅使用词频（词汇）特征的表现几乎与全部特征组合相当；但在句子层面，多维度特征的组合比仅用词汇特征准确率提高约7%。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-f16421f0ee652e6ad37ac288"
+            },
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-002c247f705e15494a446b37"
+            }
+          ]
+        },
+        {
+          "key": "language_scope",
+          "text": "该研究针对瑞典语第二语言学习材料，并非英语；摘要称其为首个在5点量表上预测瑞典语第二语言学习材料语言复杂性的方法。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-619fec3b6e7991135faaea3f"
+            }
+          ]
+        },
+        {
+          "key": "unanswerable_full_feature_table",
+          "text": "所提供的证据未包含 Table 6 的完整特征清单及全部编号条目（如 #2、#3 等），因此无法逐项列出所有特征及其确切定义。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-95d315be5888ab22f7efbd62"
+            }
+          ]
+        },
+        {
+          "key": "unanswerable_per_feature_weights",
+          "text": "所提供的证据未给出各单个特征的权重、系数或逐一消融数值，因此无法回答每个特征对分类结果的具体贡献。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-002c247f705e15494a446b37"
+            }
+          ]
+        },
+        {
+          "key": "unanswerable_nlp_tools_detail",
+          "text": "证据仅说明课程书带有 POS 和依存标签、特征使用 POS 和依存句法信息，但未详述所使用的具体 NLP 工具名称及其版本配置。",
+          "citations": [
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-61d8664ed913d55af106c226"
+            },
+            {
+              "paper_id": "1603.08868",
+              "chunk_id": "c-cbb7f9f0d9a80a8b97da806b"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity 中应用了哪些语言学特征，以及哪些部分有原文证据支持、哪些无法回答",
+    "evidence": [
+      {
+        "chunk_id": "c-cbb7f9f0d9a80a8b97da806b",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Introduction",
+        "text": "Linguistic information provided by Natural Language Processing (NLP) tools has good potential for turning the continuously growing amount of digital text into interactive and personalized language learning material. Our work aims at overcoming one of the fundamental obstacles in this domain of research, namely how to assess the linguistic complexity of texts and sentences from the perspective of second and foreign language (L2) learners.\n\nThere are a number of readability models relying on NLP tools to predict the difficulty (readability) level of a text BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 . The linguistic features explored so far for this task incorporate information, among others, from part-of-speech (POS) taggers and dependency parsers. Cognitively motivated features have also been proposed, for example, in the Coh-Metrix BIBREF2 . Although the majority of previous work focuses primarily on document-level analysis, a finer-grained, sentence-level readability has received increasing interest in recent years BIBREF6 , BIBREF7 , BIBREF8 .\n\nThe previously mentioned studies target mainly native language (L1) readers including people with low literacy levels or mild cognitive disabilities. Our focus, however, is on building a model for predicting the proficiency level of texts and sentences used in L2 teaching materials. This aspect has been explored for English BIBREF9 , BIBREF10 , BIBREF11 , BIBREF12 , French BIBREF13 , Portuguese BIBREF14 and, without the use of NLP, for Dutch BIBREF15 .",
+        "text_hash": "3a56110e203372df47de9777d1fdcdb2ee217249c1f0a6e2b02c75d08d135e5c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 441,
+            "text": "Linguistic information provided by Natural Language Processing (NLP) tools has good potential for turning the continuously growing amount of digital text into interactive and personalized language learning material. Our work aims at overcoming one of the fundamental obstacles in this domain of research, namely how to assess the linguistic complexity of texts and sentences from the perspective of second and foreign language (L2) learners.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 633,
+            "text": "There are a number of readability models relying on NLP tools to predict the difficulty (readability) level of a text BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 . The linguistic features explored so far for this task incorporate information, among others, from part-of-speech (POS) taggers and dependency parsers. Cognitively motivated features have also been proposed, for example, in the Coh-Metrix BIBREF2 . Although the majority of previous work focuses primarily on document-level analysis, a finer-grained, sentence-level readability has received increasing interest in recent years BIBREF6 , BIBREF7 , BIBREF8 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 456,
+            "text": "The previously mentioned studies target mainly native language (L1) readers including people with low literacy levels or mild cognitive disabilities. Our focus, however, is on building a model for predicting the proficiency level of texts and sentences used in L2 teaching materials. This aspect has been explored for English BIBREF9 , BIBREF10 , BIBREF11 , BIBREF12 , French BIBREF13 , Portuguese BIBREF14 and, without the use of NLP, for Dutch BIBREF15 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-619fec3b6e7991135faaea3f",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Abstract",
+        "text": "Corpora and web texts can become a rich language learning resource if we have a means of assessing whether they are linguistically appropriate for learners at a given proficiency level. In this paper, we aim at addressing this issue by presenting the first approach for predicting linguistic complexity for Swedish second language learning material on a 5-point scale. After showing that the traditional Swedish readability measure, L\\\"asbarhetsindex (LIX), is not suitable for this task, we propose a supervised machine learning model, based on a range of linguistic features, that can reliably classify texts according to their difficulty level. Our model obtained an accuracy of 81.3% and an F-score of 0.8, which is comparable to the state of the art in English and is considerably higher than previously reported results for other languages. We further studied the utility of our features with single sentences instead of full texts since sentences are a common linguistic unit in language learning exercises. We trained a separate model on sentence-level data with five classes, which yielded 63.4% accuracy. Although this is lower than the document level performance, we achieved an adjacent accuracy of 92%. Furthermore, we found that using a combination of different features, compared to using lexical features alone, resulted in 7% improvement in classification accuracy at the sentence level, whereas at the document level, lexical features were more dominant. Our models are intended for use in a freely accessible web-based language learning platform for the automatic generation of exercises.",
+        "text_hash": "d70c0e80a0e23a15558cee557b2fe8a602a900ded5df9c21899a60f6876ebab0",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1607,
+            "text": "Corpora and web texts can become a rich language learning resource if we have a means of assessing whether they are linguistically appropriate for learners at a given proficiency level. In this paper, we aim at addressing this issue by presenting the first approach for predicting linguistic complexity for Swedish second language learning material on a 5-point scale. After showing that the traditional Swedish readability measure, L\\\"asbarhetsindex (LIX), is not suitable for this task, we propose a supervised machine learning model, based on a range of linguistic features, that can reliably classify texts according to their difficulty level. Our model obtained an accuracy of 81.3% and an F-score of 0.8, which is comparable to the state of the art in English and is considerably higher than previously reported results for other languages. We further studied the utility of our features with single sentences instead of full texts since sentences are a common linguistic unit in language learning exercises. We trained a separate model on sentence-level data with five classes, which yielded 63.4% accuracy. Although this is lower than the document level performance, we achieved an adjacent accuracy of 92%. Furthermore, we found that using a combination of different features, compared to using lexical features alone, resulted in 7% improvement in classification accuracy at the sentence level, whereas at the document level, lexical features were more dominant. Our models are intended for use in a freely accessible web-based language learning platform for the automatic generation of exercises.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-eaa4f5b0a34eef1ffc8a4b09",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Introduction",
+        "text": "Readability for the Swedish language has a rather long tradition. One of the most popular, easy-to-compute formulas is LIX (Läsbarthetsindex, `Readability index') proposed in BIBREF16 . This measure combines the average number of words per sentence in the text with the percentage of long words, i.e. tokens consisting of more than six characters. Besides traditional formulas, supervised machine learning approaches have also been tested. Swedish document-level readability with a native speaker focus is described in BIBREF4 and BIBREF17 . For L2 Swedish, only a binary sentence-level model exists BIBREF8 , but comprehensive and highly accurate document- and sentence-level models for multiple proficiency levels have not been developed before.\n\nIn this paper, we present a machine learning model trained on course books currently in use in L2 Swedish classrooms. Our goal was to predict linguistic complexity of material written by teachers and course book writers for learners, rather than assessing learner-produced texts. We adopted the scale from the Common European Framework of Reference for Languages (CEFR) BIBREF18 which contains guidelines for the creation of teaching material and the assessment of L2 proficiency. CEFR proposes six levels of language proficiency: A1 (beginner), A2 (elementary), B1 (intermediate), B2 (upper intermediate), C1 (advanced) and C2 (proficient). Since sentences are a common unit in language exercises, but remain less explored in the readability literature, we also investigate the applicability of our approach to sentences, performing a 5-way classification (levels A1-C1). Our document-level model achieves a state-of-the-art performance (F-score of 0.8), however, there is room for improvement in sentence-level predictions. We plan to make our results available through the online intelligent computer-assisted language learning platform Lärka, both as corpus-based exercises for teachers and learners of L2 Swedish and as web-services for researchers and developers.",
+        "text_hash": "e3246b028ed405f155facc5954d3163cdc9b58049724b404a9bfe55d65a47f7d",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 747,
+            "text": "Readability for the Swedish language has a rather long tradition. One of the most popular, easy-to-compute formulas is LIX (Läsbarthetsindex, `Readability index') proposed in BIBREF16 . This measure combines the average number of words per sentence in the text with the percentage of long words, i.e. tokens consisting of more than six characters. Besides traditional formulas, supervised machine learning approaches have also been tested. Swedish document-level readability with a native speaker focus is described in BIBREF4 and BIBREF17 . For L2 Swedish, only a binary sentence-level model exists BIBREF8 , but comprehensive and highly accurate document- and sentence-level models for multiple proficiency levels have not been developed before.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1269,
+            "text": "In this paper, we present a machine learning model trained on course books currently in use in L2 Swedish classrooms. Our goal was to predict linguistic complexity of material written by teachers and course book writers for learners, rather than assessing learner-produced texts. We adopted the scale from the Common European Framework of Reference for Languages (CEFR) BIBREF18 which contains guidelines for the creation of teaching material and the assessment of L2 proficiency. CEFR proposes six levels of language proficiency: A1 (beginner), A2 (elementary), B1 (intermediate), B2 (upper intermediate), C1 (advanced) and C2 (proficient). Since sentences are a common unit in language exercises, but remain less explored in the readability literature, we also investigate the applicability of our approach to sentences, performing a 5-way classification (levels A1-C1). Our document-level model achieves a state-of-the-art performance (F-score of 0.8), however, there is room for improvement in sentence-level predictions. We plan to make our results available through the online intelligent computer-assisted language learning platform Lärka, both as corpus-based exercises for teachers and learners of L2 Swedish and as web-services for researchers and developers.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f16421f0ee652e6ad37ac288",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Conclusion and Future Work",
+        "text": "We proposed an approach to assess the proficiency (CEFR) level of Swedish L2 course book texts based on a variety of features. Our document-level model, the first for L2 Swedish, achieved an F-score of 0.8, hence, it can reliably distinguish between proficiency levels. Compared to the wide-spread readability measure for Swedish, LIX, we achieved a substantial gain in terms of both accuracy and F-score (46% and 0.6 higher respectively). The accuracy of the sentence-level model remained lower than that of the text-level model, nevertheless, using the complete feature set the system performed 23% and 22% above the majority baseline and LIX respectively. Misclassifications of more than one level did not occur in more than 8% of sentences, thus, in terms of adjacent accuracy, our sentence-level model improved on previous results for L2 Swedish readability BIBREF8 .\n\nMost notably, we have found that taking into consideration multiple linguistic dimensions when assessing linguistic complexity is especially useful for sentence-level analysis. In our experiments, using only word-frequency features was almost as predictive as a combination of all features for the document level, but the latter made more accurate predictions for sentences, resulting in a 7% difference in accuracy. Besides L2 course book materials, we tested both our document- and sentence-level models also on unseen data with promising results.\n\nIn the future, a more detailed investigation is needed to understand the performance drop between document and sentence level. Acquiring more sentence-level annotated data and exploring new features relying on lexical-semantic resources for Swedish would be interesting directions to pursue. Furthermore, we intend to test the utility of this approach in a real-world web application involving language learners and teachers.",
+        "text_hash": "639bca4a998d569655c37c42ec6884bec839fc7d987171a3502d547afcbeee09",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Conclusion and Future Work",
+            "start": 0,
+            "end": 872,
+            "text": "We proposed an approach to assess the proficiency (CEFR) level of Swedish L2 course book texts based on a variety of features. Our document-level model, the first for L2 Swedish, achieved an F-score of 0.8, hence, it can reliably distinguish between proficiency levels. Compared to the wide-spread readability measure for Swedish, LIX, we achieved a substantial gain in terms of both accuracy and F-score (46% and 0.6 higher respectively). The accuracy of the sentence-level model remained lower than that of the text-level model, nevertheless, using the complete feature set the system performed 23% and 22% above the majority baseline and LIX respectively. Misclassifications of more than one level did not occur in more than 8% of sentences, thus, in terms of adjacent accuracy, our sentence-level model improved on previous results for L2 Swedish readability BIBREF8 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Conclusion and Future Work",
+            "start": 0,
+            "end": 549,
+            "text": "Most notably, we have found that taking into consideration multiple linguistic dimensions when assessing linguistic complexity is especially useful for sentence-level analysis. In our experiments, using only word-frequency features was almost as predictive as a combination of all features for the document level, but the latter made more accurate predictions for sentences, resulting in a 7% difference in accuracy. Besides L2 course book materials, we tested both our document- and sentence-level models also on unseen data with promising results.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p2",
+            "section": "Conclusion and Future Work",
+            "start": 0,
+            "end": 425,
+            "text": "In the future, a more detailed investigation is needed to understand the performance drop between document and sentence level. Acquiring more sentence-level annotated data and exploring new features relying on lexical-semantic resources for Swedish would be interesting directions to pursue. Furthermore, we intend to test the utility of this approach in a real-world web application involving language learners and teachers.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-61d8664ed913d55af106c226",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Datasets",
+        "text": "Our dataset is a subset of COCTAILL, a corpus of course books covering five CEFR levels (A1-C1) BIBREF19 . This corpus consists of twelve books (from four different publishers) whose usability and level have been confirmed by Swedish L2 teachers. The course books have been annotated both content-wise (e.g. exercises, lists) and linguistically (e.g. with POS and dependency tags) BIBREF19 . We collected a total of 867 texts (reading passages) from this corpus. We excluded texts that are primarily based on dialogues from the current experiments due to their specific linguistic structure, with the aim of scaling down differences connected to text genres rather than linguistic complexity. We plan to study the readability of dialogues and compare them to non-dialogue texts in the future.",
+        "text_hash": "4381732df512cb0ba806c8aff9f981508f2f08ce439e2a5e68cc1a1473327b1f",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Datasets",
+            "start": 0,
+            "end": 792,
+            "text": "Our dataset is a subset of COCTAILL, a corpus of course books covering five CEFR levels (A1-C1) BIBREF19 . This corpus consists of twelve books (from four different publishers) whose usability and level have been confirmed by Swedish L2 teachers. The course books have been annotated both content-wise (e.g. exercises, lists) and linguistically (e.g. with POS and dependency tags) BIBREF19 . We collected a total of 867 texts (reading passages) from this corpus. We excluded texts that are primarily based on dialogues from the current experiments due to their specific linguistic structure, with the aim of scaling down differences connected to text genres rather than linguistic complexity. We plan to study the readability of dialogues and compare them to non-dialogue texts in the future.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-95d315be5888ab22f7efbd62",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Features",
+        "text": "We developed our features based on information both from previous literature BIBREF9 , BIBREF3 , BIBREF13 , BIBREF4 , BIBREF8 and a grammar book for Swedish L2 learners BIBREF20 . The set of features can be divided in the following five subgroups: length-based, lexical, morphological, syntactic and semantic features (Table TABREF6 ).\n\nLength-based (Len): These features include sentence length in number of tokens (#1) and characters (#4), extra-long words (longer than thirteen characters) and the traditional Swedish readability formula, LIX (see section SECREF1 ). For the sentence-level analysis, instead of the ratio of number of tokens to the number of sentences in the text, we considered the number of tokens in one sentence.\n\nLexical (Lex): Similar to BIBREF8 , we used information from the Kelly list BIBREF21 , a lexical resource providing a CEFR level and frequencies per lemma based on a corpus of web texts. Thus, this word list is entirely independent from our dataset. Instead of percentages, we used incidence scores (IncSc) per 1000 words to reduce the influence of sentence length on feature values. The IncSc of a category was computed as 1000 divided by the number of tokens in the text or sentence multiplied by the count of the category in the sentence. We calculated the IncSc of words belonging to each CEFR level (#6 - #11). In features #12 and #13 we considered difficult all tokens whose level was above the CEFR level of the text or sentence. We computed also the IncSc of tokens not present in the Kelly list (#14), tokens for which the lemmatizer did not find a corresponding lemma form (# 15), as well as average log frequencies (#16).",
+        "text_hash": "67c65e0c9a8efa6a824f6fe52189a9be6e6c812dc6cb36e53bedf570a6f76d54",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "Features",
+            "start": 0,
+            "end": 335,
+            "text": "We developed our features based on information both from previous literature BIBREF9 , BIBREF3 , BIBREF13 , BIBREF4 , BIBREF8 and a grammar book for Swedish L2 learners BIBREF20 . The set of features can be divided in the following five subgroups: length-based, lexical, morphological, syntactic and semantic features (Table TABREF6 ).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p1",
+            "section": "Features",
+            "start": 0,
+            "end": 398,
+            "text": "Length-based (Len): These features include sentence length in number of tokens (#1) and characters (#4), extra-long words (longer than thirteen characters) and the traditional Swedish readability formula, LIX (see section SECREF1 ). For the sentence-level analysis, instead of the ratio of number of tokens to the number of sentences in the text, we considered the number of tokens in one sentence.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p2",
+            "section": "Features",
+            "start": 0,
+            "end": 932,
+            "text": "Lexical (Lex): Similar to BIBREF8 , we used information from the Kelly list BIBREF21 , a lexical resource providing a CEFR level and frequencies per lemma based on a corpus of web texts. Thus, this word list is entirely independent from our dataset. Instead of percentages, we used incidence scores (IncSc) per 1000 words to reduce the influence of sentence length on feature values. The IncSc of a category was computed as 1000 divided by the number of tokens in the text or sentence multiplied by the count of the category in the sentence. We calculated the IncSc of words belonging to each CEFR level (#6 - #11). In features #12 and #13 we considered difficult all tokens whose level was above the CEFR level of the text or sentence. We computed also the IncSc of tokens not present in the Kelly list (#14), tokens for which the lemmatizer did not find a corresponding lemma form (# 15), as well as average log frequencies (#16).",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-56c4d684e5cbe3b1ead9168e",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Features",
+        "text": "Morphological (Morph): We included the variation (the ratio of a category to the ratio of lexical tokens - i.e. nouns, verbs, adjectives and adverbs) and the IncSc of all lexical categories together with the IncSc of punctuations, particles, sub- and conjunctions (#34, #51). Some additional features, using insights from L2 teaching material BIBREF20 , captured fine-grained inflectional information such as the IncSc of neuter gender nouns and the ratio of different verb forms to all verbs (#52 - #56). Instead of simple type-token ratio (TTR) we used a bilogarithmic and a square root TTR as in BIBREF3 . Moreover, nominal ratio BIBREF4 , the ratio of pronouns to prepositions BIBREF13 , and two lexical density features were also included: the ratio of lexical words to all non-lexical categories (#48) and to all tokens (#49). Relative structures (#57) consisted of relative adverbs, determiners, pronouns and possessives.\n\nSyntactic (Synt): Some of these features were based on the length (depth) and the direction of dependency arcs (#17 - #21). We complemented this, among others, with the IncSc of relative clauses in clefts (#26), and the IncSc of pre-and postmodifiers (e.g. adjectives and prepositional phrases) BIBREF4 .\n\nSemantic (Sem): Features based on information from SALDO BIBREF23 , a Swedish lexical-semantic resource. We used the average number of senses per token as in BIBREF8 and included also the average number of noun senses per nouns. Once reliable word-sense disambiguation methods become available for Swedish, additional features based on word senses could be taken into consideration here.",
+        "text_hash": "b77c59d5bcea74365c40736c1a08c62206579e9a87904e93d4852e61448d834d",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "s2-p3",
+            "section": "Features",
+            "start": 0,
+            "end": 928,
+            "text": "Morphological (Morph): We included the variation (the ratio of a category to the ratio of lexical tokens - i.e. nouns, verbs, adjectives and adverbs) and the IncSc of all lexical categories together with the IncSc of punctuations, particles, sub- and conjunctions (#34, #51). Some additional features, using insights from L2 teaching material BIBREF20 , captured fine-grained inflectional information such as the IncSc of neuter gender nouns and the ratio of different verb forms to all verbs (#52 - #56). Instead of simple type-token ratio (TTR) we used a bilogarithmic and a square root TTR as in BIBREF3 . Moreover, nominal ratio BIBREF4 , the ratio of pronouns to prepositions BIBREF13 , and two lexical density features were also included: the ratio of lexical words to all non-lexical categories (#48) and to all tokens (#49). Relative structures (#57) consisted of relative adverbs, determiners, pronouns and possessives.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p4",
+            "section": "Features",
+            "start": 0,
+            "end": 304,
+            "text": "Syntactic (Synt): Some of these features were based on the length (depth) and the direction of dependency arcs (#17 - #21). We complemented this, among others, with the IncSc of relative clauses in clefts (#26), and the IncSc of pre-and postmodifiers (e.g. adjectives and prepositional phrases) BIBREF4 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p5",
+            "section": "Features",
+            "start": 0,
+            "end": 387,
+            "text": "Semantic (Sem): Features based on information from SALDO BIBREF23 , a Swedish lexical-semantic resource. We used the average number of senses per token as in BIBREF8 and included also the average number of noun senses per nouns. Once reliable word-sense disambiguation methods become available for Swedish, additional features based on word senses could be taken into consideration here.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-002c247f705e15494a446b37",
+        "paper_id": "1603.08868",
+        "title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "section": "Document-Level Experiments",
+        "text": "We trained document-level classification models, comparing the performance between different subgroups of features. We had two baselines: a majority classifier (Majority), with B2 as majority class, and the LIX readability score. Table TABREF9 shows the type of subgroup (Type), the number of features (Nr) and three evaluation metrics using logistic regression.\n\nNot only was accuracy very low with LIX, but this measure also classified 91.6% of the instances as B2 level. Length-based, semantic and syntactic features in isolation showed similar or only slightly better performance than the baselines, therefore we excluded them from Table TABREF9 . Lexical features, however, had a strong discriminatory power without an increase in bias towards the majority classes. Using this subset of features only, we achieved approximately the same performance (0.8 F) as with the complete set of features, All (0.81 F). This suggests that lexical information alone can successfully distinguish the CEFR level of course book texts at the document level. Using the complete feature set we obtained 81% accuracy and 97% adjacent accuracy (when misclassifications to adjacent classes are considered correct). The same scores with lexical features (Lex) only were 80.3% (accuracy) and 98% (adjacent accuracy).\n\nAccuracy scores using other learning algorithms were significantly lower (see Table TABREF10 ), therefore, we report only the results of the logistic regression classifier in the subsequent sections.\n\nInstead of classification, some readability studies (e.g. BIBREF10 , BIBREF14 ) employed linear regression for this task. For a better comparability, we applied also a linear regression model to our data which yielded a correlation of 0.8 and an RMSE of 0.65.",
+        "text_hash": "7f4a8e79e55555b468f215bbdc9d5f10abae6d37012e2e4915dbed562aa89520",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.08868",
+        "spans": [
+          {
+            "paragraph_id": "s4-p0",
+            "section": "Document-Level Experiments",
+            "start": 0,
+            "end": 362,
+            "text": "We trained document-level classification models, comparing the performance between different subgroups of features. We had two baselines: a majority classifier (Majority), with B2 as majority class, and the LIX readability score. Table TABREF9 shows the type of subgroup (Type), the number of features (Nr) and three evaluation metrics using logistic regression.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p1",
+            "section": "Document-Level Experiments",
+            "start": 0,
+            "end": 934,
+            "text": "Not only was accuracy very low with LIX, but this measure also classified 91.6% of the instances as B2 level. Length-based, semantic and syntactic features in isolation showed similar or only slightly better performance than the baselines, therefore we excluded them from Table TABREF9 . Lexical features, however, had a strong discriminatory power without an increase in bias towards the majority classes. Using this subset of features only, we achieved approximately the same performance (0.8 F) as with the complete set of features, All (0.81 F). This suggests that lexical information alone can successfully distinguish the CEFR level of course book texts at the document level. Using the complete feature set we obtained 81% accuracy and 97% adjacent accuracy (when misclassifications to adjacent classes are considered correct). The same scores with lexical features (Lex) only were 80.3% (accuracy) and 98% (adjacent accuracy).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p2",
+            "section": "Document-Level Experiments",
+            "start": 0,
+            "end": 199,
+            "text": "Accuracy scores using other learning algorithms were significantly lower (see Table TABREF10 ), therefore, we report only the results of the logistic regression classifier in the subsequent sections.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p3",
+            "section": "Document-Level Experiments",
+            "start": 0,
+            "end": 259,
+            "text": "Instead of classification, some readability studies (e.g. BIBREF10 , BIBREF14 ) employed linear regression for this task. For a better comparability, we applied also a linear regression model to our data which yielded a correlation of 0.8 and an RMSE of 0.65.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

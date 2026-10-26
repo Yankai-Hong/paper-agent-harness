@@ -1,0 +1,1136 @@
+{
+  "turn_id": "mem-d07-t9",
+  "session_id": "d07",
+  "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.008500064723193645
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "1603.08868 A Readable Read 论文应用了哪些语言学特征，可回答与不可回答的证据边界",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1603.08868"
+        ],
+        "resolved_entities": {
+          "paper": "1603.08868",
+          "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+          "question_referent": "该论文应用了哪些语言学特征（linguistic features）及其可回答/不可回答的边界"
+        }
+      },
+      "elapsed_ms": 3178.8051000330597
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "1603.08868 A Readable Read 论文应用了哪些语言学特征，可回答与不可回答的证据边界"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab",
+          "c-586d116eae31c215e38562e2",
+          "c-95d315be5888ab22f7efbd62",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-722c98bda11c2c17a421a5b9",
+          "c-61d8664ed913d55af106c226",
+          "c-002c247f705e15494a446b37",
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-bd6ddcafd35bece70ee89bcc"
+        ]
+      },
+      "elapsed_ms": 7.832800038158894
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab",
+          "c-586d116eae31c215e38562e2",
+          "c-95d315be5888ab22f7efbd62",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-722c98bda11c2c17a421a5b9",
+          "c-61d8664ed913d55af106c226",
+          "c-002c247f705e15494a446b37",
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-bd6ddcafd35bece70ee89bcc"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab"
+        ]
+      },
+      "elapsed_ms": 0.004600035026669502
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "retrieve_again",
+        "next_query": "1603.08868 linguistic features list lexical syntactic morphological features used in model feature set",
+        "reason": "所提供证据属于 1603.08868，但仅支持该论文的若干外围结论：摘要与引言提到“基于一系列语言学特征”的监督学习模型、LIX 不适用的论断、文档级 81.3% 准确率/F=0.8、句子级 63.4%、相邻准确率 92%，以及“组合特征较仅词汇特征在句子级提升约 7%、文档级词汇特征更占主导”（chunk c-286b13b3784d1f74ceba0544、c-ca88145a3cfc94a727b01de7、c-619fec3b6e7991135faaea3f、c-eaa4f5b0a34eef1ffc8a4b09、c-beea12147a9836bd74234eab）。但核心问题“应用了哪些语言学特征”未被完整回答：证据中并未给出具体特征清单或分类（例如词汇、句法、形态、篇章等特征的逐项定义与构成）。历史记录仅为非证据上下文，不能补充。因此应检索特征章节/表格以确认完整列表及是否存在对比目标。"
+      },
+      "elapsed_ms": 3490.7277999445796
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 2,
+      "input": {
+        "query": "1603.08868 linguistic features list lexical syntactic morphological features used in model feature set"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-95d315be5888ab22f7efbd62",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-002c247f705e15494a446b37",
+          "c-619fec3b6e7991135faaea3f",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-beea12147a9836bd74234eab",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-586d116eae31c215e38562e2",
+          "c-bd6ddcafd35bece70ee89bcc",
+          "c-61d8664ed913d55af106c226",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-722c98bda11c2c17a421a5b9"
+        ]
+      },
+      "elapsed_ms": 5.874899914488196
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 2,
+      "input": {
+        "candidate_ids": [
+          "c-95d315be5888ab22f7efbd62",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-002c247f705e15494a446b37",
+          "c-619fec3b6e7991135faaea3f",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-beea12147a9836bd74234eab",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-586d116eae31c215e38562e2",
+          "c-bd6ddcafd35bece70ee89bcc",
+          "c-61d8664ed913d55af106c226",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-722c98bda11c2c17a421a5b9"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab",
+          "c-95d315be5888ab22f7efbd62",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-002c247f705e15494a446b37",
+          "c-f16421f0ee652e6ad37ac288"
+        ]
+      },
+      "elapsed_ms": 0.008300063200294971
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 2,
+      "input": {
+        "evidence_ids": [
+          "c-286b13b3784d1f74ceba0544",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab",
+          "c-95d315be5888ab22f7efbd62",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-002c247f705e15494a446b37",
+          "c-f16421f0ee652e6ad37ac288"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "所提供证据来自论文 1603.08868 的摘要、引言、数据集、特征、实验设置、文档级实验与结论章节，足以回答部分问题：可以确认论文将特征分为五组（长度、词汇、形态、句法、语义），并给出各组具体特征示例及其实验表现。同时，证据中也存在明确不能回答的边界：特征编号（如 #1–#57）对应的完整逐项清单需要依赖 Table TABREF6 原文表格，而证据只提供了表格引用而未包含表格内容；此外，关于其他学习算法（MLP、SMO、J48）的具体数值、各特征的完整参数化细节、以及句子级模型的分组消融完整数值未在证据中逐项列出。因此应说明可回答与不可回答部分，并保留来源引用。"
+      },
+      "elapsed_ms": 3613.615099922754
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "feature_subgroups",
+            "text": "该论文的 linguistic features 分为五个子组：length-based、lexical、morphological、syntactic 和 semantic features。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "length_features",
+            "text": "Length-based (Len) 特征包括句子长度（token 数与字符数）、超长词（长于十三个字符）以及传统瑞典语可读性公式 LIX。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "lexical_kelly",
+            "text": "Lexical (Lex) 特征使用独立于数据集的 Kelly 词表（提供每 lemma 的 CEFR 等级与频率），以每千词发生率（IncSc）计算各 CEFR 等级词的 Incidence，并纳入不在 Kelly 词表、未找到 lemma 的 token 及平均对数频率。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "morph_features",
+            "text": "Morphological (Morph) 特征包括各词类 IncSc、标点与功能词 IncSc、中性名词及动词形态比例、bilogarithmic 与平方根 TTR、nominal ratio、代词与介词之比以及两项词汇密度特征和相对结构。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+              }
+            ]
+          },
+          {
+            "key": "syntactic_features",
+            "text": "Syntactic (Synt) 特征基于依存弧的长度（深度）与方向，并补充 cleft 中关系从句的 Incidence 以及前置/后置修饰语（如形容词与介词短语）的 Incidence。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+              }
+            ]
+          },
+          {
+            "key": "semantic_features",
+            "text": "Semantic (Sem) 特征基于瑞典语词汇语义资源 SALDO，使用每 token 平均义项数及每名词平均名词义项数。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+              }
+            ]
+          },
+          {
+            "key": "feature_sources",
+            "text": "特征设计同时参考了先前文献和一个面向瑞典语 L2 学习者的语法书。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "answerable_existence",
+            "text": "可回答的部分：论文确实基于上述五类特征构建有监督机器学习模型来预测瑞典语 L2 材料的 CEFR 难度等级。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-619fec3b6e7991135faaea3f"
+              }
+            ]
+          },
+          {
+            "key": "answerable_feature_utility",
+            "text": "可回答的部分：在文档层面，仅使用 lexical 特征即可达到与完整特征集相近的表现（Lex 约 0.8 F，All 0.81 F）；在句子层面，组合不同特征相较仅用词频特征带来 7% 的准确率提升。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-002c247f705e15494a446b37"
+              },
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-619fec3b6e7991135faaea3f"
+              }
+            ]
+          },
+          {
+            "key": "unanswerable_exact_list",
+            "text": "不能完全回答的部分：所给证据只以子组方式列出部分特征及编号，并未呈现完整编号特征表（Table 6）的全部条目明细，因此无法据此逐一列出全部特征。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              },
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+              }
+            ]
+          },
+          {
+            "key": "unanswerable_individual_weights",
+            "text": "不能回答的部分：证据未提供各单项特征的具体权重或逐特征消融数值，因此无法判断每个单独特征的贡献大小。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-002c247f705e15494a446b37"
+              },
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-f16421f0ee652e6ad37ac288"
+              }
+            ]
+          },
+          {
+            "key": "unanswerable_feature_counts",
+            "text": "不能回答的部分：证据显示 Table 9 报告了各组特征的数量（Nr），但提供的片段未给出具体数值，故无法说明每个子组究竟包含多少个特征。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-002c247f705e15494a446b37"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 11014.977999962866
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": true,
+        "archive_id": "0c565d0b28dd5328d5c0ce58f528bf4a84f94a78819996ff5c099ed00e8acae3",
+        "method": "bounded_recent_state",
+        "context_chars_before": 23149,
+        "context_chars_after": 19255,
+        "token_estimate_before": 5788,
+        "token_estimate_after": 4814,
+        "token_measurement": "character estimate; not API token usage",
+        "retained_facts": [
+          "feature_subgroup_performance",
+          "lexical_vs_all_performance",
+          "baseline_and_classifier",
+          "sentence_level_claim",
+          "cannot_answer_individual_feature_effect",
+          "cannot_answer_table_details",
+          "answerable_five_subgroups",
+          "answerable_len_features",
+          "answerable_lex_features",
+          "answerable_morph_features",
+          "answerable_synt_features",
+          "answerable_sem_features",
+          "answerable_feature_source",
+          "answerable_prior_features_context",
+          "answerable_lexical_alone",
+          "unanswerable_full_table",
+          "unanswerable_independent_validation",
+          "total_feature_set",
+          "feature_type_morph",
+          "feature_type_morph_inflection",
+          "feature_type_morph_lexical_density",
+          "feature_type_relative_structures",
+          "feature_type_syntactic",
+          "feature_type_semantic",
+          "feature_group_performance",
+          "full_and_lexical_scores",
+          "cannot_enumerate_individual_features",
+          "cannot_claim_all_groups_used_equally",
+          "feature_subgroups",
+          "length_features",
+          "lexical_kelly",
+          "morph_features",
+          "syntactic_features",
+          "semantic_features",
+          "feature_sources",
+          "answerable_existence",
+          "answerable_feature_utility",
+          "unanswerable_exact_list",
+          "unanswerable_individual_weights",
+          "unanswerable_feature_counts"
+        ],
+        "retained_entities": [
+          "paper",
+          "paper_title",
+          "question_referent"
+        ],
+        "retained_fact_consistency": true
+      },
+      "output": {
+        "session_id": "d07",
+        "entities": {
+          "paper": "1603.08868",
+          "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+          "question_referent": "该论文应用了哪些语言学特征（linguistic features）及其可回答/不可回答的边界"
+        },
+        "facts": {
+          "feature_subgroup_performance": {
+            "text": "在文档级分类中，长度类、语义类和句法类特征单独使用时表现与基线相近或仅略好，因此未列入Table TABREF9；词汇类特征则具有较强区分力且未增加对多数类的偏置。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t6"
+          },
+          "lexical_vs_all_performance": {
+            "text": "仅用词汇特征子集时性能约为0.8 F，与使用完整特征集的0.81 F大致相当；完整特征集准确率为81%、相邻准确率为97%，仅用词汇特征时为80.3%和98%。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t6"
+          },
+          "baseline_and_classifier": {
+            "text": "文档级实验设两个基线：以B2为多数类的多数类分类器和LIX可读性分数；LIX准确率很低，且将91.6%的实例判为B2级。其他学习算法的准确率显著更低，因此后续只报告逻辑回归分类器的结果；逻辑回归的线性回归模型相关系数为0.8，RMSE为0.65。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t6"
+          },
+          "sentence_level_claim": {
+            "text": "句子层面，作者认为考虑多个语言维度的丰富特征集可能带来性能提升，并报告其句子级模型相邻准确率为92%、在SenRead上的准确率为73%。",
+            "evidence_ids": [
+              "c-586d116eae31c215e38562e2"
+            ],
+            "turn_id": "mem-d07-t6"
+          },
+          "cannot_answer_individual_feature_effect": {
+            "text": "所给证据只按特征子组（词汇、长度、语义、句法等）报告性能，未给出61个特征中单个特征各自的性能贡献或消融结果，因此无法回答“每个具体特征的性能”。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37",
+              "c-47c5ecbffa06b11f999ffb18"
+            ],
+            "turn_id": "mem-d07-t6"
+          },
+          "cannot_answer_table_details": {
+            "text": "所给证据以Table TABREF6、TABREF9等占位符引用表格，未包含表格中逐项的完整特征编号清单与各子组特征数量、指标数值，因此无法回答完整编号级特征清单及分项指标。",
+            "evidence_ids": [
+              "c-47c5ecbffa06b11f999ffb18",
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t6"
+          },
+          "answerable_five_subgroups": {
+            "text": "原文证据可以回答该论文所用特征的类别：作者将特征集分为五个子组，即基于长度的特征、词汇特征、形态特征、句法特征和语义特征。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_len_features": {
+            "text": "关于基于长度的特征，原文提到包括句子长度（词元数和字符数）、超长词（超过十三个字符）以及传统瑞典语可读性公式 LIX；在句子层面分析中，用单句中的词元数替代文本中词元数与句子数之比。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_lex_features": {
+            "text": "关于词汇特征，原文说明使用了 Kelly 词表（该词表基于网络文本语料提供每个词元的 CEFR 等级和频率，且独立于本研究数据集），采用每千词的发生率分数（IncSc），并计算了各 CEFR 等级词、高于文本或句子等级的词、不在 Kelly 词表中的词、无法找到词元形式的词的发生率以及平均对数频率。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_morph_features": {
+            "text": "关于形态特征，原文列举了各类词性类别的变化率和发生率、标点/小品词/从属连词和并列连词的发生率、中性名词的发生率、不同动词形式与全部动词的比率、双对数和平方根型类符-形符比、名词比率、代词与介词的比率、两项词汇密度特征，以及由关系副词、限定词、代词和物主词构成的关系结构。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_synt_features": {
+            "text": "关于句法特征，原文提到部分特征基于依存弧的长度（深度）和方向，并补充了 cleft 结构中关系从句的发生率以及前修饰语和后修饰语（如形容词和介词短语）的发生率。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_sem_features": {
+            "text": "关于语义特征，原文说明这些特征基于瑞典语词汇语义资源 SALDO，使用了每词元的平均义项数以及每个名词的平均名词义项数。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_feature_source": {
+            "text": "原文指出特征是基于以往文献和一本面向瑞典语二语学习者的语法书开发的。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_prior_features_context": {
+            "text": "引言部分提到，以往用于可读性任务的特征包含来自词性标注器和依存句法分析器的信息，Coh-Metrix 中也提出了认知动机特征；但这描述的是已有工作，证据未说明这些具体特征全部用于本文模型。",
+            "evidence_ids": [
+              "c-cbb7f9f0d9a80a8b97da806b"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "answerable_lexical_alone": {
+            "text": "证据可以回答特征组合的效果：在文档层面，仅用词汇特征几乎与全部特征组合一样有预测力（约 0.8 F 对 0.81 F），而全部特征组合在句子层面的准确率比仅用词汇特征高 7%。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37",
+              "c-f16421f0ee652e6ad37ac288"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "unanswerable_full_table": {
+            "text": "不能依据所给证据完整回答特征清单：原文特征描述引用了表 TABREF6，但该表的完整编号与逐项特征值不在提供的证据片段中，因此无法逐条列出全部特征及其确切定义。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62",
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "unanswerable_independent_validation": {
+            "text": "不能依据所给证据回答这些特征在其他语言或独立数据集上的有效性；原文仅在结论中提出未来探索基于瑞典语词汇语义资源的新特征，并未在提供的证据中报告此类验证。",
+            "evidence_ids": [
+              "c-f16421f0ee652e6ad37ac288"
+            ],
+            "turn_id": "mem-d07-t7"
+          },
+          "total_feature_set": {
+            "text": "该论文使用了一个包含61个特征的完整特征集（列于Table 6），文档级实验中使用该完整特征集的机器学习模型；句子级和文档级分析的特征均对每个句子抽取，文档级实验中取全文所有句子的平均值以保证可比性。",
+            "evidence_ids": [
+              "c-47c5ecbffa06b11f999ffb18"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_type_morph": {
+            "text": "形态学（Morph）特征包括：各词类（名词、动词、形容词、副词）的变化度（某类别比例与词汇token比例之比）及所有词汇类别的IncSc，加上标点、小品词、从属连词和并列连词的IncSc（#34、#51）。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_type_morph_inflection": {
+            "text": "借鉴L2教学材料的洞见，论文加入了细粒度屈折信息特征，如中性性别名词的IncSc以及不同动词形式占全部动词的比例（#52–#56）。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_type_morph_lexical_density": {
+            "text": "论文用双对数和平方根类符-形符比（TTR）替代简单TTR，并加入名词比例、代词与介词之比和两个词汇密度特征：词汇词与非词汇类别之比（#48）和词汇词与全部token之比（#49）。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_type_relative_structures": {
+            "text": "相对结构特征（#57）包括关系副词、限定词、代词和物主代词。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_type_syntactic": {
+            "text": "句法（Synt）特征部分基于依存弧的长度（深度）和方向（#17–#21），并补充了 cleft 结构中关系从句的IncSc（#26）以及前置和后置修饰语（如形容词和介词短语）的IncSc。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_type_semantic": {
+            "text": "语义（Sem）特征基于瑞典语词汇语义资源SALDO，使用每个token的平均义项数以及每个名词的平均名词义项数。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_group_performance": {
+            "text": "文档级实验中，仅用长度类、语义类和句法类特征时性能与基线相近或仅略好，故未列入Table 9；而词汇类特征具有很强的判别力，仅用该子集即达到约0.8 F，接近完整特征集的0.81 F。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "full_and_lexical_scores": {
+            "text": "使用完整特征集时准确率为81%、相邻准确率为97%；仅用词汇特征（Lex）时分别为80.3%和98%。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "cannot_enumerate_individual_features": {
+            "text": "不可支撑部分：现有证据未逐项列出61个特征的完整清单（清单在Table 6中），因此无法据此逐条列举全部特征编号及定义。",
+            "evidence_ids": [
+              "c-47c5ecbffa06b11f999ffb18"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "cannot_claim_all_groups_used_equally": {
+            "text": "不可支撑部分：证据仅通过性能对比说明长度类、语义类、句法类特征单独使用时表现不佳，并未说明这些特征在所有实验中均被完全排除；因此不能断言论文仅使用词汇特征。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t8"
+          },
+          "feature_subgroups": {
+            "text": "该论文的 linguistic features 分为五个子组：length-based、lexical、morphological、syntactic 和 semantic features。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "length_features": {
+            "text": "Length-based (Len) 特征包括句子长度（token 数与字符数）、超长词（长于十三个字符）以及传统瑞典语可读性公式 LIX。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "lexical_kelly": {
+            "text": "Lexical (Lex) 特征使用独立于数据集的 Kelly 词表（提供每 lemma 的 CEFR 等级与频率），以每千词发生率（IncSc）计算各 CEFR 等级词的 Incidence，并纳入不在 Kelly 词表、未找到 lemma 的 token 及平均对数频率。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "morph_features": {
+            "text": "Morphological (Morph) 特征包括各词类 IncSc、标点与功能词 IncSc、中性名词及动词形态比例、bilogarithmic 与平方根 TTR、nominal ratio、代词与介词之比以及两项词汇密度特征和相对结构。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "syntactic_features": {
+            "text": "Syntactic (Synt) 特征基于依存弧的长度（深度）与方向，并补充 cleft 中关系从句的 Incidence 以及前置/后置修饰语（如形容词与介词短语）的 Incidence。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "semantic_features": {
+            "text": "Semantic (Sem) 特征基于瑞典语词汇语义资源 SALDO，使用每 token 平均义项数及每名词平均名词义项数。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "feature_sources": {
+            "text": "特征设计同时参考了先前文献和一个面向瑞典语 L2 学习者的语法书。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "answerable_existence": {
+            "text": "可回答的部分：论文确实基于上述五类特征构建有监督机器学习模型来预测瑞典语 L2 材料的 CEFR 难度等级。",
+            "evidence_ids": [
+              "c-619fec3b6e7991135faaea3f"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "answerable_feature_utility": {
+            "text": "可回答的部分：在文档层面，仅使用 lexical 特征即可达到与完整特征集相近的表现（Lex 约 0.8 F，All 0.81 F）；在句子层面，组合不同特征相较仅用词频特征带来 7% 的准确率提升。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37",
+              "c-619fec3b6e7991135faaea3f"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "unanswerable_exact_list": {
+            "text": "不能完全回答的部分：所给证据只以子组方式列出部分特征及编号，并未呈现完整编号特征表（Table 6）的全部条目明细，因此无法据此逐一列出全部特征。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62",
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "unanswerable_individual_weights": {
+            "text": "不能回答的部分：证据未提供各单项特征的具体权重或逐特征消融数值，因此无法判断每个单独特征的贡献大小。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37",
+              "c-f16421f0ee652e6ad37ac288"
+            ],
+            "turn_id": "mem-d07-t9"
+          },
+          "unanswerable_feature_counts": {
+            "text": "不能回答的部分：证据显示 Table 9 报告了各组特征的数量（Nr），但提供的片段未给出具体数值，故无法说明每个子组究竟包含多少个特征。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t9"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1603.08868"
+          ]
+        }
+      },
+      "elapsed_ms": 10.989899979904294
+    }
+  ],
+  "started_at": 1792723847.3115425,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "archive_id": "7707752380cddfefe387c52266c962a5e94c7c52e3e869ea4b25c6d43a18d67b",
+      "turn_id": "mem-d07-t4",
+      "turn_order": 8,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d07-t4"
+      },
+      "entities": {
+        "paper": "1603.08868",
+        "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "question_referent": "该论文应用了哪些语言学特征（linguistic features）及其可回答/不可回答的边界"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "7707752380cddfefe387c52266c962a5e94c7c52e3e869ea4b25c6d43a18d67b",
+      "turn_id": "mem-d07-t5",
+      "turn_order": 8,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d07-t5"
+      },
+      "entities": {
+        "paper": "1603.08868",
+        "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "question_referent": "该论文应用了哪些语言学特征（linguistic features）及其可回答/不可回答的边界"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "7707752380cddfefe387c52266c962a5e94c7c52e3e869ea4b25c6d43a18d67b",
+      "turn_id": "mem-d07-t6",
+      "turn_order": 8,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d07-t6"
+      },
+      "entities": {
+        "paper": "1603.08868",
+        "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "question_referent": "该论文应用了哪些语言学特征（linguistic features）及其可回答/不可回答的边界"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "7707752380cddfefe387c52266c962a5e94c7c52e3e869ea4b25c6d43a18d67b",
+      "turn_id": "mem-d07-t7",
+      "turn_order": 8,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d07-t7"
+      },
+      "entities": {
+        "paper": "1603.08868",
+        "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "question_referent": "该论文应用了哪些语言学特征（linguistic features）及其可回答/不可回答的边界"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "7707752380cddfefe387c52266c962a5e94c7c52e3e869ea4b25c6d43a18d67b",
+      "turn_id": "mem-d07-t8",
+      "turn_order": 8,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d07-t8"
+      },
+      "entities": {
+        "paper": "1603.08868",
+        "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "question_referent": "该论文应用了哪些语言学特征（linguistic features）及其可回答/不可回答的边界"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "1e6be305aef55880feb2abed6cb2353288d6131b6c5bd9cd20aad1c18e141468",
+      "turn_id": "mem-d07-t3",
+      "turn_order": 7,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d07-t3"
+      },
+      "entities": {
+        "paper": "1603.08868",
+        "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity",
+        "question_referent": "what linguistics features did they apply?"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "feature_subgroups",
+        "text": "该论文的 linguistic features 分为五个子组：length-based、lexical、morphological、syntactic 和 semantic features。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "length_features",
+        "text": "Length-based (Len) 特征包括句子长度（token 数与字符数）、超长词（长于十三个字符）以及传统瑞典语可读性公式 LIX。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "lexical_kelly",
+        "text": "Lexical (Lex) 特征使用独立于数据集的 Kelly 词表（提供每 lemma 的 CEFR 等级与频率），以每千词发生率（IncSc）计算各 CEFR 等级词的 Incidence，并纳入不在 Kelly 词表、未找到 lemma 的 token 及平均对数频率。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "morph_features",
+        "text": "Morphological (Morph) 特征包括各词类 IncSc、标点与功能词 IncSc、中性名词及动词形态比例、bilogarithmic 与平方根 TTR、nominal ratio、代词与介词之比以及两项词汇密度特征和相对结构。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+          }
+        ]
+      },
+      {
+        "key": "syntactic_features",
+        "text": "Syntactic (Synt) 特征基于依存弧的长度（深度）与方向，并补充 cleft 中关系从句的 Incidence 以及前置/后置修饰语（如形容词与介词短语）的 Incidence。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+          }
+        ]
+      },
+      {
+        "key": "semantic_features",
+        "text": "Semantic (Sem) 特征基于瑞典语词汇语义资源 SALDO，使用每 token 平均义项数及每名词平均名词义项数。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+          }
+        ]
+      },
+      {
+        "key": "feature_sources",
+        "text": "特征设计同时参考了先前文献和一个面向瑞典语 L2 学习者的语法书。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "answerable_existence",
+        "text": "可回答的部分：论文确实基于上述五类特征构建有监督机器学习模型来预测瑞典语 L2 材料的 CEFR 难度等级。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-619fec3b6e7991135faaea3f"
+          }
+        ]
+      },
+      {
+        "key": "answerable_feature_utility",
+        "text": "可回答的部分：在文档层面，仅使用 lexical 特征即可达到与完整特征集相近的表现（Lex 约 0.8 F，All 0.81 F）；在句子层面，组合不同特征相较仅用词频特征带来 7% 的准确率提升。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-002c247f705e15494a446b37"
+          },
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-619fec3b6e7991135faaea3f"
+          }
+        ]
+      },
+      {
+        "key": "unanswerable_exact_list",
+        "text": "不能完全回答的部分：所给证据只以子组方式列出部分特征及编号，并未呈现完整编号特征表（Table 6）的全部条目明细，因此无法据此逐一列出全部特征。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          },
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-56c4d684e5cbe3b1ead9168e"
+          }
+        ]
+      },
+      {
+        "key": "unanswerable_individual_weights",
+        "text": "不能回答的部分：证据未提供各单项特征的具体权重或逐特征消融数值，因此无法判断每个单独特征的贡献大小。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-002c247f705e15494a446b37"
+          },
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-f16421f0ee652e6ad37ac288"
+          }
+        ]
+      },
+      {
+        "key": "unanswerable_feature_counts",
+        "text": "不能回答的部分：证据显示 Table 9 报告了各组特征的数量（Nr），但提供的片段未给出具体数值，故无法说明每个子组究竟包含多少个特征。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-002c247f705e15494a446b37"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 30,
+      "request_hash": "1237937b6301ca35cc04582b521de6dd317181fe55ebc3ce92ddb2b66e57a2dc",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 13214,
+        "completion_tokens": 125,
+        "total_tokens": 13339,
+        "prompt_tokens_details": {
+          "cached_tokens": 256,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 12958,
+        "output_tokens": 125,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3119.2797000985593
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 31,
+      "request_hash": "72fda1620362b9eb0eb59a45fff99d9db6bdd19dc6d8012b8bf2700597da6e8f",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5706,
+        "completion_tokens": 290,
+        "total_tokens": 5996,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5706,
+        "output_tokens": 290,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3490.401200018823
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 32,
+      "request_hash": "73fddd47c2d182c35050f17f370a61e58534bfe5712fb5dcce01c7b17dfe5e68",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 9918,
+        "completion_tokens": 185,
+        "total_tokens": 10103,
+        "prompt_tokens_details": {
+          "cached_tokens": 2560,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7358,
+        "output_tokens": 185,
+        "cache_read_input_tokens": 2560,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3612.98810003791
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 33,
+      "request_hash": "c9eda9b3cb57bdcf09dec0f43ee38d2c192b5610c99a6d0d6e0a327df9d295e9",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 10021,
+        "completion_tokens": 1258,
+        "total_tokens": 11279,
+        "prompt_tokens_details": {
+          "cached_tokens": 256,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 9765,
+        "output_tokens": 1258,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 11014.389100018889
+    }
+  ]
+}

@@ -1,0 +1,737 @@
+{
+  "turn_id": "mem-d06-t4",
+  "session_id": "d06",
+  "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.0068999361246824265
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "A computational linguistic study of personal recovery in bipolar disorder: which parts of the question on identifying individuals with bipolar disorder can and cannot be answered from the paper's original evidence, with source citations",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1906.01010"
+        ],
+        "resolved_entities": {
+          "paper": "A computational linguistic study of personal recovery in bipolar disorder",
+          "paper_id": "1906.01010",
+          "population": "individuals with bipolar disorder",
+          "question_topic": "identification of individuals with bipolar disorder"
+        }
+      },
+      "elapsed_ms": 3885.194099973887
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "A computational linguistic study of personal recovery in bipolar disorder: which parts of the question on identifying individuals with bipolar disorder can and cannot be answered from the paper's original evidence, with source citations"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-8501c609aafc1a9ab4878246",
+          "c-9614a06357ad25d045f1fc34",
+          "c-723bbcf8cd5b62547d29306a",
+          "c-36b5890f191631d456e020a1",
+          "c-929453c2fb42eba7d101da7e",
+          "c-3dad4313e46ab93de51ac823",
+          "c-86f9f7f681d7fac5268e9c9b",
+          "c-60dbe8c46dd101390d10300d",
+          "c-2ebc42588b00e156efec0ad4",
+          "c-b8ed06d1898387a8a4083045",
+          "c-ea22a8ab5838876eb8b10948",
+          "c-ebaaf3812367c59125439c96",
+          "c-8b6eedbdf0aebd6853c69676",
+          "c-9120cb71b22a5e2d13b13be1",
+          "c-7e1a3aae35526bdde76812aa",
+          "c-093462231b041b5c26738790",
+          "c-3b00cae5794da3b88fc07eb8"
+        ]
+      },
+      "elapsed_ms": 21.480600000359118
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-8501c609aafc1a9ab4878246",
+          "c-9614a06357ad25d045f1fc34",
+          "c-723bbcf8cd5b62547d29306a",
+          "c-36b5890f191631d456e020a1",
+          "c-929453c2fb42eba7d101da7e",
+          "c-3dad4313e46ab93de51ac823",
+          "c-86f9f7f681d7fac5268e9c9b",
+          "c-60dbe8c46dd101390d10300d",
+          "c-2ebc42588b00e156efec0ad4",
+          "c-b8ed06d1898387a8a4083045",
+          "c-ea22a8ab5838876eb8b10948",
+          "c-ebaaf3812367c59125439c96",
+          "c-8b6eedbdf0aebd6853c69676",
+          "c-9120cb71b22a5e2d13b13be1",
+          "c-7e1a3aae35526bdde76812aa",
+          "c-093462231b041b5c26738790",
+          "c-3b00cae5794da3b88fc07eb8"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-8501c609aafc1a9ab4878246",
+          "c-9614a06357ad25d045f1fc34",
+          "c-723bbcf8cd5b62547d29306a",
+          "c-36b5890f191631d456e020a1",
+          "c-929453c2fb42eba7d101da7e"
+        ]
+      },
+      "elapsed_ms": 0.005200039595365524
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-8501c609aafc1a9ab4878246",
+          "c-9614a06357ad25d045f1fc34",
+          "c-723bbcf8cd5b62547d29306a",
+          "c-36b5890f191631d456e020a1",
+          "c-929453c2fb42eba7d101da7e"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "所给证据（论文 1906.01010 的摘要、引言、方法与资源部分）能支持对“识别双相障碍个体”这一问题作部分回答：可确认论文目标是分析被诊断为双相障碍者在社交媒体上的第一人称叙述/个人康复经历（Abstract；c-8501c609aafc1a9ab4878246）；研究问题明确为个人康复在线上如何被“meeting criteria for BD”的个体讨论（Introduction s0-p4；c-36b5890f191631d456e020a1）。行动计划是用恢复相关词词典、人工抽样、USAS 语义标注和分布语义共现分析来处理社交媒体数据（Methodology s2-p4；c-929453c2fb42eba7d101da7e）。但证据不能回答具体识别/诊断方法：没有给出用于判定双相障碍的临床标准、量表、自报标签或算法分类器细节，也没有报告识别准确率或验证结果；这些只能标为不可回答。"
+      },
+      "elapsed_ms": 5074.003499932587
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "answerable_focus",
+            "text": "该论文可回答的部分是：研究关注被诊断为双相障碍（BD）个体的个人康复（personal recovery），计划收集并分析其社交媒体数据，并且研究对象是满足BD标准（meeting criteria for BD）的个体在线讨论康复的情况。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-8501c609aafc1a9ab4878246"
+              },
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-36b5890f191631d456e020a1"
+              }
+            ]
+          },
+          {
+            "key": "answerable_questions",
+            "text": "论文明确列出的研究问题是：(1) 满足BD标准的个体如何在网上讨论个人康复；(2) 关于个人康复及其促进或阻碍因素能获得哪些新见解。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-36b5890f191631d456e020a1"
+              }
+            ]
+          },
+          {
+            "key": "answerable_method",
+            "text": "在方法上，论文提出通过迭代方式构建康复相关术语词典，人工检查部分数据，并用USAS等语义标注方法标注相关文本片段，再在完整语料上量化关键词或概念的出现情况。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-929453c2fb42eba7d101da7e"
+              }
+            ]
+          },
+          {
+            "key": "answerable_multilingual",
+            "text": "论文计划分两部分进行：一部分分析西方人的英语数据，另一部分分析不同族裔个体的多语言数据；并指出USAS可标注八种语言的语义类别。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-36b5890f191631d456e020a1"
+              },
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-929453c2fb42eba7d101da7e"
+              }
+            ]
+          },
+          {
+            "key": "answerable_rationale",
+            "text": "论文指出既往个人康复研究主要来自结构化访谈、焦点小组和标准化问卷，样本较小，且主要在英语国家和西方族裔中进行，因此提出用计算语言学分析在线第一人称叙述以补充证据。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-8501c609aafc1a9ab4878246"
+              },
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-723bbcf8cd5b62547d29306a"
+              }
+            ]
+          },
+          {
+            "key": "not_answerable_identification",
+            "text": "关于“如何识别/判定双相障碍个体”的具体识别方法、诊断流程或分类模型性能，所提供的论文片段中没有给出可核对的细节；论文仅提到研究对象为“被诊断为BD”或“满足BD标准”的个体。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-8501c609aafc1a9ab4878246"
+              },
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-36b5890f191631d456e020a1"
+              }
+            ]
+          },
+          {
+            "key": "not_answerable_results",
+            "text": "所提供的证据属于项目计划与研究问题描述，未包含已完成的识别实验结果、准确率或验证数据，因此无法从中回答识别个体的实际效果。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-8501c609aafc1a9ab4878246"
+              },
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-929453c2fb42eba7d101da7e"
+              }
+            ]
+          },
+          {
+            "key": "not_answerable_population_detail",
+            "text": "论文提及双相谱系障碍的患病率估计及跨文化诊断差异，但所给片段未提供用于识别个体的具体人群筛选标准或数据来源清单。",
+            "citations": [
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-9614a06357ad25d045f1fc34"
+              },
+              {
+                "paper_id": "1906.01010",
+                "chunk_id": "c-723bbcf8cd5b62547d29306a"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 8478.415200021118
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d06",
+        "entities": {
+          "paper": "A computational linguistic study of personal recovery in bipolar disorder",
+          "paper_id": "1906.01010",
+          "population": "individuals with bipolar disorder",
+          "question_topic": "identification of individuals with bipolar disorder"
+        },
+        "facts": {
+          "twitter_reddit_identification": {
+            "text": "Twitter and Reddit users with a BD diagnosis will be identified automatically via self-reported diagnosis statements, such as 'I was diagnosed with BD-I last week'.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t1"
+          },
+          "pattern_extension": {
+            "text": "To identify such users, the authors will extend on the diagnosis patterns and terms for BD provided by prior work (BIBREF47).",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t1"
+          },
+          "data_sources": {
+            "text": "Data relevant for BD in general and for personal recovery in BD will be collected from three sources: Twitter, Reddit (focusing on mental health-related content) and blogs authored by affected individuals.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t1"
+          },
+          "blog_identification": {
+            "text": "Relevant blogs will be manually identified, and their authors will be contacted to obtain informed consent for using their texts.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t1"
+          },
+          "advisory_board": {
+            "text": "The proposal has been presented to an advisory board of individuals with a BD diagnosis, which will be consulted at several stages of the project.",
+            "evidence_ids": [
+              "c-ea22a8ab5838876eb8b10948"
+            ],
+            "turn_id": "mem-d06-t1"
+          },
+          "answerable_twitter_reddit_identification": {
+            "text": "Twitter and Reddit users with a BD diagnosis are to be identified automatically via self-reported diagnosis statements, such as “I was diagnosed with BD-I last week”, extending on previously provided BD diagnosis patterns and terms.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "answerable_implicit_consent": {
+            "text": "For Twitter and Reddit users, implicit consent is assumed to use their public tweets and posts.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "answerable_blog_consent": {
+            "text": "Relevant blogs are to be manually identified, and their authors contacted to obtain informed consent for using their texts.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "answerable_advisory_board": {
+            "text": "The proposal has been presented to an advisory board of individuals with a BD diagnosis and was received positively; the board will be consulted at several stages of the project to inform research design, analysis, and publication of results.",
+            "evidence_ids": [
+              "c-ea22a8ab5838876eb8b10948"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "answerable_data_sources": {
+            "text": "Data relevant to BD in general and to personal recovery in BD are planned to be collected from three sources: Twitter, Reddit (focusing on mental health-related content unlike previous work), and blogs authored by affected individuals.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "not_answerable_validation_accuracy": {
+            "text": "The evidence does not state how the accuracy or validity of the self-reported BD diagnosis identification is verified, nor does it report any classification performance metrics.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "not_answerable_sample_sizes": {
+            "text": "The evidence does not provide the number of Twitter, Reddit, or blog participants identified, nor details on how many blogs were selected.",
+            "evidence_ids": [
+              "c-b8ed06d1898387a8a4083045"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "not_answerable_board_selection": {
+            "text": "The evidence does not describe how advisory board members were recruited or selected, beyond noting the board consists of individuals with a BD diagnosis.",
+            "evidence_ids": [
+              "c-ea22a8ab5838876eb8b10948"
+            ],
+            "turn_id": "mem-d06-t2"
+          },
+          "individual_identification_data_collection": {
+            "text": "该论文计划收集并分析被诊断为双相障碍个体的社交媒体数据，以研究其康复经历。",
+            "evidence_ids": [
+              "c-8501c609aafc1a9ab4878246"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "generalizability_evidence": {
+            "text": "论文提出，计算方法可分析大量在线共享的第一人称叙述，代表非结构化场景和更异质、多语言的人群。",
+            "evidence_ids": [
+              "c-8501c609aafc1a9ab4878246"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "sample_size_heterogeneity": {
+            "text": "论文指出，计算机辅助分析公开社交媒体数据可克服实验室收集数据的样本量小问题，并纳入更异质人群的叙述。",
+            "evidence_ids": [
+              "c-36b5890f191631d456e020a1"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "research_questions_language_groups": {
+            "text": "研究问题包括：个体在线如何讨论个人康复，以及关于个人康复及其促进或阻碍因素能获得哪些新见解；研究分两部分，分别考察西方人的英语数据和不同族裔个体的多语言数据。",
+            "evidence_ids": [
+              "c-36b5890f191631d456e020a1"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "relevance_narrowing_challenge": {
+            "text": "论文将缩小数据范围以提取个人康复相关内容列为一个具体挑战，因为与结构化访谈相比，在线数据难以控制讨论主题。",
+            "evidence_ids": [
+              "c-929453c2fb42eba7d101da7e"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "iterative_dictionary_method": {
+            "text": "为应对该挑战，论文提出类似癌症隐喻语料库研究的迭代方法：先基于先前定性研究编制康复相关术语初始词典，再人工检查部分数据集（部分随机抽样、部分按康复相关词选择）以扩展词典。",
+            "evidence_ids": [
+              "c-929453c2fb42eba7d101da7e"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "semantic_tagging_and_cooccurrence": {
+            "text": "论文计划用USAS等语义标注方法自动标注相关文本片段，USAS可标注八种语言的语义类别，并可用分布语义方法寻找与关键词词典共现的术语。",
+            "evidence_ids": [
+              "c-929453c2fb42eba7d101da7e"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "prior_recovery_research_sources": {
+            "text": "既往个人康复研究证据主要来自（半）结构化访谈和焦点小组（被批评样本量小），以及标准化的双相康复问卷和针对康复导向认知行为疗法的随机对照试验。",
+            "evidence_ids": [
+              "c-723bbcf8cd5b62547d29306a"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "western_english_bias_limitation": {
+            "text": "既往康复研究主要在结构化场景中进行，多由英语国家研究者及西方族裔参与者开展，可能导致概念中缺少非西方的健康观念，限制其对一般人群的适用性。",
+            "evidence_ids": [
+              "c-723bbcf8cd5b62547d29306a"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "culture_diagnosis_language": {
+            "text": "论文指出文化是双相障碍诊断的重要因素，也是归因于心理健康困难的原因和所认为适当治疗的因素；初步研究显示抑郁或相关心理健康困难个体的在线语言在不同文化间存在显著差异。",
+            "evidence_ids": [
+              "c-723bbcf8cd5b62547d29306a"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "bd_prevalence": {
+            "text": "双相谱系障碍估计影响约2%的英国人口，在其他11个欧洲、美洲和亚洲国家中比率范围为0.1%至4.4%。",
+            "evidence_ids": [
+              "c-9614a06357ad25d045f1fc34"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "unanswered_specifics": {
+            "text": "所给证据中未说明个体识别的具体判定标准、实际使用的社交媒体平台、招募或筛选流程、数据规模和样本量、伦理与知情同意安排，以及最终结果。",
+            "evidence_ids": [
+              "c-8501c609aafc1a9ab4878246",
+              "c-929453c2fb42eba7d101da7e"
+            ],
+            "turn_id": "mem-d06-t3"
+          },
+          "answerable_focus": {
+            "text": "该论文可回答的部分是：研究关注被诊断为双相障碍（BD）个体的个人康复（personal recovery），计划收集并分析其社交媒体数据，并且研究对象是满足BD标准（meeting criteria for BD）的个体在线讨论康复的情况。",
+            "evidence_ids": [
+              "c-8501c609aafc1a9ab4878246",
+              "c-36b5890f191631d456e020a1"
+            ],
+            "turn_id": "mem-d06-t4"
+          },
+          "answerable_questions": {
+            "text": "论文明确列出的研究问题是：(1) 满足BD标准的个体如何在网上讨论个人康复；(2) 关于个人康复及其促进或阻碍因素能获得哪些新见解。",
+            "evidence_ids": [
+              "c-36b5890f191631d456e020a1"
+            ],
+            "turn_id": "mem-d06-t4"
+          },
+          "answerable_method": {
+            "text": "在方法上，论文提出通过迭代方式构建康复相关术语词典，人工检查部分数据，并用USAS等语义标注方法标注相关文本片段，再在完整语料上量化关键词或概念的出现情况。",
+            "evidence_ids": [
+              "c-929453c2fb42eba7d101da7e"
+            ],
+            "turn_id": "mem-d06-t4"
+          },
+          "answerable_multilingual": {
+            "text": "论文计划分两部分进行：一部分分析西方人的英语数据，另一部分分析不同族裔个体的多语言数据；并指出USAS可标注八种语言的语义类别。",
+            "evidence_ids": [
+              "c-36b5890f191631d456e020a1",
+              "c-929453c2fb42eba7d101da7e"
+            ],
+            "turn_id": "mem-d06-t4"
+          },
+          "answerable_rationale": {
+            "text": "论文指出既往个人康复研究主要来自结构化访谈、焦点小组和标准化问卷，样本较小，且主要在英语国家和西方族裔中进行，因此提出用计算语言学分析在线第一人称叙述以补充证据。",
+            "evidence_ids": [
+              "c-8501c609aafc1a9ab4878246",
+              "c-723bbcf8cd5b62547d29306a"
+            ],
+            "turn_id": "mem-d06-t4"
+          },
+          "not_answerable_identification": {
+            "text": "关于“如何识别/判定双相障碍个体”的具体识别方法、诊断流程或分类模型性能，所提供的论文片段中没有给出可核对的细节；论文仅提到研究对象为“被诊断为BD”或“满足BD标准”的个体。",
+            "evidence_ids": [
+              "c-8501c609aafc1a9ab4878246",
+              "c-36b5890f191631d456e020a1"
+            ],
+            "turn_id": "mem-d06-t4"
+          },
+          "not_answerable_results": {
+            "text": "所提供的证据属于项目计划与研究问题描述，未包含已完成的识别实验结果、准确率或验证数据，因此无法从中回答识别个体的实际效果。",
+            "evidence_ids": [
+              "c-8501c609aafc1a9ab4878246",
+              "c-929453c2fb42eba7d101da7e"
+            ],
+            "turn_id": "mem-d06-t4"
+          },
+          "not_answerable_population_detail": {
+            "text": "论文提及双相谱系障碍的患病率估计及跨文化诊断差异，但所给片段未提供用于识别个体的具体人群筛选标准或数据来源清单。",
+            "evidence_ids": [
+              "c-9614a06357ad25d045f1fc34",
+              "c-723bbcf8cd5b62547d29306a"
+            ],
+            "turn_id": "mem-d06-t4"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1906.01010"
+          ]
+        }
+      },
+      "elapsed_ms": 4.360200022347271
+    }
+  ],
+  "started_at": 1792723713.2320259,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "answerable_focus",
+        "text": "该论文可回答的部分是：研究关注被诊断为双相障碍（BD）个体的个人康复（personal recovery），计划收集并分析其社交媒体数据，并且研究对象是满足BD标准（meeting criteria for BD）的个体在线讨论康复的情况。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-8501c609aafc1a9ab4878246"
+          },
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-36b5890f191631d456e020a1"
+          }
+        ]
+      },
+      {
+        "key": "answerable_questions",
+        "text": "论文明确列出的研究问题是：(1) 满足BD标准的个体如何在网上讨论个人康复；(2) 关于个人康复及其促进或阻碍因素能获得哪些新见解。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-36b5890f191631d456e020a1"
+          }
+        ]
+      },
+      {
+        "key": "answerable_method",
+        "text": "在方法上，论文提出通过迭代方式构建康复相关术语词典，人工检查部分数据，并用USAS等语义标注方法标注相关文本片段，再在完整语料上量化关键词或概念的出现情况。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-929453c2fb42eba7d101da7e"
+          }
+        ]
+      },
+      {
+        "key": "answerable_multilingual",
+        "text": "论文计划分两部分进行：一部分分析西方人的英语数据，另一部分分析不同族裔个体的多语言数据；并指出USAS可标注八种语言的语义类别。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-36b5890f191631d456e020a1"
+          },
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-929453c2fb42eba7d101da7e"
+          }
+        ]
+      },
+      {
+        "key": "answerable_rationale",
+        "text": "论文指出既往个人康复研究主要来自结构化访谈、焦点小组和标准化问卷，样本较小，且主要在英语国家和西方族裔中进行，因此提出用计算语言学分析在线第一人称叙述以补充证据。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-8501c609aafc1a9ab4878246"
+          },
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-723bbcf8cd5b62547d29306a"
+          }
+        ]
+      },
+      {
+        "key": "not_answerable_identification",
+        "text": "关于“如何识别/判定双相障碍个体”的具体识别方法、诊断流程或分类模型性能，所提供的论文片段中没有给出可核对的细节；论文仅提到研究对象为“被诊断为BD”或“满足BD标准”的个体。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-8501c609aafc1a9ab4878246"
+          },
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-36b5890f191631d456e020a1"
+          }
+        ]
+      },
+      {
+        "key": "not_answerable_results",
+        "text": "所提供的证据属于项目计划与研究问题描述，未包含已完成的识别实验结果、准确率或验证数据，因此无法从中回答识别个体的实际效果。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-8501c609aafc1a9ab4878246"
+          },
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-929453c2fb42eba7d101da7e"
+          }
+        ]
+      },
+      {
+        "key": "not_answerable_population_detail",
+        "text": "论文提及双相谱系障碍的患病率估计及跨文化诊断差异，但所给片段未提供用于识别个体的具体人群筛选标准或数据来源清单。",
+        "citations": [
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-9614a06357ad25d045f1fc34"
+          },
+          {
+            "paper_id": "1906.01010",
+            "chunk_id": "c-723bbcf8cd5b62547d29306a"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 11,
+      "request_hash": "c960fbabccb0f0ff60c511abe6866f393ed7d72a95f7b0c0f62327ced0aa4a51",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7743,
+        "completion_tokens": 129,
+        "total_tokens": 7872,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7743,
+        "output_tokens": 129,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3860.38000008557
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 12,
+      "request_hash": "92accf8e6355b21df6807227b417f7a3b26de4a2908717715a48529bad88b206",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4320,
+        "completion_tokens": 227,
+        "total_tokens": 4547,
+        "prompt_tokens_details": {
+          "cached_tokens": 1792
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 2528,
+        "output_tokens": 227,
+        "cache_read_input_tokens": 1792,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5073.708400013857
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 13,
+      "request_hash": "0f507d2ffee773321bd71540a9c849a6fb0381022ad1702db867b6c268fa3b91",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4422,
+        "completion_tokens": 883,
+        "total_tokens": 5305,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4166,
+        "output_tokens": 883,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 8478.1397000188
+    }
+  ]
+}

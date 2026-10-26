@@ -1,0 +1,294 @@
+{
+  "id": "d05-t1",
+  "session_id": "d05",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": false,
+    "behavior_appropriate": false,
+    "reason": "The evidence chunks provided (Abstract, Conclusion, Preliminaries, Framework, Introduction) do not state the evaluation metrics used by the paper; they only mention benchmark datasets and that SubQG outperforms baselines. However, the question asks for retrieval of relevant original text, and the chunks are from the correct paper and are topically relevant (they describe the method and experiments though not the exact metric names). A refusal claiming the corpus is insufficient or out of range is not fully appropriate: the paper is within the library, and the assistant should have retrieved/reported the relevant passages (or noted metrics are not in the provided excerpts) rather than refuse outright. Since no claims are provided, there are no claim-level judgments.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "642237c989471626763b42ae3257dbedea44b15b774cd73ee477c86ccc6422af",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4743,
+        "completion_tokens": 167,
+        "total_tokens": 4910,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4487,
+        "output_tokens": 167,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6659.625699976459
+    }
+  ],
+  "payload_hash": "b3d0c0b7b0e6a02d0870d9d4c02ee8797e5781d5fe1009c581be3d7cb32f5f19",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": false, \"behavior_appropriate\": false, \"reason\": \"The evidence chunks provided (Abstract, Conclusion, Preliminaries, Framework, Introduction) do not state the evaluation metrics used by the paper; they only mention benchmark datasets and that SubQG outperforms baselines. However, the question asks for retrieval of relevant original text, and the chunks are from the correct paper and are topically relevant (they describe the method and experiments though not the exact metric names). A refusal claiming the corpus is insufficient or out of range is not fully appropriate: the paper is within the library, and the assistant should have retrieved/reported the relevant passages (or noted metrics are not in the provided excerpts) rather than refuse outright. Since no claims are provided, there are no claim-level judgments.\", \"claims\": []}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4743,
+        "completion_tokens": 167,
+        "total_tokens": 4910,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "请检索以下问题的相关原文：关于论文《Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering》，What are their evaluation metrics?",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "evaluation metrics used in the paper Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering",
+    "evidence": [
+      {
+        "chunk_id": "c-0db9bdf4621706e238cbc3b6",
+        "paper_id": "1908.11053",
+        "title": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering",
+        "section": "Abstract",
+        "text": "Formal query generation aims to generate correct executable queries for question answering over knowledge bases (KBs), given entity and relation linking results. Current approaches build universal paraphrasing or ranking models for the whole questions, which are likely to fail in generating queries for complex, long-tail questions. In this paper, we propose SubQG, a new query generation approach based on frequent query substructures, which helps rank the existing (but nonsignificant) query structures or build new query structures. Our experiments on two benchmark datasets show that our approach significantly outperforms the existing ones, especially for complex questions. Also, it achieves promising performance with limited training data and noisy entity/relation linking results.",
+        "text_hash": "700e396954a918a6a3e722a62335f9b66b7abcb8f993ceacf393c5095af7d5ce",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.11053",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 790,
+            "text": "Formal query generation aims to generate correct executable queries for question answering over knowledge bases (KBs), given entity and relation linking results. Current approaches build universal paraphrasing or ranking models for the whole questions, which are likely to fail in generating queries for complex, long-tail questions. In this paper, we propose SubQG, a new query generation approach based on frequent query substructures, which helps rank the existing (but nonsignificant) query structures or build new query structures. Our experiments on two benchmark datasets show that our approach significantly outperforms the existing ones, especially for complex questions. Also, it achieves promising performance with limited training data and noisy entity/relation linking results.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-191dc88586be1ddb4c62360b",
+        "paper_id": "1908.11053",
+        "title": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering",
+        "section": "Conclusion",
+        "text": "In this paper, we introduced SubQG, a formal query generation approach based on frequent query substructures. SubQG firstly utilizes multiple neural networks to predict query substructures contained in the question, and then ranks existing query structures using a combinational function. Moreover, SubQG merges query substructures to build new query structures for questions without appropriate query structures in the training data. Our experiments showed that SubQG achieved superior results than the existing approaches, especially for complex questions.\n\nIn future work, we plan to add support for other complex questions whose queries require Union, Group By, or numerical comparison. Also, we are interested in mining natural language expressions for each query substructures, which may help current parsing approaches.",
+        "text_hash": "696860f1adea90b1ba7c37bafdebfa9c70372ba5462e17dc8db687084daf0b3b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.11053",
+        "spans": [
+          {
+            "paragraph_id": "s12-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 558,
+            "text": "In this paper, we introduced SubQG, a formal query generation approach based on frequent query substructures. SubQG firstly utilizes multiple neural networks to predict query substructures contained in the question, and then ranks existing query structures using a combinational function. Moreover, SubQG merges query substructures to build new query structures for questions without appropriate query structures in the training data. Our experiments showed that SubQG achieved superior results than the existing approaches, especially for complex questions.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p1",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 266,
+            "text": "In future work, we plan to add support for other complex questions whose queries require Union, Group By, or numerical comparison. Also, we are interested in mining natural language expressions for each query substructures, which may help current parsing approaches.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f97d8d96b23569f5bdd55c42",
+        "paper_id": "1908.11053",
+        "title": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering",
+        "section": "Preliminaries",
+        "text": "The query structure for INLINEFORM0 is denoted by INLINEFORM1 , which contains all the queries structurally-equivalent to INLINEFORM2 . For graphical illustration, we represent a query structure by a representative query among the structurally-equivalent ones and replace entities and literals with different kinds of placeholders. An example of query and query structure is shown in the upper half of Figure FIGREF9 .\n\nFor many simple questions, two query structures, i.e., INLINEFORM0 INLINEFORM1 and INLINEFORM2 INLINEFORM3 , are sufficient. However, for complex questions, a diversity of query structures exist and some of them share a set of frequently-appeared substructures, each of which delivers a part of the query intention. We give the definition of query substructures as follows.\n\nLet INLINEFORM0 and INLINEFORM1 denote two query structures. INLINEFORM2 is a query substructure of INLINEFORM3 , denoted by INLINEFORM4 , if and only if INLINEFORM5 has a subgraph INLINEFORM6 such that INLINEFORM7 . Furthermore, if INLINEFORM8 , we say that INLINEFORM9 has INLINEFORM10 , and INLINEFORM11 is contained in INLINEFORM12 .\n\nFor example, although the query structures for the two questions in Figures FIGREF1 and FIGREF9 are different, they share the same query substructure INLINEFORM0 INLINEFORM1 INLINEFORM2 , which corresponds to the phrase “how many movies\". Note that, a query substructure can be the query structure of another question.\n\nThe goal of this paper is to leverage a set of frequent query (sub-)structures to generate formal queries for answering complex questions.",
+        "text_hash": "d2b730b38c6976bfe0409bad40f818a2370291d6d662c1eb7eac1e44643b4abd",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.11053",
+        "spans": [
+          {
+            "paragraph_id": "s1-p3",
+            "section": "Preliminaries",
+            "start": 0,
+            "end": 418,
+            "text": "The query structure for INLINEFORM0 is denoted by INLINEFORM1 , which contains all the queries structurally-equivalent to INLINEFORM2 . For graphical illustration, we represent a query structure by a representative query among the structurally-equivalent ones and replace entities and literals with different kinds of placeholders. An example of query and query structure is shown in the upper half of Figure FIGREF9 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p4",
+            "section": "Preliminaries",
+            "start": 0,
+            "end": 373,
+            "text": "For many simple questions, two query structures, i.e., INLINEFORM0 INLINEFORM1 and INLINEFORM2 INLINEFORM3 , are sufficient. However, for complex questions, a diversity of query structures exist and some of them share a set of frequently-appeared substructures, each of which delivers a part of the query intention. We give the definition of query substructures as follows.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p5",
+            "section": "Preliminaries",
+            "start": 0,
+            "end": 337,
+            "text": "Let INLINEFORM0 and INLINEFORM1 denote two query structures. INLINEFORM2 is a query substructure of INLINEFORM3 , denoted by INLINEFORM4 , if and only if INLINEFORM5 has a subgraph INLINEFORM6 such that INLINEFORM7 . Furthermore, if INLINEFORM8 , we say that INLINEFORM9 has INLINEFORM10 , and INLINEFORM11 is contained in INLINEFORM12 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p6",
+            "section": "Preliminaries",
+            "start": 0,
+            "end": 318,
+            "text": "For example, although the query structures for the two questions in Figures FIGREF1 and FIGREF9 are different, they share the same query substructure INLINEFORM0 INLINEFORM1 INLINEFORM2 , which corresponds to the phrase “how many movies\". Note that, a query substructure can be the query structure of another question.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p7",
+            "section": "Preliminaries",
+            "start": 0,
+            "end": 138,
+            "text": "The goal of this paper is to leverage a set of frequent query (sub-)structures to generate formal queries for answering complex questions.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-d1fcdbdaaa56b93b00495589",
+        "paper_id": "1908.11053",
+        "title": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering",
+        "section": "Framework",
+        "text": "Figure FIGREF11 depicts the framework of SubQG, which contains an offline training process and an online query generation process.\n\nOffline. The offline process takes as input a set of training data in form of INLINEFORM0 pairs, and mainly contains three steps:\n\n1. Collect query structures. For questions in the training data, we first discover the structurally-equivalent queries, and then extract the set of all query structures, denoted by INLINEFORM0 .\n\n2. Collect frequent query substructures. We decompose each query structure INLINEFORM0 to get the set for all query substructures. Let INLINEFORM1 be a non-empty subset of INLINEFORM2 , and INLINEFORM3 be the set of vertices used in INLINEFORM4 . INLINEFORM5 should be a query substructure of INLINEFORM6 according to the definition. So, we can generate all query substructures of INLINEFORM7 from each subset of INLINEFORM8 . Disconnected query substructures would be ignored since they express discontinuous meanings and should be split into smaller query substructures. If more than INLINEFORM9 queries in training data have substructure INLINEFORM10 , we consider INLINEFORM11 as a frequent query substructure. The set for all frequent query substructures is denoted by INLINEFORM12 .\n\n3. Train query substructure predictors. We train a neural network for each query substructure INLINEFORM0 , to predict the probability that INLINEFORM1 has INLINEFORM2 (i.e., INLINEFORM3 ) for input question INLINEFORM4 , where INLINEFORM5 denotes the formal query for INLINEFORM6 . Details for this step are described in Section SECREF13 .\n\nOnline. The online query generation process takes as input a natural language question INLINEFORM0 , and mainly contains four steps:",
+        "text_hash": "743ff3f97f5ed22e8a53c9ca3b1656084f77d3a70f3bc0fb38e2f3aecd91e7db",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.11053",
+        "spans": [
+          {
+            "paragraph_id": "s3-p0",
+            "section": "Framework",
+            "start": 0,
+            "end": 130,
+            "text": "Figure FIGREF11 depicts the framework of SubQG, which contains an offline training process and an online query generation process.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p1",
+            "section": "Framework",
+            "start": 0,
+            "end": 129,
+            "text": "Offline. The offline process takes as input a set of training data in form of INLINEFORM0 pairs, and mainly contains three steps:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p2",
+            "section": "Framework",
+            "start": 0,
+            "end": 194,
+            "text": "1. Collect query structures. For questions in the training data, we first discover the structurally-equivalent queries, and then extract the set of all query structures, denoted by INLINEFORM0 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p3",
+            "section": "Framework",
+            "start": 0,
+            "end": 788,
+            "text": "2. Collect frequent query substructures. We decompose each query structure INLINEFORM0 to get the set for all query substructures. Let INLINEFORM1 be a non-empty subset of INLINEFORM2 , and INLINEFORM3 be the set of vertices used in INLINEFORM4 . INLINEFORM5 should be a query substructure of INLINEFORM6 according to the definition. So, we can generate all query substructures of INLINEFORM7 from each subset of INLINEFORM8 . Disconnected query substructures would be ignored since they express discontinuous meanings and should be split into smaller query substructures. If more than INLINEFORM9 queries in training data have substructure INLINEFORM10 , we consider INLINEFORM11 as a frequent query substructure. The set for all frequent query substructures is denoted by INLINEFORM12 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p4",
+            "section": "Framework",
+            "start": 0,
+            "end": 340,
+            "text": "3. Train query substructure predictors. We train a neural network for each query substructure INLINEFORM0 , to predict the probability that INLINEFORM1 has INLINEFORM2 (i.e., INLINEFORM3 ) for input question INLINEFORM4 , where INLINEFORM5 denotes the formal query for INLINEFORM6 . Details for this step are described in Section SECREF13 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p5",
+            "section": "Framework",
+            "start": 0,
+            "end": 132,
+            "text": "Online. The online query generation process takes as input a natural language question INLINEFORM0 , and mainly contains four steps:",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-944d8737b26c503dd6c3d315",
+        "paper_id": "1908.11053",
+        "title": "Leveraging Frequent Query Substructures to Generate Formal Queries for Complex Question Answering",
+        "section": "Introduction",
+        "text": "Knowledge-based question answering (KBQA) aims to answer natural language questions over knowledge bases (KBs) such as DBpedia and Freebase. Formal query generation is an important component in many KBQA systems BIBREF0 , BIBREF1 , BIBREF2 , especially for answering complex questions. Given entity and relation linking results, formal query generation aims to generate correct executable queries, e.g., SPARQL queries, for the input natural language questions. An example question and its formal query are shown in Figure FIGREF1 . Generally speaking, formal query generation is expected to include but not be limited to have the capabilities of (i) recognizing and paraphrasing different kinds of constraints, including triple-level constraints (e.g., “movies\" corresponds to a typing constraint for the target variable) and higher level constraints (e.g., subgraphs). For instance, “the same ... as\" represents a complex structure shown in the middle of Figure FIGREF1 ; (ii) recognizing and paraphrasing aggregations (e.g., “how many\" corresponds to Count); and (iii) organizing all the above to generate an executable query BIBREF3 , BIBREF4 .\n\nThere are mainly two kinds of query generation approaches for complex questions. (i) Template-based approaches choose a pre-collected template for query generation BIBREF1 , BIBREF5 . Such approaches highly rely on the coverage of templates, and perform unstably when some complex templates have very few natural language questions as training data. (ii) Approaches based on semantic parsing and neural networks learn entire representations for questions with different query structures, by using a neural network following the encode-and-compare framework BIBREF2 , BIBREF4 . They may suffer from the lack of training data, especially for long-tail questions with rarely appeared structures. Furthermore, both above approaches cannot handle questions with unseen query structures, since they cannot generate new query structures.",
+        "text_hash": "f53f14b8997f6e8d18112f937d3ae0b501bdb1e46a32b2fd9cdcfdc20e80c978",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.11053",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1148,
+            "text": "Knowledge-based question answering (KBQA) aims to answer natural language questions over knowledge bases (KBs) such as DBpedia and Freebase. Formal query generation is an important component in many KBQA systems BIBREF0 , BIBREF1 , BIBREF2 , especially for answering complex questions. Given entity and relation linking results, formal query generation aims to generate correct executable queries, e.g., SPARQL queries, for the input natural language questions. An example question and its formal query are shown in Figure FIGREF1 . Generally speaking, formal query generation is expected to include but not be limited to have the capabilities of (i) recognizing and paraphrasing different kinds of constraints, including triple-level constraints (e.g., “movies\" corresponds to a typing constraint for the target variable) and higher level constraints (e.g., subgraphs). For instance, “the same ... as\" represents a complex structure shown in the middle of Figure FIGREF1 ; (ii) recognizing and paraphrasing aggregations (e.g., “how many\" corresponds to Count); and (iii) organizing all the above to generate an executable query BIBREF3 , BIBREF4 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 830,
+            "text": "There are mainly two kinds of query generation approaches for complex questions. (i) Template-based approaches choose a pre-collected template for query generation BIBREF1 , BIBREF5 . Such approaches highly rely on the coverage of templates, and perform unstably when some complex templates have very few natural language questions as training data. (ii) Approaches based on semantic parsing and neural networks learn entire representations for questions with different query structures, by using a neural network following the encode-and-compare framework BIBREF2 , BIBREF4 . They may suffer from the lack of training data, especially for long-tail questions with rarely appeared structures. Furthermore, both above approaches cannot handle questions with unseen query structures, since they cannot generate new query structures.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

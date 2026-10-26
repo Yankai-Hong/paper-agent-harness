@@ -1,0 +1,236 @@
+{
+  "turn_id": "d03-t4",
+  "session_id": "d03",
+  "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.01279998105019331
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "私有实验 run-02 的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "run": "run-02"
+        }
+      },
+      "elapsed_ms": 7946.966200019233
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.00100000761449337
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d03",
+        "entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking",
+          "dataset": "FEVER"
+        },
+        "facts": {
+          "fever_dataset_size": {
+            "text": "根据论文，FEVER 是最大的数据集，包含约 185k 条 claims，来自 5.4M 篇 Wikipedia 文章的语料库。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t1"
+          },
+          "fever_dataset_labels": {
+            "text": "这些 claims 根据证据集被标注为“SUPPORTS”、“REFUTES”或“NOT ENOUGH INFO”。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t1"
+          },
+          "fever_size": {
+            "text": "论文指出 FEVER 是最大的数据集，包含约 185k 条 claims，来自 5.4M 篇 Wikipedia 文章的语料库。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "fever_labels": {
+            "text": "根据证据集，这些 claims 被标注为 “SUPPORTS”、“REFUTES” 或 “NOT ENOUGH INFO”。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "pipeline_stages": {
+            "text": "该系统是一个包含三个阶段的流水线：（1）问题生成，（2）问题回答，（3）标签分类。",
+            "evidence_ids": [
+              "c-010ec9cd6f2b1eb9cb5ec5c1",
+              "c-7d59a4589df766fa1261d8c6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "cloze_transform": {
+            "text": "论文通过掩蔽 claims 中提供的命名实体，将 FEVER 数据集转换为 Cloze 任务。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "qg_accuracy": {
+            "text": "问题生成任务在将 FEVER 数据集转换为 Cloze 任务时达到约 90% 的准确率。",
+            "evidence_ids": [
+              "c-7d59a4589df766fa1261d8c6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "output_labels": {
+            "text": "当前分类器能够将 claims 分类为 “SUPPORTS” 和 “MANUAL_REVIEW”；论文指出其无监督模型不支持所有标签。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6",
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "label_accuracy": {
+            "text": "该方法在转换后数据集的开发集上达到 80.2% 的标签准确率，在测试集上达到 80.25%。",
+            "evidence_ids": [
+              "c-7c69a28e7ffcb9ebd09842b6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "supports_accuracy": {
+            "text": "论文报告称在 “SUPPORTS” 标签上可达到 80.2% 的标签准确率。",
+            "evidence_ids": [
+              "c-7d59a4589df766fa1261d8c6"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "questions_per_claim": {
+            "text": "平均而言，每条 claim 生成 3 个问题；φ = 0.76 要求 4 个问题中至少 3 个被正确回答，φ = 0.67 要求 3 个问题中至少 2 个被正确回答，claim 才会被分类为 “SUPPORTS”。",
+            "evidence_ids": [
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "hexaf_comparison": {
+            "text": "论文将其 “SUPPORTS” 标签准确率与监督方法 HexaF 进行比较，并报告在 φ = 0.76 时其方法可与 HexaF 相比。",
+            "evidence_ids": [
+              "c-41beb2396050f5a800883bfc"
+            ],
+            "turn_id": "d03-t2"
+          }
+        },
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154"
+          ]
+        }
+      },
+      "elapsed_ms": 2.7350999880582094
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792723931.241041,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 9,
+      "request_hash": "db870d49e0ac0aeab5ada01cfc942a6be88d92690f847728c1e84bc989feabb9",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5660,
+        "completion_tokens": 58,
+        "total_tokens": 5718,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5404,
+        "output_tokens": 58,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7945.165500044823
+    }
+  ]
+}

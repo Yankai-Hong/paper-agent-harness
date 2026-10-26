@@ -1,0 +1,883 @@
+{
+  "turn_id": "mem-d08-t6",
+  "session_id": "d08",
+  "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007100054062902927
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "在26种语言的四类一致性关系任务上，单语BERT与多语言BERT的准确率对比：有哪些证据支持比较、哪些结论无法从原文得出",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1908.09892"
+        ],
+        "resolved_entities": {
+          "paper": "1908.09892",
+          "paper_title": "Does BERT agree? Evaluating knowledge of structure dependence through agreement relations",
+          "target_question": "单语 BERT 是否优于多语言 BERT"
+        }
+      },
+      "elapsed_ms": 3354.3106999713928
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "在26种语言的四类一致性关系任务上，单语BERT与多语言BERT的准确率对比：有哪些证据支持比较、哪些结论无法从原文得出"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-8593be887a77aa84b6245970",
+          "c-3b6a3b675e9322866e554792",
+          "c-5718a56a0f07f3bd6892b6f0",
+          "c-5f96e75d6bd41706a177f357",
+          "c-8218ac945611f7d8d4659357",
+          "c-8203926918efae508383373b",
+          "c-980a67bc8a815ac26d1f09fc",
+          "c-14834b6fea781d0eb7ecda07",
+          "c-9f675d6ede718ba758d6abae",
+          "c-5fb240c32e146d74c91693fa",
+          "c-9dcb1d3af0143945b9b5ec7c",
+          "c-bcba18463ae87a9b7775296a"
+        ]
+      },
+      "elapsed_ms": 11.905300081707537
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-8593be887a77aa84b6245970",
+          "c-3b6a3b675e9322866e554792",
+          "c-5718a56a0f07f3bd6892b6f0",
+          "c-5f96e75d6bd41706a177f357",
+          "c-8218ac945611f7d8d4659357",
+          "c-8203926918efae508383373b",
+          "c-980a67bc8a815ac26d1f09fc",
+          "c-14834b6fea781d0eb7ecda07",
+          "c-9f675d6ede718ba758d6abae",
+          "c-5fb240c32e146d74c91693fa",
+          "c-9dcb1d3af0143945b9b5ec7c",
+          "c-bcba18463ae87a9b7775296a"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-8593be887a77aa84b6245970",
+          "c-3b6a3b675e9322866e554792",
+          "c-5718a56a0f07f3bd6892b6f0",
+          "c-5f96e75d6bd41706a177f357",
+          "c-8218ac945611f7d8d4659357"
+        ]
+      },
+      "elapsed_ms": 0.005199923180043697
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-8593be887a77aa84b6245970",
+          "c-3b6a3b675e9322866e554792",
+          "c-5718a56a0f07f3bd6892b6f0",
+          "c-5f96e75d6bd41706a177f357",
+          "c-8218ac945611f7d8d4659357"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "现有证据可支持部分回答：摘要（c-8593be887a77aa84b6245970）明确指出单语与多语言BERT在26种语言、四类一致性关系上“总体上都能较好地捕捉句法敏感的一致性模式”，但未给出二者准确率的数值对比或优劣结论；结果节（c-8218ac945611f7d8d4659357）的94.3%总体准确率与各类型、各语言表现均为聚合结果，未区分单语与多语言模型；中文档也强调跨语言比较不公平、各语言数据集不同，且长距离与更多干扰项下性能略降。因此可回答“两者总体表现良好、任务覆盖26语言4类关系”及“性能随距离/干扰项增加略降”等结论，但无法回答“单语与多语言BERT谁更优、各自逐项准确率数值”这一比较问题。来源引用：1908.09892 摘要、结果节、结论节（c-5718a56a0f07f3bd6892b6f0）。",
+        "next_query": "single-language BERT vs multilingual BERT accuracy per agreement type and language in Table results 1908.09892"
+      },
+      "elapsed_ms": 3822.498599998653
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "task_scope",
+            "text": "该研究在26种语言上评估BERT对四类结构依存一致性关系的敏感性。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8593be887a77aa84b6245970"
+              }
+            ]
+          },
+          {
+            "key": "prior_single_bert_result",
+            "text": "已有研究显示，单语BERT在英语主谓数一致性填空任务上表现很好，在所有实验中准确率超过80%。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-3b6a3b675e9322866e554792"
+              }
+            ]
+          },
+          {
+            "key": "both_models_capture_patterns",
+            "text": "摘要指出，单语BERT模型和多语言BERT模型总体上都能很好地捕捉对句法敏感的一致性模式。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8593be887a77aa84b6245970"
+              }
+            ]
+          },
+          {
+            "key": "performance_degrades_contexts",
+            "text": "摘要指出，论文还强调了模型性能下降的具体语言情境。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8593be887a77aa84b6245970"
+              }
+            ]
+          },
+          {
+            "key": "overall_accuracy",
+            "text": "在本研究的全部填空样例中，BERT的正确率为94.3%（原文未在此句区分单语与多语言模型）。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8218ac945611f7d8d4659357"
+              }
+            ]
+          },
+          {
+            "key": "agreement_type_accuracy",
+            "text": "BERT在四类一致性关系中的每一类上都达到90%以上准确率，其中限定词一致和定语形容词一致表现最好，主谓一致和谓语形容词一致表现最差。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8218ac945611f7d8d4659357"
+              }
+            ]
+          },
+          {
+            "key": "distance_distractor_effect",
+            "text": "随着控制语与被控制语之间的距离以及干扰项数量增加，BERT的表现略有但持续下降。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8218ac945611f7d8d4659357"
+              }
+            ]
+          },
+          {
+            "key": "cross_language_caution",
+            "text": "作者提醒，跨语言比较并不公平，因为尽管数据集按相同方法构建，但每种语言的数据集不同，例如巴斯克语的样例可能比葡萄牙语的更难。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8218ac945611f7d8d4659357"
+              }
+            ]
+          },
+          {
+            "key": "unanswerable_numeric_comparison",
+            "text": "所提供证据中没有给出单语BERT与多语言BERT在一致性任务上准确率的逐项数值对比；摘要只说明两者总体上表现良好。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8593be887a77aa84b6245970"
+              }
+            ]
+          },
+          {
+            "key": "unanswerable_superiority",
+            "text": "所提供证据无法得出单语BERT在26种语言四类一致性任务上整体优于或多语言BERT更优的结论，原文未提供该方向的比较结果。",
+            "citations": [
+              {
+                "paper_id": "1908.09892",
+                "chunk_id": "c-8593be887a77aa84b6245970"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 5178.52249997668
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": true,
+        "archive_id": "6a0efc0273e0d769b407d25656354b7d5e8c04ace9e8fa42f0f5dc1ba01095f7",
+        "method": "bounded_recent_state",
+        "context_chars_before": 10814,
+        "context_chars_after": 10585,
+        "token_estimate_before": 2704,
+        "token_estimate_after": 2647,
+        "token_measurement": "character estimate; not API token usage",
+        "retained_facts": [
+          "prior_work_language_limit",
+          "single_vs_multilingual_claim",
+          "degradation_contexts",
+          "unanswerable_single_vs_multilingual_numbers",
+          "can_answer_overall_comparison",
+          "can_answer_unified_eval",
+          "cant_answer_single_language_score_from_prior_work",
+          "cant_answer_multilingual_specific_score",
+          "can_answer_aggregate_accuracy",
+          "cant_answer_whether_aggregate_is_mono_or_multi",
+          "can_answer_degradation_factors",
+          "cant_answer_direct_superiority_claim",
+          "cant_answer_cross_language_comparison_caveat",
+          "task_scope",
+          "prior_single_bert_result",
+          "both_models_capture_patterns",
+          "performance_degrades_contexts",
+          "overall_accuracy",
+          "agreement_type_accuracy",
+          "distance_distractor_effect",
+          "cross_language_caution",
+          "unanswerable_numeric_comparison",
+          "unanswerable_superiority"
+        ],
+        "retained_entities": [
+          "paper",
+          "paper_title",
+          "target_question"
+        ],
+        "retained_fact_consistency": true
+      },
+      "output": {
+        "session_id": "d08",
+        "entities": {
+          "paper": "1908.09892",
+          "paper_title": "Does BERT agree? Evaluating knowledge of structure dependence through agreement relations",
+          "target_question": "单语 BERT 是否优于多语言 BERT"
+        },
+        "facts": {
+          "prior_work_language_limit": {
+            "text": "此前使用一致性关系评估BERT句法知识的工作几乎只针对英语单语模型。",
+            "evidence_ids": [
+              "c-9f675d6ede718ba758d6abae"
+            ],
+            "turn_id": "mem-d08-t4"
+          },
+          "single_vs_multilingual_claim": {
+            "text": "摘要指出，单语BERT模型和多语言BERT模型总体上都能很好地捕捉对句法敏感的一致性模式。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t4"
+          },
+          "degradation_contexts": {
+            "text": "摘要还指出，论文强调了模型性能下降的具体语言情境。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t4"
+          },
+          "unanswerable_single_vs_multilingual_numbers": {
+            "text": "所提供证据中没有给出单语BERT与多语言BERT在一致性任务上准确率的逐项数值对比；摘要只说明两者总体上表现良好。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t4"
+          },
+          "can_answer_overall_comparison": {
+            "text": "摘要指出，单语BERT模型和多语言BERT模型总体上都能较好地捕捉对句法敏感的 agreement patterns，同时也指出了它们表现下降的具体语言语境。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "can_answer_unified_eval": {
+            "text": "研究在26种语言上以四种一致关系类型评估了单语和多语两种模型，因此原文可在这一统一设置下对它们作出比较。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970",
+              "c-9f675d6ede718ba758d6abae"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "cant_answer_single_language_score_from_prior_work": {
+            "text": "高于80%的准确率来自先前针对英语主谓一致性的单语BERT研究，而不是本研究自身对单语模型的实验结果。",
+            "evidence_ids": [
+              "c-3b6a3b675e9322866e554792"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "cant_answer_multilingual_specific_score": {
+            "text": "所提供的证据没有给出多语言BERT模型在本研究各项实验中的具体准确率数字。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "can_answer_aggregate_accuracy": {
+            "text": "BERT在所有cloze examples上的正确率为94.3%，在全部四种agreement类型上的准确率都超过90%。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "cant_answer_whether_aggregate_is_mono_or_multi": {
+            "text": "94.3%的总准确率在所提供的选项中并未说明它来自单语模型还是多语模型。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "can_answer_degradation_factors": {
+            "text": "报告显示，随着控制语与目标语之间的距离增加以及干扰项数量增加，性能会出现轻微但持续的下降。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "cant_answer_direct_superiority_claim": {
+            "text": "证据中没有出现直接表述，声称单语BERT优于多语BERT，或反之。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970",
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "cant_answer_cross_language_comparison_caveat": {
+            "text": "原文警告说，跨语言比较并不公平，因为尽管数据集构建方法相同，每种语言的数据集并不相同，并举例说巴斯克语的例子可能比葡萄牙语的例子更难。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t5"
+          },
+          "task_scope": {
+            "text": "该研究在26种语言上评估BERT对四类结构依存一致性关系的敏感性。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "prior_single_bert_result": {
+            "text": "已有研究显示，单语BERT在英语主谓数一致性填空任务上表现很好，在所有实验中准确率超过80%。",
+            "evidence_ids": [
+              "c-3b6a3b675e9322866e554792"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "both_models_capture_patterns": {
+            "text": "摘要指出，单语BERT模型和多语言BERT模型总体上都能很好地捕捉对句法敏感的一致性模式。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "performance_degrades_contexts": {
+            "text": "摘要指出，论文还强调了模型性能下降的具体语言情境。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "overall_accuracy": {
+            "text": "在本研究的全部填空样例中，BERT的正确率为94.3%（原文未在此句区分单语与多语言模型）。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "agreement_type_accuracy": {
+            "text": "BERT在四类一致性关系中的每一类上都达到90%以上准确率，其中限定词一致和定语形容词一致表现最好，主谓一致和谓语形容词一致表现最差。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "distance_distractor_effect": {
+            "text": "随着控制语与被控制语之间的距离以及干扰项数量增加，BERT的表现略有但持续下降。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "cross_language_caution": {
+            "text": "作者提醒，跨语言比较并不公平，因为尽管数据集按相同方法构建，但每种语言的数据集不同，例如巴斯克语的样例可能比葡萄牙语的更难。",
+            "evidence_ids": [
+              "c-8218ac945611f7d8d4659357"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "unanswerable_numeric_comparison": {
+            "text": "所提供证据中没有给出单语BERT与多语言BERT在一致性任务上准确率的逐项数值对比；摘要只说明两者总体上表现良好。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t6"
+          },
+          "unanswerable_superiority": {
+            "text": "所提供证据无法得出单语BERT在26种语言四类一致性任务上整体优于或多语言BERT更优的结论，原文未提供该方向的比较结果。",
+            "evidence_ids": [
+              "c-8593be887a77aa84b6245970"
+            ],
+            "turn_id": "mem-d08-t6"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1908.09892"
+          ]
+        }
+      },
+      "elapsed_ms": 6.154100061394274
+    }
+  ],
+  "started_at": 1792723808.931507,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "archive_id": "90348bf98e94427106ab3eb629f06cb977bafe9be8da0f1ab5ab8c7fd43905a2",
+      "turn_id": "mem-d08-t2",
+      "turn_order": 5,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d08-t2"
+      },
+      "entities": {
+        "paper": "1908.09892",
+        "paper_title": "Does BERT agree? Evaluating knowledge of structure dependence through agreement relations",
+        "target_question": "单语 BERT 是否优于多语言 BERT"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "90348bf98e94427106ab3eb629f06cb977bafe9be8da0f1ab5ab8c7fd43905a2",
+      "turn_id": "mem-d08-t3",
+      "turn_order": 5,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d08-t3"
+      },
+      "entities": {
+        "paper": "1908.09892",
+        "paper_title": "Does BERT agree? Evaluating knowledge of structure dependence through agreement relations",
+        "target_question": "单语 BERT 是否优于多语言 BERT"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "90348bf98e94427106ab3eb629f06cb977bafe9be8da0f1ab5ab8c7fd43905a2",
+      "turn_id": "mem-d08-t4",
+      "turn_order": 5,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d08-t4"
+      },
+      "entities": {
+        "paper": "1908.09892",
+        "paper_title": "Does BERT agree? Evaluating knowledge of structure dependence through agreement relations",
+        "target_question": "单语 BERT 是否优于多语言 BERT"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "90348bf98e94427106ab3eb629f06cb977bafe9be8da0f1ab5ab8c7fd43905a2",
+      "turn_id": "mem-d08-t5",
+      "turn_order": 5,
+      "kind": "message",
+      "content": {
+        "role": "user",
+        "content": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+        "turn_id": "mem-d08-t5"
+      },
+      "entities": {
+        "paper": "1908.09892",
+        "paper_title": "Does BERT agree? Evaluating knowledge of structure dependence through agreement relations",
+        "target_question": "单语 BERT 是否优于多语言 BERT"
+      },
+      "evidence_ids": [],
+      "superseded": false,
+      "score": 36
+    },
+    {
+      "archive_id": "90348bf98e94427106ab3eb629f06cb977bafe9be8da0f1ab5ab8c7fd43905a2",
+      "turn_id": "mem-d08-t4",
+      "turn_order": 5,
+      "kind": "message",
+      "content": {
+        "role": "assistant",
+        "content": {
+          "claims": [
+            {
+              "key": "task_scope",
+              "text": "该研究在26种语言上评估BERT对四类结构依存一致性关系的敏感性。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8593be887a77aa84b6245970"
+                }
+              ]
+            },
+            {
+              "key": "prior_work_language_limit",
+              "text": "此前使用一致性关系评估BERT句法知识的工作几乎只针对英语单语模型。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-9f675d6ede718ba758d6abae"
+                }
+              ]
+            },
+            {
+              "key": "prior_single_bert_result",
+              "text": "已有研究显示，单语BERT在英语主谓数一致性填空任务上表现很好，在所有实验中准确率超过80%，即使句中有多个干扰名词也是如此。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-3b6a3b675e9322866e554792"
+                }
+              ]
+            },
+            {
+              "key": "overall_accuracy",
+              "text": "在本研究的全部填空样例中，BERT的正确率为94.3%。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8218ac945611f7d8d4659357"
+                }
+              ]
+            },
+            {
+              "key": "agreement_type_accuracy",
+              "text": "BERT在四类一致性关系中的每一类上都达到90%以上准确率，其中限定词一致和定语形容词一致表现最好，主谓一致和谓语形容词一致表现最差。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8218ac945611f7d8d4659357"
+                }
+              ]
+            },
+            {
+              "key": "single_vs_multilingual_claim",
+              "text": "摘要指出，单语BERT模型和多语言BERT模型总体上都能很好地捕捉对句法敏感的一致性模式。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8593be887a77aa84b6245970"
+                }
+              ]
+            },
+            {
+              "key": "degradation_contexts",
+              "text": "摘要还指出，论文强调了模型性能下降的具体语言情境。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8593be887a77aa84b6245970"
+                }
+              ]
+            },
+            {
+              "key": "distance_distractor_effect",
+              "text": "随着控制语与被控制语之间的距离以及干扰项数量增加，BERT的表现略有但持续下降。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8218ac945611f7d8d4659357"
+                }
+              ]
+            },
+            {
+              "key": "cross_language_caution",
+              "text": "作者提醒，跨语言比较并不公平，因为尽管数据集按相同方法构建，但每种语言的数据集不同，例如巴斯克语的样例可能比葡萄牙语的更难。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8218ac945611f7d8d4659357"
+                }
+              ]
+            },
+            {
+              "key": "unanswerable_single_vs_multilingual_numbers",
+              "text": "所提供证据中没有给出单语BERT与多语言BERT在一致性任务上准确率的逐项数值对比；摘要只说明两者总体上表现良好。",
+              "citations": [
+                {
+                  "paper_id": "1908.09892",
+                  "chunk_id": "c-8593be887a77aa84b6245970"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "turn_id": "mem-d08-t4"
+      },
+      "entities": {
+        "paper": "1908.09892",
+        "paper_title": "Does BERT agree? Evaluating knowledge of structure dependence through agreement relations",
+        "target_question": "单语 BERT 是否优于多语言 BERT"
+      },
+      "evidence_ids": [
+        "c-8593be887a77aa84b6245970",
+        "c-9f675d6ede718ba758d6abae",
+        "c-3b6a3b675e9322866e554792",
+        "c-8218ac945611f7d8d4659357",
+        "c-8218ac945611f7d8d4659357",
+        "c-8593be887a77aa84b6245970",
+        "c-8593be887a77aa84b6245970",
+        "c-8218ac945611f7d8d4659357",
+        "c-8218ac945611f7d8d4659357",
+        "c-8593be887a77aa84b6245970"
+      ],
+      "superseded": false,
+      "score": 18
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "task_scope",
+        "text": "该研究在26种语言上评估BERT对四类结构依存一致性关系的敏感性。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8593be887a77aa84b6245970"
+          }
+        ]
+      },
+      {
+        "key": "prior_single_bert_result",
+        "text": "已有研究显示，单语BERT在英语主谓数一致性填空任务上表现很好，在所有实验中准确率超过80%。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-3b6a3b675e9322866e554792"
+          }
+        ]
+      },
+      {
+        "key": "both_models_capture_patterns",
+        "text": "摘要指出，单语BERT模型和多语言BERT模型总体上都能很好地捕捉对句法敏感的一致性模式。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8593be887a77aa84b6245970"
+          }
+        ]
+      },
+      {
+        "key": "performance_degrades_contexts",
+        "text": "摘要指出，论文还强调了模型性能下降的具体语言情境。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8593be887a77aa84b6245970"
+          }
+        ]
+      },
+      {
+        "key": "overall_accuracy",
+        "text": "在本研究的全部填空样例中，BERT的正确率为94.3%（原文未在此句区分单语与多语言模型）。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8218ac945611f7d8d4659357"
+          }
+        ]
+      },
+      {
+        "key": "agreement_type_accuracy",
+        "text": "BERT在四类一致性关系中的每一类上都达到90%以上准确率，其中限定词一致和定语形容词一致表现最好，主谓一致和谓语形容词一致表现最差。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8218ac945611f7d8d4659357"
+          }
+        ]
+      },
+      {
+        "key": "distance_distractor_effect",
+        "text": "随着控制语与被控制语之间的距离以及干扰项数量增加，BERT的表现略有但持续下降。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8218ac945611f7d8d4659357"
+          }
+        ]
+      },
+      {
+        "key": "cross_language_caution",
+        "text": "作者提醒，跨语言比较并不公平，因为尽管数据集按相同方法构建，但每种语言的数据集不同，例如巴斯克语的样例可能比葡萄牙语的更难。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8218ac945611f7d8d4659357"
+          }
+        ]
+      },
+      {
+        "key": "unanswerable_numeric_comparison",
+        "text": "所提供证据中没有给出单语BERT与多语言BERT在一致性任务上准确率的逐项数值对比；摘要只说明两者总体上表现良好。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8593be887a77aa84b6245970"
+          }
+        ]
+      },
+      {
+        "key": "unanswerable_superiority",
+        "text": "所提供证据无法得出单语BERT在26种语言四类一致性任务上整体优于或多语言BERT更优的结论，原文未提供该方向的比较结果。",
+        "citations": [
+          {
+            "paper_id": "1908.09892",
+            "chunk_id": "c-8593be887a77aa84b6245970"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 17,
+      "request_hash": "562942987bcd22a601e50831ed72948ba60a5dff949ab1e213a3722c3f3f5e3d",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8578,
+        "completion_tokens": 122,
+        "total_tokens": 8700,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 8450,
+        "output_tokens": 122,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3313.4502000175416
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 18,
+      "request_hash": "727339dbe09e723c579527cbef498944c0089a465edcf096a1067439afd86d2a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6136,
+        "completion_tokens": 271,
+        "total_tokens": 6407,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6136,
+        "output_tokens": 271,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3822.140399948694
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 19,
+      "request_hash": "72f19db94474a41ee309474e4dbd9c2b8b9dcf10d5fb9b1e21582aa79f2145f6",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6239,
+        "completion_tokens": 732,
+        "total_tokens": 6971,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6111,
+        "output_tokens": 732,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5177.827500039712
+    }
+  ]
+}

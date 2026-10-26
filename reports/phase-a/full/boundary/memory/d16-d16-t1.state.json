@@ -1,0 +1,263 @@
+{
+  "session_id": "d16-d16-t1",
+  "messages": [
+    {
+      "role": "user",
+      "content": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+      "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "two_shortcomings",
+            "text": "论文指出的两个缺陷是：预测过度自信，以及在使用语言模型时倾向产生不完整的转写（deletion errors）。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "practical_solutions",
+            "text": "论文提出针对这两个问题的实际解决方案，并在 WSJ 数据集上分别在不使用独立语言模型时达到 10.6% WER，结合 trigram 语言模型时达到 6.7% WER。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "overconfidence_beam",
+            "text": "由于 seq2seq 模型常给出非常尖锐的预测，高置信度降低了 beam search 得到的转写多样性。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+              }
+            ]
+          },
+          {
+            "key": "eos_constraint",
+            "text": "在不改变 beam search 代价的前提下，将 EOS token 的发射限制为其概率落在最可能 token 附近的窄区间内；同时通过温度调节（默认、更尖锐、更平滑的分布）进行对比，温度升高时 beam search 能找到更好解，但需防止截断转写。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-10d1ebcc07738e41f14a4005"
+              }
+            ]
+          },
+          {
+            "key": "label_smoothing",
+            "text": "标签平滑通过将一部分概率质量分配给非正确类别，防止模型把所有概率集中在单一 token 上，并使错误函数不易饱和。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+              }
+            ]
+          },
+          {
+            "key": "uniform_unigram_smoothing",
+            "text": "最初的均匀标签平滑将剩余概率质量均匀分布到所有类别；unigram 平滑将剩余质量按类别的边际概率成比例分配，可获得更好结果。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+              }
+            ]
+          },
+          {
+            "key": "neighborhood_smoothing",
+            "text": "论文提出 neighborhood smoothing：利用转写的时间结构，将剩余概率质量分配给转写中相邻的 token，帮助模型从 beam search 错误（如跳过字符）中恢复。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+              }
+            ]
+          },
+          {
+            "key": "neighborhood_results",
+            "text": "使用 neighborhood smoothing 训练后，模型得到正则化，greedy decoding 错误率降低近 3 个百分点；预测熵更高，使 beam search 无需温度控制即可找到好解，且无需控制 EOS token 发射。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+    }
+  ],
+  "turn_count": 1,
+  "memory": {
+    "session_id": "d16-d16-t1",
+    "entities": {
+      "paper": "Towards better decoding and language model integration in sequence to sequence models (1612.02695)"
+    },
+    "facts": {
+      "two_shortcomings": {
+        "text": "论文指出的两个缺陷是：预测过度自信，以及在使用语言模型时倾向产生不完整的转写（deletion errors）。",
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      },
+      "practical_solutions": {
+        "text": "论文提出针对这两个问题的实际解决方案，并在 WSJ 数据集上分别在不使用独立语言模型时达到 10.6% WER，结合 trigram 语言模型时达到 6.7% WER。",
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      },
+      "overconfidence_beam": {
+        "text": "由于 seq2seq 模型常给出非常尖锐的预测，高置信度降低了 beam search 得到的转写多样性。",
+        "evidence_ids": [
+          "c-0b5bc372895d6d0706b56a8e"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      },
+      "eos_constraint": {
+        "text": "在不改变 beam search 代价的前提下，将 EOS token 的发射限制为其概率落在最可能 token 附近的窄区间内；同时通过温度调节（默认、更尖锐、更平滑的分布）进行对比，温度升高时 beam search 能找到更好解，但需防止截断转写。",
+        "evidence_ids": [
+          "c-10d1ebcc07738e41f14a4005"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      },
+      "label_smoothing": {
+        "text": "标签平滑通过将一部分概率质量分配给非正确类别，防止模型把所有概率集中在单一 token 上，并使错误函数不易饱和。",
+        "evidence_ids": [
+          "c-2a97da9c8e3dd5b7f857934d"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      },
+      "uniform_unigram_smoothing": {
+        "text": "最初的均匀标签平滑将剩余概率质量均匀分布到所有类别；unigram 平滑将剩余质量按类别的边际概率成比例分配，可获得更好结果。",
+        "evidence_ids": [
+          "c-2a97da9c8e3dd5b7f857934d"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      },
+      "neighborhood_smoothing": {
+        "text": "论文提出 neighborhood smoothing：利用转写的时间结构，将剩余概率质量分配给转写中相邻的 token，帮助模型从 beam search 错误（如跳过字符）中恢复。",
+        "evidence_ids": [
+          "c-2a97da9c8e3dd5b7f857934d"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      },
+      "neighborhood_results": {
+        "text": "使用 neighborhood smoothing 训练后，模型得到正则化，greedy decoding 错误率降低近 3 个百分点；预测熵更高，使 beam search 无需温度控制即可找到好解，且无需控制 EOS token 发射。",
+        "evidence_ids": [
+          "c-2a97da9c8e3dd5b7f857934d"
+        ],
+        "turn_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      }
+    },
+    "unresolved": [],
+    "summary": {
+      "discussed_papers": [
+        "1612.02695"
+      ]
+    }
+  },
+  "committed_turns": {
+    "14b93b7ae59a4091bc5a7beb0c0470b2": {
+      "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "two_shortcomings",
+              "text": "论文指出的两个缺陷是：预测过度自信，以及在使用语言模型时倾向产生不完整的转写（deletion errors）。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-c1a01afddd733ef65ed6d199"
+                }
+              ]
+            },
+            {
+              "key": "practical_solutions",
+              "text": "论文提出针对这两个问题的实际解决方案，并在 WSJ 数据集上分别在不使用独立语言模型时达到 10.6% WER，结合 trigram 语言模型时达到 6.7% WER。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-c1a01afddd733ef65ed6d199"
+                }
+              ]
+            },
+            {
+              "key": "overconfidence_beam",
+              "text": "由于 seq2seq 模型常给出非常尖锐的预测，高置信度降低了 beam search 得到的转写多样性。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+                }
+              ]
+            },
+            {
+              "key": "eos_constraint",
+              "text": "在不改变 beam search 代价的前提下，将 EOS token 的发射限制为其概率落在最可能 token 附近的窄区间内；同时通过温度调节（默认、更尖锐、更平滑的分布）进行对比，温度升高时 beam search 能找到更好解，但需防止截断转写。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-10d1ebcc07738e41f14a4005"
+                }
+              ]
+            },
+            {
+              "key": "label_smoothing",
+              "text": "标签平滑通过将一部分概率质量分配给非正确类别，防止模型把所有概率集中在单一 token 上，并使错误函数不易饱和。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+                }
+              ]
+            },
+            {
+              "key": "uniform_unigram_smoothing",
+              "text": "最初的均匀标签平滑将剩余概率质量均匀分布到所有类别；unigram 平滑将剩余质量按类别的边际概率成比例分配，可获得更好结果。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+                }
+              ]
+            },
+            {
+              "key": "neighborhood_smoothing",
+              "text": "论文提出 neighborhood smoothing：利用转写的时间结构，将剩余概率质量分配给转写中相邻的 token，帮助模型从 beam search 错误（如跳过字符）中恢复。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+                }
+              ]
+            },
+            {
+              "key": "neighborhood_results",
+              "text": "使用 neighborhood smoothing 训练后，模型得到正则化，greedy decoding 错误率降低近 3 个百分点；预测熵更高，使 beam search 无需温度控制即可找到好解，且无需控制 EOS token 发射。",
+              "citations": [
+                {
+                  "paper_id": "1612.02695",
+                  "chunk_id": "c-2a97da9c8e3dd5b7f857934d"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "14b93b7ae59a4091bc5a7beb0c0470b2"
+      }
+    }
+  }
+}

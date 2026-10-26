@@ -1,0 +1,608 @@
+{
+  "turn_id": "4308c2c3e85f49ff8347960a876fec6d",
+  "session_id": "d13-d13-t4",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.005999929271638393
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Polyglot Semantic Role Labeling: what resources are combined to build the labeler, evidence on English supervision, parameter sharing, and evaluation on CoNLL 2009 languages",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1805.11598"
+        ],
+        "resolved_entities": {
+          "paper": "Polyglot Semantic Role Labeling",
+          "paper_id": "1805.11598"
+        }
+      },
+      "elapsed_ms": 2822.476699948311
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Polyglot Semantic Role Labeling: what resources are combined to build the labeler, evidence on English supervision, parameter sharing, and evaluation on CoNLL 2009 languages"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-3210a13443119c0f9b29ab8f",
+          "c-0e4670be40fbb93589dc7767",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-7b26dbacfa8fd36fd1a3764e",
+          "c-36d3fb4d80efb0798f42f613",
+          "c-6c86cedc783cec95e28397e8",
+          "c-c0833bf14f99f4badbdb1f45"
+        ]
+      },
+      "elapsed_ms": 10.13130007777363
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-3210a13443119c0f9b29ab8f",
+          "c-0e4670be40fbb93589dc7767",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-7b26dbacfa8fd36fd1a3764e",
+          "c-36d3fb4d80efb0798f42f613",
+          "c-6c86cedc783cec95e28397e8",
+          "c-c0833bf14f99f4badbdb1f45"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-a386f8ac42eeacc565dfa3e3"
+        ]
+      },
+      "elapsed_ms": 0.005899928510189056
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-a386f8ac42eeacc565dfa3e3"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "问题要求解释该论文对“polyglot SRL：组合的资源、英语监督、参数共享、CoNLL 2009 语言上的评估”这一问题的证据并保留引用。所给证据（同一论文的摘要、引言、数据、实验）直接覆盖全部子问题：组合一对语言的资源构建 polyglot labeler；使用英语部分监督并加入其他语言；通过参数共享实现跨语言统计共享；在 CoNLL 2009 的七种语言上评估，并报告低资源语言改善、捷克无变化、语言ID与语言特定LSTM表现不一致等。故可依据证据作答，无需补充常识。"
+      },
+      "elapsed_ms": 4050.421899999492
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "resources_combined",
+            "text": "该方法从 CoNLL 2009 共享任务中一对语言的资源进行组合，以构建 polyglot 语义角色标注器。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+              }
+            ]
+          },
+          {
+            "key": "no_parallel_data",
+            "text": "该研究指出，在没有平行数据、且语言间标注存在差异的情况下，其方法在多个语言的 SRL 性能上仍优于单语基线。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+              }
+            ]
+          },
+          {
+            "key": "english_supervision",
+            "text": "论文为 CoNLL 2009 数据集中每种语言训练多个解析器：一个传统单语版本，以及额外引入数据集英文部分监督的变体。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+              }
+            ]
+          },
+          {
+            "key": "parameter_sharing",
+            "text": "作者认为，跨语言共享统计强度不依赖于标注惯例的显式对齐，可以简单地通过参数共享实现。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+              }
+            ]
+          },
+          {
+            "key": "language_specific_labels",
+            "text": "与 Universal Dependencies 数据集不同，CoNLL 2009 的语义标签空间完全是语言特定的，使该任务更具挑战性。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+              }
+            ]
+          },
+          {
+            "key": "seven_languages",
+            "text": "系统在 CoNLL-2009 共享任务的语义角色标注部分、全部七种语言上评估：Catalan、Chinese、Czech、English、German、Japanese 和 Spanish。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-d2d99eebfd526f64d0796b70"
+              }
+            ]
+          },
+          {
+            "key": "annotation_differences",
+            "text": "英语使用 PropBank 角色标签；Catalan 与 Spanish 共享大部分标签（来自同一 AnCora 语料），英语与德语共享部分标签，而 Czech 和 Japanese 各有自己的参数标签集，多数与英语或彼此没有明确对应。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-d2d99eebfd526f64d0796b70"
+              }
+            ]
+          },
+          {
+            "key": "german_few_examples",
+            "text": "由于德语数据集的标注是半自动投影构建的，超过一半的德语句子不含已标注的谓词和论元，因此德语训练实例最少。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-d2d99eebfd526f64d0796b70"
+              }
+            ]
+          },
+          {
+            "key": "improvement_pattern",
+            "text": "简单 polyglot 训练优于单语训练，但捷克语没有变化；训练样本最少的语言（德语、日语、加泰罗尼亚语）改进最大，而捷克语或汉语等大数据集语言改进很小或没有改进。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+              }
+            ]
+          },
+          {
+            "key": "variant_models",
+            "text": "语言 ID 模型表现不一致，在某些情况下（包括捷克语）优于简单 polyglot 模型，但并非所有情况都如此；语言特定 LSTM 在加泰罗尼亚语和汉语等少数语言上表现最好，但在其他语言上最差。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+              }
+            ]
+          },
+          {
+            "key": "syntax_comparison",
+            "text": "作者报告了各语言最先进系统的性能，这些系统（除 marcheggiani2017lstm 外）都显式使用句法特征；其模型不依赖句法解析器，因此更适用于低资源语言，但结果表明句法信息对德语取得强性能很关键。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+              }
+            ]
+          },
+          {
+            "key": "chinese_parity",
+            "text": "论文称其基线在汉语上与已发表的最佳分数相当，并在大多数语言上表现强劲。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7875.448500039056
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d13-d13-t4",
+        "entities": {
+          "paper": "Polyglot Semantic Role Labeling",
+          "paper_id": "1805.11598"
+        },
+        "facts": {
+          "resources_source": {
+            "text": "The polyglot semantic role labeler is built by combining resources from a pair of languages in the CoNLL 2009 shared task.",
+            "evidence_ids": [
+              "c-8b21bd8c4c41f76753d2758d"
+            ],
+            "turn_id": "61f5801ecf3c4b87b9643b90c42559a3"
+          },
+          "dataset_languages": {
+            "text": "The CoNLL 2009 dataset includes seven languages (Catalan, Chinese, Czech, English, German, Japanese and Spanish), and the system is evaluated on the semantic role labeling portion of this shared task.",
+            "evidence_ids": [
+              "c-d2d99eebfd526f64d0796b70"
+            ],
+            "turn_id": "61f5801ecf3c4b87b9643b90c42559a3"
+          },
+          "resources_combined": {
+            "text": "该方法从 CoNLL 2009 共享任务中一对语言的资源进行组合，以构建 polyglot 语义角色标注器。",
+            "evidence_ids": [
+              "c-8b21bd8c4c41f76753d2758d"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "no_parallel_data": {
+            "text": "该研究指出，在没有平行数据、且语言间标注存在差异的情况下，其方法在多个语言的 SRL 性能上仍优于单语基线。",
+            "evidence_ids": [
+              "c-8b21bd8c4c41f76753d2758d"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "english_supervision": {
+            "text": "论文为 CoNLL 2009 数据集中每种语言训练多个解析器：一个传统单语版本，以及额外引入数据集英文部分监督的变体。",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "parameter_sharing": {
+            "text": "作者认为，跨语言共享统计强度不依赖于标注惯例的显式对齐，可以简单地通过参数共享实现。",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "language_specific_labels": {
+            "text": "与 Universal Dependencies 数据集不同，CoNLL 2009 的语义标签空间完全是语言特定的，使该任务更具挑战性。",
+            "evidence_ids": [
+              "c-ab37506cf0e270f6ab4a5722"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "seven_languages": {
+            "text": "系统在 CoNLL-2009 共享任务的语义角色标注部分、全部七种语言上评估：Catalan、Chinese、Czech、English、German、Japanese 和 Spanish。",
+            "evidence_ids": [
+              "c-d2d99eebfd526f64d0796b70"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "annotation_differences": {
+            "text": "英语使用 PropBank 角色标签；Catalan 与 Spanish 共享大部分标签（来自同一 AnCora 语料），英语与德语共享部分标签，而 Czech 和 Japanese 各有自己的参数标签集，多数与英语或彼此没有明确对应。",
+            "evidence_ids": [
+              "c-d2d99eebfd526f64d0796b70"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "german_few_examples": {
+            "text": "由于德语数据集的标注是半自动投影构建的，超过一半的德语句子不含已标注的谓词和论元，因此德语训练实例最少。",
+            "evidence_ids": [
+              "c-d2d99eebfd526f64d0796b70"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "improvement_pattern": {
+            "text": "简单 polyglot 训练优于单语训练，但捷克语没有变化；训练样本最少的语言（德语、日语、加泰罗尼亚语）改进最大，而捷克语或汉语等大数据集语言改进很小或没有改进。",
+            "evidence_ids": [
+              "c-bb02e8199a80bde6c03e4d79"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "variant_models": {
+            "text": "语言 ID 模型表现不一致，在某些情况下（包括捷克语）优于简单 polyglot 模型，但并非所有情况都如此；语言特定 LSTM 在加泰罗尼亚语和汉语等少数语言上表现最好，但在其他语言上最差。",
+            "evidence_ids": [
+              "c-bb02e8199a80bde6c03e4d79"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "syntax_comparison": {
+            "text": "作者报告了各语言最先进系统的性能，这些系统（除 marcheggiani2017lstm 外）都显式使用句法特征；其模型不依赖句法解析器，因此更适用于低资源语言，但结果表明句法信息对德语取得强性能很关键。",
+            "evidence_ids": [
+              "c-bb02e8199a80bde6c03e4d79"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          },
+          "chinese_parity": {
+            "text": "论文称其基线在汉语上与已发表的最佳分数相当，并在大多数语言上表现强劲。",
+            "evidence_ids": [
+              "c-bb02e8199a80bde6c03e4d79"
+            ],
+            "turn_id": "4308c2c3e85f49ff8347960a876fec6d"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1805.11598"
+          ]
+        }
+      },
+      "elapsed_ms": 2.9884999385103583
+    }
+  ],
+  "started_at": 1792723118.2380078,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "resources_combined",
+        "text": "该方法从 CoNLL 2009 共享任务中一对语言的资源进行组合，以构建 polyglot 语义角色标注器。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+          }
+        ]
+      },
+      {
+        "key": "no_parallel_data",
+        "text": "该研究指出，在没有平行数据、且语言间标注存在差异的情况下，其方法在多个语言的 SRL 性能上仍优于单语基线。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+          }
+        ]
+      },
+      {
+        "key": "english_supervision",
+        "text": "论文为 CoNLL 2009 数据集中每种语言训练多个解析器：一个传统单语版本，以及额外引入数据集英文部分监督的变体。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+          }
+        ]
+      },
+      {
+        "key": "parameter_sharing",
+        "text": "作者认为，跨语言共享统计强度不依赖于标注惯例的显式对齐，可以简单地通过参数共享实现。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+          }
+        ]
+      },
+      {
+        "key": "language_specific_labels",
+        "text": "与 Universal Dependencies 数据集不同，CoNLL 2009 的语义标签空间完全是语言特定的，使该任务更具挑战性。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+          }
+        ]
+      },
+      {
+        "key": "seven_languages",
+        "text": "系统在 CoNLL-2009 共享任务的语义角色标注部分、全部七种语言上评估：Catalan、Chinese、Czech、English、German、Japanese 和 Spanish。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-d2d99eebfd526f64d0796b70"
+          }
+        ]
+      },
+      {
+        "key": "annotation_differences",
+        "text": "英语使用 PropBank 角色标签；Catalan 与 Spanish 共享大部分标签（来自同一 AnCora 语料），英语与德语共享部分标签，而 Czech 和 Japanese 各有自己的参数标签集，多数与英语或彼此没有明确对应。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-d2d99eebfd526f64d0796b70"
+          }
+        ]
+      },
+      {
+        "key": "german_few_examples",
+        "text": "由于德语数据集的标注是半自动投影构建的，超过一半的德语句子不含已标注的谓词和论元，因此德语训练实例最少。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-d2d99eebfd526f64d0796b70"
+          }
+        ]
+      },
+      {
+        "key": "improvement_pattern",
+        "text": "简单 polyglot 训练优于单语训练，但捷克语没有变化；训练样本最少的语言（德语、日语、加泰罗尼亚语）改进最大，而捷克语或汉语等大数据集语言改进很小或没有改进。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+          }
+        ]
+      },
+      {
+        "key": "variant_models",
+        "text": "语言 ID 模型表现不一致，在某些情况下（包括捷克语）优于简单 polyglot 模型，但并非所有情况都如此；语言特定 LSTM 在加泰罗尼亚语和汉语等少数语言上表现最好，但在其他语言上最差。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+          }
+        ]
+      },
+      {
+        "key": "syntax_comparison",
+        "text": "作者报告了各语言最先进系统的性能，这些系统（除 marcheggiani2017lstm 外）都显式使用句法特征；其模型不依赖句法解析器，因此更适用于低资源语言，但结果表明句法信息对德语取得强性能很关键。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+          }
+        ]
+      },
+      {
+        "key": "chinese_parity",
+        "text": "论文称其基线在汉语上与已发表的最佳分数相当，并在大多数语言上表现强劲。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "cadee4b217d825646c2db963d36b8807fb6c6e11fba3feaacb84aaa46bbc1635",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4262,
+        "completion_tokens": 101,
+        "total_tokens": 4363,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4134,
+        "output_tokens": 101,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2821.2431999854743
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "f81e36a05231698c18d9eb3aaa0546eeb5fa01442de694131080f5147e9f7600",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4536,
+        "completion_tokens": 148,
+        "total_tokens": 4684,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4536,
+        "output_tokens": 148,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4050.03309994936
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "4f1e664d851e0b0bc969870df5cf3061e3a13bb42f3bca749e393cf02e6eeee3",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4638,
+        "completion_tokens": 1029,
+        "total_tokens": 5667,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4510,
+        "output_tokens": 1029,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7874.878200003877
+    }
+  ]
+}

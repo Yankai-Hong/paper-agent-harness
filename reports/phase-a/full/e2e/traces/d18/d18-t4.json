@@ -1,0 +1,247 @@
+{
+  "turn_id": "d18-t4",
+  "session_id": "d18",
+  "question": "请给出我今天私下运行的未公开实验 run-17 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-17 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.010599964298307896
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-17 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-17 未公开实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 12853.963800007477
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.00200001522898674
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d18",
+        "entities": {
+          "paper_title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+          "paper_id": "1910.03355"
+        },
+        "facts": {
+          "training_corpora_dutch_bible": {
+            "text": "荷兰语《圣经》语料由多个版本组成：1637年、1657年、1888年和2010年版本；作者仅使用1637年版本（作为原始文档）和1888年版本（将19世纪荷兰语视为现代荷兰语）。",
+            "evidence_ids": [
+              "c-2b39005de67979a14fc26cd7"
+            ],
+            "turn_id": "d18-t1"
+          },
+          "training_corpora_el_quijote": {
+            "text": "第二个语料是 El Quijote，包含17世纪西班牙小说及其对应的21世纪版本。",
+            "evidence_ids": [
+              "c-2b39005de67979a14fc26cd7"
+            ],
+            "turn_id": "d18-t1"
+          },
+          "el_conde_lucanor_test_only": {
+            "text": "第三个语料是 El Conde Lucanor，包含14世纪西班牙小说及其对应的21世纪版本；由于语料规模小，作者决定仅将其用作测试。",
+            "evidence_ids": [
+              "c-2b39005de67979a14fc26cd7"
+            ],
+            "turn_id": "d18-t1"
+          },
+          "el_conde_lucanor_borrowed_systems": {
+            "text": "由于无法找到合适的训练语料，作者使用为 El Quijote 构建的系统来现代化 El Conde Lucanor，尽管原始文档属于不同时期。",
+            "evidence_ids": [
+              "c-2b39005de67979a14fc26cd7"
+            ],
+            "turn_id": "d18-t1"
+          },
+          "small_training_corpora": {
+            "text": "作者指出训练语料规模小是 NMT 的一个众所周知的问题，并认为这很可能是 SMT 在所有情况下效果最好的原因。",
+            "evidence_ids": [
+              "c-98f92e50001a68c58a20c08e"
+            ],
+            "turn_id": "d18-t1"
+          },
+          "future_enrich_training_corpus": {
+            "text": "作为未来工作，作者希望探索用额外数据丰富训练语料的技术。",
+            "evidence_ids": [
+              "c-e242628d1556d3af58dbaeaa"
+            ],
+            "turn_id": "d18-t1"
+          },
+          "corpora_used": {
+            "text": "该框架使用的第一个语料库是荷兰圣经（Dutch Bible），包含1637、1657、1888和2010四个版本；由于2010版缺少最后几卷且翻译被认为不太可靠，并且荷兰语在1637至1657年间变化不大，作者只使用1637版作为原始文档、1888版作为现代荷兰语。",
+            "evidence_ids": [
+              "c-2b39005de67979a14fc26cd7"
+            ],
+            "turn_id": "d18-t2"
+          },
+          "quijote_corpus": {
+            "text": "第二个语料库是《堂吉诃德》（El Quijote），包含17世纪西班牙语原版和对应的21世纪版本。",
+            "evidence_ids": [
+              "c-2b39005de67979a14fc26cd7"
+            ],
+            "turn_id": "d18-t2"
+          },
+          "conde_lucanor_corpus": {
+            "text": "第三个语料库是《卢卡诺尔伯爵》（El Conde Lucanor），包含14世纪西班牙语原版和对应的21世纪版本；由于语料规模小，作者决定仅将其用作测试，并且由于找不到合适的训练语料，他们使用为《堂吉诃德》构建的系统来现代化《卢卡诺尔伯爵》，尽管原文属于不同时期。",
+            "evidence_ids": [
+              "c-2b39005de67979a14fc26cd7"
+            ],
+            "turn_id": "d18-t2"
+          },
+          "small_corpora_smt_better": {
+            "text": "论文报告称，在比较SMT和NMT方法时，SMT在所有情况下都取得了最佳结果；作者认为这很可能是因为训练语料规模小——这是NMT中一个众所周知的问题。",
+            "evidence_ids": [
+              "c-98f92e50001a68c58a20c08e"
+            ],
+            "turn_id": "d18-t2"
+          },
+          "conde_lucanor_results": {
+            "text": "报告称，《卢卡诺尔伯爵》是一个例外：SMT在TER上有显著改进但在BLEU上更差，NMT在BLEU和TER上都得到最差结果；这很可能是因为使用了用《堂吉诃德》训练的系统来现代化《卢卡诺尔伯爵》。",
+            "evidence_ids": [
+              "c-98f92e50001a68c58a20c08e"
+            ],
+            "turn_id": "d18-t2"
+          },
+          "effort_reduction": {
+            "text": "报告称，SMT和NMT方法都显著减少了现代化荷兰圣经（WSR最多48点、MAR最多8点）和《堂吉诃德》（WSR最多7点、MAR最多1点）所需的人力；而对《卢卡诺尔伯爵》，两种方法都导致生成无错现代版本所需人力增加，因为该语料的现代化质量很低，系统持续生成错误后缀。",
+            "evidence_ids": [
+              "c-98f92e50001a68c58a20c08e"
+            ],
+            "turn_id": "d18-t2"
+          },
+          "related_work_training_data": {
+            "text": "在相关工作中，论文提到有研究从原始平行语料中抽取平行短语并将其作为额外训练数据用于其NMT方法。",
+            "evidence_ids": [
+              "c-e0fab0266b412df784700e67"
+            ],
+            "turn_id": "d18-t2"
+          },
+          "future_work": {
+            "text": "论文在定性分析中指出，NMT生成不存在词（如durdos和duradas）的问题很可能由字节对编码过程中的错误分词导致，并应在未来工作中解决。",
+            "evidence_ids": [
+              "c-a60e0e164c02b9a90b0b2bf3"
+            ],
+            "turn_id": "d18-t2"
+          }
+        },
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-17 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.03355"
+          ]
+        }
+      },
+      "elapsed_ms": 5.047600017860532
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792725700.0312395,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 11,
+      "request_hash": "bc9506c63a3e90103ad58f4153463cb42acb882356488faf0b2f26eb41921507",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6293,
+        "completion_tokens": 52,
+        "total_tokens": 6345,
+        "prompt_tokens_details": {
+          "cached_tokens": 256,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6037,
+        "output_tokens": 52,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 12852.152000064962
+    }
+  ]
+}

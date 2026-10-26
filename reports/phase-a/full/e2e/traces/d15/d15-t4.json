@@ -1,0 +1,231 @@
+{
+  "turn_id": "d15-t4",
+  "session_id": "d15",
+  "question": "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.009200070053339005
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-14 实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "run_id": "run-14",
+          "metric": "accuracy"
+        }
+      },
+      "elapsed_ms": 2788.71390002314
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.002100015990436077
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d15",
+        "entities": {
+          "paper_title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        },
+        "facts": {
+          "siamese_birnn_used": {
+            "text": "论文使用端到端的 Siamese 双向循环神经网络（Siamese bidirectional recurrent neural network）从可比较的维基百科多语文章中生成平行句，其中 Siamese BiRNN 编码器采用 GRU 作为激活函数。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f",
+              "c-1ef4f6dc83e93c39e90f82dc"
+            ],
+            "turn_id": "d15-t1"
+          },
+          "nmt_evaluated": {
+            "text": "论文在所采集的数据集上评估了 NMT 和基于短语的 SMT 系统，并显示两者在英语–印地语和英语–泰米尔语低资源语言对上 BLEU 分数均有提升。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f"
+            ],
+            "turn_id": "d15-t1"
+          },
+          "nmt_model_used": {
+            "text": "该论文使用端到端 Siamese 双向循环神经网络（Siamese bidirectional recurrent neural network），从 Wikipedia 的可比多语文章生成平行句对。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_encoder_gru": {
+            "text": "抽取平行句对时采用 Siamese BiRNN 编码器，并以 GRU 作为激活函数；该方法只需一个平行语料，不需要多步分类流程。",
+            "evidence_ids": [
+              "c-1ef4f6dc83e93c39e90f82dc"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_end_to_end_no_features": {
+            "text": "该神经模型端到端学习，只用少量平行句对作为 bootstrap set，不需要特征工程，也不需要预先存在的翻译系统。",
+            "evidence_ids": [
+              "c-2de814ddcd37609de37a6670",
+              "c-713c262decd20b8f527dcc24"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_eval_bleu_with_without": {
+            "text": "论文通过比较使用与不使用抽取出的句对时机器翻译系统的 BLEU 分数，来验证该方法的有效性。",
+            "evidence_ids": [
+              "c-2de814ddcd37609de37a6670"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_eval_language_pairs": {
+            "text": "实验针对英语–印地语（English–Hindi）和英语–泰米尔语（English–Tamil）两个低资源语言对。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f",
+              "c-1ef4f6dc83e93c39e90f82dc"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_eval_both_systems": {
+            "text": "与仅在这些语言对上收集的有限双语语料上训练相比，使用抽取获得的数据集提升了 NMT 和基于短语的 SMT 系统的 BLEU 分数。",
+            "evidence_ids": [
+              "c-1dd6dc3c2f7d9eb29dc26d9f"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_eval_bleu_gains": {
+            "text": "论文报告的 BLEU 分数百分比提升为：英语–泰米尔语 11.03%，英语–印地语 14.7%，归因于使用由该神经架构从可比语料中抽取的平行句对。",
+            "evidence_ids": [
+              "c-1ef4f6dc83e93c39e90f82dc"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_motivation_oov": {
+            "text": "论文的动机之一是解决低资源机器翻译系统的高 OOV 率问题，通过利用互联网上不断增多的多语内容来丰富双语词典。",
+            "evidence_ids": [
+              "c-2de814ddcd37609de37a6670"
+            ],
+            "turn_id": "d15-t2"
+          },
+          "nmt_prior_work_contrast": {
+            "text": "相关工作报告的多数方法使用预先存在的翻译系统对候选句对排序，或使用依赖词重叠等表层特征的统计机器学习最大熵分类器；论文称其深度神经网络模型不需要特征工程，也不需要预先存在的翻译系统。",
+            "evidence_ids": [
+              "c-713c262decd20b8f527dcc24"
+            ],
+            "turn_id": "d15-t2"
+          }
+        },
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1806.09652"
+          ]
+        }
+      },
+      "elapsed_ms": 5.615399917587638
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792725641.6368628,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "82ed9552e64e10bf6acf2858d0c24d7023a7104ae5d04a9b80b61e86bb0967c8",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5850,
+        "completion_tokens": 63,
+        "total_tokens": 5913,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5594,
+        "output_tokens": 63,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2787.393799982965
+    }
+  ]
+}

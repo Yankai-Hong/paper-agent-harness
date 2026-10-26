@@ -1,0 +1,336 @@
+{
+  "turn_id": "ac09a6ca027d4ab79e65141489a1c930",
+  "session_id": "d16-d16-t4",
+  "question": "顺便查一下我明天的私人银行账户余额。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.005900044925510883
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "查询私人银行账户余额",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 3215.8463000087067
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.002500019036233425
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d16-d16-t4",
+        "entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models",
+          "paper_id": "1612.02695",
+          "paper_1": "Towards better decoding and language model integration in sequence to sequence models",
+          "paper_id_1": "1612.02695",
+          "paper_2": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+          "paper_id_2": "1908.10090"
+        },
+        "facts": {
+          "two_shortcomings": {
+            "text": "论文指出两个缺陷：模型对其预测过度自信（overconfidence），以及在使用语言模型时倾向产生不完整的转写。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "reported_wer": {
+            "text": "作者提出针对这两个问题的实用解决方案，在WSJ数据集上：不使用单独语言模型时达到10.6% WER，结合三元语言模型时达到6.7% WER。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "label_smoothing_overconfidence": {
+            "text": "将标签平滑（label smoothing）用于缓解模型过度自信：在计算训练代价时平滑真实标签分布，把一部分概率质量分配给非正确类别，从而阻止模型把所有概率集中到单个token上。",
+            "evidence_ids": [
+              "c-2a97da9c8e3dd5b7f857934d"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "neighborhood_smoothing": {
+            "text": "作者提出邻域平滑（neighborhood smoothing）方案：利用转写的时间结构，把剩余概率质量分配给转写中相邻的token，帮助模型从beam search错误中恢复。",
+            "evidence_ids": [
+              "c-2a97da9c8e3dd5b7f857934d"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "neighborhood_smoothing_effects": {
+            "text": "使用邻域平滑训练后，模型被正则化，贪婪解码错误率降低近3个百分点；预测熵更高，使beam search无需温度控制即可找到好的解，也不需要控制EOS token的发出。",
+            "evidence_ids": [
+              "c-2a97da9c8e3dd5b7f857934d"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "temperature_and_eos_constraint": {
+            "text": "在解码时作者不改变beam search代价，而是约束EOS token仅在其余概率处于最可能token附近窄范围时才发出；温度升高时beam search能找到更好的解，但需防止转写被截断。",
+            "evidence_ids": [
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "three_partial_transcript_strategies": {
+            "text": "针对不完整转写问题，作者比较了三种策略：第一，不改变beam search准则，但除非EOS概率处于最可能token的设定范围内，否则禁止发出EOS；第二，扩展beam search准则以鼓励长转写；第三，提出coverage项以防止循环。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "eos_strategy_limitation": {
+            "text": "EOS约束策略能防止截断，但对转写中部的遗漏无效。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "coverage_term": {
+            "text": "为防循环，作者提出coverage项，统计累计注意力超过某阈值的帧数；一旦帧的累计注意力超过阈值即被视为已选，后续再选该帧不会降低解码代价，且coverage在每个beam search迭代中用至今所有注意力权重重新计算。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "b806616f20824da6a967086c04b90839"
+          },
+          "observed_shortcomings": {
+            "text": "该论文观察到其基于注意力的seq2seq语音识别系统有两个缺陷：预测过度自信，以及在使用语言模型时倾向于产生不完整转写。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "overconfidence_mechanism": {
+            "text": "论文指出seq2seq模型常给出非常尖锐的预测，只需考虑少数假设即可找到最可能的转写，但高置信度会降低束搜索所得转写的多样性。",
+            "evidence_ids": [
+              "c-0b5bc372895d6d0706b56a8e"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "partial_transcripts_beam": {
+            "text": "使用语言模型时，宽束搜索常产生不完整转写；窄束由于隐式假设剪枝使该问题不明显。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "strategy_eos_restriction": {
+            "text": "第一种策略不改变束搜索准则，但除非EOS概率处于最可能token概率的设定范围内，否则禁止输出EOS；该策略可防止截断，但对转写中间的遗漏无效。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "strategy_length_term": {
+            "text": "第二种策略扩展束搜索准则以鼓励更长的转写，基于转写长度的项此前被用于CTC和seq2seq网络，但据报道使用困难，因为束搜索会在录音的某些部分循环，需要额外约束。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "strategy_coverage_term": {
+            "text": "为防止循环，论文提出使用覆盖项，统计累计注意力超过某阈值的帧数。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "coverage_mechanism": {
+            "text": "覆盖准则通过将累计注意力越过阈值的帧计为已选、此后再选该帧不降低解码代价，来防止在录音上循环；覆盖在每个束搜索迭代中用此前产生的全部注意力权重重新计算。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "wer_results": {
+            "text": "论文报告在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型为10.6% WER，结合三元语言模型为6.7% WER。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "conclusion_regularization_decoding": {
+            "text": "论文结论称，通过高效正则化和谨慎解码，seq2seq语音识别方法可以与其他非HMM技术（如CTC）竞争。",
+            "evidence_ids": [
+              "c-584f58479e6aaaf4703e5890"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "system_basis": {
+            "text": "该系统基于Listen, Attend and Spell网络，是一种注意力seq2seq模型，可直接将音频录音转写为以空格分隔的字符序列。",
+            "evidence_ids": [
+              "c-765ec796280535cd105fabf4"
+            ],
+            "turn_id": "bc74c75584ac4f6b9fd84f5cfdcf9298"
+          },
+          "cat_solution_exact_search": {
+            "text": "该论文提出的核心方案是一种精确推断过程（基于束搜索与深度优先搜索结合），用于为神经序列模型找到全局最优模型分数。",
+            "evidence_ids": [
+              "c-e75fba389a988f777decdfb0"
+            ],
+            "turn_id": "bcf92934c3d449a19c804204414bec3a"
+          },
+          "cat_solution_length_constraint": {
+            "text": "该论文通过以最小翻译长度约束搜索，表明空翻译问题的根源在于模型对较短翻译的内在偏好。",
+            "evidence_ids": [
+              "c-e75fba389a988f777decdfb0"
+            ],
+            "turn_id": "bcf92934c3d449a19c804204414bec3a"
+          },
+          "cat_solution_available_impl": {
+            "text": "该精确推断方案的开源实现在 SGNMT 解码器中提供。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "bcf92934c3d449a19c804204414bec3a"
+          },
+          "cat_testset_size": {
+            "text": "该论文实验使用完整的英德 WMT news-test2015 测试集，共 2,169 句。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "bcf92934c3d449a19c804204414bec3a"
+          },
+          "seq2seq_solution_temperature_eos": {
+            "text": "该论文考察了通过温度调节使分布更平滑、并约束仅在 EOS 概率接近最可能词时才生成 EOS 的策略，以减少删除错误和截断转录；温度变化不影响贪心解码的最可能词选择。",
+            "evidence_ids": [
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "bcf92934c3d449a19c804204414bec3a"
+          },
+          "seq2seq_testset_size": {
+            "text": "提供的证据仅表明该论文使用的是 WSJ dev93 数据集，并未给出其规模。",
+            "evidence_ids": [
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "bcf92934c3d449a19c804204414bec3a"
+          },
+          "comparability_no": {
+            "text": "两篇论文不可直接比较测试集规模：一篇使用 2,169 句的 WMT15 英德测试集，另一篇提供的证据只提到 WSJ dev93 而未说明大小；且两者任务与实验设置不同（NMT 对比字符级序列到序列解码），解决方案针对的缺陷也不同。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0",
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "bcf92934c3d449a19c804204414bec3a"
+          }
+        },
+        "unresolved": [
+          "顺便查一下我明天的私人银行账户余额。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1612.02695",
+            "1908.10090"
+          ]
+        }
+      },
+      "elapsed_ms": 3.323800046928227
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792723182.7429245,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "e43f81c0626b8ae1f5f75001be30b5a37e92eac5d3a79bc489fba92bc02b8285",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8666,
+        "completion_tokens": 39,
+        "total_tokens": 8705,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 8666,
+        "output_tokens": 39,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3214.2233999911696
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "turn_id": "492819dfb97f43ee9c9cd56b9900b264",
+  "session_id": "d24-d24-t4",
+  "question": "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.0070999376475811005
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-23 私有未公开实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 2992.2633999958634
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001400010660290718
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d24-d24-t4",
+        "entities": {
+          "paper": "Hungarian Layer: Logics Empowered Neural Architecture",
+          "paper_id": "1712.02555"
+        },
+        "facts": {
+          "training_dataset": {
+            "text": "模型在公开基准数据集“Quora Question Pairs”上训练，用于释义识别任务。",
+            "evidence_ids": [
+              "c-70876748d6ad7c5c4f480427"
+            ],
+            "turn_id": "abbf4c832e414797b2e54580c4f0f0e1"
+          },
+          "logic_flow_missing": {
+            "text": "论文指出神经架构是纯数值框架，缺乏逻辑流（如 if、for、while），因此诸如 Hungarian 算法、A* 搜索、决策树等传统算法无法嵌入该范式。",
+            "evidence_ids": [
+              "c-e02ebd81f0f8210ef85fd8bf"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "dynamic_calculus_graph": {
+            "text": "论文将微积分图改造为由逻辑流引导的动态过程，使传统算法能够赋能数值神经网络。",
+            "evidence_ids": [
+              "c-e02ebd81f0f8210ef85fd8bf"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "three_step_model": {
+            "text": "在句子匹配任务上，模型先用 BiLSTM 解析句子，然后由 Hungarian 层对齐匹配位置，最后用另一个 BiLSTM 转换匹配结果用于 soft-max 回归。",
+            "evidence_ids": [
+              "c-e02ebd81f0f8210ef85fd8bf"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "attention_weakness": {
+            "text": "论文认为基于 soft-max 加权的注意力机制虽能挑出最相似/最不相似的部分，但在建模对齐的未匹配部分方面较弱，而这些部分是识别复述的关键证据。",
+            "evidence_ids": [
+              "c-960c4cb907b38a179597b601"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "exclusive_alignment": {
+            "text": "论文将句子匹配中的对齐表述为任务分配问题并由 Hungarian 算法求解；该算法以排他方式给出理论最优对齐关系，这种排他性刻画了对齐的未匹配部分。",
+            "evidence_ids": [
+              "c-960c4cb907b38a179597b601"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "yard_inside_example": {
+            "text": "论文举例说明：由于 Hungarian 层以排他方式分配对齐对，匹配部分先被对齐，随后词“yard”会以负相似度被分配给词“inside”，从而成为判别的强证据。",
+            "evidence_ids": [
+              "c-960c4cb907b38a179597b601"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "three_steps_intro": {
+            "text": "论文介绍模型执行该任务分三步：BiLSTM 解析输入句子为隐藏表示，Hungarian 层利用隐藏表示提取对齐的未匹配部分，最后用余弦相似度度量这些部分以做最终判别。",
+            "evidence_ids": [
+              "c-70876748d6ad7c5c4f480427"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "dynamic_graph_training": {
+            "text": "针对 Hungarian 算法嵌入神经架构给学习过程带来的挑战，论文以动态构图方式修改反向传播：前向传播中根据对齐位置对动态构建 Hungarian 层与下一层之间的连接，反向传播则沿动态构建的连接进行，从而避免分支与不可微问题，并保持端到端优化。",
+            "evidence_ids": [
+              "c-f1c9938e8916274c07715a88"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "quora_experiments": {
+            "text": "论文在公开基准数据集“Quora Question Pairs”上进行复述识别实验，结果显示模型大幅且显著优于其他基线。",
+            "evidence_ids": [
+              "c-70876748d6ad7c5c4f480427"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          },
+          "contributions": {
+            "text": "论文声明的贡献包括：提出关注两句对齐未匹配部分的新视角并提出 Hungarian 层以提取这些部分，实现两序列间的硬且排他的对齐且可通过端到端反向传播学习参数；以及模型大幅优于其他基线。",
+            "evidence_ids": [
+              "c-70876748d6ad7c5c4f480427"
+            ],
+            "turn_id": "64d14af206d34559b6e3bb395389e201"
+          }
+        },
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1712.02555"
+          ]
+        }
+      },
+      "elapsed_ms": 4.138599964790046
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792723289.075184,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "dd95d111c7de9c5de5bfcb06f841a049f9675085f039e2585ecc3a0188ec2c6d",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5777,
+        "completion_tokens": 53,
+        "total_tokens": 5830,
+        "prompt_tokens_details": {
+          "cached_tokens": 256,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5521,
+        "output_tokens": 53,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2991.0926999291405
+    }
+  ]
+}

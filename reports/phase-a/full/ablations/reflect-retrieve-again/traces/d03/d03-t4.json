@@ -1,0 +1,177 @@
+{
+  "turn_id": "d03-t4",
+  "session_id": "d03",
+  "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.013999990187585354
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-02 未公开实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 2262.5908999470994
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.002200016751885414
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d03",
+        "entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking",
+          "dataset": "FEVER",
+          "paper_id": "1910.07154"
+        },
+        "facts": {
+          "fever_size": {
+            "text": "FEVER数据集包含约185k条claims，来自5.4M篇Wikipedia文章构成的语料，并被描述为最大的数据集。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t1"
+          },
+          "fever_claim_count": {
+            "text": "论文指出 FEVER 是最大的数据集，包含约 185k 条来自 5.4M 篇维基百科文章语料的 claims。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "fever_corpus_size": {
+            "text": "根据同一段描述，FEVER 的语料由 5.4M 篇维基百科文章构成。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          },
+          "fever_label_set": {
+            "text": "这些 claims 根据证据集被标注为“SUPPORTS”、“REFUTES”或“NOT ENOUGH INFO”。",
+            "evidence_ids": [
+              "c-ab6380532554bfd8cf2dc78b"
+            ],
+            "turn_id": "d03-t2"
+          }
+        },
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154"
+          ]
+        }
+      },
+      "elapsed_ms": 2.5461999466642737
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792724051.5276132,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 9,
+      "request_hash": "80d2dcf40b0ae7bc6447f64cb8418a67c4fdba100c35c7676fbce2d7ccc25056",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4225,
+        "completion_tokens": 46,
+        "total_tokens": 4271,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4225,
+        "output_tokens": 46,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2260.954499943182
+    }
+  ]
+}

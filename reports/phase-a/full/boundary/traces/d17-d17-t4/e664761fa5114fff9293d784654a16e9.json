@@ -1,0 +1,239 @@
+{
+  "turn_id": "e664761fa5114fff9293d784654a16e9",
+  "session_id": "d17-d17-t4",
+  "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007600057870149612
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "compare",
+        "standalone_query": "On NMT Search Errors and Model Errors: Cat Got Your Tongue? 与 An Interactive Machine Translation Framework for Modernizing Historical Documents 的测试集规模及训练数据类型的比较",
+        "needs_clarification": true,
+        "paper_ids": [
+          "1908.10090",
+          "1910.03355"
+        ],
+        "resolved_entities": {
+          "paper_1": "1908.10090",
+          "paper_2": "1910.03355",
+          "ambiguous_referent": "它"
+        }
+      },
+      "elapsed_ms": 3328.2134999753907
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "clarify"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "clarify",
+        "claims": [],
+        "text": "请明确所指论文或比较对象。"
+      },
+      "elapsed_ms": 0.001300009898841381
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "clarify"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d17-d17-t4",
+        "entities": {
+          "paper": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+          "paper_id": "1908.10090"
+        },
+        "facts": {
+          "test_set_name": {
+            "text": "实验在完整的 English-German WMT news-test2015 测试集上进行。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "6f38d6ad6d444aa5b9e5ef0589b0f7b1"
+          },
+          "abstract_test_set": {
+            "text": "摘要中提到，精确搜索用于在 Transformer base 模型下为整个 WMT15 English-German 测试集寻找全局最优模型分数。",
+            "evidence_ids": [
+              "c-e75fba389a988f777decdfb0"
+            ],
+            "turn_id": "6f38d6ad6d444aa5b9e5ef0589b0f7b1"
+          },
+          "test_set_size": {
+            "text": "本节所有实验均在完整的英语-德语 WMT news-test2015 测试集（2,169 句）上进行。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "test_set_setting": {
+            "text": "使用了在 WMT18 平行数据（排除 ParaCrawl）上用 Tensor2Tensor 训练的 Transformer base 模型，预处理包括 32K merges 的 BPE 联合子词切分，报告 cased BLEU。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "abstract_test_set_scope": {
+            "text": "摘要称作者用精确搜索在完整 WMT15 英语-德语测试集上寻找 Transformer base 模型下的全局最佳模型分数。",
+            "evidence_ids": [
+              "c-e75fba389a988f777decdfb0"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "empty_translation_rate": {
+            "text": "在 51.8% 的句子上，NMT 将全局最佳模型分数分配给空翻译（即单个 token）。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "beam100_search_errors": {
+            "text": "即使使用 beam size 100，也产生 53.62% 的搜索错误。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "beam10_vs_greedy": {
+            "text": "Beam-10 的搜索错误比贪心解码少 15.9%（绝对值）（57.68% 对 73.58%），但 Beam-100 只略微改善（53.62% 搜索错误），尽管比 beam-10 慢 10 倍。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "length_ratio_histogram": {
+            "text": "长度比直方图显示，beam search 大致遵循参考分布（但仍略短），而精确搜索因空翻译出现一个孤立的峰值。",
+            "evidence_ids": [
+              "c-c4953b9c4ea7ec3abed8a6e0"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "not_specific_to_base": {
+            "text": "论文称搜索错误与空翻译问题并非 Transformer base 模型特有；即使是其 WMT18 提交的高度优化的 Transformer Big 模型也有 25.8% 的空翻译。",
+            "evidence_ids": [
+              "c-eab7c8d41b717b99de9786db"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "long_sentences": {
+            "text": "对于几乎所有的长度超过 40 token 的句子，全局最佳翻译为空；即使排除模型偏好空翻译的句子，仍存在大量搜索错误。",
+            "evidence_ids": [
+              "c-eab7c8d41b717b99de9786db"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          },
+          "conclusion": {
+            "text": "结论指出：大 beam 下 BLEU 下降与搜索错误减少相联，模型常偏好空翻译，说明 NMT 在充分建模 adequacy 方面存在不足；长度约束精确搜索表明长度归一化之类的简单启发式方法不太可能令人满意地解决该问题。",
+            "evidence_ids": [
+              "c-00d41f58b53cea9f062e6619"
+            ],
+            "turn_id": "be09975acf274fe7b9c70ed994fd8a98"
+          }
+        },
+        "unresolved": [
+          "它更好吗？这里的“它”可能指刚才的任意一篇，比较指标我还没确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1908.10090"
+          ]
+        }
+      },
+      "elapsed_ms": 3.6732000298798084
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1792723206.0710762,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "clarify",
+  "answer": {
+    "decision": "clarify",
+    "claims": [],
+    "text": "请明确所指论文或比较对象。"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 11,
+      "request_hash": "14fd2b0d45dbe89268ffb6ef5875af1145303b2bf35dbceb4e21446a73af6b24",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6048,
+        "completion_tokens": 118,
+        "total_tokens": 6166,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6048,
+        "output_tokens": 118,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3326.72300003469
+    }
+  ]
+}

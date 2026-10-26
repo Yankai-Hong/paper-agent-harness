@@ -1,0 +1,789 @@
+{
+  "turn_id": "mem-d07-t2",
+  "session_id": "d07",
+  "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.0078000593930482864
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity 论文中使用了哪些语言学特征，以及哪些特征组合在句子层面和文档层面提升了分类准确率",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1603.08868"
+        ],
+        "resolved_entities": {
+          "paper": "1603.08868",
+          "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity"
+        }
+      },
+      "elapsed_ms": 3030.334400013089
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity 论文中使用了哪些语言学特征，以及哪些特征组合在句子层面和文档层面提升了分类准确率"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-61d8664ed913d55af106c226",
+          "c-286b13b3784d1f74ceba0544",
+          "c-586d116eae31c215e38562e2",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-beea12147a9836bd74234eab",
+          "c-95d315be5888ab22f7efbd62",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-722c98bda11c2c17a421a5b9",
+          "c-002c247f705e15494a446b37",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-bd6ddcafd35bece70ee89bcc"
+        ]
+      },
+      "elapsed_ms": 13.85149999987334
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-61d8664ed913d55af106c226",
+          "c-286b13b3784d1f74ceba0544",
+          "c-586d116eae31c215e38562e2",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-beea12147a9836bd74234eab",
+          "c-95d315be5888ab22f7efbd62",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-722c98bda11c2c17a421a5b9",
+          "c-002c247f705e15494a446b37",
+          "c-ca88145a3cfc94a727b01de7",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-bd6ddcafd35bece70ee89bcc"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-61d8664ed913d55af106c226"
+        ]
+      },
+      "elapsed_ms": 0.004700035788118839
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-61d8664ed913d55af106c226"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "retrieve_again",
+        "next_query": "A Readable Read linguistic features feature groups model features sentence-level document-level classification accuracy combination lexical features 1603.08868 Methods Features",
+        "reason": "已提供的证据覆盖摘要、引言、数据集和结论，能支持部分结论：文档级模型 F-score 0.8、准确率 81.3%，句子级 63.4%（相邻准确率 92%），使用全部特征组合相比仅词频/词汇特征在句子层面提升约 7%，文档级仅词频特征几乎与全特征组合同样预测力强。但问题的核心“具体使用了哪些语言学特征/特征组”在现有片段中未被列出（Methods/Features 章节缺失），因此无法完整回答特征清单及各具体特征组组合。需检索特征描述章节以补充精确证据。"
+      },
+      "elapsed_ms": 3608.459600014612
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 2,
+      "input": {
+        "query": "A Readable Read linguistic features feature groups model features sentence-level document-level classification accuracy combination lexical features 1603.08868 Methods Features"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-619fec3b6e7991135faaea3f",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-002c247f705e15494a446b37",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-95d315be5888ab22f7efbd62",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-586d116eae31c215e38562e2",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab",
+          "c-286b13b3784d1f74ceba0544",
+          "c-722c98bda11c2c17a421a5b9",
+          "c-61d8664ed913d55af106c226",
+          "c-bd6ddcafd35bece70ee89bcc",
+          "c-ca88145a3cfc94a727b01de7"
+        ]
+      },
+      "elapsed_ms": 7.622600067406893
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 2,
+      "input": {
+        "candidate_ids": [
+          "c-619fec3b6e7991135faaea3f",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-002c247f705e15494a446b37",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-95d315be5888ab22f7efbd62",
+          "c-47c5ecbffa06b11f999ffb18",
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-586d116eae31c215e38562e2",
+          "c-56c4d684e5cbe3b1ead9168e",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-beea12147a9836bd74234eab",
+          "c-286b13b3784d1f74ceba0544",
+          "c-722c98bda11c2c17a421a5b9",
+          "c-61d8664ed913d55af106c226",
+          "c-bd6ddcafd35bece70ee89bcc",
+          "c-ca88145a3cfc94a727b01de7"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-61d8664ed913d55af106c226",
+          "c-002c247f705e15494a446b37",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-95d315be5888ab22f7efbd62"
+        ]
+      },
+      "elapsed_ms": 0.006900052540004253
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 2,
+      "input": {
+        "evidence_ids": [
+          "c-cbb7f9f0d9a80a8b97da806b",
+          "c-619fec3b6e7991135faaea3f",
+          "c-eaa4f5b0a34eef1ffc8a4b09",
+          "c-f16421f0ee652e6ad37ac288",
+          "c-61d8664ed913d55af106c226",
+          "c-002c247f705e15494a446b37",
+          "c-c5afbdbef44280cb3fdb781d",
+          "c-95d315be5888ab22f7efbd62"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据完整覆盖了问题所问：论文明确列出五类语言学特征（length-based、lexical、morphological、syntactic、semantic），并分别给出文档层面与句子层面的特征组合对比结果（词频/词汇特征在文档层面即可达到与全特征集相近的性能；句子层面全特征集比单用词汇特征高约7%）。因此可以回答。不能回答/证据未覆盖的部分包括：各子特征组（morphological、syntactic、semantic）单独使用的具体准确率数值；特征总数Nr的具体含义与完整清单；以及各特征组在句子层面单独消融的详细数据。来源引用：1603.08868 的 Abstract、Introduction、Features、Document-Level Experiments、Sentence-Level Experiments、Conclusion。",
+        "next_query": ""
+      },
+      "elapsed_ms": 3657.5872999383137
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "five_feature_subgroups",
+            "text": "论文将特征分为五个子组：基于长度的、词汇的、形态的、句法的和语义的特征。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "length_based_features",
+            "text": "基于长度的特征包括句子token数、字符数、超长词（超过13个字符）以及瑞典传统可读性公式LIX；在句子层面分析时，用单句中的token数代替文本中token与句子数之比。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "lexical_features",
+            "text": "词汇特征基于Kelly词表（按词元提供CEFR等级和词频），使用每千词的发生率分数IncSc，涵盖各CEFR等级词的发生率、高于文本或句子等级的难词、不在Kelly表中的词、未找到词元的词以及平均对数词频。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "feature_sources",
+            "text": "特征设计参考了已有文献和一本面向瑞典语L2学习者的语法书。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              }
+            ]
+          },
+          {
+            "key": "document_level_combination",
+            "text": "在文档层面，仅使用词汇特征即可获得与完整特征集大致相当的性能（0.8 F 对 0.81 F），说明词汇信息单独就能区分课本文本的CEFR等级，词汇特征在文档层面更具主导性。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-002c247f705e15494a446b37"
+              },
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-619fec3b6e7991135faaea3f"
+              }
+            ]
+          },
+          {
+            "key": "document_level_metrics",
+            "text": "文档层面使用完整特征集时准确率为81%（相邻准确率97%），仅用词汇特征时为80.3%（相邻准确率98%）。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-002c247f705e15494a446b37"
+              }
+            ]
+          },
+          {
+            "key": "sentence_level_combination",
+            "text": "在句子层面，使用全部特征组合的模型比仅用词汇特征准确率提高7%，完整特征集模型准确率为63.4%，相邻准确率为92%。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-c5afbdbef44280cb3fdb781d"
+              },
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-619fec3b6e7991135faaea3f"
+              }
+            ]
+          },
+          {
+            "key": "document_vs_sentence_drop",
+            "text": "句子层面的准确率（63.4%）比文档层面（81.3%）下降约18%；作者推测可能是句子层面上下文更有限，特征未能捕捉句子间差异。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-c5afbdbef44280cb3fdb781d"
+              }
+            ]
+          },
+          {
+            "key": "conclusion_feature_dimensions",
+            "text": "结论指出，在评估语言复杂度时考虑多个语言维度对句子层面分析尤其有用：仅用词频特征在文档层面几乎与全部特征组合同样有预测力，但后者对句子的预测更准确，准确率相差7%。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-f16421f0ee652e6ad37ac288"
+              }
+            ]
+          },
+          {
+            "key": "baseline_comparison",
+            "text": "与LIX相比，完整特征集在句子层面的系统比多数基线和LIX分别高出23%和22%；句子层面错分超过一个等级的情况不超过8%。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-f16421f0ee652e6ad37ac288"
+              }
+            ]
+          },
+          {
+            "key": "unanswered_missing_detail",
+            "text": "所给证据未列出形态、句法和语义特征的具体条目内容，也未给出各特征组合在文档层面和句子层面的完整逐项对比表，因此无法回答这些子组各自的具体特征及逐项性能。",
+            "citations": [
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-95d315be5888ab22f7efbd62"
+              },
+              {
+                "paper_id": "1603.08868",
+                "chunk_id": "c-c5afbdbef44280cb3fdb781d"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7998.6768999369815
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d07",
+        "entities": {
+          "paper": "1603.08868",
+          "paper_title": "A Readable Read: Automatic Assessment of Language Learning Materials based on Linguistic Complexity"
+        },
+        "facts": {
+          "feature_groups": {
+            "text": "特征集分为五个子组：基于长度的、词汇的、形态的、句法的和语义的特征。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "features_derived_from": {
+            "text": "特征是基于先前文献以及一本面向瑞典语L2学习者的语法书而开发的。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "length_features": {
+            "text": "基于长度的特征包括以词元数和字符数计量的句子长度、超长词（超过十三个字符）以及传统的瑞典语可读性公式LIX。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "morphological_features": {
+            "text": "形态特征包括词汇类别的变异与出现率分数（名词、动词、形容词、副词）、标点、小品词、从属连词和并列连词、中性名词、动词形式比例、双对数和平方根型类符-形符比、名词比例、代词与介词比例、词汇密度以及关系结构。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "syntactic_features": {
+            "text": "句法特征基于依存弧的长度（深度）和方向、分裂句中关系从句的出现率分数以及前置和后置修饰语的出现率分数。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "semantic_features": {
+            "text": "语义特征基于SALDO（一种瑞典语词汇-语义资源），包括每个词元的平均义项数以及每个名词的平均名词义项数。",
+            "evidence_ids": [
+              "c-56c4d684e5cbe3b1ead9168e"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "feature_usefulness": {
+            "text": "在句子层面，将不同特征组合使用比仅使用词汇特征使分类准确率提高了7%；而在文档层面，词汇特征更具主导性。",
+            "evidence_ids": [
+              "c-619fec3b6e7991135faaea3f",
+              "c-f16421f0ee652e6ad37ac288"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "multidimensional_useful": {
+            "text": "考虑多个语言维度对于评估语言复杂性尤其有益于句子层面的分析。",
+            "evidence_ids": [
+              "c-f16421f0ee652e6ad37ac288"
+            ],
+            "turn_id": "mem-d07-t1"
+          },
+          "five_feature_subgroups": {
+            "text": "论文将特征分为五个子组：基于长度的、词汇的、形态的、句法的和语义的特征。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "length_based_features": {
+            "text": "基于长度的特征包括句子token数、字符数、超长词（超过13个字符）以及瑞典传统可读性公式LIX；在句子层面分析时，用单句中的token数代替文本中token与句子数之比。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "lexical_features": {
+            "text": "词汇特征基于Kelly词表（按词元提供CEFR等级和词频），使用每千词的发生率分数IncSc，涵盖各CEFR等级词的发生率、高于文本或句子等级的难词、不在Kelly表中的词、未找到词元的词以及平均对数词频。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "feature_sources": {
+            "text": "特征设计参考了已有文献和一本面向瑞典语L2学习者的语法书。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "document_level_combination": {
+            "text": "在文档层面，仅使用词汇特征即可获得与完整特征集大致相当的性能（0.8 F 对 0.81 F），说明词汇信息单独就能区分课本文本的CEFR等级，词汇特征在文档层面更具主导性。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37",
+              "c-619fec3b6e7991135faaea3f"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "document_level_metrics": {
+            "text": "文档层面使用完整特征集时准确率为81%（相邻准确率97%），仅用词汇特征时为80.3%（相邻准确率98%）。",
+            "evidence_ids": [
+              "c-002c247f705e15494a446b37"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "sentence_level_combination": {
+            "text": "在句子层面，使用全部特征组合的模型比仅用词汇特征准确率提高7%，完整特征集模型准确率为63.4%，相邻准确率为92%。",
+            "evidence_ids": [
+              "c-c5afbdbef44280cb3fdb781d",
+              "c-619fec3b6e7991135faaea3f"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "document_vs_sentence_drop": {
+            "text": "句子层面的准确率（63.4%）比文档层面（81.3%）下降约18%；作者推测可能是句子层面上下文更有限，特征未能捕捉句子间差异。",
+            "evidence_ids": [
+              "c-c5afbdbef44280cb3fdb781d"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "conclusion_feature_dimensions": {
+            "text": "结论指出，在评估语言复杂度时考虑多个语言维度对句子层面分析尤其有用：仅用词频特征在文档层面几乎与全部特征组合同样有预测力，但后者对句子的预测更准确，准确率相差7%。",
+            "evidence_ids": [
+              "c-f16421f0ee652e6ad37ac288"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "baseline_comparison": {
+            "text": "与LIX相比，完整特征集在句子层面的系统比多数基线和LIX分别高出23%和22%；句子层面错分超过一个等级的情况不超过8%。",
+            "evidence_ids": [
+              "c-f16421f0ee652e6ad37ac288"
+            ],
+            "turn_id": "mem-d07-t2"
+          },
+          "unanswered_missing_detail": {
+            "text": "所给证据未列出形态、句法和语义特征的具体条目内容，也未给出各特征组合在文档层面和句子层面的完整逐项对比表，因此无法回答这些子组各自的具体特征及逐项性能。",
+            "evidence_ids": [
+              "c-95d315be5888ab22f7efbd62",
+              "c-c5afbdbef44280cb3fdb781d"
+            ],
+            "turn_id": "mem-d07-t2"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1603.08868"
+          ]
+        }
+      },
+      "elapsed_ms": 3.7092999555170536
+    }
+  ],
+  "started_at": 1792723694.4745731,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "five_feature_subgroups",
+        "text": "论文将特征分为五个子组：基于长度的、词汇的、形态的、句法的和语义的特征。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "length_based_features",
+        "text": "基于长度的特征包括句子token数、字符数、超长词（超过13个字符）以及瑞典传统可读性公式LIX；在句子层面分析时，用单句中的token数代替文本中token与句子数之比。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "lexical_features",
+        "text": "词汇特征基于Kelly词表（按词元提供CEFR等级和词频），使用每千词的发生率分数IncSc，涵盖各CEFR等级词的发生率、高于文本或句子等级的难词、不在Kelly表中的词、未找到词元的词以及平均对数词频。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "feature_sources",
+        "text": "特征设计参考了已有文献和一本面向瑞典语L2学习者的语法书。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          }
+        ]
+      },
+      {
+        "key": "document_level_combination",
+        "text": "在文档层面，仅使用词汇特征即可获得与完整特征集大致相当的性能（0.8 F 对 0.81 F），说明词汇信息单独就能区分课本文本的CEFR等级，词汇特征在文档层面更具主导性。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-002c247f705e15494a446b37"
+          },
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-619fec3b6e7991135faaea3f"
+          }
+        ]
+      },
+      {
+        "key": "document_level_metrics",
+        "text": "文档层面使用完整特征集时准确率为81%（相邻准确率97%），仅用词汇特征时为80.3%（相邻准确率98%）。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-002c247f705e15494a446b37"
+          }
+        ]
+      },
+      {
+        "key": "sentence_level_combination",
+        "text": "在句子层面，使用全部特征组合的模型比仅用词汇特征准确率提高7%，完整特征集模型准确率为63.4%，相邻准确率为92%。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-c5afbdbef44280cb3fdb781d"
+          },
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-619fec3b6e7991135faaea3f"
+          }
+        ]
+      },
+      {
+        "key": "document_vs_sentence_drop",
+        "text": "句子层面的准确率（63.4%）比文档层面（81.3%）下降约18%；作者推测可能是句子层面上下文更有限，特征未能捕捉句子间差异。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-c5afbdbef44280cb3fdb781d"
+          }
+        ]
+      },
+      {
+        "key": "conclusion_feature_dimensions",
+        "text": "结论指出，在评估语言复杂度时考虑多个语言维度对句子层面分析尤其有用：仅用词频特征在文档层面几乎与全部特征组合同样有预测力，但后者对句子的预测更准确，准确率相差7%。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-f16421f0ee652e6ad37ac288"
+          }
+        ]
+      },
+      {
+        "key": "baseline_comparison",
+        "text": "与LIX相比，完整特征集在句子层面的系统比多数基线和LIX分别高出23%和22%；句子层面错分超过一个等级的情况不超过8%。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-f16421f0ee652e6ad37ac288"
+          }
+        ]
+      },
+      {
+        "key": "unanswered_missing_detail",
+        "text": "所给证据未列出形态、句法和语义特征的具体条目内容，也未给出各特征组合在文档层面和句子层面的完整逐项对比表，因此无法回答这些子组各自的具体特征及逐项性能。",
+        "citations": [
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-95d315be5888ab22f7efbd62"
+          },
+          {
+            "paper_id": "1603.08868",
+            "chunk_id": "c-c5afbdbef44280cb3fdb781d"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "e232fbb5c3f10b19ebb07cf9f43a128ad69b08c260ad937f31558624bbe9f967",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4947,
+        "completion_tokens": 100,
+        "total_tokens": 5047,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4947,
+        "output_tokens": 100,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3007.2147001046687
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "1986338e9ac2cd37ae8654b8cc8ae11eb769b4033fa1b7f28c7bf09e4a7915cd",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4755,
+        "completion_tokens": 180,
+        "total_tokens": 4935,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4755,
+        "output_tokens": 180,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3608.155000023544
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "c51988c249491ee8c7c6108a14f39dd808731df67119bf6180b868a384abcf9e",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8122,
+        "completion_tokens": 180,
+        "total_tokens": 8302,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 8122,
+        "output_tokens": 180,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3657.1751999435946
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 8,
+      "request_hash": "c78866e824db401ac333fadf03f9671e00551941ff5a52f213fa8efaf15afd2b",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8225,
+        "completion_tokens": 1038,
+        "total_tokens": 9263,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 8225,
+        "output_tokens": 1038,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7997.743500047363
+    }
+  ]
+}

@@ -1,0 +1,422 @@
+{
+  "session_id": "d24-d24-t4",
+  "messages": [
+    {
+      "role": "user",
+      "content": "关于论文《Hungarian Layer: Logics Empowered Neural Architecture》，Which dataset(s) do they train on?",
+      "turn_id": "abbf4c832e414797b2e54580c4f0f0e1"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "training_dataset",
+            "text": "模型在公开基准数据集“Quora Question Pairs”上训练，用于释义识别任务。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "abbf4c832e414797b2e54580c4f0f0e1"
+    },
+    {
+      "role": "user",
+      "content": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "turn_id": "64d14af206d34559b6e3bb395389e201"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "claims": [
+          {
+            "key": "logic_flow_missing",
+            "text": "论文指出神经架构是纯数值框架，缺乏逻辑流（如 if、for、while），因此诸如 Hungarian 算法、A* 搜索、决策树等传统算法无法嵌入该范式。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+              }
+            ]
+          },
+          {
+            "key": "dynamic_calculus_graph",
+            "text": "论文将微积分图改造为由逻辑流引导的动态过程，使传统算法能够赋能数值神经网络。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+              }
+            ]
+          },
+          {
+            "key": "three_step_model",
+            "text": "在句子匹配任务上，模型先用 BiLSTM 解析句子，然后由 Hungarian 层对齐匹配位置，最后用另一个 BiLSTM 转换匹配结果用于 soft-max 回归。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+              }
+            ]
+          },
+          {
+            "key": "attention_weakness",
+            "text": "论文认为基于 soft-max 加权的注意力机制虽能挑出最相似/最不相似的部分，但在建模对齐的未匹配部分方面较弱，而这些部分是识别复述的关键证据。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-960c4cb907b38a179597b601"
+              }
+            ]
+          },
+          {
+            "key": "exclusive_alignment",
+            "text": "论文将句子匹配中的对齐表述为任务分配问题并由 Hungarian 算法求解；该算法以排他方式给出理论最优对齐关系，这种排他性刻画了对齐的未匹配部分。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-960c4cb907b38a179597b601"
+              }
+            ]
+          },
+          {
+            "key": "yard_inside_example",
+            "text": "论文举例说明：由于 Hungarian 层以排他方式分配对齐对，匹配部分先被对齐，随后词“yard”会以负相似度被分配给词“inside”，从而成为判别的强证据。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-960c4cb907b38a179597b601"
+              }
+            ]
+          },
+          {
+            "key": "three_steps_intro",
+            "text": "论文介绍模型执行该任务分三步：BiLSTM 解析输入句子为隐藏表示，Hungarian 层利用隐藏表示提取对齐的未匹配部分，最后用余弦相似度度量这些部分以做最终判别。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "dynamic_graph_training",
+            "text": "针对 Hungarian 算法嵌入神经架构给学习过程带来的挑战，论文以动态构图方式修改反向传播：前向传播中根据对齐位置对动态构建 Hungarian 层与下一层之间的连接，反向传播则沿动态构建的连接进行，从而避免分支与不可微问题，并保持端到端优化。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-f1c9938e8916274c07715a88"
+              }
+            ]
+          },
+          {
+            "key": "quora_experiments",
+            "text": "论文在公开基准数据集“Quora Question Pairs”上进行复述识别实验，结果显示模型大幅且显著优于其他基线。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "contributions",
+            "text": "论文声明的贡献包括：提出关注两句对齐未匹配部分的新视角并提出 Hungarian 层以提取这些部分，实现两序列间的硬且排他的对齐且可通过端到端反向传播学习参数；以及模型大幅优于其他基线。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "turn_id": "64d14af206d34559b6e3bb395389e201"
+    },
+    {
+      "role": "user",
+      "content": "与《A Study on Neural Network Language Modeling》对比，分别说明两篇论文如何回答“Which dataset(s) do they train on?”与“What languages are used for the experiments?”，并说明是否具有可比性。",
+      "turn_id": "d58687a5391a43499dca602ff09663fc"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "d58687a5391a43499dca602ff09663fc"
+    },
+    {
+      "role": "user",
+      "content": "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。",
+      "turn_id": "492819dfb97f43ee9c9cd56b9900b264"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "turn_id": "492819dfb97f43ee9c9cd56b9900b264"
+    }
+  ],
+  "turn_count": 4,
+  "memory": {
+    "session_id": "d24-d24-t4",
+    "entities": {
+      "paper": "Hungarian Layer: Logics Empowered Neural Architecture",
+      "paper_id": "1712.02555"
+    },
+    "facts": {
+      "training_dataset": {
+        "text": "模型在公开基准数据集“Quora Question Pairs”上训练，用于释义识别任务。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "abbf4c832e414797b2e54580c4f0f0e1"
+      },
+      "logic_flow_missing": {
+        "text": "论文指出神经架构是纯数值框架，缺乏逻辑流（如 if、for、while），因此诸如 Hungarian 算法、A* 搜索、决策树等传统算法无法嵌入该范式。",
+        "evidence_ids": [
+          "c-e02ebd81f0f8210ef85fd8bf"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "dynamic_calculus_graph": {
+        "text": "论文将微积分图改造为由逻辑流引导的动态过程，使传统算法能够赋能数值神经网络。",
+        "evidence_ids": [
+          "c-e02ebd81f0f8210ef85fd8bf"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "three_step_model": {
+        "text": "在句子匹配任务上，模型先用 BiLSTM 解析句子，然后由 Hungarian 层对齐匹配位置，最后用另一个 BiLSTM 转换匹配结果用于 soft-max 回归。",
+        "evidence_ids": [
+          "c-e02ebd81f0f8210ef85fd8bf"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "attention_weakness": {
+        "text": "论文认为基于 soft-max 加权的注意力机制虽能挑出最相似/最不相似的部分，但在建模对齐的未匹配部分方面较弱，而这些部分是识别复述的关键证据。",
+        "evidence_ids": [
+          "c-960c4cb907b38a179597b601"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "exclusive_alignment": {
+        "text": "论文将句子匹配中的对齐表述为任务分配问题并由 Hungarian 算法求解；该算法以排他方式给出理论最优对齐关系，这种排他性刻画了对齐的未匹配部分。",
+        "evidence_ids": [
+          "c-960c4cb907b38a179597b601"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "yard_inside_example": {
+        "text": "论文举例说明：由于 Hungarian 层以排他方式分配对齐对，匹配部分先被对齐，随后词“yard”会以负相似度被分配给词“inside”，从而成为判别的强证据。",
+        "evidence_ids": [
+          "c-960c4cb907b38a179597b601"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "three_steps_intro": {
+        "text": "论文介绍模型执行该任务分三步：BiLSTM 解析输入句子为隐藏表示，Hungarian 层利用隐藏表示提取对齐的未匹配部分，最后用余弦相似度度量这些部分以做最终判别。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "dynamic_graph_training": {
+        "text": "针对 Hungarian 算法嵌入神经架构给学习过程带来的挑战，论文以动态构图方式修改反向传播：前向传播中根据对齐位置对动态构建 Hungarian 层与下一层之间的连接，反向传播则沿动态构建的连接进行，从而避免分支与不可微问题，并保持端到端优化。",
+        "evidence_ids": [
+          "c-f1c9938e8916274c07715a88"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "quora_experiments": {
+        "text": "论文在公开基准数据集“Quora Question Pairs”上进行复述识别实验，结果显示模型大幅且显著优于其他基线。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      },
+      "contributions": {
+        "text": "论文声明的贡献包括：提出关注两句对齐未匹配部分的新视角并提出 Hungarian 层以提取这些部分，实现两序列间的硬且排他的对齐且可通过端到端反向传播学习参数；以及模型大幅优于其他基线。",
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427"
+        ],
+        "turn_id": "64d14af206d34559b6e3bb395389e201"
+      }
+    },
+    "unresolved": [
+      "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。"
+    ],
+    "summary": {
+      "discussed_papers": [
+        "1712.02555"
+      ]
+    }
+  },
+  "committed_turns": {
+    "abbf4c832e414797b2e54580c4f0f0e1": {
+      "question": "关于论文《Hungarian Layer: Logics Empowered Neural Architecture》，Which dataset(s) do they train on?",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "training_dataset",
+              "text": "模型在公开基准数据集“Quora Question Pairs”上训练，用于释义识别任务。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "abbf4c832e414797b2e54580c4f0f0e1"
+      }
+    },
+    "64d14af206d34559b6e3bb395389e201": {
+      "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+      "result": {
+        "answer": {
+          "claims": [
+            {
+              "key": "logic_flow_missing",
+              "text": "论文指出神经架构是纯数值框架，缺乏逻辑流（如 if、for、while），因此诸如 Hungarian 算法、A* 搜索、决策树等传统算法无法嵌入该范式。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+                }
+              ]
+            },
+            {
+              "key": "dynamic_calculus_graph",
+              "text": "论文将微积分图改造为由逻辑流引导的动态过程，使传统算法能够赋能数值神经网络。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+                }
+              ]
+            },
+            {
+              "key": "three_step_model",
+              "text": "在句子匹配任务上，模型先用 BiLSTM 解析句子，然后由 Hungarian 层对齐匹配位置，最后用另一个 BiLSTM 转换匹配结果用于 soft-max 回归。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-e02ebd81f0f8210ef85fd8bf"
+                }
+              ]
+            },
+            {
+              "key": "attention_weakness",
+              "text": "论文认为基于 soft-max 加权的注意力机制虽能挑出最相似/最不相似的部分，但在建模对齐的未匹配部分方面较弱，而这些部分是识别复述的关键证据。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-960c4cb907b38a179597b601"
+                }
+              ]
+            },
+            {
+              "key": "exclusive_alignment",
+              "text": "论文将句子匹配中的对齐表述为任务分配问题并由 Hungarian 算法求解；该算法以排他方式给出理论最优对齐关系，这种排他性刻画了对齐的未匹配部分。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-960c4cb907b38a179597b601"
+                }
+              ]
+            },
+            {
+              "key": "yard_inside_example",
+              "text": "论文举例说明：由于 Hungarian 层以排他方式分配对齐对，匹配部分先被对齐，随后词“yard”会以负相似度被分配给词“inside”，从而成为判别的强证据。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-960c4cb907b38a179597b601"
+                }
+              ]
+            },
+            {
+              "key": "three_steps_intro",
+              "text": "论文介绍模型执行该任务分三步：BiLSTM 解析输入句子为隐藏表示，Hungarian 层利用隐藏表示提取对齐的未匹配部分，最后用余弦相似度度量这些部分以做最终判别。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            },
+            {
+              "key": "dynamic_graph_training",
+              "text": "针对 Hungarian 算法嵌入神经架构给学习过程带来的挑战，论文以动态构图方式修改反向传播：前向传播中根据对齐位置对动态构建 Hungarian 层与下一层之间的连接，反向传播则沿动态构建的连接进行，从而避免分支与不可微问题，并保持端到端优化。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-f1c9938e8916274c07715a88"
+                }
+              ]
+            },
+            {
+              "key": "quora_experiments",
+              "text": "论文在公开基准数据集“Quora Question Pairs”上进行复述识别实验，结果显示模型大幅且显著优于其他基线。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            },
+            {
+              "key": "contributions",
+              "text": "论文声明的贡献包括：提出关注两句对齐未匹配部分的新视角并提出 Hungarian 层以提取这些部分，实现两序列间的硬且排他的对齐且可通过端到端反向传播学习参数；以及模型大幅优于其他基线。",
+              "citations": [
+                {
+                  "paper_id": "1712.02555",
+                  "chunk_id": "c-70876748d6ad7c5c4f480427"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "trace_id": "64d14af206d34559b6e3bb395389e201"
+      }
+    },
+    "d58687a5391a43499dca602ff09663fc": {
+      "question": "与《A Study on Neural Network Language Modeling》对比，分别说明两篇论文如何回答“Which dataset(s) do they train on?”与“What languages are used for the experiments?”，并说明是否具有可比性。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "d58687a5391a43499dca602ff09663fc"
+      }
+    },
+    "492819dfb97f43ee9c9cd56b9900b264": {
+      "question": "请给出我今天私下运行的未公开实验 run-23 的精确准确率；没有证据就说明无法确定。",
+      "result": {
+        "answer": {
+          "decision": "refuse",
+          "claims": [],
+          "text": "当前语料证据不足或请求超出论文库范围。"
+        },
+        "trace_id": "492819dfb97f43ee9c9cd56b9900b264"
+      }
+    }
+  }
+}

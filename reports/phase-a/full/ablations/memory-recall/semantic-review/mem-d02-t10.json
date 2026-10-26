@@ -1,0 +1,240 @@
+{
+  "id": "mem-d02-t10",
+  "session_id": "d02",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 0,
+  "judgment": {
+    "answer_correct": false,
+    "behavior_appropriate": false,
+    "reason": "The evidence contains explicit discussion relevant to the question: the Discussion section states Twitter data has fewer missing languages and offers hypotheses (e.g., Twitter represents wealthier/urban populations, and better representation of North America and Oceania; English/Spanish being common on Twitter), so a refusal claiming insufficient evidence or out-of-scope is inappropriate. The question should have been answered, not refused.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "0372d54bc7f0d4d6e101d6ed40cc5e52b7dffaa840839db94b8104c3df886b1d",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4826,
+        "completion_tokens": 100,
+        "total_tokens": 4926,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4698,
+        "output_tokens": 100,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2917.8181999595836
+    }
+  ],
+  "payload_hash": "5f7df842a1a7c90ef0d6a0fdb5d77c6f2b9148dd6b94426403d222e9ece06245",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": false, \"behavior_appropriate\": false, \"reason\": \"The evidence contains explicit discussion relevant to the question: the Discussion section states Twitter data has fewer missing languages and offers hypotheses (e.g., Twitter represents wealthier/urban populations, and better representation of North America and Oceania; English/Spanish being common on Twitter), so a refusal claiming insufficient evidence or out-of-scope is inappropriate. The question should have been answered, not refused.\", \"claims\": []}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4826,
+        "completion_tokens": 100,
+        "total_tokens": 4926,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "关于论文《Mapping Languages and Demographics with Georeferenced Corpora》，Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved_question": "作者是否提出假设解释为什么 Twitter 数据对各国所用语言清单（inventory of languages）的预测更好？",
+    "evidence": [
+      {
+        "chunk_id": "c-204aa49abd2af324ac170d44",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Abstract",
+        "text": "This paper evaluates large georeferenced corpora, taken from both web-crawled and social media sources, against ground-truth population and language-census datasets. The goal is to determine (i) which dataset best represents population demographics; (ii) in what parts of the world the datasets are most representative of actual populations; and (iii) how to weight the datasets to provide more accurate representations of underlying populations. The paper finds that the two datasets represent very different populations and that they correlate with actual populations with values of r=0.60 (social media) and r=0.49 (web-crawled). Further, Twitter data makes better predictions about the inventory of languages used in each country.",
+        "text_hash": "e6def59a72f19eaa8d44b062ffabc2961856a6aef8204a923dcd65f859a3fd3e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 734,
+            "text": "This paper evaluates large georeferenced corpora, taken from both web-crawled and social media sources, against ground-truth population and language-census datasets. The goal is to determine (i) which dataset best represents population demographics; (ii) in what parts of the world the datasets are most representative of actual populations; and (iii) how to weight the datasets to provide more accurate representations of underlying populations. The paper finds that the two datasets represent very different populations and that they correlate with actual populations with values of r=0.60 (social media) and r=0.49 (web-crawled). Further, Twitter data makes better predictions about the inventory of languages used in each country.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-01b9a363a68a29a0e9af4ff8",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Population Demographics",
+        "text": "In both Figures 4 and 5 a darker red indicates a higher number of languages from a census being found in the respective corpora. In many cases, the two corpora agree in which languages they predict to be used in each country: Europe, those parts of Africa for which there is ground-truth data, and South America. But Twitter provides a better representation of North America and Oceania. One factor that is disguised in these figures is that many countries have only a few languages, so that a high true positive rate for a country could reflect only one or two languages. For example, both English and Spanish are very common on Twitter (c.f. Table 3), so that any country which predominantly uses these two languages will have a good representation by default.\n\nWe can also think about the false positive rate: what languages do the corpora find that are not contained in the census-based ground-truth? For example, if English and Spanish are used in a country on Twitter but not reflected on the census, this is a false positive. As shown in Figure 6, the web-crawled corpus has very few false positive outside of Russia and eastern Europe. The situation on Twitter is similar: most false positives are in Russia and Eastern Europe, but in Twitter there are also over-predicted languages in the US and Canada, South Africa, France, India, and Australia. This is important because it shows that relying on Twitter alone would indicate that there are more diverse language speaking populations in these countries. As shown in Table 1, Eastern Europe accounts for 2.4% of the world's population but 27.4% of the web corpus; this explains the region's general false positive rate. For Russia, on the other hand, which is not included in Eastern Europe, the false positive rate cannot be explained in reference to general over-representation. In this case, the false positives are other European languages: French, German, Spanish, Italian. More research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages appearing in digital data sets.",
+        "text_hash": "993663b356761fbb2267807db94e7461fa2643de5c351d6c2d59410fc28fca23",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Population Demographics",
+            "start": 0,
+            "end": 762,
+            "text": "In both Figures 4 and 5 a darker red indicates a higher number of languages from a census being found in the respective corpora. In many cases, the two corpora agree in which languages they predict to be used in each country: Europe, those parts of Africa for which there is ground-truth data, and South America. But Twitter provides a better representation of North America and Oceania. One factor that is disguised in these figures is that many countries have only a few languages, so that a high true positive rate for a country could reflect only one or two languages. For example, both English and Spanish are very common on Twitter (c.f. Table 3), so that any country which predominantly uses these two languages will have a good representation by default.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Population Demographics",
+            "start": 0,
+            "end": 1337,
+            "text": "We can also think about the false positive rate: what languages do the corpora find that are not contained in the census-based ground-truth? For example, if English and Spanish are used in a country on Twitter but not reflected on the census, this is a false positive. As shown in Figure 6, the web-crawled corpus has very few false positive outside of Russia and eastern Europe. The situation on Twitter is similar: most false positives are in Russia and Eastern Europe, but in Twitter there are also over-predicted languages in the US and Canada, South Africa, France, India, and Australia. This is important because it shows that relying on Twitter alone would indicate that there are more diverse language speaking populations in these countries. As shown in Table 1, Eastern Europe accounts for 2.4% of the world's population but 27.4% of the web corpus; this explains the region's general false positive rate. For Russia, on the other hand, which is not included in Eastern Europe, the false positive rate cannot be explained in reference to general over-representation. In this case, the false positives are other European languages: French, German, Spanish, Italian. More research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages appearing in digital data sets.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-0efba46a0570e1863cb689f1",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Language Identification",
+        "text": "The official Twitter LID data BIBREF32 is also used for the evaluation (note that not all samples from the original dataset are still available). Given the length constraints of the model, this considers only samples containing at least 50 characters after cleaning has been performed. These results, with an F1 of 0.96, show that the LID model can also be used on tweets containing at least 50 characters. It is important to note that the LID model is trained using samples of 50 characters and that no Twitter data was included in the training set. Thus, this result represents the case of Twitter being an out-of-sample domain. It may be the case that future work could produce a LID model capable of accurate predictions on tweets with less than 50 characters. The present model, however, has been trained and evaluated using samples of 50 characters.\n\nTable 2 shows the F1 score of a single LID model that is evaluated on held-out test samples of 50 characters from each domain. This reflects the expected accuracy of the language labels applied to the types of data found in the web-crawled and social media datasets. These datasets are dominated by more widely used languages: only 205 languages are present with at least 100k words in the web-crawled dataset and only 97 in the social media dataset. This means that small minority languages are less likely to be represented here. This fixed threshold of 100k per language is a somewhat arbitrary limit; future work will consider the relative usage of a language by place (i.e., a threshold such as 5% of the language produced by a country) to avoid a geographic bias against non-Western languages.",
+        "text_hash": "adf15c174ff44c3c87328558139a711a50d444a06e8ea4f70d26ffef1bb61bde",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s2-p2",
+            "section": "Language Identification",
+            "start": 0,
+            "end": 855,
+            "text": "The official Twitter LID data BIBREF32 is also used for the evaluation (note that not all samples from the original dataset are still available). Given the length constraints of the model, this considers only samples containing at least 50 characters after cleaning has been performed. These results, with an F1 of 0.96, show that the LID model can also be used on tweets containing at least 50 characters. It is important to note that the LID model is trained using samples of 50 characters and that no Twitter data was included in the training set. Thus, this result represents the case of Twitter being an out-of-sample domain. It may be the case that future work could produce a LID model capable of accurate predictions on tweets with less than 50 characters. The present model, however, has been trained and evaluated using samples of 50 characters.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p3",
+            "section": "Language Identification",
+            "start": 0,
+            "end": 799,
+            "text": "Table 2 shows the F1 score of a single LID model that is evaluated on held-out test samples of 50 characters from each domain. This reflects the expected accuracy of the language labels applied to the types of data found in the web-crawled and social media datasets. These datasets are dominated by more widely used languages: only 205 languages are present with at least 100k words in the web-crawled dataset and only 97 in the social media dataset. This means that small minority languages are less likely to be represented here. This fixed threshold of 100k per language is a somewhat arbitrary limit; future work will consider the relative usage of a language by place (i.e., a threshold such as 5% of the language produced by a country) to avoid a geographic bias against non-Western languages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-162f98bff11b9de38d755b70",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Language Identification",
+        "text": "Language identification (LID) is important because we need to identify as many languages as possible while using the small samples provided by social media. We use a multi-layer perceptron with character trigrams, trained using samples of 50 characters from a range of datasets. The focus here is to evaluate the performance of the LID component within the context of language mapping. Previous work on LID either required large, homogenous samples BIBREF22 or covered only about one hundred languages BIBREF23, BIBREF24. The goal here is to evaluate the LID component on as many samples as possible from as many domains as possible. The model covers 464 languages drawn from the datasets represented in Table 2; this can be seen as a compromise between the sample size required and the number of languages covered. Table 2 shows the performance of the model on a held-out test set; the number of languages for each section of the test set is shown (listed as N. Langs) as well as the number of unique test samples for that section (listed as Test Samples). The model covers 464 languages because, after enforcing a threshold of the number of samples required for the development/training/testing datsets, this is how many languages remain. It is a purely practical number that is limited by the datasets that are drawn from to create the LID model. On the other hand, only 205 (web-crawled) and 97 (Twitter) languages were present with at least 100k words; thus additional languages are unlikely to be informative.",
+        "text_hash": "8c72fed0b6cc9748d8c82db7d1e1fe28f21961c212bba821b5a4a537645af975",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "Language Identification",
+            "start": 0,
+            "end": 1515,
+            "text": "Language identification (LID) is important because we need to identify as many languages as possible while using the small samples provided by social media. We use a multi-layer perceptron with character trigrams, trained using samples of 50 characters from a range of datasets. The focus here is to evaluate the performance of the LID component within the context of language mapping. Previous work on LID either required large, homogenous samples BIBREF22 or covered only about one hundred languages BIBREF23, BIBREF24. The goal here is to evaluate the LID component on as many samples as possible from as many domains as possible. The model covers 464 languages drawn from the datasets represented in Table 2; this can be seen as a compromise between the sample size required and the number of languages covered. Table 2 shows the performance of the model on a held-out test set; the number of languages for each section of the test set is shown (listed as N. Langs) as well as the number of unique test samples for that section (listed as Test Samples). The model covers 464 languages because, after enforcing a threshold of the number of samples required for the development/training/testing datsets, this is how many languages remain. It is a purely practical number that is limited by the datasets that are drawn from to create the LID model. On the other hand, only 205 (web-crawled) and 97 (Twitter) languages were present with at least 100k words; thus additional languages are unlikely to be informative.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9887004ca215701b79e8e570",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Discussion",
+        "text": "Analyses and models based on digital texts, especially from Twitter, often come with uncertainty about the underlying populations that those texts represent. This paper has systematically collected Twitter and web-data from locations around the world without language-specific searches that would bias the collection. The purpose is to understand how well these data sets correspond with what we know about global populations from ground-truth sources, providing a method for evaluating different data collection techniques.\n\nThe first important finding is that patterns from Twitter and web-crawled data diverge significantly in their representation of the world's population. This simply reflects the fact that data drawn from Twitter and web pages will likely represent people from different places. Why? We have also seen that Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics. This implies that Twitter as a platform represents more wealthy populations than general web-crawled data. An alternate interpretation is that the Twitter collection here is based on urban areas, which tend to have more wealthy populations. Would the same bias be found with a rural-centered collection procedure? That is a secondary problem in this context because the goal is to develop ground-truth population-centered baselines that could be used to evaluate different Twitter collection methods.\n\nThe second important finding is that, given what ground-truth language-use data is available, there are in general very few false positives: cases where the corpora suggest a language is frequently used in a country but census-based data does not. While uncommon, there are more false positives in Twitter data. This is significant because it means that, in general, these corpora do not predict language use that is not actually present.\n\nBut the third important finding is that, given what ground-truth language-use data is available, there remain a number of countries where these corpora do not represent all the language produced by the local populations: not all languages from censuses are found in digital texts. In this case Twitter has fewer missing languages.",
+        "text_hash": "28d9e82dd11896161801f335dbe447af7e12abbeaca95b09385cf0fdc3a668bc",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Discussion",
+            "start": 0,
+            "end": 524,
+            "text": "Analyses and models based on digital texts, especially from Twitter, often come with uncertainty about the underlying populations that those texts represent. This paper has systematically collected Twitter and web-data from locations around the world without language-specific searches that would bias the collection. The purpose is to understand how well these data sets correspond with what we know about global populations from ground-truth sources, providing a method for evaluating different data collection techniques.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Discussion",
+            "start": 0,
+            "end": 943,
+            "text": "The first important finding is that patterns from Twitter and web-crawled data diverge significantly in their representation of the world's population. This simply reflects the fact that data drawn from Twitter and web pages will likely represent people from different places. Why? We have also seen that Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics. This implies that Twitter as a platform represents more wealthy populations than general web-crawled data. An alternate interpretation is that the Twitter collection here is based on urban areas, which tend to have more wealthy populations. Would the same bias be found with a rural-centered collection procedure? That is a secondary problem in this context because the goal is to develop ground-truth population-centered baselines that could be used to evaluate different Twitter collection methods.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p2",
+            "section": "Discussion",
+            "start": 0,
+            "end": 438,
+            "text": "The second important finding is that, given what ground-truth language-use data is available, there are in general very few false positives: cases where the corpora suggest a language is frequently used in a country but census-based data does not. While uncommon, there are more false positives in Twitter data. This is significant because it means that, in general, these corpora do not predict language use that is not actually present.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p3",
+            "section": "Discussion",
+            "start": 0,
+            "end": 330,
+            "text": "But the third important finding is that, given what ground-truth language-use data is available, there remain a number of countries where these corpora do not represent all the language produced by the local populations: not all languages from censuses are found in digital texts. In this case Twitter has fewer missing languages.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

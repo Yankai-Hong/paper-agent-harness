@@ -1,0 +1,532 @@
+{
+  "turn_id": "d16-t1",
+  "session_id": "d16",
+  "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.02480007242411375
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "seq2seq shortcomings solutions proposed decoding language model integration",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1612.02695"
+        ],
+        "resolved_entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models"
+        }
+      },
+      "elapsed_ms": 2853.2628000248224
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "seq2seq shortcomings solutions proposed decoding language model integration"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-584f58479e6aaaf4703e5890",
+          "c-064a283f41c1740b79fd7ed5",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-de41334c9a60659c0e8f8592",
+          "c-317a4f696f4b18da509bd253",
+          "c-b0a75fbe402507f3ea2c17d0",
+          "c-baaa5b8f20389a190a483b14"
+        ]
+      },
+      "elapsed_ms": 5.090999999083579
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-584f58479e6aaaf4703e5890",
+          "c-064a283f41c1740b79fd7ed5",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-de41334c9a60659c0e8f8592",
+          "c-317a4f696f4b18da509bd253",
+          "c-b0a75fbe402507f3ea2c17d0",
+          "c-baaa5b8f20389a190a483b14"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4"
+        ]
+      },
+      "elapsed_ms": 0.006700051017105579
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "The evidence fully covers the paper's two stated shortcomings (overconfidence in predictions and incomplete/partial transcripts when language models are used) and describes the proposed remedies. For overconfidence, the paper constrains the search so EOS is emitted only when its probability falls within a narrow range of the most probable token, and compares temperature-sharpened/smoothed distributions. For partial transcripts, three strategies are compared: (1) forbidding EOS emission unless its probability is within a set range of the most probable token, (2) extending the beam search criterion with a transcript-length term to promote long transcripts, and (3) a coverage term counting frames whose cumulative attention exceeds a threshold (recomputed each beam iteration) to prevent looping. These directly answer the question from the supplied evidence."
+      },
+      "elapsed_ms": 4064.033600036055
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "two_shortcomings",
+            "text": "The paper observes two shortcomings in an attention-based seq2seq speech recognition system: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "overall_solution_and_results",
+            "text": "The authors propose practical solutions to both problems, achieving speaker-independent WER of 10.6% on Wall Street Journal without separate language models and 6.7% with a trigram language model.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "overconfidence_mechanism",
+            "text": "Seq2seq models often yield very sharp predictions and high confidence reduces the diversity of transcripts obtained using beam search.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+              }
+            ]
+          },
+          {
+            "key": "temperature_and_eos_constraint",
+            "text": "For decoding, the authors compared default settings with sharper and smoother distributions via temperature; all strategies lead to the same greedy decoding accuracy because temperature does not affect selection of the most probable character, and as temperature increases beam search finds better solutions but care is needed to prevent truncated transcripts.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-10d1ebcc07738e41f14a4005"
+              }
+            ]
+          },
+          {
+            "key": "eos_range_strategy",
+            "text": "One strategy keeps the beam search criterion unchanged but forbids emitting the EOS token unless its probability is within a set range of the most probable token; this prevents truncations but is inefficient against omissions in the middle of the transcript.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "length_term_limitation",
+            "text": "Extending the beam search criterion with a term depending on transcript length was proposed for CTC and seq2seq networks but was reported difficult because beam search looped over parts of the recording and additional constraints were needed.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_term",
+            "text": "To prevent looping, the authors propose a coverage term that counts the number of frames that have received a cumulative attention greater than a threshold.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_recompute",
+            "text": "The coverage criterion prevents looping because once cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections do not reduce decoding cost; coverage is recomputed at each beam search iteration using all attention weights produced up to that step.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "partial_transcripts_problem",
+            "text": "When a language model is used, wide beam searches often yield incomplete transcripts, while with narrow beams the problem is less visible due to implicit hypothesis pruning.",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7153.233499964699
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d16",
+        "entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models"
+        },
+        "facts": {
+          "two_shortcomings": {
+            "text": "The paper observes two shortcomings in an attention-based seq2seq speech recognition system: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used.",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "overall_solution_and_results": {
+            "text": "The authors propose practical solutions to both problems, achieving speaker-independent WER of 10.6% on Wall Street Journal without separate language models and 6.7% with a trigram language model.",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "overconfidence_mechanism": {
+            "text": "Seq2seq models often yield very sharp predictions and high confidence reduces the diversity of transcripts obtained using beam search.",
+            "evidence_ids": [
+              "c-0b5bc372895d6d0706b56a8e"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "temperature_and_eos_constraint": {
+            "text": "For decoding, the authors compared default settings with sharper and smoother distributions via temperature; all strategies lead to the same greedy decoding accuracy because temperature does not affect selection of the most probable character, and as temperature increases beam search finds better solutions but care is needed to prevent truncated transcripts.",
+            "evidence_ids": [
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "eos_range_strategy": {
+            "text": "One strategy keeps the beam search criterion unchanged but forbids emitting the EOS token unless its probability is within a set range of the most probable token; this prevents truncations but is inefficient against omissions in the middle of the transcript.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "length_term_limitation": {
+            "text": "Extending the beam search criterion with a term depending on transcript length was proposed for CTC and seq2seq networks but was reported difficult because beam search looped over parts of the recording and additional constraints were needed.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_term": {
+            "text": "To prevent looping, the authors propose a coverage term that counts the number of frames that have received a cumulative attention greater than a threshold.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "coverage_recompute": {
+            "text": "The coverage criterion prevents looping because once cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections do not reduce decoding cost; coverage is recomputed at each beam search iteration using all attention weights produced up to that step.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "partial_transcripts_problem": {
+            "text": "When a language model is used, wide beam searches often yield incomplete transcripts, while with narrow beams the problem is less visible due to implicit hypothesis pruning.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1612.02695"
+          ]
+        }
+      },
+      "elapsed_ms": 46.38880002312362
+    }
+  ],
+  "started_at": 1792725623.5995483,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "two_shortcomings",
+        "text": "The paper observes two shortcomings in an attention-based seq2seq speech recognition system: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      },
+      {
+        "key": "overall_solution_and_results",
+        "text": "The authors propose practical solutions to both problems, achieving speaker-independent WER of 10.6% on Wall Street Journal without separate language models and 6.7% with a trigram language model.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      },
+      {
+        "key": "overconfidence_mechanism",
+        "text": "Seq2seq models often yield very sharp predictions and high confidence reduces the diversity of transcripts obtained using beam search.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+          }
+        ]
+      },
+      {
+        "key": "temperature_and_eos_constraint",
+        "text": "For decoding, the authors compared default settings with sharper and smoother distributions via temperature; all strategies lead to the same greedy decoding accuracy because temperature does not affect selection of the most probable character, and as temperature increases beam search finds better solutions but care is needed to prevent truncated transcripts.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-10d1ebcc07738e41f14a4005"
+          }
+        ]
+      },
+      {
+        "key": "eos_range_strategy",
+        "text": "One strategy keeps the beam search criterion unchanged but forbids emitting the EOS token unless its probability is within a set range of the most probable token; this prevents truncations but is inefficient against omissions in the middle of the transcript.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "length_term_limitation",
+        "text": "Extending the beam search criterion with a term depending on transcript length was proposed for CTC and seq2seq networks but was reported difficult because beam search looped over parts of the recording and additional constraints were needed.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_term",
+        "text": "To prevent looping, the authors propose a coverage term that counts the number of frames that have received a cumulative attention greater than a threshold.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_recompute",
+        "text": "The coverage criterion prevents looping because once cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections do not reduce decoding cost; coverage is recomputed at each beam search iteration using all attention weights produced up to that step.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "partial_transcripts_problem",
+        "text": "When a language model is used, wide beam searches often yield incomplete transcripts, while with narrow beams the problem is less visible due to implicit hypothesis pruning.",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "ff40be6036ce0b2a2172e003f0773fc6bd9b87457960a3e16617d85ff34d5e84",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3281,
+        "completion_tokens": 68,
+        "total_tokens": 3349,
+        "prompt_tokens_details": {
+          "cached_tokens": 3200
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 81,
+        "output_tokens": 68,
+        "cache_read_input_tokens": 3200,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2851.3159999856725
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 2,
+      "request_hash": "cbf1a1ea67b6a3a8fe93875bcc40a92fd4942a935ffced506293170dc9f77cb2",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3766,
+        "completion_tokens": 171,
+        "total_tokens": 3937,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3766,
+        "output_tokens": 171,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4063.5747000342235
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 3,
+      "request_hash": "989bbafc3b87740e6c88305749e44617ef6d3f0eb9b9711686b46e58cff32632",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3869,
+        "completion_tokens": 769,
+        "total_tokens": 4638,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3869,
+        "output_tokens": 769,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7152.944999979809
+    }
+  ]
+}

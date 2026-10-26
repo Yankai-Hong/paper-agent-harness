@@ -1,0 +1,1451 @@
+{
+  "id": "d16-t2",
+  "session_id": "d16",
+  "pipeline_error": null,
+  "claims_count": 11,
+  "claims": [
+    {
+      "text": "该论文分析了基于注意力的 seq2seq 语音识别系统，观察到两个缺陷：预测过度自信，以及在使用语言模型时倾向于产生不完整的转录。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-c1a01afddd733ef65ed6d199",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "The cited abstract directly matches the claim: it analyzes an attention-based seq2seq speech recognition system and observes overconfidence in predictions and a tendency to produce incomplete transcriptions when language models are used."
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "cc7dd22b76343e83b2a3bcb6a1907c0cde1dfd4188518685248d7cf7cb708fcc",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 865,
+            "completion_tokens": 127,
+            "total_tokens": 992,
+            "prompt_tokens_details": {
+              "cached_tokens": 128
+            }
+          },
+          "reasoning_tokens": null,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 737,
+            "output_tokens": 127,
+            "cache_read_input_tokens": 128,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 3001.9183000549674
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "该论文分析了基于注意力的 seq2seq 语音识别系统，观察到两个缺陷：预测过度自信，以及在使用语言模型时倾向于产生不完整的转录。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-c1a01afddd733ef65ed6d199",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Abstract",
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "abstract",
+                "section": "Abstract",
+                "start": 0,
+                "end": 782,
+                "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "The abstract explicitly states that the paper analyses an attention-based seq2seq speech recognition system and observes two shortcomings: overconfidence in predictions and a tendency to produce incomplete transcriptions when language models are used. This matches both material details of the claim.",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The cited abstract directly matches the claim: it analyzes an attention-based seq2seq speech recognition system and observes overconfidence in predictions and a tendency to produce incomplete transcriptions when language models are used."
+          }
+        ]
+      },
+      "reason": "The abstract explicitly states that the paper analyses an attention-based seq2seq speech recognition system and observes two shortcomings: overconfidence in predictions and a tendency to produce incomplete transcriptions when language models are used. This matches both material details of the claim.",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"The abstract explicitly states that the paper analyses an attention-based seq2seq speech recognition system and observes two shortcomings: overconfidence in predictions and a tendency to produce incomplete transcriptions when language models are used. This matches both material details of the claim.\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"The cited abstract directly matches the claim: it analyzes an attention-based seq2seq speech recognition system and observes overconfidence in predictions and a tendency to produce incomplete transcriptions when language models are used.\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 865,
+            "completion_tokens": 127,
+            "total_tokens": 992,
+            "prompt_tokens_details": {
+              "cached_tokens": 128
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 0
+    },
+    {
+      "text": "seq2seq 模型常常给出非常尖锐的预测，只需考虑很少几个假设就能找到最可能的转录，但这种高置信度降低了束搜索所获转录的多样性。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-0b5bc372895d6d0706b56a8e",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "证据原文直接陈述 seq2seq 模型常产生尖锐预测、少数假设即可找到最可能转录、高置信度降低束搜索转录多样性，与主张全部关键细节吻合。"
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "33462776554b0f6799096e105e130f6f4f5de3059f968b6fc9dad29517b3025d",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 1305,
+            "completion_tokens": 170,
+            "total_tokens": 1475,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 1049,
+            "output_tokens": 170,
+            "cache_read_input_tokens": 256,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 3296.414800104685
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "seq2seq 模型常常给出非常尖锐的预测，只需考虑很少几个假设就能找到最可能的转录，但这种高置信度降低了束搜索所获转录的多样性。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-0b5bc372895d6d0706b56a8e",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Introduction",
+            "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.\n\nUnderstanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+            "text_hash": "28420c534a7cb4dbf7ddb929f504b7226ec7d22b3e9800a277b4c4c3a3376c90",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s0-p0",
+                "section": "Introduction",
+                "start": 0,
+                "end": 1148,
+                "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.",
+                "page": null
+              },
+              {
+                "paragraph_id": "s0-p1",
+                "section": "Introduction",
+                "start": 0,
+                "end": 568,
+                "text": "Understanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "证据段落明确指出 seq2seq 模型往往给出非常尖锐的预测（'seq2seq models often yield very sharp predictions'），只需考虑少数假设即可找到最可能的转录（'only a few hypotheses need to be considered to find the most likely transcription of a given utterance'），且高置信度会降低束搜索所获转录的多样性（'high confidence reduces the diversity of transcripts obtained using beam search'）。主张与原文完全一致。",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "证据原文直接陈述 seq2seq 模型常产生尖锐预测、少数假设即可找到最可能转录、高置信度降低束搜索转录多样性，与主张全部关键细节吻合。"
+          }
+        ]
+      },
+      "reason": "证据段落明确指出 seq2seq 模型往往给出非常尖锐的预测（'seq2seq models often yield very sharp predictions'），只需考虑少数假设即可找到最可能的转录（'only a few hypotheses need to be considered to find the most likely transcription of a given utterance'），且高置信度会降低束搜索所获转录的多样性（'high confidence reduces the diversity of transcripts obtained using beam search'）。主张与原文完全一致。",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"证据段落明确指出 seq2seq 模型往往给出非常尖锐的预测（'seq2seq models often yield very sharp predictions'），只需考虑少数假设即可找到最可能的转录（'only a few hypotheses need to be considered to find the most likely transcription of a given utterance'），且高置信度会降低束搜索所获转录的多样性（'high confidence reduces the diversity of transcripts obtained using beam search'）。主张与原文完全一致。\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"证据原文直接陈述 seq2seq 模型常产生尖锐预测、少数假设即可找到最可能转录、高置信度降低束搜索转录多样性，与主张全部关键细节吻合。\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1305,
+            "completion_tokens": 170,
+            "total_tokens": 1475,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 1
+    },
+    {
+      "text": "解码时用束搜索近似搜索，模型通过发出特殊的 EOS（序列结束）标记来表示转录被认为已经结束。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-2d0c32cb8b39156b7f3fa54c",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "该段直接陈述：精确搜索不可行，改用近似搜索，通常束搜索效果最佳；且模型通过发出特殊EOS token表示转录被认为结束。与主张完全吻合。"
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "1b505e1aaa6fced2394ecbd90e7aa16e37f8ef6b1eb465b4274089cd19d6c5f8",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 939,
+            "completion_tokens": 132,
+            "total_tokens": 1071,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 683,
+            "output_tokens": 132,
+            "cache_read_input_tokens": 256,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 3270.561599987559
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "解码时用束搜索近似搜索，模型通过发出特殊的 EOS（序列结束）标记来表示转录被认为已经结束。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-2d0c32cb8b39156b7f3fa54c",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Decoding: Beam Search",
+            "text": "Decoding new utterances amounts to finding the character sequence INLINEFORM0 that is most probable under the distribution computed by the network: DISPLAYFORM0 \n\nDue to the recurrent formulation of the speller function, the most probable transcript cannot be found exactly using the Viterbi algorithm. Instead, approximate search methods are used. Typically, best results are obtained using beam search. The search begins with the set (beam) of hypotheses containing only the empty transcript. At every step, candidate transcripts are formed by extending hypothesis in the beam by one character. The candidates are then scored using the model, and a certain number of top-scoring candidates forms the new beam. The model indicates that a transcript is considered to be finished by emitting a special EOS (end-of-sequence) token.",
+            "text_hash": "83e5f52188550c16a5c088d66ccc17699583825077cf2414292a38743d40feab",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s5-p0",
+                "section": "Decoding: Beam Search",
+                "start": 0,
+                "end": 161,
+                "text": "Decoding new utterances amounts to finding the character sequence INLINEFORM0 that is most probable under the distribution computed by the network: DISPLAYFORM0 ",
+                "page": null
+              },
+              {
+                "paragraph_id": "s5-p1",
+                "section": "Decoding: Beam Search",
+                "start": 0,
+                "end": 666,
+                "text": "Due to the recurrent formulation of the speller function, the most probable transcript cannot be found exactly using the Viterbi algorithm. Instead, approximate search methods are used. Typically, best results are obtained using beam search. The search begins with the set (beam) of hypotheses containing only the empty transcript. At every step, candidate transcripts are formed by extending hypothesis in the beam by one character. The candidates are then scored using the model, and a certain number of top-scoring candidates forms the new beam. The model indicates that a transcript is considered to be finished by emitting a special EOS (end-of-sequence) token.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "证据明确指出由于递归结构无法用Viterbi精确找到最可能转录，转而使用近似搜索方法，通常束搜索效果最好；并说明模型通过发出特殊的EOS（序列结束）token来表示转录被认为已完成。这两点均与主张直接一致。",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该段直接陈述：精确搜索不可行，改用近似搜索，通常束搜索效果最佳；且模型通过发出特殊EOS token表示转录被认为结束。与主张完全吻合。"
+          }
+        ]
+      },
+      "reason": "证据明确指出由于递归结构无法用Viterbi精确找到最可能转录，转而使用近似搜索方法，通常束搜索效果最好；并说明模型通过发出特殊的EOS（序列结束）token来表示转录被认为已完成。这两点均与主张直接一致。",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"证据明确指出由于递归结构无法用Viterbi精确找到最可能转录，转而使用近似搜索方法，通常束搜索效果最好；并说明模型通过发出特殊的EOS（序列结束）token来表示转录被认为已完成。这两点均与主张直接一致。\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"该段直接陈述：精确搜索不可行，改用近似搜索，通常束搜索效果最佳；且模型通过发出特殊EOS token表示转录被认为结束。与主张完全吻合。\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 939,
+            "completion_tokens": 132,
+            "total_tokens": 1071,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 2
+    },
+    {
+      "text": "温度变化不影响对最可能字符的选择，因此各策略的贪婪解码准确率相同；随着温度升高，束搜索能发现更好的解，但必须注意防止转录被截断。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-10d1ebcc07738e41f14a4005",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "The passage states all strategies lead to the same greedy decoding accuracy since temperature changes do not affect selection of the most probable character, and that as temperature increases beam search finds better solutions but care must be taken to prevent truncated transcripts, matching the claim."
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "b7974c72768ae331b5118280a89915643f64d9f588bdcae838b4c6d985ecac80",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 898,
+            "completion_tokens": 147,
+            "total_tokens": 1045,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 898,
+            "output_tokens": 147,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 3824.2794999387115
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "温度变化不影响对最可能字符的选择，因此各策略的贪婪解码准确率相同；随着温度升高，束搜索能发现更好的解，但必须注意防止转录被截断。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-10d1ebcc07738e41f14a4005",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Impact of Model Overconfidence",
+            "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+            "text_hash": "85395b43efbdd516c21e9d70a5be7168aa04220e6a55148342a1e45710d8f8f2",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s8-p4",
+                "section": "Impact of Model Overconfidence",
+                "start": 0,
+                "end": 768,
+                "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "Citation 0 explicitly states that all strategies lead to the same greedy decoding accuracy because temperature changes do not affect the selection of the most probable character, and that as temperature increases beam search finds better solutions while care must be taken to prevent truncated transcripts. This directly supports all material details of the claim.",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The passage states all strategies lead to the same greedy decoding accuracy since temperature changes do not affect selection of the most probable character, and that as temperature increases beam search finds better solutions but care must be taken to prevent truncated transcripts, matching the claim."
+          }
+        ]
+      },
+      "reason": "Citation 0 explicitly states that all strategies lead to the same greedy decoding accuracy because temperature changes do not affect the selection of the most probable character, and that as temperature increases beam search finds better solutions while care must be taken to prevent truncated transcripts. This directly supports all material details of the claim.",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"Citation 0 explicitly states that all strategies lead to the same greedy decoding accuracy because temperature changes do not affect the selection of the most probable character, and that as temperature increases beam search finds better solutions while care must be taken to prevent truncated transcripts. This directly supports all material details of the claim.\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"The passage states all strategies lead to the same greedy decoding accuracy since temperature changes do not affect selection of the most probable character, and that as temperature increases beam search finds better solutions but care must be taken to prevent truncated transcripts, matching the claim.\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 898,
+            "completion_tokens": 147,
+            "total_tokens": 1045,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 3
+    },
+    {
+      "text": "在不改变束搜索代价的前提下，作者约束搜索仅在 EOS 标记的概率处于距最可能标记很窄的范围内时才发出 EOS；并对比了默认设置、更尖锐的分布与更平滑的分布。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-10d1ebcc07738e41f14a4005",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "The passage states 'We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting, with a sharper distribution and smoother distributions,' matching the claim."
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "18bac8a7e35a9fb80df08c172bda04981b5cbc5a0bbae7d44e27ac02cbf36d5b",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 905,
+            "completion_tokens": 163,
+            "total_tokens": 1068,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 649,
+            "output_tokens": 163,
+            "cache_read_input_tokens": 256,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 3661.9134000502527
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "在不改变束搜索代价的前提下，作者约束搜索仅在 EOS 标记的概率处于距最可能标记很窄的范围内时才发出 EOS；并对比了默认设置、更尖锐的分布与更平滑的分布。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-10d1ebcc07738e41f14a4005",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Impact of Model Overconfidence",
+            "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+            "text_hash": "85395b43efbdd516c21e9d70a5be7168aa04220e6a55148342a1e45710d8f8f2",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s8-p4",
+                "section": "Impact of Model Overconfidence",
+                "start": 0,
+                "end": 768,
+                "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "The evidence explicitly states the authors did not want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token, and that they compared the default setting with a sharper distribution and smoother distributions. All material details of the claim are directly supported.",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The passage states 'We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting, with a sharper distribution and smoother distributions,' matching the claim."
+          }
+        ]
+      },
+      "reason": "The evidence explicitly states the authors did not want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token, and that they compared the default setting with a sharper distribution and smoother distributions. All material details of the claim are directly supported.",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"The evidence explicitly states the authors did not want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token, and that they compared the default setting with a sharper distribution and smoother distributions. All material details of the claim are directly supported.\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"The passage states 'We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting, with a sharper distribution and smoother distributions,' matching the claim.\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 905,
+            "completion_tokens": 163,
+            "total_tokens": 1068,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 4
+    },
+    {
+      "text": "使用语言模型时，宽束搜索常产生不完整的转录；窄束下由于隐式的假设剪枝，该问题不太明显。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-753acdce1e13381d0f0064dc",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "该段文字直接陈述“When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning.”，完整支持主张的两部分内容。"
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "94c22b2650e6e04395682cf004d949408f01f5457ef899820f0289108da22a32",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 1379,
+            "completion_tokens": 129,
+            "total_tokens": 1508,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 1379,
+            "output_tokens": 129,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 3935.7144000241533
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "使用语言模型时，宽束搜索常产生不完整的转录；窄束下由于隐式的假设剪枝，该问题不太明显。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-753acdce1e13381d0f0064dc",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Solutions to Partial Transcripts Problem",
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s10-p0",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 602,
+                "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p1",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 911,
+                "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p2",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 369,
+                "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "引用证据中第一段明确说明：使用语言模型时，宽束搜索常产生不完整的转录；而在窄束下，由于隐式的假设剪枝，该问题不太明显。这与主张的各项要点直接对应。",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该段文字直接陈述“When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning.”，完整支持主张的两部分内容。"
+          }
+        ]
+      },
+      "reason": "引用证据中第一段明确说明：使用语言模型时，宽束搜索常产生不完整的转录；而在窄束下，由于隐式的假设剪枝，该问题不太明显。这与主张的各项要点直接对应。",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"引用证据中第一段明确说明：使用语言模型时，宽束搜索常产生不完整的转录；而在窄束下，由于隐式的假设剪枝，该问题不太明显。这与主张的各项要点直接对应。\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"该段文字直接陈述“When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning.”，完整支持主张的两部分内容。\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1379,
+            "completion_tokens": 129,
+            "total_tokens": 1508,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 5
+    },
+    {
+      "text": "第一种策略不改变束搜索准则，但在 EOS 标记的概率不在最可能标记的设定范围内时禁止发出 EOS；该策略能防止截断，但对转录中部的遗漏（如文中所示失败案例）效果不佳。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-753acdce1e13381d0f0064dc",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "The cited passage directly states that the first strategy doesn't change the beam search criterion but forbids EOS emission unless its probability is within a set range of the most probable token, and that it prevents truncations but is inefficient against omissions in the middle of the transcript such as the failure in Table TABREF17."
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "01789d73707981e79d68e35b18175125765642f41e2be07fbe6e5d6f5469ec6b",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 1399,
+            "completion_tokens": 178,
+            "total_tokens": 1577,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 1143,
+            "output_tokens": 178,
+            "cache_read_input_tokens": 256,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 10573.442099965177
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "第一种策略不改变束搜索准则，但在 EOS 标记的概率不在最可能标记的设定范围内时禁止发出 EOS；该策略能防止截断，但对转录中部的遗漏（如文中所示失败案例）效果不佳。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-753acdce1e13381d0f0064dc",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Solutions to Partial Transcripts Problem",
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s10-p0",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 602,
+                "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p1",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 911,
+                "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p2",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 369,
+                "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "The evidence explicitly describes the first strategy: it does not change the beam search criterion but forbids emitting the EOS token unless its probability is within a set range of the most probable token; it prevents truncations but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17. All material details of the claim match the cited text.",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The cited passage directly states that the first strategy doesn't change the beam search criterion but forbids EOS emission unless its probability is within a set range of the most probable token, and that it prevents truncations but is inefficient against omissions in the middle of the transcript such as the failure in Table TABREF17."
+          }
+        ]
+      },
+      "reason": "The evidence explicitly describes the first strategy: it does not change the beam search criterion but forbids emitting the EOS token unless its probability is within a set range of the most probable token; it prevents truncations but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17. All material details of the claim match the cited text.",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"The evidence explicitly describes the first strategy: it does not change the beam search criterion but forbids emitting the EOS token unless its probability is within a set range of the most probable token; it prevents truncations but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17. All material details of the claim match the cited text.\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"The cited passage directly states that the first strategy doesn't change the beam search criterion but forbids EOS emission unless its probability is within a set range of the most probable token, and that it prevents truncations but is inefficient against omissions in the middle of the transcript such as the failure in Table TABREF17.\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1399,
+            "completion_tokens": 178,
+            "total_tokens": 1577,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 6
+    },
+    {
+      "text": "另一做法是扩展束搜索准则以倾向于较长的转录；依赖转录长度的项曾被用于 CTC 与 seq2seq 网络，但据报道其使用困难，因为束搜索会在录音的某些部分循环，需要额外约束。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-753acdce1e13381d0f0064dc",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "证据原文直接对应：'Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11.' 覆盖了陈述的所有关键细节。"
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "05a72bccbf816df69e46bc485b23fb57a35d334466375541b8da5cf00283afd7",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 1398,
+            "completion_tokens": 187,
+            "total_tokens": 1585,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 1398,
+            "output_tokens": 187,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 5808.335199952126
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "另一做法是扩展束搜索准则以倾向于较长的转录；依赖转录长度的项曾被用于 CTC 与 seq2seq 网络，但据报道其使用困难，因为束搜索会在录音的某些部分循环，需要额外约束。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-753acdce1e13381d0f0064dc",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Solutions to Partial Transcripts Problem",
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s10-p0",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 602,
+                "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p1",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 911,
+                "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p2",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 369,
+                "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "证据段落明确指出：另一做法是扩展束搜索准则以倾向于较长的转录（promote long transcripts）；依赖转录长度的项曾被用于 CTC 和 seq2seq 网络；但其使用被报道为困难，因为束搜索会在录音的某些部分循环，且需要额外约束。该陈述与证据内容一致。",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "证据原文直接对应：'Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11.' 覆盖了陈述的所有关键细节。"
+          }
+        ]
+      },
+      "reason": "证据段落明确指出：另一做法是扩展束搜索准则以倾向于较长的转录（promote long transcripts）；依赖转录长度的项曾被用于 CTC 和 seq2seq 网络；但其使用被报道为困难，因为束搜索会在录音的某些部分循环，且需要额外约束。该陈述与证据内容一致。",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"证据段落明确指出：另一做法是扩展束搜索准则以倾向于较长的转录（promote long transcripts）；依赖转录长度的项曾被用于 CTC 和 seq2seq 网络；但其使用被报道为困难，因为束搜索会在录音的某些部分循环，且需要额外约束。该陈述与证据内容一致。\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"证据原文直接对应：'Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11.' 覆盖了陈述的所有关键细节。\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1398,
+            "completion_tokens": 187,
+            "total_tokens": 1585,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 7
+    },
+    {
+      "text": "为防止循环，作者提出覆盖度项，统计累计注意力超过某一阈值的帧数；一旦某帧的累计注意力越过该阈值，该帧即被视为已选中，后续再次选中该帧不会降低解码代价。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-753acdce1e13381d0f0064dc",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "The chunk explicitly describes the coverage term counting frames with cumulative attention greater than a threshold, and states that once the cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections do not reduce the decoding cost, matching the claim."
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "14c012e125a1009a72bd3aa02fba5f5eb71a62d393c71134bbb28bbe59ea4ebd",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 1396,
+            "completion_tokens": 147,
+            "total_tokens": 1543,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 1396,
+            "output_tokens": 147,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 7889.200599980541
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "为防止循环，作者提出覆盖度项，统计累计注意力超过某一阈值的帧数；一旦某帧的累计注意力越过该阈值，该帧即被视为已选中，后续再次选中该帧不会降低解码代价。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-753acdce1e13381d0f0064dc",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Solutions to Partial Transcripts Problem",
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s10-p0",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 602,
+                "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p1",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 911,
+                "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p2",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 369,
+                "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "The evidence directly states that to prevent looping the authors propose a coverage term counting frames whose cumulative attention exceeds a threshold, and that once cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections of that frame do not reduce the decoding cost. All material details of the claim are matched.",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The chunk explicitly describes the coverage term counting frames with cumulative attention greater than a threshold, and states that once the cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections do not reduce the decoding cost, matching the claim."
+          }
+        ]
+      },
+      "reason": "The evidence directly states that to prevent looping the authors propose a coverage term counting frames whose cumulative attention exceeds a threshold, and that once cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections of that frame do not reduce the decoding cost. All material details of the claim are matched.",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"The evidence directly states that to prevent looping the authors propose a coverage term counting frames whose cumulative attention exceeds a threshold, and that once cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections of that frame do not reduce the decoding cost. All material details of the claim are matched.\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"The chunk explicitly describes the coverage term counting frames with cumulative attention greater than a threshold, and states that once the cumulative attention bypasses the threshold a frame is counted as selected and subsequent selections do not reduce the decoding cost, matching the claim.\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1396,
+            "completion_tokens": 147,
+            "total_tokens": 1543,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 8
+    },
+    {
+      "text": "在其实现中，覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-753acdce1e13381d0f0064dc",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "The cited text ends with: 'In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step,' directly supporting the claim."
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "7bc03bc9247c8c3c8e0ca206a83512d9affcf1e456f9ea836b5a0f1c21121e48",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 1372,
+            "completion_tokens": 113,
+            "total_tokens": 1485,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 1372,
+            "output_tokens": 113,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 2846.5566999511793
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "在其实现中，覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-753acdce1e13381d0f0064dc",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Solutions to Partial Transcripts Problem",
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "s10-p0",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 602,
+                "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p1",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 911,
+                "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+                "page": null
+              },
+              {
+                "paragraph_id": "s10-p2",
+                "section": "Solutions to Partial Transcripts Problem",
+                "start": 0,
+                "end": 369,
+                "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "The evidence explicitly states in the final sentence that in their implementation, coverage is recomputed at each beam search iteration using all attention weights produced up to this step, which directly matches the claim.",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The cited text ends with: 'In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step,' directly supporting the claim."
+          }
+        ]
+      },
+      "reason": "The evidence explicitly states in the final sentence that in their implementation, coverage is recomputed at each beam search iteration using all attention weights produced up to this step, which directly matches the claim.",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\": \"supported\", \"reason\": \"The evidence explicitly states in the final sentence that in their implementation, coverage is recomputed at each beam search iteration using all attention weights produced up to this step, which directly matches the claim.\", \"flags\": [], \"citations\": [{\"index\": 0, \"verdict\": \"supported\", \"reason\": \"The cited text ends with: 'In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step,' directly supporting the claim.\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1372,
+            "completion_tokens": 113,
+            "total_tokens": 1485,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 9
+    },
+    {
+      "text": "在 Wall Street Journal 数据集上，不使用单独语言模型时达到 10.6% WER，结合三元语言模型时达到 6.7% WER。",
+      "citations": [
+        {
+          "paper_id": "1612.02695",
+          "chunk_id": "c-c1a01afddd733ef65ed6d199",
+          "valid": true,
+          "verdict": "supported",
+          "reason": "该证据明确指出，在 Wall Street Journal 数据集上，不使用单独语言模型时 WER 为 10.6%，结合三元语言模型时为 6.7%，与所声称的数值和条件完全一致。"
+        }
+      ],
+      "verdict": "supported",
+      "calls": [
+        {
+          "stage": "claim_support",
+          "model_requested": "deepseek-v4.1-flash",
+          "status": "ok",
+          "max_tokens": 4096,
+          "thinking_requested": "disabled",
+          "repair": false,
+          "attempt": 1,
+          "request_hash": "30d0f7e6937bf1b087e699a6b9b749c3c21a8bbcf7c0333ff7113d6c6a0df4c8",
+          "model_returned": "deepseek-v4.1-flash",
+          "usage_raw": {
+            "prompt_tokens": 868,
+            "completion_tokens": 143,
+            "total_tokens": 1011,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "reasoning_tokens": 0,
+          "usage_complete": true,
+          "usage": {
+            "input_tokens": 612,
+            "output_tokens": 143,
+            "cache_read_input_tokens": 256,
+            "cache_creation_input_tokens": 0
+          },
+          "finish_reason": "stop",
+          "elapsed_ms": 3254.9709000159055
+        }
+      ],
+      "status": "provisional_model_judgment",
+      "error": null,
+      "flags": [],
+      "payload": {
+        "claim": "在 Wall Street Journal 数据集上，不使用单独语言模型时达到 10.6% WER，结合三元语言模型时达到 6.7% WER。",
+        "evidence": [
+          {
+            "index": 0,
+            "chunk_id": "c-c1a01afddd733ef65ed6d199",
+            "paper_id": "1612.02695",
+            "title": "Towards better decoding and language model integration in sequence to sequence models",
+            "section": "Abstract",
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+            "chunker": {
+              "tokenizer": "models/bge-m3",
+              "size": 500,
+              "overlap": 80
+            },
+            "source_url": "https://arxiv.org/abs/1612.02695",
+            "spans": [
+              {
+                "paragraph_id": "abstract",
+                "section": "Abstract",
+                "start": 0,
+                "end": 782,
+                "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+                "page": null
+              }
+            ]
+          }
+        ]
+      },
+      "raw_judgment": {
+        "verdict": "supported",
+        "reason": "摘录部分明确指出了这个说法：在 Wall Street Journal 数据集上，在不使用单独语言模型时，WER 达到 10.6%；在与三元语言模型结合时，达到 6.7% WER。所有关键细节（数据集、两个 WER 数值以及两种条件）都直接吻合。",
+        "flags": [],
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该证据明确指出，在 Wall Street Journal 数据集上，不使用单独语言模型时 WER 为 10.6%，结合三元语言模型时为 6.7%，与所声称的数值和条件完全一致。"
+          }
+        ]
+      },
+      "reason": "摘录部分明确指出了这个说法：在 Wall Street Journal 数据集上，在不使用单独语言模型时，WER 达到 10.6%；在与三元语言模型结合时，达到 6.7% WER。所有关键细节（数据集、两个 WER 数值以及两种条件）都直接吻合。",
+      "raw_outputs": [
+        {
+          "model": "deepseek-v4.1-flash",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "logprobs": null,
+              "message": {
+                "role": "assistant",
+                "content": "{\"verdict\":\"supported\",\"reason\":\"摘录部分明确指出了这个说法：在 Wall Street Journal 数据集上，在不使用单独语言模型时，WER 达到 10.6%；在与三元语言模型结合时，达到 6.7% WER。所有关键细节（数据集、两个 WER 数值以及两种条件）都直接吻合。\",\"flags\":[],\"citations\":[{\"index\":0,\"verdict\":\"supported\",\"reason\":\"该证据明确指出，在 Wall Street Journal 数据集上，不使用单独语言模型时 WER 为 10.6%，结合三元语言模型时为 6.7%，与所声称的数值和条件完全一致。\"}]}"
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 868,
+            "completion_tokens": 143,
+            "total_tokens": 1011,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          }
+        }
+      ],
+      "case_id": "d16-t2",
+      "session_id": "d16",
+      "claim_index": 10
+    }
+  ]
+}

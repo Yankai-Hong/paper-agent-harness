@@ -1,0 +1,621 @@
+{
+  "turn_id": "d16-t2",
+  "session_id": "d16",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007200054824352264
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "论文 Towards better decoding and language model integration in sequence to sequence models 中，针对 seq2seq 的过度自信和语言模型下转录不完整这两个缺陷，提出了哪些解决方案及其机制（温度缩放、EOS 约束、长度项、覆盖度项）？",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1612.02695"
+        ],
+        "resolved_entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models"
+        }
+      },
+      "elapsed_ms": 3950.7905000355095
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "论文 Towards better decoding and language model integration in sequence to sequence models 中，针对 seq2seq 的过度自信和语言模型下转录不完整这两个缺陷，提出了哪些解决方案及其机制（温度缩放、EOS 约束、长度项、覆盖度项）？"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc",
+          "c-584f58479e6aaaf4703e5890",
+          "c-765ec796280535cd105fabf4",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-baaa5b8f20389a190a483b14",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-b0a75fbe402507f3ea2c17d0",
+          "c-317a4f696f4b18da509bd253",
+          "c-de41334c9a60659c0e8f8592",
+          "c-064a283f41c1740b79fd7ed5"
+        ]
+      },
+      "elapsed_ms": 26.929999934509397
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc",
+          "c-584f58479e6aaaf4703e5890",
+          "c-765ec796280535cd105fabf4",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-baaa5b8f20389a190a483b14",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-b0a75fbe402507f3ea2c17d0",
+          "c-317a4f696f4b18da509bd253",
+          "c-de41334c9a60659c0e8f8592",
+          "c-064a283f41c1740b79fd7ed5"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc"
+        ]
+      },
+      "elapsed_ms": 0.008300063200294971
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-753acdce1e13381d0f0064dc"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据充分支持该问题的两个缺陷及四类方案的机制：摘要明确指出两个缺陷（overconfidence、使用语言模型时产生不完整转录）并提出实用解决方案；Introduction 说明高置信度降低 beam search 多样性；Impact of Model Overconfidence 节的证据说明温度缩放（sharper/smoother distributions、温度变化不影响 greedy 选择、温度升高 beam search 找到更好解但要防止截断）；Solutions to Partial Transcripts Problem 节的证据说明 EOS 约束（禁止 EOS 除非其概率落在最可能 token 的设定范围内，能防截断但对中段遗漏无效）、长度项（已有工作用于 CTC BIBREF3 与 seq2seq BIBREF11，但报告难以使用、会循环、需额外约束），以及覆盖度项（统计累计注意力超过阈值 INLINEFORM0 的帧数，防止循环，因帧一旦计入后续选择不再降低解码代价，且每步重算）。四类机制均在证据中有直接描述，无需常识补充。"
+      },
+      "elapsed_ms": 4583.4778000134975
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "two_shortcomings",
+            "text": "该论文分析了基于注意力的 seq2seq 语音识别系统，观察到两个缺陷：预测过度自信，以及在使用语言模型时倾向于产生不完整的转录。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "overconfidence_mechanism",
+            "text": "seq2seq 模型常常给出非常尖锐的预测，只需考虑很少几个假设就能找到最可能的转录，但这种高置信度降低了束搜索所获转录的多样性。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+              }
+            ]
+          },
+          {
+            "key": "eos_via_beam_search",
+            "text": "解码时用束搜索近似搜索，模型通过发出特殊的 EOS（序列结束）标记来表示转录被认为已经结束。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-2d0c32cb8b39156b7f3fa54c"
+              }
+            ]
+          },
+          {
+            "key": "temperature_effect",
+            "text": "温度变化不影响对最可能字符的选择，因此各策略的贪婪解码准确率相同；随着温度升高，束搜索能发现更好的解，但必须注意防止转录被截断。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-10d1ebcc07738e41f14a4005"
+              }
+            ]
+          },
+          {
+            "key": "eos_constraint_for_overconfidence",
+            "text": "在不改变束搜索代价的前提下，作者约束搜索仅在 EOS 标记的概率处于距最可能标记很窄的范围内时才发出 EOS；并对比了默认设置、更尖锐的分布与更平滑的分布。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-10d1ebcc07738e41f14a4005"
+              }
+            ]
+          },
+          {
+            "key": "incomplete_transcripts_setting",
+            "text": "使用语言模型时，宽束搜索常产生不完整的转录；窄束下由于隐式的假设剪枝，该问题不太明显。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "eos_strategy_limitation",
+            "text": "第一种策略不改变束搜索准则，但在 EOS 标记的概率不在最可能标记的设定范围内时禁止发出 EOS；该策略能防止截断，但对转录中部的遗漏（如文中所示失败案例）效果不佳。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "length_term",
+            "text": "另一做法是扩展束搜索准则以倾向于较长的转录；依赖转录长度的项曾被用于 CTC 与 seq2seq 网络，但据报道其使用困难，因为束搜索会在录音的某些部分循环，需要额外约束。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_term",
+            "text": "为防止循环，作者提出覆盖度项，统计累计注意力超过某一阈值的帧数；一旦某帧的累计注意力越过该阈值，该帧即被视为已选中，后续再次选中该帧不会降低解码代价。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_recompute",
+            "text": "在其实现中，覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "wer_results",
+            "text": "在 Wall Street Journal 数据集上，不使用单独语言模型时达到 10.6% WER，结合三元语言模型时达到 6.7% WER。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7765.946600004099
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d16",
+        "entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models"
+        },
+        "facts": {
+          "overall_solution_and_results": {
+            "text": "The authors propose practical solutions to both problems, achieving speaker-independent WER of 10.6% on Wall Street Journal without separate language models and 6.7% with a trigram language model.",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "temperature_and_eos_constraint": {
+            "text": "For decoding, the authors compared default settings with sharper and smoother distributions via temperature; all strategies lead to the same greedy decoding accuracy because temperature does not affect selection of the most probable character, and as temperature increases beam search finds better solutions but care is needed to prevent truncated transcripts.",
+            "evidence_ids": [
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "eos_range_strategy": {
+            "text": "One strategy keeps the beam search criterion unchanged but forbids emitting the EOS token unless its probability is within a set range of the most probable token; this prevents truncations but is inefficient against omissions in the middle of the transcript.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "length_term_limitation": {
+            "text": "Extending the beam search criterion with a term depending on transcript length was proposed for CTC and seq2seq networks but was reported difficult because beam search looped over parts of the recording and additional constraints were needed.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "partial_transcripts_problem": {
+            "text": "When a language model is used, wide beam searches often yield incomplete transcripts, while with narrow beams the problem is less visible due to implicit hypothesis pruning.",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t1"
+          },
+          "two_shortcomings": {
+            "text": "该论文分析了基于注意力的 seq2seq 语音识别系统，观察到两个缺陷：预测过度自信，以及在使用语言模型时倾向于产生不完整的转录。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "overconfidence_mechanism": {
+            "text": "seq2seq 模型常常给出非常尖锐的预测，只需考虑很少几个假设就能找到最可能的转录，但这种高置信度降低了束搜索所获转录的多样性。",
+            "evidence_ids": [
+              "c-0b5bc372895d6d0706b56a8e"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "eos_via_beam_search": {
+            "text": "解码时用束搜索近似搜索，模型通过发出特殊的 EOS（序列结束）标记来表示转录被认为已经结束。",
+            "evidence_ids": [
+              "c-2d0c32cb8b39156b7f3fa54c"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "temperature_effect": {
+            "text": "温度变化不影响对最可能字符的选择，因此各策略的贪婪解码准确率相同；随着温度升高，束搜索能发现更好的解，但必须注意防止转录被截断。",
+            "evidence_ids": [
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "eos_constraint_for_overconfidence": {
+            "text": "在不改变束搜索代价的前提下，作者约束搜索仅在 EOS 标记的概率处于距最可能标记很窄的范围内时才发出 EOS；并对比了默认设置、更尖锐的分布与更平滑的分布。",
+            "evidence_ids": [
+              "c-10d1ebcc07738e41f14a4005"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "incomplete_transcripts_setting": {
+            "text": "使用语言模型时，宽束搜索常产生不完整的转录；窄束下由于隐式的假设剪枝，该问题不太明显。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "eos_strategy_limitation": {
+            "text": "第一种策略不改变束搜索准则，但在 EOS 标记的概率不在最可能标记的设定范围内时禁止发出 EOS；该策略能防止截断，但对转录中部的遗漏（如文中所示失败案例）效果不佳。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "length_term": {
+            "text": "另一做法是扩展束搜索准则以倾向于较长的转录；依赖转录长度的项曾被用于 CTC 与 seq2seq 网络，但据报道其使用困难，因为束搜索会在录音的某些部分循环，需要额外约束。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "coverage_term": {
+            "text": "为防止循环，作者提出覆盖度项，统计累计注意力超过某一阈值的帧数；一旦某帧的累计注意力越过该阈值，该帧即被视为已选中，后续再次选中该帧不会降低解码代价。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "coverage_recompute": {
+            "text": "在其实现中，覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。",
+            "evidence_ids": [
+              "c-753acdce1e13381d0f0064dc"
+            ],
+            "turn_id": "d16-t2"
+          },
+          "wer_results": {
+            "text": "在 Wall Street Journal 数据集上，不使用单独语言模型时达到 10.6% WER，结合三元语言模型时达到 6.7% WER。",
+            "evidence_ids": [
+              "c-c1a01afddd733ef65ed6d199"
+            ],
+            "turn_id": "d16-t2"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1612.02695"
+          ]
+        }
+      },
+      "elapsed_ms": 35.78679997008294
+    }
+  ],
+  "started_at": 1792725637.7349095,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "two_shortcomings",
+        "text": "该论文分析了基于注意力的 seq2seq 语音识别系统，观察到两个缺陷：预测过度自信，以及在使用语言模型时倾向于产生不完整的转录。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      },
+      {
+        "key": "overconfidence_mechanism",
+        "text": "seq2seq 模型常常给出非常尖锐的预测，只需考虑很少几个假设就能找到最可能的转录，但这种高置信度降低了束搜索所获转录的多样性。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+          }
+        ]
+      },
+      {
+        "key": "eos_via_beam_search",
+        "text": "解码时用束搜索近似搜索，模型通过发出特殊的 EOS（序列结束）标记来表示转录被认为已经结束。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-2d0c32cb8b39156b7f3fa54c"
+          }
+        ]
+      },
+      {
+        "key": "temperature_effect",
+        "text": "温度变化不影响对最可能字符的选择，因此各策略的贪婪解码准确率相同；随着温度升高，束搜索能发现更好的解，但必须注意防止转录被截断。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-10d1ebcc07738e41f14a4005"
+          }
+        ]
+      },
+      {
+        "key": "eos_constraint_for_overconfidence",
+        "text": "在不改变束搜索代价的前提下，作者约束搜索仅在 EOS 标记的概率处于距最可能标记很窄的范围内时才发出 EOS；并对比了默认设置、更尖锐的分布与更平滑的分布。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-10d1ebcc07738e41f14a4005"
+          }
+        ]
+      },
+      {
+        "key": "incomplete_transcripts_setting",
+        "text": "使用语言模型时，宽束搜索常产生不完整的转录；窄束下由于隐式的假设剪枝，该问题不太明显。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "eos_strategy_limitation",
+        "text": "第一种策略不改变束搜索准则，但在 EOS 标记的概率不在最可能标记的设定范围内时禁止发出 EOS；该策略能防止截断，但对转录中部的遗漏（如文中所示失败案例）效果不佳。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "length_term",
+        "text": "另一做法是扩展束搜索准则以倾向于较长的转录；依赖转录长度的项曾被用于 CTC 与 seq2seq 网络，但据报道其使用困难，因为束搜索会在录音的某些部分循环，需要额外约束。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_term",
+        "text": "为防止循环，作者提出覆盖度项，统计累计注意力超过某一阈值的帧数；一旦某帧的累计注意力越过该阈值，该帧即被视为已选中，后续再次选中该帧不会降低解码代价。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_recompute",
+        "text": "在其实现中，覆盖度在每个束搜索迭代中利用截至该步产生的全部注意力权重重新计算。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "wer_results",
+        "text": "在 Wall Street Journal 数据集上，不使用单独语言模型时达到 10.6% WER，结合三元语言模型时达到 6.7% WER。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "98d262b972c46eaa0da7a3cbc54c0a256c8e58888f17ebf06459dd428a8f08ec",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4946,
+        "completion_tokens": 115,
+        "total_tokens": 5061,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4946,
+        "output_tokens": 115,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3949.2552999872714
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "71217fadd605f38eb3d61e86bc96215204a10dd44a84fa9e232acada8fc3e99f",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3938,
+        "completion_tokens": 224,
+        "total_tokens": 4162,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3938,
+        "output_tokens": 224,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4582.872199942358
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "30f1b4a09bee7871c00c4e887e2d1d372f18349594a1ef9a817eecfd97d11344",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4040,
+        "completion_tokens": 927,
+        "total_tokens": 4967,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4040,
+        "output_tokens": 927,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7765.35929995589
+    }
+  ]
+}

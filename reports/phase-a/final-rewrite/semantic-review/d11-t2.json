@@ -1,0 +1,103 @@
+{
+  "id": "d11-t2",
+  "session_id": "d11",
+  "error": null,
+  "payload": {
+    "original_question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "history": [
+      {
+        "role": "user",
+        "content": "请检索以下问题的相关原文：关于论文《UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning》，What deep neural network models are used in evaluation?",
+        "turn_id": "d11-t1",
+        "session_id": "d11",
+        "turn": 1
+      }
+    ],
+    "standalone_query": "UIT-ViTC Vietnamese Image Captioning 论文使用了哪些深度神经网络模型进行评估及其证据",
+    "source_rule_reference_not_unique": "请解释论文《UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning》对于问题“What deep neural network models are used in evaluation?”的原文证据，保留引用；不能从常识补充结论。",
+    "expected_action": null
+  },
+  "judgment": {
+    "semantic_preserved": false,
+    "coreference_resolved": true,
+    "reason": "改写查询将论文标题中的“UIT-ViIC”误写为“UIT-ViTC”，改变了关键实体，造成事实性偏差；虽然对指代已消解并补充了原问题，但由于论文名称错误，无法视为语义等价。"
+  },
+  "calls": [
+    {
+      "stage": "rewrite_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "error",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "fb02d89276439c2378c54d5e4a40a2df3ff3ed0424af7c04fb9a4f498c17e087",
+      "error_type": "ProviderTransportError",
+      "http_status": null,
+      "transport_error": "TimeoutError",
+      "potential_duplicate_cost": true,
+      "elapsed_ms": 15035.571100073867,
+      "retry_reason": "transient_transport",
+      "retry_delay_seconds": 1.6495834394607882
+    },
+    {
+      "stage": "rewrite_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 2,
+      "request_hash": "fb02d89276439c2378c54d5e4a40a2df3ff3ed0424af7c04fb9a4f498c17e087",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 379,
+        "completion_tokens": 75,
+        "total_tokens": 454,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 123,
+        "output_tokens": 75,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3198.694600025192
+    }
+  ],
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"semantic_preserved\": false, \"coreference_resolved\": true, \"reason\": \"改写查询将论文标题中的“UIT-ViIC”误写为“UIT-ViTC”，改变了关键实体，造成事实性偏差；虽然对指代已消解并补充了原问题，但由于论文名称错误，无法视为语义等价。\"}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 379,
+        "completion_tokens": 75,
+        "total_tokens": 454,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ]
+}

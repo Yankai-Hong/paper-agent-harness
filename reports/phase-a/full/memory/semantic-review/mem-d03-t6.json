@@ -1,0 +1,416 @@
+{
+  "id": "mem-d03-t6",
+  "session_id": "d03",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 11,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "The answer correctly separates answerable from unanswerable parts, all answerable claims are verifiable in cited chunks, and all unanswerable claims are genuinely absent from the evidence. No overreach detected.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "Chunk c-ab6380532554bfd8cf2dc78b states FEVER is the largest dataset with around 185k claims from 5.4M Wikipedia articles, matching the claim."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "Same chunk states claims are labeled as SUPPORTS, REFUTES, or NOT ENOUGH INFO based on the evidence set."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "Chunk c-7d59a4589df766fa1261d8c6 mentions Stanford CoreNLP NER tagger to convert claim into Cloze-task by masking named entities; chunk c-7c69a28e7ffcb9ebd09842b6 mentions transforming FEVER into Cloze-task by masking named entities in claims."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "Chunk c-7d59a4589df766fa1261d8c6 states Question Generation achieves almost 90% accuracy in transforming FEVER dataset into Cloze-task."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "Chunk c-7c69a28e7ffcb9ebd09842b6 states pre-trained BERT masked LM predicts answer token and label accuracy of 80.2% dev and 80.25% test; chunk c-7d59a4589df766fa1261d8c6 states 80.2% label accuracy on SUPPORTS label. All elements match."
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "Chunk c-7c69a28e7ffcb9ebd09842b6 states classifier computes label based on correctly answered questions and threshold, and currently classifies claims as SUPPORTS and MANUAL_REVIEW."
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "Chunk c-c1927faa43ced5496949efab states neither claim verification nor question generation mandates explicit reasoning, making it difficult to assign REFUTES or NOT ENOUGH INFO, so unsupported claims are classified as MANUAL_REVIEW."
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "Evidence chunks only mention dev and test accuracy, not split sizes; the claim of unanswerability is consistent with the cited evidence."
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "Chunk only lists label categories without counts or proportions; claim of unanswerability is supported."
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "Chunk mentions 5.4M Wikipedia articles corpus but no details on documents actually used as evidence or corpus composition; unanswerability is supported."
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "No evidence provides accuracy for REFUTES, NOT ENOUGH INFO, or MANUAL_REVIEW categories; cited chunks are consistent with this absence."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "f66e0284c5e3dfb8291ac0dc2a397cb019f2ab877f05a09e16a50532a79faec2",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5318,
+        "completion_tokens": 718,
+        "total_tokens": 6036,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5062,
+        "output_tokens": 718,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5824.743499979377
+    }
+  ],
+  "payload_hash": "d5c303b75333db7194f5749e9ee41edee799b3c0210d0180e51ebaa25e73fd17",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": true, \"behavior_appropriate\": true, \"reason\": \"The answer correctly separates answerable from unanswerable parts, all answerable claims are verifiable in cited chunks, and all unanswerable claims are genuinely absent from the evidence. No overreach detected.\", \"claims\": [{\"claim_index\": 0, \"supported\": true, \"reason\": \"Chunk c-ab6380532554bfd8cf2dc78b states FEVER is the largest dataset with around 185k claims from 5.4M Wikipedia articles, matching the claim.\"}, {\"claim_index\": 1, \"supported\": true, \"reason\": \"Same chunk states claims are labeled as SUPPORTS, REFUTES, or NOT ENOUGH INFO based on the evidence set.\"}, {\"claim_index\": 2, \"supported\": true, \"reason\": \"Chunk c-7d59a4589df766fa1261d8c6 mentions Stanford CoreNLP NER tagger to convert claim into Cloze-task by masking named entities; chunk c-7c69a28e7ffcb9ebd09842b6 mentions transforming FEVER into Cloze-task by masking named entities in claims.\"}, {\"claim_index\": 3, \"supported\": true, \"reason\": \"Chunk c-7d59a4589df766fa1261d8c6 states Question Generation achieves almost 90% accuracy in transforming FEVER dataset into Cloze-task.\"}, {\"claim_index\": 4, \"supported\": true, \"reason\": \"Chunk c-7c69a28e7ffcb9ebd09842b6 states pre-trained BERT masked LM predicts answer token and label accuracy of 80.2% dev and 80.25% test; chunk c-7d59a4589df766fa1261d8c6 states 80.2% label accuracy on SUPPORTS label. All elements match.\"}, {\"claim_index\": 5, \"supported\": true, \"reason\": \"Chunk c-7c69a28e7ffcb9ebd09842b6 states classifier computes label based on correctly answered questions and threshold, and currently classifies claims as SUPPORTS and MANUAL_REVIEW.\"}, {\"claim_index\": 6, \"supported\": true, \"reason\": \"Chunk c-c1927faa43ced5496949efab states neither claim verification nor question generation mandates explicit reasoning, making it difficult to assign REFUTES or NOT ENOUGH INFO, so unsupported claims are classified as MANUAL_REVIEW.\"}, {\"claim_index\": 7, \"supported\": true, \"reason\": \"Evidence chunks only mention dev and test accuracy, not split sizes; the claim of unanswerability is consistent with the cited evidence.\"}, {\"claim_index\": 8, \"supported\": true, \"reason\": \"Chunk only lists label categories without counts or proportions; claim of unanswerability is supported.\"}, {\"claim_index\": 9, \"supported\": true, \"reason\": \"Chunk mentions 5.4M Wikipedia articles corpus but no details on documents actually used as evidence or corpus composition; unanswerability is supported.\"}, {\"claim_index\": 10, \"supported\": true, \"reason\": \"No evidence provides accuracy for REFUTES, NOT ENOUGH INFO, or MANUAL_REVIEW categories; cited chunks are consistent with this absence.\"}]}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 5318,
+        "completion_tokens": 718,
+        "total_tokens": 6036,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+    "answer": {
+      "claims": [
+        {
+          "key": "dataset_size_answerable",
+          "text": "原文可以回答 FEVER 数据集规模：FEVER 是最大的数据集，包含约 185k 条 claims，来自 5.4M 篇 Wikipedia 文章的语料库。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "label_categories_answerable",
+          "text": "原文可以回答 claims 的标签类别：claims 依据证据集被标注为 “SUPPORTS”、“REFUTES” 或 “NOT ENOUGH INFO”。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "cloze_conversion_method_answerable",
+          "text": "原文可以回答 Cloze-task 转换方式：使用 Stanford CoreNLP NER tagger 掩蔽命名实体，将 claim 转换为 Cloze-task；相关表述也提到将 FEVER 数据集转换为 Cloze-task 时掩蔽 claims 中的命名实体。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7d59a4589df766fa1261d8c6"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            }
+          ]
+        },
+        {
+          "key": "cloze_conversion_accuracy_answerable",
+          "text": "原文可以回答 Cloze-task 转换的准确率：Question Generation 任务在将 FEVER 数据集转换为 Cloze-task 时达到几乎 90% 的准确率。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7d59a4589df766fa1261d8c6"
+            }
+          ]
+        },
+        {
+          "key": "model_and_label_accuracy_answerable",
+          "text": "原文可以回答所用模型与标签准确率：使用预训练 BERT 的 masked language modeling 预测答案 token，在 transformed dataset 的开发集上标签准确率为 80.2%，测试集上为 80.25%；结论部分表述为在“SUPPORTS”标签上达到 80.2% 的标签准确率。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7d59a4589df766fa1261d8c6"
+            }
+          ]
+        },
+        {
+          "key": "classifier_output_answerable",
+          "text": "原文可以回答分类器输出：分类器基于正确回答的问题和阈值计算标签，目前能将 claims 分类为 “SUPPORTS” 和 “MANUAL_REVIEW”。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            }
+          ]
+        },
+        {
+          "key": "classifier_label_choice_reason_answerable",
+          "text": "原文可以回答为何不输出“REFUTES”或“NOT ENOUGH INFO”：由于 claim 验证和问题生成过程不要求显式推理，难以给出这两类标签，因此将不支持的 claims 分类为“MANUAL_REVIEW”。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-c1927faa43ced5496949efab"
+            }
+          ]
+        },
+        {
+          "key": "not_answerable_split_sizes",
+          "text": "原文不能回答 FEVER 各数据划分（训练集/开发集/测试集）的具体样本数量；证据仅提及开发集和测试集的准确率，未给出各划分规模。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            }
+          ]
+        },
+        {
+          "key": "not_answerable_label_distribution",
+          "text": "原文不能回答 FEVER 中“SUPPORTS”、“REFUTES”、“NOT ENOUGH INFO”三类标签各自的具体数量或占比。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "not_answerable_corpus_composition",
+          "text": "原文不能回答 5.4M 篇 Wikipedia 文章中实际用作证据的文档数量或语料构成细节。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "not_answerable_refutes_accuracy",
+          "text": "原文不能回答针对“REFUTES”或“NOT ENOUGH INFO”标签的分类准确率，也未给出“MANUAL_REVIEW”类别的单独准确率。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-c1927faa43ced5496949efab"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "在论文 Unsupervised Question Answering for Fact-Checking 中，依据原文证据，关于 FEVER 数据集的规模、标签、Cloze-task 转换、标签准确率和分类器输出，哪些部分可以回答、哪些部分不能回答？",
+    "evidence": [
+      {
+        "chunk_id": "c-7d59a4589df766fa1261d8c6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Conclusion",
+        "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+        "text_hash": "5da0e3a8939dd1fb22080f0a1904a1bc665de8b33ac5767f8bccd665ad7c7def",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s9-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 750,
+            "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7c69a28e7ffcb9ebd09842b6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Abstract",
+        "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+        "text_hash": "5595b86a318b1335f1c1e3a30af59c9210577acf141fbbd35593562139a75111",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 948,
+            "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-ab6380532554bfd8cf2dc78b",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Introduction",
+        "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.\n\nWikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.\n\nIn this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+        "text_hash": "1a74b3ec856c0b5535bd97a74b187eba4257ae4e9ca4fd56ab0d46e303c4d707",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 896,
+            "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 688,
+            "text": "Wikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 481,
+            "text": "In this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-010ec9cd6f2b1eb9cb5ec5c1",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "System Description",
+        "text": "In this section, we explain the design and all the underlying methods that our system has adopted. Our system is a pipeline consisting of three stages: (1) Question Generation, (2) Question Answering, (3) Label Classification. The question generation stage attempts to convert the claims into appropriate questions and answers. It generates questions similar to a Cloze-task or masked language modeling task where the named entities are masked with a blank. Question Answering stage predicts the masked blanks in an unsupervised manner. The respective predictions are then compared with the original answers and exported into a file for label classification. The label classifier calculates the predicted label based on a threshold.",
+        "text_hash": "f57f58ad3d77e839ba458d9816e56a17992e2307abc548ccf3a2ccf7b9b41580",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "System Description",
+            "start": 0,
+            "end": 732,
+            "text": "In this section, we explain the design and all the underlying methods that our system has adopted. Our system is a pipeline consisting of three stages: (1) Question Generation, (2) Question Answering, (3) Label Classification. The question generation stage attempts to convert the claims into appropriate questions and answers. It generates questions similar to a Cloze-task or masked language modeling task where the named entities are masked with a blank. Question Answering stage predicts the masked blanks in an unsupervised manner. The respective predictions are then compared with the original answers and exported into a file for label classification. The label classifier calculates the predicted label based on a threshold.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c1927faa43ced5496949efab",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Introduction",
+        "text": "To transform the FEVER dataset into the above-mentioned task, we first generate the questions from the claims. In literature, there are majorly two types of Question Generation systems: Rule-based and Neural Question Generation (NQG) model based. Ali et al. (BIBREF3) proposed a rule-based pipeline to automate the question generation using POS (Part-of-speech) tagging and Named Entity Recognition (NER) tagging from the sentences. Recently, many NQG models have been introduced to generate questions in natural language. Serban et al. (BIBREF4) achieved better performance for question generation utilizing (passage, question, answer) triplets as training data and an encoder-decoder based architecture as their learning model.\n\nDu et al. (BIBREF5) introduced a sequence-to-sequence model with an attention mechanism, outperforming rule-base question generation systems. Although the models proposed in (BIBREF6; BIBREF7) are effective, they require a passage to generate the plausible questions which is not readily available in the FEVER dataset. To resolve the issues and to keep the system simple but effective, we chose to generate questions similar to a Cloze-task or masked language modeling task. Such a task makes the problem more tractable as the masked entities are already known (i.e. named entities) and tight as there is only one correct answer for a given question. Later when the answers are generated, due to the question generation process, it becomes very easy to identify the correct answers.\n\nWe use the BERT's (Bidirectional Encoder Representations from Transformers) (BIBREF8) masked language model, that is pre-trained on Wikipedia articles for predicting the masked entities. Currently, neither the claim verification process nor the question generation process mandates explicit reasoning. For the same reason, it is difficult to put “REFUTES” or “NOT ENOUGH INFO” labels. To resolve this issue, we classify the unsupported claims as “MANUAL_REVIEW” instead of labeling them as “NOT ENOUGH INFO” or “REFUTES”.",
+        "text_hash": "8dd0528749d5f5b5967e2de60bb322078fa1f01b541e10a3cf7157b598382d65",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 729,
+            "text": "To transform the FEVER dataset into the above-mentioned task, we first generate the questions from the claims. In literature, there are majorly two types of Question Generation systems: Rule-based and Neural Question Generation (NQG) model based. Ali et al. (BIBREF3) proposed a rule-based pipeline to automate the question generation using POS (Part-of-speech) tagging and Named Entity Recognition (NER) tagging from the sentences. Recently, many NQG models have been introduced to generate questions in natural language. Serban et al. (BIBREF4) achieved better performance for question generation utilizing (passage, question, answer) triplets as training data and an encoder-decoder based architecture as their learning model.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p4",
+            "section": "Introduction",
+            "start": 0,
+            "end": 783,
+            "text": "Du et al. (BIBREF5) introduced a sequence-to-sequence model with an attention mechanism, outperforming rule-base question generation systems. Although the models proposed in (BIBREF6; BIBREF7) are effective, they require a passage to generate the plausible questions which is not readily available in the FEVER dataset. To resolve the issues and to keep the system simple but effective, we chose to generate questions similar to a Cloze-task or masked language modeling task. Such a task makes the problem more tractable as the masked entities are already known (i.e. named entities) and tight as there is only one correct answer for a given question. Later when the answers are generated, due to the question generation process, it becomes very easy to identify the correct answers.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p5",
+            "section": "Introduction",
+            "start": 0,
+            "end": 521,
+            "text": "We use the BERT's (Bidirectional Encoder Representations from Transformers) (BIBREF8) masked language model, that is pre-trained on Wikipedia articles for predicting the masked entities. Currently, neither the claim verification process nor the question generation process mandates explicit reasoning. For the same reason, it is difficult to put “REFUTES” or “NOT ENOUGH INFO” labels. To resolve this issue, we classify the unsupported claims as “MANUAL_REVIEW” instead of labeling them as “NOT ENOUGH INFO” or “REFUTES”.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

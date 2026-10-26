@@ -1,0 +1,422 @@
+{
+  "id": "d12-t3",
+  "session_id": "d12",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 5,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "The answer correctly distinguishes the two papers' fine-tuned model performance and resource combinations, and appropriately explains that they are not directly comparable. All four claims are supported by their cited evidence.",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "The cited chunks confirm polyglot training improves over monolingual except Czech with no change, largest gains for German/Japanese/Catalan, little/no gain for Czech/Chinese, and baseline on par with best published Chinese scores."
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "The cited chunk states full fine-tuning of pre-trained BERT on hand-labelled data with 80-20 split yields F1=0.89, and that spaCy CR produced similar results."
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "The cited chunks confirm combining resources from a pair of languages in CoNLL 2009, using multilingual word vectors and combining training data without parallel data, alignments, or shared annotation; the dataset includes seven languages."
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "The cited chunks confirm static knowledge from the Systems Engineering Handbook, a word-level annotated dataset built with a domain expert and text processing methods with a defined labelling scheme, auxiliary abbreviation/definition datasets, and fine-tuning a pre-trained language model."
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "The cited chunks confirm the SRL task is PropBank-style multilingual SRL on CoNLL 2009, while the SEVA paper frames the problem as token classification similar to named entity extraction with F1=0.89; different tasks/datasets/metrics make direct comparison inappropriate."
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "17c511b3219715bd92dd747d220256e4407313effa957bd7dc2070b1ff964f5a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6479,
+        "completion_tokens": 382,
+        "total_tokens": 6861,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6223,
+        "output_tokens": 382,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4440.714700031094
+    }
+  ],
+  "payload_hash": "80b6276f166018e75e746b905773c7c089f63de998b1c1faec5b9cc1543e344b",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": true, \"behavior_appropriate\": true, \"reason\": \"The answer correctly distinguishes the two papers' fine-tuned model performance and resource combinations, and appropriately explains that they are not directly comparable. All four claims are supported by their cited evidence.\", \"claims\": [{\"claim_index\": 0, \"supported\": true, \"reason\": \"The cited chunks confirm polyglot training improves over monolingual except Czech with no change, largest gains for German/Japanese/Catalan, little/no gain for Czech/Chinese, and baseline on par with best published Chinese scores.\"}, {\"claim_index\": 1, \"supported\": true, \"reason\": \"The cited chunk states full fine-tuning of pre-trained BERT on hand-labelled data with 80-20 split yields F1=0.89, and that spaCy CR produced similar results.\"}, {\"claim_index\": 2, \"supported\": true, \"reason\": \"The cited chunks confirm combining resources from a pair of languages in CoNLL 2009, using multilingual word vectors and combining training data without parallel data, alignments, or shared annotation; the dataset includes seven languages.\"}, {\"claim_index\": 3, \"supported\": true, \"reason\": \"The cited chunks confirm static knowledge from the Systems Engineering Handbook, a word-level annotated dataset built with a domain expert and text processing methods with a defined labelling scheme, auxiliary abbreviation/definition datasets, and fine-tuning a pre-trained language model.\"}, {\"claim_index\": 4, \"supported\": true, \"reason\": \"The cited chunks confirm the SRL task is PropBank-style multilingual SRL on CoNLL 2009, while the SEVA paper frames the problem as token classification similar to named entity extraction with F1=0.89; different tasks/datasets/metrics make direct comparison inappropriate.\"}]}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 6479,
+        "completion_tokens": 382,
+        "total_tokens": 6861,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "与《Polyglot Semantic Role Labeling》对比，分别说明两篇论文如何回答“What is the performance of fine tuned model on this dataset?”与“what resources are combined to build the labeler?”，并说明是否具有可比性。",
+    "answer": {
+      "claims": [
+        {
+          "key": "polyglot_finetune_performance",
+          "text": "《Polyglot Semantic Role Labeling》报告：简单的 polyglot 训练（用多语言词向量合并跨语言训练数据）在多种语言上优于单语基线，唯一例外是捷克语（性能无变化）；训练样本最少的德语、日语、加泰罗尼亚语提升最大，数据集较大的捷克语、中文提升很小或没有，其基线在中文上达到已发表最佳分数水平。",
+          "citations": [
+            {
+              "paper_id": "1805.11598",
+              "chunk_id": "c-bb02e8199a80bde6c03e4d79"
+            },
+            {
+              "paper_id": "1805.11598",
+              "chunk_id": "c-f04cb29df42fdbc211d852cf"
+            }
+          ]
+        },
+        {
+          "key": "seva_finetune_performance",
+          "text": "《Common-Knowledge Concept Recognition for SEVA》报告：使用预训练 BERT 在人工标注的概念数据集上做全量微调（80-20 划分），概念识别任务 F1 分数为 0.89；另用 spaCy 实现的 CR 也得到类似结果。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        },
+        {
+          "key": "polyglot_resources",
+          "text": "《Polyglot Semantic Role Labeling》构建标注器时组合的资源是 CoNLL 2009 共享任务中成对语言的资源（如英语部分的监督），通过多语言词向量合并跨语言训练数据，不需要平行数据、跨语言对齐或共享标注；所用数据覆盖 CoNLL 2009 的七种语言。",
+          "citations": [
+            {
+              "paper_id": "1805.11598",
+              "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+            },
+            {
+              "paper_id": "1805.11598",
+              "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+            },
+            {
+              "paper_id": "1805.11598",
+              "chunk_id": "c-f04cb29df42fdbc211d852cf"
+            }
+          ]
+        },
+        {
+          "key": "seva_resources",
+          "text": "《Common-Knowledge Concept Recognition for SEVA》构建标注器时组合的资源包括：Systems Engineering Handbook 收集的静态领域知识、领域专家与文本处理方法共同构造的、按词级标注并定义标注方案的数据集，以及从系统工程领域创建的缩写和定义等辅助数据集；标签器基于预训练语言模型（BERT）微调。",
+          "citations": [
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-31214b784b9f4dcaddc0adf6"
+            },
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a"
+            },
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-945a37a61c8991cd2adfcf07"
+            }
+          ]
+        },
+        {
+          "key": "comparability",
+          "text": "两篇论文的任务与数据不同：前者是面向 CoNLL 2009 多语言的 PropBank 风格语义角色标注，后者是系统工程领域的概念识别（类似命名实体提取的 token 分类）；二者报告的性能指标（SRL 相对单语基线的改进 vs. 单一 F1=0.89）不在同一数据集或指标下，因此不宜直接比较。",
+          "citations": [
+            {
+              "paper_id": "1805.11598",
+              "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+            },
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a"
+            },
+            {
+              "paper_id": "2003.11687",
+              "chunk_id": "c-35ae853dec5dd79f61ef4980"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "对比《Polyglot Semantic Role Labeling》与《Common-Knowledge Concept Recognition for SEVA》：两文微调模型在各自数据集上的性能，以及构建标注器（labeler）时组合了哪些资源，并评估二者可比性",
+    "evidence": [
+      {
+        "chunk_id": "c-8b21bd8c4c41f76753d2758d",
+        "paper_id": "1805.11598",
+        "title": "Polyglot Semantic Role Labeling",
+        "section": "Abstract",
+        "text": "Previous approaches to multilingual semantic dependency parsing treat languages independently, without exploiting the similarities between semantic structures across languages. We experiment with a new approach where we combine resources from a pair of languages in the CoNLL 2009 shared task to build a polyglot semantic role labeler. Notwithstanding the absence of parallel data, and the dissimilarity in annotations between languages, our approach results in an improvement in SRL performance on multiple languages over a monolingual baseline. Analysis of the polyglot model shows it to be advantageous in lower-resource settings.",
+        "text_hash": "ea39fa8ef2f105f645b30de155cafb2e6a027709d9092c1697b38099851fa8e3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1805.11598",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 633,
+            "text": "Previous approaches to multilingual semantic dependency parsing treat languages independently, without exploiting the similarities between semantic structures across languages. We experiment with a new approach where we combine resources from a pair of languages in the CoNLL 2009 shared task to build a polyglot semantic role labeler. Notwithstanding the absence of parallel data, and the dissimilarity in annotations between languages, our approach results in an improvement in SRL performance on multiple languages over a monolingual baseline. Analysis of the polyglot model shows it to be advantageous in lower-resource settings.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-31214b784b9f4dcaddc0adf6",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "INTRODUCTION",
+        "text": "The Systems Engineer's Virtual Assistant (SEVA) BIBREF0 was introduced with the goal to assist systems engineers (SE) in their problem-solving abilities by keeping track of large amounts of information of a NASA-specific project and using the information to answer queries from the user. In this work, we address a system element by constructing a common-knowledge concept recognition system for improving the performance of SEVA, using the static knowledge collected from the Systems Engineering Handbook BIBREF1 that is widely used in projects across the organization as domain-specific commonsense knowledge. At NASA, although there exists knowledge engines and ontologies for the SE domain such as MBSE BIBREF2, IMCE BIBREF3, and OpenCaesar BIBREF4, generic commonsense acquisition is rarely discussed; we aim to address this challenge. SE commonsense comes from years of experience and learning which involves background knowledge that goes beyond any handbook. Although constructing an assistant like SEVA system is the overarching objective, a key problem to first address is to extract elementary common-knowledge concepts using the SE handbook and domain experts. We use the term `common-knowledge' as the `commonsense' knowledge of a specific domain. This knowledge can be seen as a pivot that can be used later to collect `commonsense' knowledge for the SE domain. We propose a preliminary research study that can pave a path towards a comprehensive commonsense knowledge acquisition for an effective Artificial Intelligence (AI) application for the SE domain. Overall structure of this work is summarized in Figure 1. Implementation with demo and dataset is available at: https://github.com/jitinkrishnan/NASA-SE .",
+        "text_hash": "1e7499b4fd7e0694910dc6b9e12a8306e241def879582d4f6d1db068d157abd8",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "INTRODUCTION",
+            "start": 0,
+            "end": 1726,
+            "text": "The Systems Engineer's Virtual Assistant (SEVA) BIBREF0 was introduced with the goal to assist systems engineers (SE) in their problem-solving abilities by keeping track of large amounts of information of a NASA-specific project and using the information to answer queries from the user. In this work, we address a system element by constructing a common-knowledge concept recognition system for improving the performance of SEVA, using the static knowledge collected from the Systems Engineering Handbook BIBREF1 that is widely used in projects across the organization as domain-specific commonsense knowledge. At NASA, although there exists knowledge engines and ontologies for the SE domain such as MBSE BIBREF2, IMCE BIBREF3, and OpenCaesar BIBREF4, generic commonsense acquisition is rarely discussed; we aim to address this challenge. SE commonsense comes from years of experience and learning which involves background knowledge that goes beyond any handbook. Although constructing an assistant like SEVA system is the overarching objective, a key problem to first address is to extract elementary common-knowledge concepts using the SE handbook and domain experts. We use the term `common-knowledge' as the `commonsense' knowledge of a specific domain. This knowledge can be seen as a pivot that can be used later to collect `commonsense' knowledge for the SE domain. We propose a preliminary research study that can pave a path towards a comprehensive commonsense knowledge acquisition for an effective Artificial Intelligence (AI) application for the SE domain. Overall structure of this work is summarized in Figure 1. Implementation with demo and dataset is available at: https://github.com/jitinkrishnan/NASA-SE .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-ab37506cf0e270f6ab4a5722",
+        "paper_id": "1805.11598",
+        "title": "Polyglot Semantic Role Labeling",
+        "section": "Introduction",
+        "text": "The standard approach to multilingual NLP is to design a single architecture, but tune and train a separate model for each language. While this method allows for customizing the model to the particulars of each language and the available data, it also presents a problem when little data is available: extensive language-specific annotation is required. The reality is that most languages have very little annotated data for most NLP tasks.\n\nammar2016malopa found that using training data from multiple languages annotated with Universal Dependencies BIBREF1 , and represented using multilingual word vectors, outperformed monolingual training. Inspired by this, we apply the idea of training one model on multiple languages—which we call polyglot training—to PropBank-style semantic role labeling (SRL). We train several parsers for each language in the CoNLL 2009 dataset BIBREF0 : a traditional monolingual version, and variants which additionally incorporate supervision from English portion of the dataset. To our knowledge, this is the first multilingual SRL approach to combine supervision from several languages.\n\nThe CoNLL 2009 dataset includes seven different languages, allowing study of trends across the same. Unlike the Universal Dependencies dataset, however, the semantic label spaces are entirely language-specific, making our task more challenging. Nonetheless, the success of polyglot training in this setting demonstrates that sharing of statistical strength across languages does not depend on explicit alignment in annotation conventions, and can be done simply through parameter sharing. We show that polyglot training can result in better labeling accuracy than a monolingual parser, especially for low-resource languages. We find that even a simple combination of data is as effective as more complex kinds of polyglot training. We include a breakdown into label categories of the differences between the monolingual and polyglot models. Our findings indicate that polyglot training consistently improves label accuracy for common labels.",
+        "text_hash": "c7723e02c60da1ee4821ed97a0591c09a910766846d0dd159c0addbc432540df",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1805.11598",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 440,
+            "text": "The standard approach to multilingual NLP is to design a single architecture, but tune and train a separate model for each language. While this method allows for customizing the model to the particulars of each language and the available data, it also presents a problem when little data is available: extensive language-specific annotation is required. The reality is that most languages have very little annotated data for most NLP tasks.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 678,
+            "text": "ammar2016malopa found that using training data from multiple languages annotated with Universal Dependencies BIBREF1 , and represented using multilingual word vectors, outperformed monolingual training. Inspired by this, we apply the idea of training one model on multiple languages—which we call polyglot training—to PropBank-style semantic role labeling (SRL). We train several parsers for each language in the CoNLL 2009 dataset BIBREF0 : a traditional monolingual version, and variants which additionally incorporate supervision from English portion of the dataset. To our knowledge, this is the first multilingual SRL approach to combine supervision from several languages.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 941,
+            "text": "The CoNLL 2009 dataset includes seven different languages, allowing study of trends across the same. Unlike the Universal Dependencies dataset, however, the semantic label spaces are entirely language-specific, making our task more challenging. Nonetheless, the success of polyglot training in this setting demonstrates that sharing of statistical strength across languages does not depend on explicit alignment in annotation conventions, and can be done simply through parameter sharing. We show that polyglot training can result in better labeling accuracy than a monolingual parser, especially for low-resource languages. We find that even a simple combination of data is as effective as more complex kinds of polyglot training. We include a breakdown into label categories of the differences between the monolingual and polyglot models. Our findings indicate that polyglot training consistently improves label accuracy for common labels.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "Abstract",
+        "text": "We build a common-knowledge concept recognition system for a Systems Engineer's Virtual Assistant (SEVA) which can be used for downstream tasks such as relation extraction, knowledge graph construction, and question-answering. The problem is formulated as a token classification task similar to named entity extraction. With the help of a domain expert and text processing methods, we construct a dataset annotated at the word-level by carefully defining a labelling scheme to train a sequence model to recognize systems engineering concepts. We use a pre-trained language model and fine-tune it with the labeled dataset of concepts. In addition, we also create some essential datasets for information such as abbreviations and definitions from the systems engineering domain. Finally, we construct a simple knowledge graph using these extracted concepts along with some hyponym relations.",
+        "text_hash": "045822a3fecb7078ca20addb6229c7db27066b696cc3951a27779069cc245f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 889,
+            "text": "We build a common-knowledge concept recognition system for a Systems Engineer's Virtual Assistant (SEVA) which can be used for downstream tasks such as relation extraction, knowledge graph construction, and question-answering. The problem is formulated as a token classification task similar to named entity extraction. With the help of a domain expert and text processing methods, we construct a dataset annotated at the word-level by carefully defining a labelling scheme to train a sequence model to recognize systems engineering concepts. We use a pre-trained language model and fine-tune it with the labeled dataset of concepts. In addition, we also create some essential datasets for information such as abbreviations and definitions from the systems engineering domain. Finally, we construct a simple knowledge graph using these extracted concepts along with some hyponym relations.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-945a37a61c8991cd2adfcf07",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "CONCLUSION AND FUTURE WORK",
+        "text": "We presented a common-knowledge concept extractor for the Systems Engineer's Virtual Assistant (SEVA) system and showed how it can be beneficial for downstream tasks such as relation extraction and knowledge graph construction. We construct a word-level annotated dataset with the help of a domain expert by carefully defining a labelling scheme to train a sequence labelling task to recognize SE concepts. Further, we also construct some essential datasets from the SE domain which can be used for future research. Future directions include constructing a comprehensive common-knowledge relation extractor from SE handbook and incorporating such human knowledge into a more comprehensive machine-processable commonsense knowledge base for the SE domain.",
+        "text_hash": "30b4339feb6b6c24899392234c0f9cc2eaf6e0059778e38d27055f56b8143425",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "CONCLUSION AND FUTURE WORK",
+            "start": 0,
+            "end": 754,
+            "text": "We presented a common-knowledge concept extractor for the Systems Engineer's Virtual Assistant (SEVA) system and showed how it can be beneficial for downstream tasks such as relation extraction and knowledge graph construction. We construct a word-level annotated dataset with the help of a domain expert by carefully defining a labelling scheme to train a sequence labelling task to recognize SE concepts. Further, we also construct some essential datasets from the SE domain which can be used for future research. Future directions include constructing a comprehensive common-knowledge relation extractor from SE handbook and incorporating such human knowledge into a more comprehensive machine-processable commonsense knowledge base for the SE domain.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-bb02e8199a80bde6c03e4d79",
+        "paper_id": "1805.11598",
+        "title": "Polyglot Semantic Role Labeling",
+        "section": "Experiments",
+        "text": "We present our results in Table TABREF11 . We observe that simple polyglot training improves over monolingual training, with the exception of Czech, where we observe no change in performance. The languages with the fewest training examples (German, Japanese, Catalan) show the most improvement, while large-dataset languages such as Czech or Chinese see little or no improvement (Figure FIGREF10 ).\n\nThe language ID model performs inconsistently; it is better than the simple polyglot model in some cases, including Czech, but not in all. The language-specific LSTMs model performs best on a few languages, such as Catalan and Chinese, but worst on others. While these results may reflect differences between languages in the optimal amount of crosslingual sharing, we focus on the simple polyglot results in our analysis, which sufficiently demonstrate that polyglot training can improve performance over monolingual training.\n\nWe also report performance of state-of-the-art systems in each of these languages, all of which make explicit use of syntactic features, marcheggiani2017lstm excepted. While this results in better performance on many languages, our model has the advantage of not relying on a syntactic parser, and is hence more applicable to languages with lower resources. However, the results suggest that syntactic information is critical for strong performance on German, which has the fewest predicates and thus the least semantic annotation for a semantics-only model to learn from. Nevertheless, our baseline is on par with the best published scores for Chinese, and it shows strong performance on most languages.",
+        "text_hash": "e0ec6682628726c41d5ea708027c52f7f8755b87cf131e94491a24088ae80722",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1805.11598",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "Experiments",
+            "start": 0,
+            "end": 398,
+            "text": "We present our results in Table TABREF11 . We observe that simple polyglot training improves over monolingual training, with the exception of Czech, where we observe no change in performance. The languages with the fewest training examples (German, Japanese, Catalan) show the most improvement, while large-dataset languages such as Czech or Chinese see little or no improvement (Figure FIGREF10 ).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "Experiments",
+            "start": 0,
+            "end": 527,
+            "text": "The language ID model performs inconsistently; it is better than the simple polyglot model in some cases, including Czech, but not in all. The language-specific LSTMs model performs best on a few languages, such as Catalan and Chinese, but worst on others. While these results may reflect differences between languages in the optimal amount of crosslingual sharing, we focus on the simple polyglot results in our analysis, which sufficiently demonstrate that polyglot training can improve performance over monolingual training.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p2",
+            "section": "Experiments",
+            "start": 0,
+            "end": 704,
+            "text": "We also report performance of state-of-the-art systems in each of these languages, all of which make explicit use of syntactic features, marcheggiani2017lstm excepted. While this results in better performance on many languages, our model has the advantage of not relying on a syntactic parser, and is hence more applicable to languages with lower resources. However, the results suggest that syntactic information is critical for strong performance on German, which has the fewest predicates and thus the least semantic annotation for a semantics-only model to learn from. Nevertheless, our baseline is on par with the best published scores for Chinese, and it shows strong performance on most languages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-f04cb29df42fdbc211d852cf",
+        "paper_id": "1805.11598",
+        "title": "Polyglot Semantic Role Labeling",
+        "section": "Conclusion",
+        "text": "In this work, we have explored a straightforward method for polyglot training in SRL: use multilingual word vectors and combine training data across languages. This allows sharing without crosslingual alignments, shared annotation, or parallel data. We demonstrate that a polyglot model can outperform a monolingual one for semantic analysis, particularly for languages with less data.",
+        "text_hash": "259fb10c4e6a2a6d38d219f0b2d062d8fce5fec59509542ecb2bac481c83e981",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1805.11598",
+        "spans": [
+          {
+            "paragraph_id": "s9-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 385,
+            "text": "In this work, we have explored a straightforward method for polyglot training in SRL: use multilingual word vectors and combine training data across languages. This allows sharing without crosslingual alignments, shared annotation, or parallel data. We demonstrate that a polyglot model can outperform a monolingual one for semantic analysis, particularly for languages with less data.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-35ae853dec5dd79f61ef4980",
+        "paper_id": "2003.11687",
+        "title": "Common-Knowledge Concept Recognition for SEVA",
+        "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+        "text": "Any language model can be used for the purpose of customizing an NER problem to CR. We choose to go with BERT BIBREF16 because of its general-purpose nature and usage of contextualized word embeddings.\n\nIn the hand-labelled dataset, each word gets a label. The idea is to perform multi-class classification using BERT's pre-trained cased language model. We use pytorch transformers and hugging face as per the tutorial by BIBREF17 which uses $BertForTokenClassification$. The text is embedded as tokens and masks with a maximum token length. This embedded tokens are provided as the input to the pre-trained BERT model for a full fine-tuning. The model gives an F1-score of $0.89$ for the concept recognition task. An 80-20 data split is used for training and evaluation. Detailed performance of the CR is shown in Table 2 and 3. Additionally, we also implemented CR using spaCy BIBREF18 which also produced similar results.",
+        "text_hash": "305951aa3f60e3592031bd309facdfafa70442101c1afbb9b46439f740a25d05",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2003.11687",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+            "start": 0,
+            "end": 201,
+            "text": "Any language model can be used for the purpose of customizing an NER problem to CR. We choose to go with BERT BIBREF16 because of its general-purpose nature and usage of contextualized word embeddings.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "CONCEPT RECOGNITION ::: Fine tuning with BERT",
+            "start": 0,
+            "end": 721,
+            "text": "In the hand-labelled dataset, each word gets a label. The idea is to perform multi-class classification using BERT's pre-trained cased language model. We use pytorch transformers and hugging face as per the tutorial by BIBREF17 which uses $BertForTokenClassification$. The text is embedded as tokens and masks with a maximum token length. This embedded tokens are provided as the input to the pre-trained BERT model for a full fine-tuning. The model gives an F1-score of $0.89$ for the concept recognition task. An 80-20 data split is used for training and evaluation. Detailed performance of the CR is shown in Table 2 and 3. Additionally, we also implemented CR using spaCy BIBREF18 which also produced similar results.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

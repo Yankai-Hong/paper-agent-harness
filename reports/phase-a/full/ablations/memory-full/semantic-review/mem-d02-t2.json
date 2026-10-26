@@ -1,0 +1,463 @@
+{
+  "id": "mem-d02-t2",
+  "session_id": "d02",
+  "human_reviewed": false,
+  "error": null,
+  "claims_count": 12,
+  "judgment": {
+    "answer_correct": true,
+    "behavior_appropriate": true,
+    "reason": "所有11条claim均能在所引chunk中找到直接支持，且该回答也按要求区分了论文可回答与不可回答的部分（如locals vs non-locals、假阳性来源区分、农村集中收集是否同样偏差等被明确标为未解决），符合“核对原文证据并指出能/不能回答部分”的请求。",
+    "claims": [
+      {
+        "claim_index": 0,
+        "supported": true,
+        "reason": "chunk c-84894003 首段明确：与UN人口估计比较；共覆盖199国，网络爬取仅166国、Twitter仅169国。"
+      },
+      {
+        "claim_index": 1,
+        "supported": true,
+        "reason": "同chunk第二段：两语料间关系很弱(r=0.05)，且因收集方法正是为此设计，低相关不太可能由方法本身造成，而说明代表不同人群。"
+      },
+      {
+        "claim_index": 2,
+        "supported": true,
+        "reason": "同chunk第三段：GDP加权后Twitter与人口相关从r=0.39升至r=0.60，高于互联网使用加权；网络爬取则从r=0.39降至r=0.28。"
+      },
+      {
+        "claim_index": 3,
+        "supported": true,
+        "reason": "chunk c-9887004 讨论段：GDP加权匹配更好而互联网加权更差，暗示Twitter代表更富裕人群；替代解释是收集基于城市、城市更富裕；并以问句提出农村中心收集是否同样偏差，未作回答。"
+      },
+      {
+        "claim_index": 4,
+        "supported": true,
+        "reason": "chunk c-227fd89：以1万城市为中心50km半径空间搜索，避免语言关键词/标签造成的选择偏差；时间覆盖2017年5月至2019年初。"
+      },
+      {
+        "claim_index": 5,
+        "supported": true,
+        "reason": "同chunk第二段：Twitter依赖带地理位置推文，并非所有用户有GPS设备；预期人均GDP较低国家带地理位置推文比例更低且推文总量更少。"
+      },
+      {
+        "claim_index": 6,
+        "supported": true,
+        "reason": "chunk c-1bf5649：Twitter与人口失衡表现为US、Canada、西欧、Russia、South America明显高估；网络爬取模式不同，Africa和Southeast Asia明显低估。"
+      },
+      {
+        "claim_index": 7,
+        "supported": true,
+        "reason": "同chunk第二段：指出许多非洲国家在Twitter中被高估，并提出这些用户是本地人还是访客的问题，未给出答案。"
+      },
+      {
+        "claim_index": 8,
+        "supported": true,
+        "reason": "chunk c-01b9a36：两语料在许多地区（欧洲、有真值数据的非洲部分、南美）对语言预测一致；Twitter对北美和大洋洲代表性更好；因English和Spanish在Twitter上很常见，以这两种语言为主的国家默认代表性好。"
+      },
+      {
+        "claim_index": 9,
+        "supported": true,
+        "reason": "chunk c-9887004 指出总体假阳性很少（语料一般不预测实际不存在的语言），但Twitter假阳性更多；与c-01b9a36的假阳性讨论一致。"
+      },
+      {
+        "claim_index": 10,
+        "supported": true,
+        "reason": "chunk c-01b9a36：网络爬取数据在Russia和东欧之外假阳性很少；Twitter假阳性多在Russia和东欧，但在US、Canada、South Africa、France、India、Australia也有过度预测语言。"
+      },
+      {
+        "claim_index": 11,
+        "supported": true,
+        "reason": "同chunk末句：需更多研究区分移民、旅游和商业作为数字数据集假阳性语言的其他来源，论文本身未作区分。"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "acceptance_judge",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "d1460f17514eeef6d4908d9b9eda30367245266a91ef4710cab2116182318efa",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6656,
+        "completion_tokens": 814,
+        "total_tokens": 7470,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6400,
+        "output_tokens": 814,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 8059.258900000714
+    }
+  ],
+  "payload_hash": "34bb1e1a60ff88e7807f510382c1c11027200223106940da3cc09acb4d504d35",
+  "raw_outputs": [
+    {
+      "model": "deepseek-v4.1-flash",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "logprobs": null,
+          "message": {
+            "role": "assistant",
+            "content": "{\"answer_correct\": true, \"behavior_appropriate\": true, \"reason\": \"所有11条claim均能在所引chunk中找到直接支持，且该回答也按要求区分了论文可回答与不可回答的部分（如locals vs non-locals、假阳性来源区分、农村集中收集是否同样偏差等被明确标为未解决），符合“核对原文证据并指出能/不能回答部分”的请求。\", \"claims\": [{\"claim_index\": 0, \"supported\": true, \"reason\": \"chunk c-84894003 首段明确：与UN人口估计比较；共覆盖199国，网络爬取仅166国、Twitter仅169国。\"}, {\"claim_index\": 1, \"supported\": true, \"reason\": \"同chunk第二段：两语料间关系很弱(r=0.05)，且因收集方法正是为此设计，低相关不太可能由方法本身造成，而说明代表不同人群。\"}, {\"claim_index\": 2, \"supported\": true, \"reason\": \"同chunk第三段：GDP加权后Twitter与人口相关从r=0.39升至r=0.60，高于互联网使用加权；网络爬取则从r=0.39降至r=0.28。\"}, {\"claim_index\": 3, \"supported\": true, \"reason\": \"chunk c-9887004 讨论段：GDP加权匹配更好而互联网加权更差，暗示Twitter代表更富裕人群；替代解释是收集基于城市、城市更富裕；并以问句提出农村中心收集是否同样偏差，未作回答。\"}, {\"claim_index\": 4, \"supported\": true, \"reason\": \"chunk c-227fd89：以1万城市为中心50km半径空间搜索，避免语言关键词/标签造成的选择偏差；时间覆盖2017年5月至2019年初。\"}, {\"claim_index\": 5, \"supported\": true, \"reason\": \"同chunk第二段：Twitter依赖带地理位置推文，并非所有用户有GPS设备；预期人均GDP较低国家带地理位置推文比例更低且推文总量更少。\"}, {\"claim_index\": 6, \"supported\": true, \"reason\": \"chunk c-1bf5649：Twitter与人口失衡表现为US、Canada、西欧、Russia、South America明显高估；网络爬取模式不同，Africa和Southeast Asia明显低估。\"}, {\"claim_index\": 7, \"supported\": true, \"reason\": \"同chunk第二段：指出许多非洲国家在Twitter中被高估，并提出这些用户是本地人还是访客的问题，未给出答案。\"}, {\"claim_index\": 8, \"supported\": true, \"reason\": \"chunk c-01b9a36：两语料在许多地区（欧洲、有真值数据的非洲部分、南美）对语言预测一致；Twitter对北美和大洋洲代表性更好；因English和Spanish在Twitter上很常见，以这两种语言为主的国家默认代表性好。\"}, {\"claim_index\": 9, \"supported\": true, \"reason\": \"chunk c-9887004 指出总体假阳性很少（语料一般不预测实际不存在的语言），但Twitter假阳性更多；与c-01b9a36的假阳性讨论一致。\"}, {\"claim_index\": 10, \"supported\": true, \"reason\": \"chunk c-01b9a36：网络爬取数据在Russia和东欧之外假阳性很少；Twitter假阳性多在Russia和东欧，但在US、Canada、South Africa、France、India、Australia也有过度预测语言。\"}, {\"claim_index\": 11, \"supported\": true, \"reason\": \"同chunk末句：需更多研究区分移民、旅游和商业作为数字数据集假阳性语言的其他来源，论文本身未作区分。\"}]}"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 6656,
+        "completion_tokens": 814,
+        "total_tokens": 7470,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ],
+  "payload": {
+    "question": "请继续核对刚才那篇论文的原文证据，指出该问题可以回答和不能回答的部分，并保留来源引用。",
+    "answer": {
+      "claims": [
+        {
+          "key": "corpus_coverage",
+          "text": "该研究比较了网络爬取语料与Twitter语料同联合国人口估计的对应程度；数据集共覆盖199个国家，其中网络爬取数据仅代表166个国家、Twitter数据仅代表169个国家。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-84894003b7ee6fc081a4ecc6"
+            }
+          ]
+        },
+        {
+          "key": "low_cross_corpus_correlation",
+          "text": "两个语料之间的相关性很低（r=0.05）；作者认为这不太可能是收集方法造成的，而是表明网络数据与Twitter数据代表两个不同的群体。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-84894003b7ee6fc081a4ecc6"
+            }
+          ]
+        },
+        {
+          "key": "gdp_weighting_effect",
+          "text": "按GDP加权人口后，Twitter数据与人口的相关性从r=0.39升至r=0.60，高于按互联网使用加权；而按GDP加权时，网络爬取数据与人口的相关性却从r=0.39降至r=0.28。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-84894003b7ee6fc081a4ecc6"
+            }
+          ]
+        },
+        {
+          "key": "twitter_wealthy_and_urban",
+          "text": "作者据此推断Twitter平台比一般网络爬取数据更多地代表富裕人群；另一解释是这里的Twitter收集基于城市地区，而城市往往更富裕，但作者未回答以农村为中心的收集是否会有同样的偏差。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-9887004ca215701b79e8e570"
+            }
+          ]
+        },
+        {
+          "key": "collection_design",
+          "text": "Twitter数据通过以1万个城市为中心的50公里半径空间搜索收集，避免使用特定语言的关键词或话题标签造成选择偏差；数据覆盖2017年5月至2019年初。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-227fd89576f8c0e3eb0ce352"
+            }
+          ]
+        },
+        {
+          "key": "twitter_gps_confound",
+          "text": "Twitter数据依赖带地理位置的推文，但并非所有用户都有支持GPS的设备；作者预期人均GDP较低的国家带地理位置推文的比例可能更低，且推文总量也更少。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-227fd89576f8c0e3eb0ce352"
+            }
+          ]
+        },
+        {
+          "key": "regional_over_under_representation",
+          "text": "Twitter数据对人口的高估集中在US、Canada、西欧、Russia和South America；网络爬取数据的失衡模式不同，在Africa和Southeast Asia表现为明显的低估。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-1bf564989651e887cbd88011"
+            }
+          ]
+        },
+        {
+          "key": "locals_vs_nonlocals_unresolved",
+          "text": "作者指出，许多非洲国家在Twitter数据中被高估，并提出这些Twitter用户是本地居民还是访客的问题，但未给出答案。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-1bf564989651e887cbd88011"
+            }
+          ]
+        },
+        {
+          "key": "language_representation",
+          "text": "在两者都有真值数据的地区，两个语料对语言的预测常一致；但Twitter对North America和Oceania的代表性更好，且由于English和Spanish在Twitter上很常见，以这两种语言为主的国家会默认有较好的代表性。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+            }
+          ]
+        },
+        {
+          "key": "few_false_positives",
+          "text": "就现有真值数据而言，总体假阳性很少，即语料一般不会预测实际不存在的语言使用，但Twitter数据中的假阳性更多。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-9887004ca215701b79e8e570"
+            },
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+            }
+          ]
+        },
+        {
+          "key": "false_positive_geography",
+          "text": "网络爬取数据的假阳性除Russia和Eastern Europe外很少；Twitter的假阳性也多在Russia和Eastern Europe，但在US、Canada、South Africa、France、India和Australia也有过度预测的语言。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+            }
+          ]
+        },
+        {
+          "key": "false_positive_sources_unresolved",
+          "text": "作者指出需要更多研究来区分移民、旅游和商业作为数字数据集中假阳性语言的其他来源；论文未区分这些来源。",
+          "citations": [
+            {
+              "paper_id": "2004.00809",
+              "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved_question": "Twitter 数据为何能更好地预测各国语言清单：GDP、互联网使用、城市收集、英语/西班牙语偏差等假设及其证据；哪些部分论文已说明、哪些尚不能回答（如假阳性来源区分）",
+    "evidence": [
+      {
+        "chunk_id": "c-84894003b7ee6fc081a4ecc6",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Population Density",
+        "text": "How well does the amount of data correspond with the population density of each country? In this section we compare the number of words in each corpus with the UN population estimates. These datasets cover 199 countries in total, although the web-crawled data only represents 166 countries and the Twitter data only represents 169 countries.\n\nThe Pearson correlations between different measures per country are shown in Table 4. There are five measures per country: the size of the web-crawled and social media corpora in words, the UN population estimates, population adjusted by per capita GDP, and population adjusted by access to the internet. The purpose of these different weightings is to take into consideration the fact that some countries may produce more digital text per person than others.\n\nFirst, we notice that there is very little relationship between the two corpora ($r=0.05$). This is interesting in and of itself because, given the systematic attempt to find georeferenced texts, we would expect a fairly high correlation here. But this shows that the data comes from different places (c.f., Figures 2 and 3). Because the collection methods were designed with this purpose in mind, it is unlikely that this low correlation is caused by the methods themselves rather than reflecting the fact that these datasets represent different populations. In other words, this is a strong indication that web data and Twitter data represent two different populations regardless of variations in the collection methods employed in this study.\n\nSecond, GDP-weighting and internet-usage-weighting have different effects on the two datasets. When adjusted for GDP, the correlation between Twitter data and population raises from $r=0.39$ to $r=0.60$, a fairly strong relationship and higher than when adjusted by internet usage. But when population is adjusted for GDP, the correlation between web-crawled data and population lowers from $r=0.39$ to $r=0.28$. In other words, economic information does not help to weight the web data towards actual ground-truth population density.",
+        "text_hash": "1b8ffa904d879ace885195f953cbbcf23a8068cbbb4bb9e643bf4484d31c80c2",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s4-p0",
+            "section": "Population Density",
+            "start": 0,
+            "end": 341,
+            "text": "How well does the amount of data correspond with the population density of each country? In this section we compare the number of words in each corpus with the UN population estimates. These datasets cover 199 countries in total, although the web-crawled data only represents 166 countries and the Twitter data only represents 169 countries.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p1",
+            "section": "Population Density",
+            "start": 0,
+            "end": 459,
+            "text": "The Pearson correlations between different measures per country are shown in Table 4. There are five measures per country: the size of the web-crawled and social media corpora in words, the UN population estimates, population adjusted by per capita GDP, and population adjusted by access to the internet. The purpose of these different weightings is to take into consideration the fact that some countries may produce more digital text per person than others.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p2",
+            "section": "Population Density",
+            "start": 0,
+            "end": 745,
+            "text": "First, we notice that there is very little relationship between the two corpora ($r=0.05$). This is interesting in and of itself because, given the systematic attempt to find georeferenced texts, we would expect a fairly high correlation here. But this shows that the data comes from different places (c.f., Figures 2 and 3). Because the collection methods were designed with this purpose in mind, it is unlikely that this low correlation is caused by the methods themselves rather than reflecting the fact that these datasets represent different populations. In other words, this is a strong indication that web data and Twitter data represent two different populations regardless of variations in the collection methods employed in this study.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p3",
+            "section": "Population Density",
+            "start": 0,
+            "end": 534,
+            "text": "Second, GDP-weighting and internet-usage-weighting have different effects on the two datasets. When adjusted for GDP, the correlation between Twitter data and population raises from $r=0.39$ to $r=0.60$, a fairly strong relationship and higher than when adjusted by internet usage. But when population is adjusted for GDP, the correlation between web-crawled data and population lowers from $r=0.39$ to $r=0.28$. In other words, economic information does not help to weight the web data towards actual ground-truth population density.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9887004ca215701b79e8e570",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Discussion",
+        "text": "Analyses and models based on digital texts, especially from Twitter, often come with uncertainty about the underlying populations that those texts represent. This paper has systematically collected Twitter and web-data from locations around the world without language-specific searches that would bias the collection. The purpose is to understand how well these data sets correspond with what we know about global populations from ground-truth sources, providing a method for evaluating different data collection techniques.\n\nThe first important finding is that patterns from Twitter and web-crawled data diverge significantly in their representation of the world's population. This simply reflects the fact that data drawn from Twitter and web pages will likely represent people from different places. Why? We have also seen that Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics. This implies that Twitter as a platform represents more wealthy populations than general web-crawled data. An alternate interpretation is that the Twitter collection here is based on urban areas, which tend to have more wealthy populations. Would the same bias be found with a rural-centered collection procedure? That is a secondary problem in this context because the goal is to develop ground-truth population-centered baselines that could be used to evaluate different Twitter collection methods.\n\nThe second important finding is that, given what ground-truth language-use data is available, there are in general very few false positives: cases where the corpora suggest a language is frequently used in a country but census-based data does not. While uncommon, there are more false positives in Twitter data. This is significant because it means that, in general, these corpora do not predict language use that is not actually present.\n\nBut the third important finding is that, given what ground-truth language-use data is available, there remain a number of countries where these corpora do not represent all the language produced by the local populations: not all languages from censuses are found in digital texts. In this case Twitter has fewer missing languages.",
+        "text_hash": "28d9e82dd11896161801f335dbe447af7e12abbeaca95b09385cf0fdc3a668bc",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Discussion",
+            "start": 0,
+            "end": 524,
+            "text": "Analyses and models based on digital texts, especially from Twitter, often come with uncertainty about the underlying populations that those texts represent. This paper has systematically collected Twitter and web-data from locations around the world without language-specific searches that would bias the collection. The purpose is to understand how well these data sets correspond with what we know about global populations from ground-truth sources, providing a method for evaluating different data collection techniques.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Discussion",
+            "start": 0,
+            "end": 943,
+            "text": "The first important finding is that patterns from Twitter and web-crawled data diverge significantly in their representation of the world's population. This simply reflects the fact that data drawn from Twitter and web pages will likely represent people from different places. Why? We have also seen that Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics. This implies that Twitter as a platform represents more wealthy populations than general web-crawled data. An alternate interpretation is that the Twitter collection here is based on urban areas, which tend to have more wealthy populations. Would the same bias be found with a rural-centered collection procedure? That is a secondary problem in this context because the goal is to develop ground-truth population-centered baselines that could be used to evaluate different Twitter collection methods.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p2",
+            "section": "Discussion",
+            "start": 0,
+            "end": 438,
+            "text": "The second important finding is that, given what ground-truth language-use data is available, there are in general very few false positives: cases where the corpora suggest a language is frequently used in a country but census-based data does not. While uncommon, there are more false positives in Twitter data. This is significant because it means that, in general, these corpora do not predict language use that is not actually present.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p3",
+            "section": "Discussion",
+            "start": 0,
+            "end": 330,
+            "text": "But the third important finding is that, given what ground-truth language-use data is available, there remain a number of countries where these corpora do not represent all the language produced by the local populations: not all languages from censuses are found in digital texts. In this case Twitter has fewer missing languages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-227fd89576f8c0e3eb0ce352",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Collecting Global Corpora",
+        "text": "In isolation, web-crawled data provides one observation of global language use. Another common source of data used for this purpose is Twitter BIBREF15, BIBREF16, BIBREF17, BIBREF18, BIBREF19, BIBREF20, BIBREF21). A spatial search is used to collect tweets from within a 50km radius of 10k cities. This search avoids biasing the selection by using language-specific keywords or hashtags. The Twitter data covers the period from May of 2017 until early 2019. This creates a corpus containing 1,066,038,000 tweets, all connected with the city from which they were collected. Because the language identification component only provides reliable predictions for samples containing at least 50 characters, the corpus is pruned to that length threshold (this removes approximately 250 million tweets). As shown in Table 1, this produces a corpus containing 4.14 billion words.\n\nEach of these datasets rests on different assumptions and, as a result, is subject to different confounds. For example, using top-level domains to determine the country of origin for web pages is likely to over-represent countries like Estonia that use their TLD extensively and to under-represent countries like the United States that do not traditionally use their TLD. The Twitter dataset relies on georeferenced tweets, but not all users have GPS-enabled devices. For example, we might expect that countries with a lower per capita GDP have a lower percent of georeferenced tweets, in addition to having fewer tweets overall. The goal here is to establish a baseline of how well these corpora represent actual populations.",
+        "text_hash": "9295a8d02baf1ef80e427d87c2b15fc4a144eb65a84adcd4bb3b833b0671f5a3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s1-p3",
+            "section": "Collecting Global Corpora",
+            "start": 0,
+            "end": 870,
+            "text": "In isolation, web-crawled data provides one observation of global language use. Another common source of data used for this purpose is Twitter BIBREF15, BIBREF16, BIBREF17, BIBREF18, BIBREF19, BIBREF20, BIBREF21). A spatial search is used to collect tweets from within a 50km radius of 10k cities. This search avoids biasing the selection by using language-specific keywords or hashtags. The Twitter data covers the period from May of 2017 until early 2019. This creates a corpus containing 1,066,038,000 tweets, all connected with the city from which they were collected. Because the language identification component only provides reliable predictions for samples containing at least 50 characters, the corpus is pruned to that length threshold (this removes approximately 250 million tweets). As shown in Table 1, this produces a corpus containing 4.14 billion words.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p4",
+            "section": "Collecting Global Corpora",
+            "start": 0,
+            "end": 726,
+            "text": "Each of these datasets rests on different assumptions and, as a result, is subject to different confounds. For example, using top-level domains to determine the country of origin for web pages is likely to over-represent countries like Estonia that use their TLD extensively and to under-represent countries like the United States that do not traditionally use their TLD. The Twitter dataset relies on georeferenced tweets, but not all users have GPS-enabled devices. For example, we might expect that countries with a lower per capita GDP have a lower percent of georeferenced tweets, in addition to having fewer tweets overall. The goal here is to establish a baseline of how well these corpora represent actual populations.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-1bf564989651e887cbd88011",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Population Density",
+        "text": "Countries are shown by their representation in Twitter (Figure 2) and the web corpus (Figure 3), with red indicating over-representation: there is more corpus data than population size would predict. The imbalance between Twitter data and population is caused by a clear over-representation of the US, Canada, western Europe, Russia, and South America. But the imbalance between web-crawled data and population has a very different geographic pattern: there is less extreme over-representation but more under-representation. Specifically, under-representation is apparent in Africa and Southeast Asia.\n\nThe distribution of language data in Figures 2 and 3 raises an important distinction between types of users: locals vs. non-locals. For example, from internet usage statistics we know that many countries in Africa have less access to web-sites and thus produce much less web-crawled data. This is reflected in Figure 3. But many African countries are over-represented in Twitter data. Are these Twitter users members of the local populations or do they represent visitors? Note that Figure 2 does not reflect the popularity of Twitter as a platform because we start by normalizing the Twitter output for each country against the total Twitter usage. The over-represented countries in Figure 2, then, represent places where Twitter data is produced at a higher rate than expected. It has nothing to do with the relative popularity of the platform (e.g., Twitter vs. web pages).",
+        "text_hash": "0efeb7f2514948acaf475afce8544da21df958aa3794b449501e4b0e0e621944",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s4-p7",
+            "section": "Population Density",
+            "start": 0,
+            "end": 601,
+            "text": "Countries are shown by their representation in Twitter (Figure 2) and the web corpus (Figure 3), with red indicating over-representation: there is more corpus data than population size would predict. The imbalance between Twitter data and population is caused by a clear over-representation of the US, Canada, western Europe, Russia, and South America. But the imbalance between web-crawled data and population has a very different geographic pattern: there is less extreme over-representation but more under-representation. Specifically, under-representation is apparent in Africa and Southeast Asia.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p8",
+            "section": "Population Density",
+            "start": 0,
+            "end": 876,
+            "text": "The distribution of language data in Figures 2 and 3 raises an important distinction between types of users: locals vs. non-locals. For example, from internet usage statistics we know that many countries in Africa have less access to web-sites and thus produce much less web-crawled data. This is reflected in Figure 3. But many African countries are over-represented in Twitter data. Are these Twitter users members of the local populations or do they represent visitors? Note that Figure 2 does not reflect the popularity of Twitter as a platform because we start by normalizing the Twitter output for each country against the total Twitter usage. The over-represented countries in Figure 2, then, represent places where Twitter data is produced at a higher rate than expected. It has nothing to do with the relative popularity of the platform (e.g., Twitter vs. web pages).",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-01b9a363a68a29a0e9af4ff8",
+        "paper_id": "2004.00809",
+        "title": "Mapping Languages and Demographics with Georeferenced Corpora",
+        "section": "Population Demographics",
+        "text": "In both Figures 4 and 5 a darker red indicates a higher number of languages from a census being found in the respective corpora. In many cases, the two corpora agree in which languages they predict to be used in each country: Europe, those parts of Africa for which there is ground-truth data, and South America. But Twitter provides a better representation of North America and Oceania. One factor that is disguised in these figures is that many countries have only a few languages, so that a high true positive rate for a country could reflect only one or two languages. For example, both English and Spanish are very common on Twitter (c.f. Table 3), so that any country which predominantly uses these two languages will have a good representation by default.\n\nWe can also think about the false positive rate: what languages do the corpora find that are not contained in the census-based ground-truth? For example, if English and Spanish are used in a country on Twitter but not reflected on the census, this is a false positive. As shown in Figure 6, the web-crawled corpus has very few false positive outside of Russia and eastern Europe. The situation on Twitter is similar: most false positives are in Russia and Eastern Europe, but in Twitter there are also over-predicted languages in the US and Canada, South Africa, France, India, and Australia. This is important because it shows that relying on Twitter alone would indicate that there are more diverse language speaking populations in these countries. As shown in Table 1, Eastern Europe accounts for 2.4% of the world's population but 27.4% of the web corpus; this explains the region's general false positive rate. For Russia, on the other hand, which is not included in Eastern Europe, the false positive rate cannot be explained in reference to general over-representation. In this case, the false positives are other European languages: French, German, Spanish, Italian. More research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages appearing in digital data sets.",
+        "text_hash": "993663b356761fbb2267807db94e7461fa2643de5c351d6c2d59410fc28fca23",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2004.00809",
+        "spans": [
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Population Demographics",
+            "start": 0,
+            "end": 762,
+            "text": "In both Figures 4 and 5 a darker red indicates a higher number of languages from a census being found in the respective corpora. In many cases, the two corpora agree in which languages they predict to be used in each country: Europe, those parts of Africa for which there is ground-truth data, and South America. But Twitter provides a better representation of North America and Oceania. One factor that is disguised in these figures is that many countries have only a few languages, so that a high true positive rate for a country could reflect only one or two languages. For example, both English and Spanish are very common on Twitter (c.f. Table 3), so that any country which predominantly uses these two languages will have a good representation by default.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Population Demographics",
+            "start": 0,
+            "end": 1337,
+            "text": "We can also think about the false positive rate: what languages do the corpora find that are not contained in the census-based ground-truth? For example, if English and Spanish are used in a country on Twitter but not reflected on the census, this is a false positive. As shown in Figure 6, the web-crawled corpus has very few false positive outside of Russia and eastern Europe. The situation on Twitter is similar: most false positives are in Russia and Eastern Europe, but in Twitter there are also over-predicted languages in the US and Canada, South Africa, France, India, and Australia. This is important because it shows that relying on Twitter alone would indicate that there are more diverse language speaking populations in these countries. As shown in Table 1, Eastern Europe accounts for 2.4% of the world's population but 27.4% of the web corpus; this explains the region's general false positive rate. For Russia, on the other hand, which is not included in Eastern Europe, the false positive rate cannot be explained in reference to general over-representation. In this case, the false positives are other European languages: French, German, Spanish, Italian. More research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages appearing in digital data sets.",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+}

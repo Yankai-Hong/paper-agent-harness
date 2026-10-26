@@ -1,0 +1,508 @@
+{
+  "turn_id": "2913c858141b49eaa0caafa46667f86e",
+  "session_id": "d28-d28-t4",
+  "question": "关于论文《Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!》，How are the language models used to make predictions on humorous statements?",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!》，How are the language models used to make predictions on humorous statements?"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.01759990118443966
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!》，How are the language models used to make predictions on humorous statements?"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "How are language models used to make predictions on humorous statements in the paper 'Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!'?",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1705.10272"
+        ],
+        "resolved_entities": {
+          "paper": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+          "paper_id": "1705.10272"
+        }
+      },
+      "elapsed_ms": 3417.937000049278
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "How are language models used to make predictions on humorous statements in the paper 'Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!'?"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-2e6195119fdfce8fe43dc752",
+          "c-fe0545dbe9418ac897a44fc9",
+          "c-c7e2689e7ebce1fdcfff6c6f"
+        ]
+      },
+      "elapsed_ms": 12.45739997830242
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-2e6195119fdfce8fe43dc752",
+          "c-fe0545dbe9418ac897a44fc9",
+          "c-c7e2689e7ebce1fdcfff6c6f"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-2e6195119fdfce8fe43dc752",
+          "c-fe0545dbe9418ac897a44fc9"
+        ]
+      },
+      "elapsed_ms": 0.004800036549568176
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-2e6195119fdfce8fe43dc752",
+          "c-fe0545dbe9418ac897a44fc9"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "The evidence (Language Models section) fully describes how language models are used to predict/rank humorous statements: Ngram models trained on two corpora (funny tweets from @midnight and news data) assign a probability to each tweet; tweets with higher probability under the funny-tweet model are considered funnier, while tweets with lower probability under the news model are considered funnier; bigrams and trigrams were used as features, with KenLM, modified Kneser-Ney smoothing and back-off. This directly and completely answers the question."
+      },
+      "elapsed_ms": 4163.559000007808
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "ranking_goal",
+            "text": "语言模型被用来给可能有幽默性的陈述打分，使它们可以相互进行相对排名，因为并非所有笑话都同样好笑。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-04fd36e8ebf0badf98e5c22f"
+              }
+            ]
+          },
+          {
+            "key": "ngram_reasons",
+            "text": "使用传统 Ngram 语言模型有两个原因：一是能用幽默样例作为训练数据学习某种幽默风格；二是能给每个输入分配概率，从而在陈述之间进行相对排名。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "two_corpora",
+            "text": "系统用 Ngram 语言模型估计推文概率，并分别从两个语料库构建模型：@midnight 节目的幽默推文集合，以及可自由用于研究的新闻数据语料库。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "scoring_rule",
+            "text": "推文按每个模型给出的概率打分：在幽默推文模型下概率更高的推文被认为更好笑，因为它更像幽默训练数据；而在新闻语言模型下概率更低的推文被认为更好笑，因为它最不像（不好笑的）新闻语料。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "features_tool",
+            "text": "模型以 bigram 和 trigram 作为特征，并使用 KenLM，配合修改的 Kneser-Ney 平滑和回退技术作为语言建模工具。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "semeval_tasks",
+            "text": "该方法用于 SemEval-2017 Task 6 的两个子任务：成对比较（Subtask A，选出两条推文中更好笑的一条）和半排序（Subtask B，把某话题标签下的推文分入最好笑、接下来九条最好笑、其余全部三类）。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "news_advantage",
+            "text": "结果显示，在新闻数据上训练的模型明显优于推文模型，bigram 模型略好于 trigram 模型；提交的新闻 trigram 模型在 Subtask A 中排第四、在 Subtask B 中排第一。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-2e6195119fdfce8fe43dc752"
+              }
+            ]
+          },
+          {
+            "key": "news_size_reason",
+            "text": "作者认为新闻数据的显著优势来自其数据量远大于推文数据：推文数据约 21,000 条推文，而新闻数据约 6.2 GB 文本。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-2e6195119fdfce8fe43dc752"
+              }
+            ]
+          },
+          {
+            "key": "oov_limitation",
+            "text": "语言模型方法的一个局限是遇到大量词表外词，而这一问题无法通过增加训练数据解决，因为幽默依赖对语言的创造性使用（例如基于生造词的双关）。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-fe0545dbe9418ac897a44fc9"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 6149.263400002383
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "output": {
+        "session_id": "d28-d28-t4",
+        "entities": {
+          "paper": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+          "paper_id": "1705.10272"
+        },
+        "facts": {
+          "ranking_goal": {
+            "text": "语言模型被用来给可能有幽默性的陈述打分，使它们可以相互进行相对排名，因为并非所有笑话都同样好笑。",
+            "evidence_ids": [
+              "c-04fd36e8ebf0badf98e5c22f"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "ngram_reasons": {
+            "text": "使用传统 Ngram 语言模型有两个原因：一是能用幽默样例作为训练数据学习某种幽默风格；二是能给每个输入分配概率，从而在陈述之间进行相对排名。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "two_corpora": {
+            "text": "系统用 Ngram 语言模型估计推文概率，并分别从两个语料库构建模型：@midnight 节目的幽默推文集合，以及可自由用于研究的新闻数据语料库。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "scoring_rule": {
+            "text": "推文按每个模型给出的概率打分：在幽默推文模型下概率更高的推文被认为更好笑，因为它更像幽默训练数据；而在新闻语言模型下概率更低的推文被认为更好笑，因为它最不像（不好笑的）新闻语料。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "features_tool": {
+            "text": "模型以 bigram 和 trigram 作为特征，并使用 KenLM，配合修改的 Kneser-Ney 平滑和回退技术作为语言建模工具。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "semeval_tasks": {
+            "text": "该方法用于 SemEval-2017 Task 6 的两个子任务：成对比较（Subtask A，选出两条推文中更好笑的一条）和半排序（Subtask B，把某话题标签下的推文分入最好笑、接下来九条最好笑、其余全部三类）。",
+            "evidence_ids": [
+              "c-42b2a8b4190d48e2271bf4e7"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "news_advantage": {
+            "text": "结果显示，在新闻数据上训练的模型明显优于推文模型，bigram 模型略好于 trigram 模型；提交的新闻 trigram 模型在 Subtask A 中排第四、在 Subtask B 中排第一。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "news_size_reason": {
+            "text": "作者认为新闻数据的显著优势来自其数据量远大于推文数据：推文数据约 21,000 条推文，而新闻数据约 6.2 GB 文本。",
+            "evidence_ids": [
+              "c-2e6195119fdfce8fe43dc752"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          },
+          "oov_limitation": {
+            "text": "语言模型方法的一个局限是遇到大量词表外词，而这一问题无法通过增加训练数据解决，因为幽默依赖对语言的创造性使用（例如基于生造词的双关）。",
+            "evidence_ids": [
+              "c-fe0545dbe9418ac897a44fc9"
+            ],
+            "turn_id": "2913c858141b49eaa0caafa46667f86e"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1705.10272"
+          ]
+        }
+      },
+      "elapsed_ms": 2.7604999486356974
+    }
+  ],
+  "started_at": 1792723306.2030363,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "bm25",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "ranking_goal",
+        "text": "语言模型被用来给可能有幽默性的陈述打分，使它们可以相互进行相对排名，因为并非所有笑话都同样好笑。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-04fd36e8ebf0badf98e5c22f"
+          }
+        ]
+      },
+      {
+        "key": "ngram_reasons",
+        "text": "使用传统 Ngram 语言模型有两个原因：一是能用幽默样例作为训练数据学习某种幽默风格；二是能给每个输入分配概率，从而在陈述之间进行相对排名。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "two_corpora",
+        "text": "系统用 Ngram 语言模型估计推文概率，并分别从两个语料库构建模型：@midnight 节目的幽默推文集合，以及可自由用于研究的新闻数据语料库。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "scoring_rule",
+        "text": "推文按每个模型给出的概率打分：在幽默推文模型下概率更高的推文被认为更好笑，因为它更像幽默训练数据；而在新闻语言模型下概率更低的推文被认为更好笑，因为它最不像（不好笑的）新闻语料。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "features_tool",
+        "text": "模型以 bigram 和 trigram 作为特征，并使用 KenLM，配合修改的 Kneser-Ney 平滑和回退技术作为语言建模工具。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "semeval_tasks",
+        "text": "该方法用于 SemEval-2017 Task 6 的两个子任务：成对比较（Subtask A，选出两条推文中更好笑的一条）和半排序（Subtask B，把某话题标签下的推文分入最好笑、接下来九条最好笑、其余全部三类）。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "news_advantage",
+        "text": "结果显示，在新闻数据上训练的模型明显优于推文模型，bigram 模型略好于 trigram 模型；提交的新闻 trigram 模型在 Subtask A 中排第四、在 Subtask B 中排第一。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-2e6195119fdfce8fe43dc752"
+          }
+        ]
+      },
+      {
+        "key": "news_size_reason",
+        "text": "作者认为新闻数据的显著优势来自其数据量远大于推文数据：推文数据约 21,000 条推文，而新闻数据约 6.2 GB 文本。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-2e6195119fdfce8fe43dc752"
+          }
+        ]
+      },
+      {
+        "key": "oov_limitation",
+        "text": "语言模型方法的一个局限是遇到大量词表外词，而这一问题无法通过增加训练数据解决，因为幽默依赖对语言的创造性使用（例如基于生造词的双关）。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-fe0545dbe9418ac897a44fc9"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "e4ab290251eadf92c6da9ca412facfe2cc0f6b88064a237192265229411d2b1e",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3295,
+        "completion_tokens": 113,
+        "total_tokens": 3408,
+        "prompt_tokens_details": {
+          "cached_tokens": 3200
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 95,
+        "output_tokens": 113,
+        "cache_read_input_tokens": 3200,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3416.592700057663
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 2,
+      "request_hash": "61a7d00a401ff3533786678c8ffef01761e5791644c24b888d6e10350554316a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4311,
+        "completion_tokens": 121,
+        "total_tokens": 4432,
+        "prompt_tokens_details": {
+          "cached_tokens": 4224
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 87,
+        "output_tokens": 121,
+        "cache_read_input_tokens": 4224,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4163.271899917163
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 3,
+      "request_hash": "d1b99fd121693d7c1e9369bd0baebedfbdfd79e6774668ffc07293b8f7899fdd",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4414,
+        "completion_tokens": 820,
+        "total_tokens": 5234,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4414,
+        "output_tokens": 820,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6148.857299936935
+    }
+  ]
+}
