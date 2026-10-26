@@ -1,5 +1,7 @@
 # 架构与七阶段
 
+三层存储模式由 `MEMORY_BACKEND=three_layer` 启用：Pipeline 仅调用 `MemoryManager`，后者协调 Redis 工作缓存、SQLite 权威事实及事务快照、Chroma 情景索引。读取在 NLU 上下文构建位置，写入和压缩在 Memory 阶段；没有新增外部阶段。论文 FAISS 索引不变，历史记忆不能替代当前论文证据。详细调用链、幂等恢复与旧状态迁移见 [memory.md](memory.md)。下文文件提交说明适用于默认 legacy 模式。
+
 这是以 learn-claude-code 的 messages/tool loop 和上下文管理思想为基准的领域实现，并非上游已经拥有论文问答。固定上游 SHA 为 `ce8f9f186058939da54c9d6fead78dfb5d0fd6c3`。原始选定文件保存在内部快照 `references/learn-claude-code/`，复用审查见内部文档 `LEARN_CLAUDE_CODE_REVIEW.md`（两者均未随仓库发布；上游来源与固定版本见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) 与 [upstream.lock](../upstream.lock)）。
 
 ```mermaid

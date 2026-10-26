@@ -6,6 +6,8 @@
 
 ## Trace
 
+三层模式额外记录 `memory_events`：事实 active/conflict/update/duplicate、事件 queued/skip、Redis/Chroma 故障类型、补偿方式。服务错误只记录类型，不包含连接 URL 或密码。SQLite 提交后索引/缓存同步失败是 `commit_status=committed` 且 `degraded=true`；提交前失败仍为 uncommitted。该模式使用版本检查拒绝同 session 的过期并发提交；本文原文件模式的并发限制仍适用于 legacy。
+
 每轮一个 turn_id，按阶段记录 input、output、attempt、status 和 elapsed_ms。二次检索分别留下 Retrieve/Rerank/Reflect span。发生异常也写入 trace；未经过的阶段标为 skipped，而不是伪造成功。
 
 交互 trace 位于 `runs/traces/<session>/`，批量 trace 位于指定输出目录下。`/trace` 展示当前进程最近成功一轮的完整 trace；失败轮直接检查目录里的最新文件。`/corpus` 显示索引元信息，`/memory` 展示当前会话事实。

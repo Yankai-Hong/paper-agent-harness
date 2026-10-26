@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="10" time="1.643" timestamp="2026-10-25T19:51:23.861537+08:00" hostname="Jacky"><testcase classname="tests.test_memory_manager" name="test_fact_versions_conflicts_delete" time="0.030" /><testcase classname="tests.test_memory_manager" name="test_redis_isolated_and_expiry_recovery" time="0.031" /><testcase classname="tests.test_memory_manager" name="test_current_evidence_required_and_paraphrase_not_authoritative" time="0.013" /><testcase classname="tests.test_memory_manager" name="test_service_failure_outbox_recovery_and_trace" time="0.040" /><testcase classname="tests.test_memory_manager" name="test_strict_failure_has_trace_and_no_commit" time="0.025" /><testcase classname="tests.test_memory_manager" name="test_long_conversation_recall_and_legacy_import" time="0.111" /><testcase classname="tests.test_memory_manager" name="test_chroma_explicit_vectors_and_filter" time="0.930"><failure message="chromadb.errors.InternalError: error returned from database: (code: 14) unable to open database file">tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/pytest-of-40533/pytest-24/test_chroma_explicit_vectors_a0')
+
+    def test_chroma_explicit_vectors_and_filter(tmp_path):
+        # Real Chroma, deterministic tiny vectors: validates storage, not BGE quality.
+        pytest.importorskip("chromadb")
+        import numpy as np
+        encoder = SimpleNamespace(model_id="test_vectors", max_length=10,
+                                  encode=lambda texts: np.array([[1.,0.,0.] for _ in texts]))
+        store = ChromaEpisodes(tmp_path/"chroma", encoder)
+        for sid, paper in (("s", "p"), ("s", "other"), ("other", "p")):
+&gt;           store.write(dict(episode_id=sid+paper, session_id=sid, turn_id="t", paper_ids=[paper],
+                             evidence_ids=["c"], event_type="decision", created_at=1., source_type="conversation", content="alpha"))
+
+tests\test_memory_manager.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\paper_agent\memory_stores.py:183: in write
+    self.collection.upsert(ids=[episode["episode_id"]], documents=[episode["content"]],
+src\paper_agent\memory_stores.py:167: in collection
+    self.client = chromadb.PersistentClient(path=self.path, settings=Settings(anonymized_telemetry=False))
+.venv-gpu\lib\site-packages\chromadb\__init__.py:228: in PersistentClient
+    return ClientCreator(tenant=tenant, database=database, settings=settings)
+.venv-gpu\lib\site-packages\chromadb\api\client.py:69: in __init__
+    super().__init__(settings=settings)
+.venv-gpu\lib\site-packages\chromadb\api\shared_system_client.py:25: in __init__
+    SharedSystemClient._create_system_if_not_exists(self._identifier, settings)
+.venv-gpu\lib\site-packages\chromadb\api\shared_system_client.py:39: in _create_system_if_not_exists
+    new_system.start()
+.venv-gpu\lib\site-packages\chromadb\config.py:467: in start
+    component.start()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;chromadb.api.rust.RustBindingsAPI object at 0x00000269DAD31510&gt;
+
+    @override
+    def start(self) -&gt; None:
+        # Construct the SqliteConfig
+        # TOOD: We should add a "config converter"
+        if self._system.settings.require("is_persistent"):
+            persist_path = self._system.settings.require("persist_directory")
+            sqlite_persist_path = persist_path + "/chroma.sqlite3"
+        else:
+            persist_path = None
+            sqlite_persist_path = None
+        hash_type = self._system.settings.require("migrations_hash_algorithm")
+        hash_type_bindings = (
+            chromadb_rust_bindings.MigrationHash.MD5
+            if hash_type == "md5"
+            else chromadb_rust_bindings.MigrationHash.SHA256
+        )
+        migration_mode = self._system.settings.require("migrations")
+        migration_mode_bindings = (
+            chromadb_rust_bindings.MigrationMode.Apply
+            if migration_mode == "apply"
+            else chromadb_rust_bindings.MigrationMode.Validate
+        )
+        sqlite_config = chromadb_rust_bindings.SqliteDBConfig(
+            hash_type=hash_type_bindings,
+            migration_mode=migration_mode_bindings,
+            url=sqlite_persist_path,
+        )
+    
+&gt;       self.bindings = chromadb_rust_bindings.Bindings(
+            allow_reset=self._system.settings.require("allow_reset"),
+            sqlite_db_config=sqlite_config,
+            persist_path=persist_path,
+            hnsw_cache_size=self.hnsw_cache_size,
+        )
+E       chromadb.errors.InternalError: error returned from database: (code: 14) unable to open database file
+
+.venv-gpu\lib\site-packages\chromadb\api\rust.py:122: InternalError</failure></testcase><testcase classname="tests.test_memory_manager" name="test_explicit_user_update_and_similar_key_conflict" time="0.068" /><testcase classname="tests.test_memory_manager" name="test_archive_failure_rolls_back_all_durable_memory" time="0.021" /><testcase classname="tests.test_memory_manager" name="test_concurrent_commit_rejected_and_summary_fallback" time="0.033" /></testsuite></testsuites>

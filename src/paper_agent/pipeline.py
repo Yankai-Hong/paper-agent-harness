@@ -11,6 +11,7 @@ import uuid
 import math
 import copy
 import json
+import os
 
 from .memory import SessionMemory, ContextArchive, validate_citations
 from .storage import write_json, safe_id, digest
@@ -82,7 +83,7 @@ class TurnTrace:
 class PaperPipeline:
     def __init__(self, retriever, reasoner, trace_dir, memory_dir, mode="rerank", rewrite=True, reflect=True,
                  compact=True, memory_strategy="bounded", archive_recall=True, max_retrieval_attempts=2,
-                 allow_degraded=True):
+                 allow_degraded=True, memory_manager=None):
         self.retriever, self.reasoner = retriever, reasoner
         self.trace_dir, self.memory_dir = Path(trace_dir), Path(memory_dir)
         self.mode, self.rewrite, self.reflect = mode, rewrite, reflect
@@ -93,9 +94,23 @@ class PaperPipeline:
         self.archive_recall = archive_recall
         self.max_retrieval_attempts = max_retrieval_attempts
         self.allow_degraded = allow_degraded
+        self.memory_manager = memory_manager
+        if memory_manager is None and os.getenv("MEMORY_BACKEND", "legacy") == "three_layer":
+            from .memory_manager import MemoryManager
+            self.memory_manager = MemoryManager.from_env(self.memory_dir, getattr(retriever, "encoder", None))
 
     def run(self, question, state, turn_id=None):
         turn_id = safe_id(turn_id or uuid.uuid4().hex)
+        if self.memory_manager:
+            self.memory_manager.events = []
+            try:
+                self.memory_manager.load_working_memory(state, bounded=self.compact)
+            except Exception as exc:
+                failed = TurnTrace(state.session_id, question)
+                failed.value.update(turn_id=turn_id, status="error", commit_status="uncommitted",
+                                    memory_events=self.memory_manager.events, error_type=type(exc).__name__)
+                failed.finish(self.trace_dir)
+                raise
         if turn_id in state.committed_turns:
             committed = state.committed_turns[turn_id]
             if committed["question"] != question:
@@ -122,7 +137,7 @@ class PaperPipeline:
                     raise ValueError("Question contains unsupported control characters")
                 event["output"] = {"accepted": True}
             with trace.stage("NLU", {"question": question}) as event:
-                recalled = ContextArchive(self.memory_dir/"archives").search(
+                recalled = self.memory_manager.retrieve_memories(state, question) if self.memory_manager and self.archive_recall else ContextArchive(self.memory_dir/"archives").search(
                     state.session_id, question, current_memory=state.memory) if self.archive_recall else []
                 trace.value["archive_recall"] = recalled
                 catalog = list({c["paper_id"]: {"paper_id": c["paper_id"], "title": c.get("title", "")}
@@ -140,11 +155,13 @@ class PaperPipeline:
                         raise ValueError("NLU returned unknown paper IDs")
                 event["output"] = nlu
                 if self.archive_recall:
-                    extra = ContextArchive(self.memory_dir/"archives").search(
+                    extra = self.memory_manager.retrieve_memories(state, nlu["standalone_query"], nlu.get("paper_ids")) if self.memory_manager else ContextArchive(self.memory_dir/"archives").search(
                         state.session_id, nlu["standalone_query"], current_memory=state.memory,
                         paper_ids=nlu.get("paper_ids"))
                     merged, seen, used = [], set(), 0
-                    for record in recalled + extra:
+                    # The manager has ranked the resolved-query candidates across all sources.
+                    # Pre-NLU scores belong to a different query and must not displace them.
+                    for record in (extra if self.memory_manager else recalled + extra):
                         key = (record["kind"], record.get("turn_id"), digest(record["content"]))
                         size = len(json.dumps(record, ensure_ascii=False))
                         if key not in seen and len(merged) < 6 and used + size <= 5000:
@@ -243,9 +260,9 @@ class PaperPipeline:
                 if answer["decision"] == "answer":
                     facts = [{"key": c.get("key", c["text"]), "text": c["text"],
                               "evidence_ids": [r["chunk_id"] for r in c["citations"]]} for c in answer["claims"]]
-                    state.memory.update(nlu.get("resolved_entities", {}), facts, [],
+                    state.memory.update(nlu.get("resolved_entities", {}), [] if self.memory_manager else facts, [],
                                         [c["chunk_id"] for c in evidence])
-                    for fact in facts:
+                    for fact in ([] if self.memory_manager else facts):
                         state.memory.facts[fact["key"]]["turn_id"] = turn_id
                     state.memory.summary["discussed_papers"] = list(dict.fromkeys(
                         state.memory.summary.get("discussed_papers", []) + [c["paper_id"] for c in evidence]))
@@ -253,7 +270,7 @@ class PaperPipeline:
                     state.memory.unresolved = [question]
                 state.messages.extend([{"role": "user", "content": question, "turn_id": turn_id},
                                        {"role": "assistant", "content": answer, "turn_id": turn_id}])
-                if self.compact:
+                if self.compact and not self.memory_manager:
                     if self.memory_strategy == "semantic":
                         from .compaction import semantic_compact_state
                         try:
@@ -267,7 +284,14 @@ class PaperPipeline:
                     else:
                         event["compaction"] = compact_state(state, self.memory_dir/"archives")
                 state.committed_turns[turn_id] = {"question": question, "result": {"answer": answer, "trace_id": turn_id}}
-                state.save(self.memory_dir)
+                if self.memory_manager:
+                    event["compaction"] = self.memory_manager.commit(state, question, answer, evidence, turn_id,
+                        original.turn_count, self.compact, self.memory_strategy, self.reasoner)
+                    event["memory_events"] = self.memory_manager.events
+                    if any(e.get("degraded") for e in self.memory_manager.events):
+                        event.update(degraded=True, reason="memory_projection_or_compaction_degraded")
+                else:
+                    state.save(self.memory_dir)
                 trace.value["commit_status"] = "committed"
                 event["output"] = asdict(state.memory)
             trace.value.update(status="completed", decision=answer["decision"], answer=answer)
@@ -277,6 +301,8 @@ class PaperPipeline:
             trace.value["status"] = "error"
             raise
         finally:
+            if self.memory_manager:
+                trace.value["memory_events"] = self.memory_manager.events
             degraded = [s.get("reason") for s in trace.value["stages"] if s.get("degraded")]
             trace.value.update(degraded=bool(degraded), degradation_reasons=degraded)
             trace.value["api_calls"] = getattr(self.reasoner, "calls", [])[call_start:]
