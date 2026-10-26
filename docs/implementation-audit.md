@@ -1,5 +1,7 @@
 # 本轮源码验收审计
 
+Phase A 追加核查：`rewrite_metrics` 显式错误样本保持适用分母；`memory_metrics` 仅含 fact_source_papers 的有效检查点不再误判为空；新增 `claim_eval.py` 和实际批量运行脚本、原文诊断与回归测试。当前来源审核 v0.6、运行状态与未完成项以 PHASE_A_* 报告为准。此前 acceptance 表格和数字为历史快照。
+
 核对源码入口 PaperPipeline.run、APIConfig/CompatibleReasoner、ContextArchive.search、eval_tasks、eval_protocol、eval_cli 与 prepare_eval。旧审计保存在 reports/history/pre-acceptance/implementation-audit.md，仅用于历史比较。
 
 | 项目 | 当前实现 | 证据/边界 |

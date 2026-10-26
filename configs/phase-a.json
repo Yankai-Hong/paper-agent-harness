@@ -1,0 +1,211 @@
+{
+  "datasets": {
+    "dir": "data\\eval\\v0.6",
+    "intent": "data\\eval\\v0.6\\intent.jsonl",
+    "query_rewrite": "data\\eval\\v0.6\\query_rewrite.jsonl",
+    "retrieval": "data\\eval\\v0.6\\retrieval.jsonl",
+    "boundary": "data\\eval\\v0.6\\boundary.jsonl",
+    "dialogs": "data\\eval\\v0.6\\dialogs.jsonl",
+    "memory": "data\\eval\\v0.6\\memory.jsonl"
+  },
+  "corpus": {
+    "papers": "data/qasper/papers.jsonl",
+    "index": "indexes/bge",
+    "encoder": "models/bge-m3",
+    "reranker": "models/bge-reranker-v2-m3",
+    "device": "cuda:0",
+    "batch_size": 4,
+    "chunk_size": 500,
+    "overlap": 80,
+    "max_length": 768
+  },
+  "retrieval": {
+    "mode": "rerank",
+    "candidate_k_per_route": 30,
+    "rrf_k": 60,
+    "rerank_candidates": 30,
+    "top_k": 5,
+    "max_retrieval_attempts": 2
+  },
+  "pipeline": {
+    "rewrite": true,
+    "reflect": true,
+    "compact": true,
+    "memory_strategy": "bounded"
+  },
+  "model": {
+    "env_file": ".env",
+    "provider": "opencode",
+    "max_calls": 100,
+    "max_tokens": 4096,
+    "thinking": "disabled"
+  },
+  "judge": {
+    "enabled": true,
+    "dimensions": [
+      "relevance",
+      "factual_correctness",
+      "completeness",
+      "evidence_support",
+      "citation_correctness",
+      "appropriate_abstention"
+    ],
+    "randomize_order": true,
+    "human_review_fraction": 0.1
+  },
+  "seed": 42,
+  "bootstrap_samples": 2000,
+  "cluster_unit": "session for conversations; source_paper for retrieval",
+  "note": "Frozen development subsets selected by session ID before batch outcomes. Labels remain draft_unreviewed. Reflect enabled and no-second are deliberate replicate controls.",
+  "ablations": [
+    {
+      "id": "reflect-enabled",
+      "args": [
+        "e2e",
+        "data\\eval\\v0.3\\reflect-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4",
+        "--max-retrieval-attempts",
+        "1"
+      ]
+    },
+    {
+      "id": "reflect-disabled",
+      "args": [
+        "e2e",
+        "data\\eval\\v0.3\\reflect-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4",
+        "--no-reflect"
+      ]
+    },
+    {
+      "id": "reflect-retrieve-again",
+      "args": [
+        "e2e",
+        "data\\eval\\v0.3\\reflect-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4"
+      ]
+    },
+    {
+      "id": "reflect-no-second",
+      "args": [
+        "e2e",
+        "data\\eval\\v0.3\\reflect-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4",
+        "--max-retrieval-attempts",
+        "1"
+      ]
+    },
+    {
+      "id": "memory-full",
+      "args": [
+        "memory",
+        "data\\eval\\v0.3\\memory-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4",
+        "--no-compact",
+        "--no-archive-recall"
+      ]
+    },
+    {
+      "id": "memory-bounded",
+      "args": [
+        "memory",
+        "data\\eval\\v0.3\\memory-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4",
+        "--no-archive-recall"
+      ]
+    },
+    {
+      "id": "memory-semantic",
+      "args": [
+        "memory",
+        "data\\eval\\v0.3\\memory-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4",
+        "--memory-strategy",
+        "semantic",
+        "--no-archive-recall"
+      ]
+    },
+    {
+      "id": "memory-recall",
+      "args": [
+        "memory",
+        "data\\eval\\v0.3\\memory-subset.jsonl",
+        "--index",
+        "indexes/bge",
+        "--mode",
+        "bm25",
+        "--max-tokens",
+        "4096",
+        "--thinking",
+        "disabled",
+        "--workers",
+        "4",
+        "--memory-strategy",
+        "semantic"
+      ]
+    }
+  ]
+}

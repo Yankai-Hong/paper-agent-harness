@@ -7,6 +7,7 @@ from dataclasses import replace
 from paper_agent.providers import APIConfig, CompatibleReasoner, SCHEMAS, INSTRUCTIONS, object_schema, STRING
 from paper_agent.storage import read_jsonl, write_json, write_jsonl, digest
 from paper_agent.eval_tasks import bootstrap_ci
+from claim_benchmark import recording_reasoner
 
 
 def main():
@@ -49,7 +50,7 @@ def main():
         payload = {"question":by_id[identifier]["question"], "answer":pred["answer"],
                    "resolved_question":last.get("NLU", {}).get("output", {}).get("standalone_query"),
                    "evidence":[chunks[i] for i in evidence_ids if i in chunks]}
-        reasoner = CompatibleReasoner(config, "judge-"+identifier)
+        reasoner, raw = recording_reasoner(config, "judge-"+identifier)
         try:
             judgment = reasoner.structured("acceptance_judge", payload)
             if sorted(c["claim_index"] for c in judgment["claims"]) != list(range(result["claims_count"])):
@@ -58,6 +59,7 @@ def main():
         except Exception as exc:
             result.update(error=type(exc).__name__, judgment=None)
         result.update(calls=reasoner.calls, payload_hash=digest(payload))
+        result['raw_outputs'] = raw
         write_json(root/"semantic-review"/(identifier+".json"), {**result, "payload":payload})
         return result
     with ThreadPoolExecutor(max_workers=args.workers) as pool:

@@ -1,5 +1,7 @@
 # 答案生成与引用
 
+Phase A 新增独立 `claim_eval.evaluate_claim`，复用本页 validate_citations 并区分 supported / contradicted / insufficient / unknown。真实批量入口为 `scripts/evaluate_claims.py`，读取当前运行最终 Rerank 证据，保存逐引用支持与原始 Judge 响应。见 [Claim 报告](../reports/CLAIM_CITATION_EVAL.md)；运行时 Pipeline 仍做确定性结构校验，不将 Judge 当金标或增加主流程阶段。
+
 实现：[providers.py](../src/paper_agent/providers.py) 的 generate schema 和 [validate_citations](../src/paper_agent/memory.py)。
 
 生成器接收当前问题、检索证据与明确标记的历史上下文，不以历史回答当作新事实证据。返回 claims，每条有稳定 key、text 和一个或多个 `paper_id/chunk_id` 引用。不提供额外的无引用自由文本字段，从结构上减少未附来源的结论。

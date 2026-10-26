@@ -160,8 +160,8 @@ def rewrite_metrics(rows, predictions):
     for row in rows:
         row_id = row["id"]
         pred = predictions.get(row_id, {})
-        if "error" in pred and pred.get("error"):
-            continue
+        if pred.get("error"):
+            pred = {}  # Failed rows remain in every applicable denominator.
         required = row.get("required_entities") or []
         resolved = pred.get("resolved_entities") or {}
         aliases = row.get("required_entity_aliases", {})
@@ -310,8 +310,8 @@ def memory_metrics(rows, final_memory):
                 else:
                     per_case.append({"id": row_id, "key": key, "kind": kind,
                                      "expected": value, "correct": True})
-        if ok and (targets or checkpoints.get("entities") or checkpoints.get("facts")):
+        if ok and any(checkpoints.get(k) for k in ("discussed_papers", "fact_source_papers", "entities", "facts")):
             correct += 1
     return {"checkpoint_accuracy": rate(correct, len(rows)) if total else None,
-            "empty_checkpoints": sum(not any((r.get("checkpoints") or {}).get(k) for k in ("entities", "facts", "discussed_papers")) for r in rows),
+            "empty_checkpoints": sum(not any((r.get("checkpoints") or {}).get(k) for k in ("entities", "facts", "discussed_papers", "fact_source_papers")) for r in rows),
             "checked_keys": total, "per_check": per_case}

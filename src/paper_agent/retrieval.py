@@ -141,16 +141,20 @@ class Retriever:
             # Small corpus: exact search all then filter BEFORE top-k selection.
             scores, indices = self.index.search(vector, self.index.ntotal)
             allowed_positions = set(positions)
+            # 过滤
             pairs = [(int(i), float(s)) for i, s in zip(indices[0], scores[0]) if int(i) in allowed_positions]
             dense = [i for i, _ in sorted(pairs, key=lambda x: (-x[1], self.chunks[x[0]]["chunk_id"]))[:candidate_k]]
         sid = [self.chunks[i]["chunk_id"] for i in sparse]
         did = [self.chunks[i]["chunk_id"] for i in dense]
+        # RRF 排名融合
         ranking = sid if mode == "bm25" else did if mode == "dense" else [i for i, _ in rrf([sid, did])]
         ranking = ranking[:candidate_k]
         retrieval_ms = (time.perf_counter()-start)*1000
         fusion_ranks = {cid: i+1 for i, cid in enumerate(ranking)}
         rerank_scores = {}
         rerank_start = time.perf_counter()
+
+        # cross-encoder 重排
         if mode == "rerank" and ranking:
             values = self.reranker.score(query, [self.by_id[i]["text"] for i in ranking])
             if len(values) != len(ranking) or not np.all(np.isfinite(values)):

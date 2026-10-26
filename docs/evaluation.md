@@ -1,10 +1,39 @@
 # 评测协议与复现
 
-当前开发集固定在 `data/eval/v0.3/`。旧 `data/eval/*.jsonl`、v0.2 和旧运行产物保留；不能混合不同版本结果。QASPER 官方检索标注可用于段落覆盖评估，其余标签仍为 `draft_unreviewed`。静态校验清单在 `reports/acceptance/data-audit.json`，不替代人工复核。
+当前 Phase A 来源规则审核集固定在 `data/eval/v0.6/`，逐条 original/proposed/reason/basis/status 见 audit.jsonl；人工集合 human-gold.jsonl 为空。source-verified 与 needs_human_review 单独保存。v0.3/v0.4 和旧运行产物保留为历史，v0.5 是已标记废弃的审核开发输出。QASPER 官方证据标注与新人工审核必须区分。以下 acceptance 命令为历史复现，最新命令见文末。
 
 ## 历史与分母
 
-`prepare_eval.session_history` 仅按同一 session 的严格较早 turn 构造历史，排序后保存 role/content/turn_id；单轮历史为空。历史是用户问题上下文，不伪造助手答案。expected_query 缺失保持 null，不编造 standalone gold。Rewrite token overlap 只是诊断，语义保持需辅助 Judge 或人工评估。
+`prepare_eval.session_history` 仅按同一 session 的严格较早 turn 构造历史，排序后保存 role/content/turn_id；单轮历史为空。历史是用户问题上下文，不伪造助手答案。v0.6 的 90 条 expected_query 均有来源规则参考，其中 10 条歧义问题保留 expected_action=clarify；不是唯一措辞或人工 gold。Rewrite token overlap 只是诊断，语义保持需辅助 Judge 或人工评估。API 错误和缺失预测在适用指标分母中计零。
+
+## Phase A 复现
+
+从干净代码检出开始，使用原目录 `.venv-gpu/Scripts/python.exe`；新环境可按 pyproject.toml 安装项目与 `models,api,dev` 依赖，并指向已有 data/models/indexes/.env。不重新下载权重、生成数据或重建索引。Windows 原 Conda 环境加载 SSL 需正常宿主权限，本次沙箱 DLL 失败不能当成 API 故障。
+
+```powershell
+$py = '.\.venv-gpu\Scripts\python.exe'
+& $py -m pytest -q --junitxml=reports/phase-a/final-tests.xml
+# 仅在目标版本尚不存在时生成；已有 v0.6 直接复用
+& $py scripts/phase_a_audit.py
+# full 必须是新目录；脚本拒绝覆盖历史结果
+& $py scripts/run_phase_a.py
+& $py -m paper_agent.cli eval intent data/eval/v0.6/intent.jsonl --output reports/phase-a/final-intent --max-tokens 4096 --thinking disabled --max-calls 200
+& $py -m paper_agent.cli eval rewrite data/eval/v0.6/query_rewrite.jsonl --output reports/phase-a/final-rewrite --max-tokens 4096 --thinking disabled --max-calls 200
+& $py scripts/review_rewrite.py --run reports/phase-a/final-rewrite --data data/eval/v0.6/query_rewrite.jsonl --dialogs data/eval/v0.6/dialogs.jsonl
+& $py scripts/claim_benchmark.py
+& $py scripts/evaluate_claims.py reports/phase-a/full/e2e
+& $py scripts/freeze_phase_a.py
+& $py scripts/report_phase_a.py
+& $py scripts/phase_a_costs.py
+& $py scripts/phase_a_diagnostics.py
+& $py scripts/verify_phase_a.py
+```
+
+完整跑次已包含 Claim 评测，最后独立 evaluate_claims 命令仅用于另一次指定运行，不应重复付费执行。原始命令见 full/jobs.json；新运行可用 `run_phase_a.py --output reports/phase-a-repeat/full`，审核重建可用 `phase_a_audit.py --output data/eval/new-version`。报告汇总脚本固定读取本次 phase-a 路径；复跑结果须独立保存并注明对应目录，不能覆盖本次产物。配置矩阵 `configs/phase-a.json` 的 Reflect/Memory 使用原有 v0.3 子集，与 v0.6 全量结果独立统计。
+
+Claim 指标复用主 Pipeline 结构：每个 Claim 一次；同 Claim 的重复引用去重；每个 Claim-引用对用于 Citation Precision。支持/矛盾/不足三类与 unknown 分开，失败不从总分母排除。Claim Support、Unsupported、Contradiction 的分母均为全部 Claim；Validity、Precision 分母为全部引用对。unknown 导致支持与不支持率之和可能小于 1。按 session 簇 Bootstrap；单簇诊断集不可外推。所有语义结果为 provisional，人工验证缺失明确披露。
+
+`scripts/judge_phase_a.py` 对保存的全量 Memory、八组消融及 E2E 做独立辅助答案质量评审，`scripts/audit_qasper_annotations.py` 从原始本地 tgz 核对全部官方标注。100 条检索问题存在 12 条可回答性分歧和 2 条 yes/no 分歧，复核列表单列；主指标保持原定 100 条分母，不做结果驱动删样。Claim 人工抽查队列包含全部非支持/未知结果与固定每十条抽样，见 phase-a/claim-human-review-queue.jsonl。
 
 Boundary 默认 `--boundary-mode replay`：依次执行历史用户问题，使用真实生成的助手答案再执行目标问题。`context-only` 则注入指定消息。每条案例使用独立执行会话，统计聚类仍按原 session。两个模式不可混合汇总。Replay 历史失败导致目标失败，仍保留该案例在分母中。
 
