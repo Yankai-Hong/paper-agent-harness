@@ -98,6 +98,7 @@ def test_archive_recall_corrections_and_isolation(tmp_path):
     state.memory.facts["alpha"]["turn_id"] = "t1"
     state.messages = [{"role":"user", "content":"alpha", "turn_id":"t1"}]*10
     compact_state(state, tmp_path, max_facts=0)
+    state.save(tmp_path.parent)  # Archive visibility begins at the durable commit.
     archive = ContextArchive(tmp_path)
     state.memory.update({}, [{"key":"alpha", "text":"new alpha", "evidence_ids":["c"]}], [], ["c"])
     rows = archive.search("s", "alpha", current_memory=state.memory)

@@ -26,6 +26,7 @@ class PaperAgentState:
     turn_count: int = 0
     memory: SessionMemory = None
     committed_turns: dict = field(default_factory=dict)
+    archive_ids: list = field(default_factory=list)
 
     def __post_init__(self):
         safe_id(self.session_id)
@@ -124,7 +125,8 @@ class PaperPipeline:
             trace.value["turn_id"] = safe_id(turn_id)
         trace.value.update(corpus_hash=self.retriever.metadata.get("corpus_hash"), mode=self.mode,
                            rewrite=self.rewrite, reflect=self.reflect, compact=self.compact,
-                           memory_strategy=self.memory_strategy)
+                           memory_strategy=self.memory_strategy,
+                           memory_backend="three_layer" if self.memory_manager else "legacy")
         call_start = len(getattr(self.reasoner, "calls", []))
         trace.value.update(degraded=False, degradation_reasons=[], commit_status="uncommitted")
         state.turn_count += 1
@@ -314,7 +316,9 @@ def compact_state(state, archive_dir, max_facts=40, max_entities=20, max_message
     if len(state.memory.facts) <= max_facts and len(state.memory.entities) <= max_entities and len(state.messages) <= max_messages:
         return {"compressed": False}
     before = len(json.dumps({"memory": asdict(state.memory), "messages": state.messages}, ensure_ascii=False))
-    archive_id = ContextArchive(archive_dir).store({"memory": asdict(state.memory), "messages": state.messages, "turn_count": state.turn_count})
+    archive_id = ContextArchive(archive_dir).store({"memory": asdict(state.memory), "messages": state.messages,
+                                                  "turn_count": state.turn_count, "commit_protocol": 1})
+    state.archive_ids = list(dict.fromkeys(state.archive_ids + [archive_id]))
     state.memory.facts = dict(list(state.memory.facts.items())[-max_facts:]) if max_facts else {}
     state.memory.entities = dict(list(state.memory.entities.items())[-max_entities:]) if max_entities else {}
     state.messages = state.messages[-max_messages:] if max_messages else []

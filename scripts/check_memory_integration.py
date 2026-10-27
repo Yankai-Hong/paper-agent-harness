@@ -10,7 +10,7 @@ import uuid
 from paper_agent.memory_manager import MemoryManager
 from paper_agent.memory_stores import RedisWorkingStore, ChromaEpisodes
 from paper_agent.pipeline import PaperAgentState, PaperPipeline
-from paper_agent.retrieval import BGEEncoder, Retriever
+from paper_agent.retrieval import BGEEncoder, BGEReranker, Retriever
 from paper_agent.storage import write_json
 
 
@@ -19,6 +19,7 @@ def main():
     parser.add_argument("--redis-url", default="redis://localhost:6379/0")
     parser.add_argument("--index", default="indexes/bge")
     parser.add_argument("--encoder", default="models/bge-m3")
+    parser.add_argument("--reranker", default="models/bge-reranker-v2-m3")
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
@@ -34,7 +35,7 @@ def main():
         cache = RedisWorkingStore(args.redis_url, namespace="paper-agent:test:"+sid, ttl=1)
         assert cache.client.ping()
         encoder = BGEEncoder(args.encoder, args.device)
-        retriever = Retriever(args.index, encoder)
+        retriever = Retriever(args.index, encoder, BGEReranker(args.reranker, args.device))
         episodes = ChromaEpisodes(root/"chroma", encoder)
         manager = MemoryManager(root/"memory", cache, episodes, fallback=False)
 
@@ -49,7 +50,7 @@ def main():
                                    "citations":[{"paper_id":hit["paper_id"], "chunk_id":hit["chunk_id"]}]}]}
 
         pipeline = PaperPipeline(retriever, Reasoner(), root/"traces", root/"memory",
-                                 mode="hybrid", memory_manager=manager)
+                                 mode="rerank", memory_manager=manager, allow_degraded=False)
         state = PaperAgentState(sid)
         for i in range(6):
             pipeline.run(f"研究决策: attention mechanism discussion {i}", state, f"turn{i}")
@@ -72,9 +73,18 @@ def main():
         assert restored.turn_count == 6 and episodes.collection.count() == 6
         assert cache.load(sid) is not None
         result["checks"].append("real Redis TTL expiry, durable restore, idempotent replay")
+        missing = manager.facts.episodes(sid)[0]
+        episodes.collection.delete(ids=[missing["episode_id"]])
+        assert episodes.collection.count() == 5
+        manager.load_working_memory(restored)
+        assert episodes.collection.count() == 6 and not manager.facts.episodes(sid, pending=True)
+        result["checks"].append("partial Chroma deletion repaired from SQLite originals")
         traces = [json.loads(p.read_text(encoding="utf-8")) for p in (root/"traces").glob("*.json")]
         assert len(traces) == 6 and not any(t["degraded"] for t in traces)
-        result.update(status="passed", turns=6, active_facts=1, episodes=6, corpus_hash=retriever.metadata["corpus_hash"],
+        import hashlib
+        result.update(status="passed", mode="rerank", memory_backend="three_layer", turns=6, active_facts=1, episodes=6,
+                      source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('src/paper_agent').glob('*.py')},
+                      corpus_hash=retriever.metadata["corpus_hash"],
                       versions={p:importlib.metadata.version(p) for p in ("redis", "chromadb", "FlagEmbedding", "faiss-cpu")})
     except Exception as exc:
         result.update(status="failed", error_type=type(exc).__name__)

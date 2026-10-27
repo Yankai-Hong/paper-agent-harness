@@ -70,10 +70,16 @@ class ContextArchive:
         return value
 
     def search(self, session_id, query, current_memory=None, paper_ids=None, entity=None,
-               fact_key=None, before_turn=None, limit=6, max_chars=5000):
+               fact_key=None, before_turn=None, limit=6, max_chars=5000, committed_state=None):
         """Bounded lexical recall of session snapshots; records remain context, never evidence."""
         from .corpus import lexical_tokens
         safe_id(session_id)
+        if committed_state is None:
+            # Legacy's atomic file is authoritative. Three-layer callers supply SQLite.
+            path = self.root.parent / f"{session_id}.state.json"
+            committed_state = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        allowed = set(committed_state.get("archive_ids", []))
+        ledger = committed_state.get("committed_turns", {})
         terms = set(lexical_tokens(query))
         snapshots = []
         for path in self.root.glob("*.json"):
@@ -81,6 +87,26 @@ class ContextArchive:
             if not isinstance(value, dict) or value.get("memory", {}).get("session_id") != session_id:
                 continue
             order = value.get("turn_count", 0)
+            if path.stem not in allowed:
+                if value.get("commit_protocol"):
+                    continue
+                # Old archives have no manifest. Require every original message to
+                # match the committed turn ledger, not merely a reused turn number.
+                messages = value.get("messages", [])
+                if not messages or order > committed_state.get("turn_count", 0):
+                    continue
+                def committed_message(message):
+                    turn = ledger.get(message.get("turn_id"), {})
+                    expected = turn.get("question") if message.get("role") == "user" else turn.get("result", {}).get("answer")
+                    return expected is not None and message.get("content") == expected
+                if not all(committed_message(m) for m in messages):
+                    continue
+                # Fact records must also be attributable to those committed claims.
+                claims = [c for t in ledger.values() for c in t.get("result", {}).get("answer", {}).get("claims", [])]
+                if any(not any(f.get("text") == c.get("text") and
+                               set(f.get("evidence_ids", [])) == {r["chunk_id"] for r in c.get("citations", [])}
+                               for c in claims) for f in value["memory"].get("facts", {}).values()):
+                    continue
             if before_turn is not None and order >= before_turn:
                 continue
             snapshots.append((order, path.stem, value))

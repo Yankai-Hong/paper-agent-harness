@@ -373,9 +373,11 @@ def dispatch(args):
     task = args.eval_task
     if task in {"intent", "rewrite", "boundary", "memory", "e2e"}:
         import hashlib
+        import os
         config = _config(args)
         effective = {k:v for k,v in vars(config).items() if k != "api_key"}
         write_json(Path(args.output)/"run_config.json", {"arguments":vars(args), "api":effective,
+            "memory_backend":os.getenv("MEMORY_BACKEND", "legacy"),
             "dataset_hash":digest(read_jsonl(args.data)),
             "source_hashes": {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path(__file__).parent.glob("*.py")}})
     if task == "smoke":

@@ -10,7 +10,7 @@ def semantic_compact_state(state, archive_dir, reasoner, max_facts=40, max_entit
     if (len(state.memory.facts)<=max_facts and len(state.memory.entities)<=max_entities
             and len(state.messages)<=max_messages):
         return {'compressed':False}
-    original={'memory':asdict(state.memory),'messages':state.messages,'turn_count':state.turn_count}
+    original={'memory':asdict(state.memory),'messages':state.messages,'turn_count':state.turn_count, 'commit_protocol':1}
     paper_order=list(state.memory.summary.get('paper_order',[]))
     for message in state.messages:
         if isinstance(message.get('content'),dict):
@@ -24,6 +24,7 @@ def semantic_compact_state(state, archive_dir, reasoner, max_facts=40, max_entit
     if not isinstance(summary.get('overview'),str) or len(summary['overview'])>1200:
         raise ValueError('Summary overview must be a bounded string')
     archive_id=ContextArchive(archive_dir).store(original)
+    state.archive_ids = list(dict.fromkeys(state.archive_ids + [archive_id]))
     # Preserve factual text and citations exactly; selection is deterministic.
     state.memory.facts=dict(list(state.memory.facts.items())[-max_facts:])
     state.memory.entities=dict(list(state.memory.entities.items())[-max_entities:])

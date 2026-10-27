@@ -295,7 +295,8 @@ class MemoryManager:
                 "event:" + state.session_id + ":" + episode["turn_id"])
         event_turns = {e["turn_id"] for e in episodes.values()}
         archives = ContextArchive(self.root/"archives").search(state.session_id, query,
-                    current_memory=state.memory, limit=max(limit * 4, 24), max_chars=max_chars * 4)
+                    current_memory=state.memory, limit=max(limit * 4, 24), max_chars=max_chars * 4,
+                    committed_state=self.facts.snapshot(state.session_id) or {})
         for record in archives:
             content = record["content"]
             fact = by_id.get(content.get("fact_id")) if record["kind"] == "fact" and isinstance(content, dict) else None

@@ -7,6 +7,7 @@ import time
 import unicodedata
 import re
 import math
+import threading
 
 from .storage import digest, safe_id
 
@@ -87,7 +88,8 @@ class FactStore:
         source = fact["source_type"]
         if source not in {"paper_evidence", "user_explicit", "conversation"}:
             raise ValueError("Unknown fact source")
-        key = canonical_key(fact["key"])
+        # Callers may supply a stable comparable attribute while using display keys.
+        key = canonical_key(fact.get("attribute", fact["key"]))
         scope = paper_ids(fact.get("paper_ids", fact.get("paper_id")))
         paper = scope[0] if len(scope) == 1 else json.dumps(scope) if scope else None
         # Source and paper are part of the stable identity, not inferred from recency.
@@ -116,6 +118,12 @@ class FactStore:
             from .corpus import lexical_tokens
             tokens = set(lexical_tokens(text))
             for other in db.execute("SELECT * FROM facts WHERE session_id=? AND status='active'", (session_id,)):
+                if other["source_type"] != source or paper_ids(other["paper_id"]) != scope:
+                    continue
+                if source == "paper_evidence":
+                    # Text overlap is not a comparable scientific attribute. Equal
+                    # canonical attributes were handled above; distinct ones coexist.
+                    continue
                 other_tokens = set(lexical_tokens(other["text"]))
                 if tokens and len(tokens & other_tokens) / len(tokens | other_tokens) >= .8:
                     status, reason = "conflict", "similar_content_different_key"
@@ -182,6 +190,9 @@ class RedisWorkingStore:
 
 
 class ChromaEpisodes:
+    # Chroma 0.6 registers clients before migrations finish. Serialize lazy
+    # initialization across instances in this process, not normal queries.
+    _initialization_lock = threading.RLock()
     def __init__(self, path, encoder, collection="paper_agent_episodes_v1", client=None, min_similarity=.35):
         if encoder is None:
             raise ValueError("Episodic memory requires the existing BGE encoder")
@@ -193,6 +204,10 @@ class ChromaEpisodes:
 
     @property
     def collection(self):
+        with self._initialization_lock:
+            return self._initialize_collection()
+
+    def _initialize_collection(self):
         if self._collection is None:
             if self.client is None:
                 import chromadb
