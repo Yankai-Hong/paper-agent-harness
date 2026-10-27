@@ -1,0 +1,242 @@
+{
+  "turn_id": "budget-3",
+  "session_id": "mem-budget",
+  "question": "Research decision: keep experiment budget for the experiment",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "Research decision: keep experiment budget for the experiment"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007500057108700275
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "Research decision: keep experiment budget for the experiment"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "experiment budget allocation for research decision",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "experiment budget": "100 samples"
+        }
+      },
+      "elapsed_ms": 2239.7249001078308
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.00200001522898674
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "mem-budget",
+        "entities": {
+          "paper": "Mapping Languages and Demographics with Georeferenced Corpora"
+        },
+        "facts": {
+          "[\"user_explicit\", null, \"experiment budget\"]": {
+            "text": "100 samples",
+            "evidence_ids": [],
+            "fact_id": "716bcd1670d3de2c53a4753cf55cb5b6d67d9724c16135aedf82da60f8d9f747",
+            "turn_id": "budget-1",
+            "source_type": "user_explicit"
+          }
+        },
+        "unresolved": [
+          "Research decision: keep experiment budget for the experiment"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "2004.00809"
+          ]
+        }
+      },
+      "elapsed_ms": 15.367799904197454
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793025941.3449326,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "turn_id": "budget-1",
+      "content": "{\"question\": \"Remember: experiment budget=100 samples\", \"answer\": {\"decision\": \"refuse\", \"claims\": [], \"text\": \"当前语料证据不足或请求超出论文库范围。\"}}",
+      "event_type": "user_preference",
+      "retention_reason": "explicit_user_marker",
+      "created_at": 1793025923.6160624,
+      "source_type": "conversation",
+      "paper_ids": [],
+      "evidence_ids": [],
+      "similar_episode_ids": [],
+      "session_id": "mem-budget",
+      "episode_id": "6b0ec09c3939952e4edfa15391b6d06887a8efdfd3302a6988a622158dea4e9c",
+      "kind": "episode",
+      "distance": 0.6424651143181279,
+      "metric": "l2",
+      "record_id": "event:mem-budget:budget-1",
+      "retrieval_source": "chroma",
+      "status": "historical",
+      "relevance_score": 0.678767442840936,
+      "score_kind": "cosine_similarity",
+      "relevance_tier": 2,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": false,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "716bcd1670d3de2c53a4753cf55cb5b6d67d9724c16135aedf82da60f8d9f747",
+      "session_id": "mem-budget",
+      "canonical_key": "[\"user_explicit\", null, \"experiment budget\"]",
+      "text": "100 samples",
+      "status": "active",
+      "source_type": "user_explicit",
+      "paper_id": null,
+      "evidence_ids": [],
+      "turn_id": "budget-1",
+      "created_at": 1793025923.6473541,
+      "updated_at": 1793025923.6473541,
+      "replaces": null,
+      "reason": "explicit_user_declaration",
+      "paper_ids": [],
+      "kind": "fact",
+      "content": "100 samples",
+      "record_id": "fact:716bcd1670d3de2c53a4753cf55cb5b6d67d9724c16135aedf82da60f8d9f747",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3333333333333333,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": true,
+      "requires_resolution": false,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "35045f754094fbddee001c9ef86a31276d89ec4af7619e05988b0f614bfaafb3",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4863,
+        "completion_tokens": 55,
+        "total_tokens": 4918,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00074363,
+          "allowance": 0.00055773,
+          "tokens": {
+            "input": 4735,
+            "output": 55,
+            "reasoning": 0,
+            "cache_read": 128,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4735,
+        "output_tokens": 55,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2093.4869999764487
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "turn_id": "d03-t4",
+  "session_id": "d03",
+  "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007200054824352264
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-02 私有未公开实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "experiment": "run-02",
+          "experiment_type": "私有未公开实验"
+        }
+      },
+      "elapsed_ms": 3635.2428999962285
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.0030999071896076202
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d03",
+        "entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking",
+          "paper_id": "1910.07154",
+          "dataset": "FEVER"
+        },
+        "facts": {},
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154"
+          ]
+        }
+      },
+      "elapsed_ms": 11.309599969536066
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793025026.3538651,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "30d4eb47fd460a55c313e4482f3305cc713bee44fef44de74102f2567b0a8d43",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"comparison hexaf\"]",
+      "text": "作者将 “SUPPORTS” 标签的标签准确率与有监督方法 HexaF 进行比较，结果表明在 φ = 0.76 时该方法与 HexaF 相当。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-41beb2396050f5a800883bfc"
+      ],
+      "turn_id": "d03-t2",
+      "created_at": 1793025017.4023101,
+      "updated_at": 1793025017.4023101,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "作者将 “SUPPORTS” 标签的标签准确率与有监督方法 HexaF 进行比较，结果表明在 φ = 0.76 时该方法与 HexaF 相当。",
+      "record_id": "fact:30d4eb47fd460a55c313e4482f3305cc713bee44fef44de74102f2567b0a8d43",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.35714285714285715,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "a7f04be1b6a387eac4543725eacdddef3c8d268cb1c753edb0a9ee3f0bbe02d9",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"reported accuracy\"]",
+      "text": "该方法在转换后数据集的开发集上达到 80.2% 的标签准确率，在测试集上达到 80.25%。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-7c69a28e7ffcb9ebd09842b6"
+      ],
+      "turn_id": "d03-t2",
+      "created_at": 1793025017.4023101,
+      "updated_at": 1793025017.4023101,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "该方法在转换后数据集的开发集上达到 80.2% 的标签准确率，在测试集上达到 80.25%。",
+      "record_id": "fact:a7f04be1b6a387eac4543725eacdddef3c8d268cb1c753edb0a9ee3f0bbe02d9",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.35714285714285715,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 9,
+      "request_hash": "9adcbf49cb4eb1bdfd3f64a266a07bc8a0dc76d95fa55b3971858bc1da41c835",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5579,
+        "completion_tokens": 71,
+        "total_tokens": 5650,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00084182,
+          "allowance": 0.00063136,
+          "tokens": {
+            "input": 5323,
+            "output": 71,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5323,
+        "output_tokens": 71,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3626.449199975468
+    }
+  ]
+}

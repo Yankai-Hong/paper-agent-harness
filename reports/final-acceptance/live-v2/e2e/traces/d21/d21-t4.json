@@ -1,0 +1,177 @@
+{
+  "turn_id": "d21-t4",
+  "session_id": "d21",
+  "question": "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.00700005330145359
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-20 未公开实验 精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "run": "run-20"
+        }
+      },
+      "elapsed_ms": 2485.8392000896856
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001700012944638729
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d21",
+        "entities": {
+          "paper": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews",
+          "paper_id": "1611.02378"
+        },
+        "facts": {},
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1611.02378"
+          ]
+        }
+      },
+      "elapsed_ms": 11.793599929660559
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793025702.6646605,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "51ed0b2f6d05729b68670b7cf193c4b42df365781e775a3ca473bc095f44b0da",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4197,
+        "completion_tokens": 58,
+        "total_tokens": 4255,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00064553,
+          "allowance": 0.00048415,
+          "tokens": {
+            "input": 4069,
+            "output": 58,
+            "reasoning": 0,
+            "cache_read": 128,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4069,
+        "output_tokens": 58,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2477.4925999809057
+    }
+  ]
+}

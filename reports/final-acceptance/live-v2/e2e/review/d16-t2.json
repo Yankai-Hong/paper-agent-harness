@@ -1,0 +1,547 @@
+{
+  "id": "d16-t2",
+  "session_id": "d16",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "所有主张均可由所给证据支持：摘要与引言支持两项缺陷及过自信机制；解决方案小节支持不完整转写观察、三种策略、覆盖项及覆盖机制；摘要支持10.6%/6.7% WER；模型描述与实验小节支持模型基础与实验设置。引用均为原文片段，无越界补充。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "摘要明确说明分析直接转写录音为字符的注意力seq2seq系统，观察到过自信与使用语言模型时不完整转写两个缺陷。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要原文直接给出两项缺陷及系统性质。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "引言明确判别式训练聚焦信息特征、增加过拟合风险、产生尖锐预测、高置信度降低束搜索多样性。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "引言段落逐点涵盖该主张所有要素。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "解决方案小节明确宽束配语言模型常产生不完整转写、窄束因隐式剪枝不明显，并给出表中失败解码：标准答案概率最低、宽度100束配三元LM找到缺开头的第二条转写、更宽束出现严重不完整转写。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落直接包含这些观察与Table TABREF17的描述。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "段落列出三种策略：禁止EOS除其概率在范围内、长度项（CTC和seq2seq提出但报告使用困难因循环需额外约束）。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该段明确比较三种策略并涵盖第一种和第二种的细节。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "原文提出覆盖项统计累计注意力超过阈值的帧数，公式显示为DISPLAYFORM0，文本未给出具体公式内容，主张描述准确。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落包含覆盖项定义及DISPLAYFORM0占位。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "段落说明一旦累计注意力超过阈值帧计为已选择、后续选择不降低解码代价，且每次束搜索迭代用截至该步的注意力权重重算。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "原文直接陈述覆盖准则的防循环机制与实现方式。"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "verdict": "supported",
+        "reason": "摘要明确Wall Street Journal、说话人无关、无单独LM 10.6% WER、配三元LM 6.7% WER。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要给出全部数值与数据集。"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "verdict": "supported",
+        "reason": "模型描述明确基于Listen, Attend and Spell、注意力seq2seq直接转写为空格分隔字符、编码器-解码器含listener声学建模、speller输出字符、attention中介。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落逐项对应模型基础描述。"
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "verdict": "supported",
+        "reason": "实验小节明确WSJ、si284训练、dev93验证、eval92评估、Kaldi WSJ s5 recipe扩展词表三元LM、FST组合LM与拼写词典。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落直接给出数据集划分、LM构建与FST组合。"
+          }
+        ]
+      }
+    ]
+  },
+  "error": null,
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "two_shortcomings",
+          "text": "论文分析了一个直接将录音转写为字符的基于注意力的seq2seq语音识别系统，并观察到两个缺陷：对预测过度自信，以及在使用语言模型时倾向于生成不完整的转写。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        },
+        {
+          "key": "overconfidence_mechanism",
+          "text": "论文指出判别式训练使seq2seq模型能够聚焦最具信息量的特征，但也增加了过拟合于少数区分性特征的风险，模型常产生非常尖锐的预测，高置信度降低了束搜索所得转写的多样性。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+            }
+          ]
+        },
+        {
+          "key": "incomplete_transcripts_observation",
+          "text": "论文指出当使用语言模型时，宽束搜索常产生不完整转写；窄束下由于隐式假设剪枝该问题不明显。作者给出失败解码示例：标准答案在模型和语言模型下都是概率最低的转写，宽度100的束搜索配三元语言模型找到的是缺失话语开头的第二条转写，更宽束搜索可能出现严重不完整的转写。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "three_strategies",
+          "text": "论文比较了三种防止不完整转写的策略：第一种不改变束搜索准则，但除非EOS词元概率处于最可能词元概率的设定范围内否则禁止输出EOS；该策略可防止截断，但对转写中部的遗漏无效。另一种做法是扩展束搜索准则以鼓励长转写，即加入依赖转写长度的项（CTC和seq2seq中均有提出），但据报道使用困难，因为束搜索会在录音部分循环、需要额外约束。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_term",
+          "text": "为防止循环，论文提出使用覆盖项，统计累计注意力超过某阈值的帧数，公式记为DISPLAYFORM，文中未在文本片段中给出具体公式内容。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "coverage_mechanism",
+          "text": "覆盖准则通过以下方式防止在话语上循环：一旦某帧的累计注意力超过阈值，该帧即被计为已选择，后续再次选择该帧不会降低解码代价；实现中覆盖在每个束搜索迭代中用截至该步的所有注意力权重重新计算。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-753acdce1e13381d0f0064dc"
+            }
+          ]
+        },
+        {
+          "key": "reported_wer",
+          "text": "论文称针对这两个问题提出了实用解决方案，并在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为10.6% WER，结合三元语言模型时为6.7% WER。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        },
+        {
+          "key": "model_basis",
+          "text": "该语音识别系统基于Listen, Attend and Spell网络，是直接把音频录音转写为以空格分隔的字符序列的注意力seq2seq模型，采用编码器-解码器结构，包含负责声学建模的listener模块、负责输出字符的speller模块以及作为二者中介的attention模块。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-765ec796280535cd105fabf4"
+            }
+          ]
+        },
+        {
+          "key": "experiment_setup",
+          "text": "所有实验在Wall Street Journal数据集上进行，用si284训练、dev93验证、eval92评估；涉及语言模型的实验使用Kaldi WSJ s5 recipe构建的扩展词表三元语言模型，并用FST框架将语言模型与拼写词典组合。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-a30dc1a770cb3f6b7bc5f850"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved": {
+      "intent": "explain",
+      "standalone_query": "Towards better decoding and language model integration in sequence to sequence models 论文中指出的seq2seq缺陷及所提出的解决方案的证据与引用",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1612.02695"
+      ],
+      "resolved_entities": {
+        "paper": "Towards better decoding and language model integration in sequence to sequence models",
+        "paper_id": "1612.02695",
+        "topic": "seq2seq 语音识别的缺陷与解决方案"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-c1a01afddd733ef65ed6d199",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Abstract",
+        "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+        "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 782,
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-0b5bc372895d6d0706b56a8e",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Introduction",
+        "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.\n\nUnderstanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+        "text_hash": "28420c534a7cb4dbf7ddb929f504b7226ec7d22b3e9800a277b4c4c3a3376c90",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1148,
+            "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 568,
+            "text": "Understanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-753acdce1e13381d0f0064dc",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Solutions to Partial Transcripts Problem",
+        "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.\n\nWe compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 \n\nThe coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+        "text_hash": "595a1d6d7b62e6ed05614781f167d8fb7f5320c9f4c25fab5ca95d3c200ea60b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 602,
+            "text": "When a language model is used wide beam searches often yield incomplete transcripts. With narrow beams, the problem is less visible due to implicit hypothesis pruning. We illustrate a failed decoding in Table TABREF17 . The ground truth (first row) is the least probable transcript according both to the network and the language model. A width 100 beam search with a trigram language model finds the second transcript, which misses the beginning of the utterance. The last rows demonstrate severely incomplete transcriptions that may be discovered when decoding is performed with even wider beam sizes.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 911,
+            "text": "We compare three strategies designed to prevent incomplete transcripts. The first strategy doesn't change the beam search criterion, but forbids emitting the EOS token unless its probability is within a set range of that of the most probable token. This strategy prevents truncations, but is inefficient against omissions in the middle of the transcript, such as the failure shown in Table TABREF17 . Alternatively, beam search criterion can be extended to promote long transcripts. A term depending on the transcript length was proposed for both CTC BIBREF3 and seq2seq BIBREF11 networks, but its usage was reported to be difficult because beam search was looping over parts of the recording and additional constraints were needed BIBREF11 . To prevent looping we propose to use a coverage term that counts the number of frames that have received a cumulative attention greater than INLINEFORM0 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Solutions to Partial Transcripts Problem",
+            "start": 0,
+            "end": 369,
+            "text": "The coverage criterion prevents looping over the utterance because once the cumulative attention bypasses the threshold INLINEFORM0 a frame is counted as selected and subsequent selections of this frame do not reduce the decoding cost. In our implementation, the coverage is recomputed at each beam search iteration using all attention weights produced up to this step.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a30dc1a770cb3f6b7bc5f850",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Experiments",
+        "text": "We conducted all experiments on the Wall Street Journal dataset, training on si284, validating on dev93 and evaluating on eval92 set. The models were trained on 80-dimensional mel-scale filterbanks extracted every 10ms form 25ms windows, extended with their temporal first and second order differences and per-speaker mean and variance normalization. Our character set consisted of lowercase letters, the space, the apostrophe, a noise marker, and start- and end- of sequence tokens. For comparison with previously published results, experiments involving language models used an extended-vocabulary trigram language model built by the Kaldi WSJ s5 recipe BIBREF17 . We have use the FST framework to compose the language model with a \"spelling lexicon\" BIBREF5 , BIBREF11 , BIBREF18 . All models were implemented using the Tensorflow framework BIBREF19 .\n\nOur base configuration implemented the Listener using 4 bidirectional LSTM layers of 256 units per direction (512 total), interleaved with 3 time-pooling layers which resulted in an 8-fold reduction of the input sequence length, approximately equating the length of hidden activations to the number of characters in the transcript. The Speller was a single LSTM layer with 256 units. Input characters were embedded into 30 dimensions. The attention MLP used 128 hidden units, previous attention weights were accessed using 3 convolutional filters spanning 100 frames. LSTM weights were initialized uniformly over the range INLINEFORM0 . Networks were trained using 8 asynchronous replica workers each employing the ADAM algorithm BIBREF20 with default parameters and the learning rate set initially to INLINEFORM1 , then reduced to INLINEFORM2 and INLINEFORM3 after 400k and 500k training steps, respectively. Static Gaussian weight noise with standard deviation 0.075 was applied to all weight matrices after 20000 training steps. We have also used a small weight decay of INLINEFORM4 .",
+        "text_hash": "a2607700b9bdd0e9d32f96a2a206e197cbcf75ca237b325c6c2abfe62a823f8a",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s11-p0",
+            "section": "Experiments",
+            "start": 0,
+            "end": 854,
+            "text": "We conducted all experiments on the Wall Street Journal dataset, training on si284, validating on dev93 and evaluating on eval92 set. The models were trained on 80-dimensional mel-scale filterbanks extracted every 10ms form 25ms windows, extended with their temporal first and second order differences and per-speaker mean and variance normalization. Our character set consisted of lowercase letters, the space, the apostrophe, a noise marker, and start- and end- of sequence tokens. For comparison with previously published results, experiments involving language models used an extended-vocabulary trigram language model built by the Kaldi WSJ s5 recipe BIBREF17 . We have use the FST framework to compose the language model with a \"spelling lexicon\" BIBREF5 , BIBREF11 , BIBREF18 . All models were implemented using the Tensorflow framework BIBREF19 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p1",
+            "section": "Experiments",
+            "start": 0,
+            "end": 1087,
+            "text": "Our base configuration implemented the Listener using 4 bidirectional LSTM layers of 256 units per direction (512 total), interleaved with 3 time-pooling layers which resulted in an 8-fold reduction of the input sequence length, approximately equating the length of hidden activations to the number of characters in the transcript. The Speller was a single LSTM layer with 256 units. Input characters were embedded into 30 dimensions. The attention MLP used 128 hidden units, previous attention weights were accessed using 3 convolutional filters spanning 100 frames. LSTM weights were initialized uniformly over the range INLINEFORM0 . Networks were trained using 8 asynchronous replica workers each employing the ADAM algorithm BIBREF20 with default parameters and the learning rate set initially to INLINEFORM1 , then reduced to INLINEFORM2 and INLINEFORM3 after 400k and 500k training steps, respectively. Static Gaussian weight noise with standard deviation 0.075 was applied to all weight matrices after 20000 training steps. We have also used a small weight decay of INLINEFORM4 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-765ec796280535cd105fabf4",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Model Description",
+        "text": "Our speech recognition system, builds on the recently proposed Listen, Attend and Spell network BIBREF12 . It is an attention-based seq2seq model that is able to directly transcribe an audio recording INLINEFORM0 into a space-delimited sequence of characters INLINEFORM1 . Similarly to other seq2seq neural networks, it uses an encoder-decoder architecture composed of three parts: a listener module tasked with acoustic modeling, a speller module tasked with emitting characters and an attention module serving as the intermediary between the speller and the listener: DISPLAYFORM0 ",
+        "text_hash": "80a37feec3d65f7ccb164a735cd068abd93d038e71fd6c38a09c448b1b6c6159",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Model Description",
+            "start": 0,
+            "end": 583,
+            "text": "Our speech recognition system, builds on the recently proposed Listen, Attend and Spell network BIBREF12 . It is an attention-based seq2seq model that is able to directly transcribe an audio recording INLINEFORM0 into a space-delimited sequence of characters INLINEFORM1 . Similarly to other seq2seq neural networks, it uses an encoder-decoder architecture composed of three parts: a listener module tasked with acoustic modeling, a speller module tasked with emitting characters and an attention module serving as the intermediary between the speller and the listener: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "所有主张均可由所给证据支持：摘要与引言支持两项缺陷及过自信机制；解决方案小节支持不完整转写观察、三种策略、覆盖项及覆盖机制；摘要支持10.6%/6.7% WER；模型描述与实验小节支持模型基础与实验设置。引用均为原文片段，无越界补充。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "摘要明确说明分析直接转写录音为字符的注意力seq2seq系统，观察到过自信与使用语言模型时不完整转写两个缺陷。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要原文直接给出两项缺陷及系统性质。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "引言明确判别式训练聚焦信息特征、增加过拟合风险、产生尖锐预测、高置信度降低束搜索多样性。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "引言段落逐点涵盖该主张所有要素。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "解决方案小节明确宽束配语言模型常产生不完整转写、窄束因隐式剪枝不明显，并给出表中失败解码：标准答案概率最低、宽度100束配三元LM找到缺开头的第二条转写、更宽束出现严重不完整转写。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落直接包含这些观察与Table TABREF17的描述。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "段落列出三种策略：禁止EOS除其概率在范围内、长度项（CTC和seq2seq提出但报告使用困难因循环需额外约束）。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该段明确比较三种策略并涵盖第一种和第二种的细节。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "原文提出覆盖项统计累计注意力超过阈值的帧数，公式显示为DISPLAYFORM0，文本未给出具体公式内容，主张描述准确。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落包含覆盖项定义及DISPLAYFORM0占位。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "段落说明一旦累计注意力超过阈值帧计为已选择、后续选择不降低解码代价，且每次束搜索迭代用截至该步的注意力权重重算。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "原文直接陈述覆盖准则的防循环机制与实现方式。"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "verdict": "supported",
+        "reason": "摘要明确Wall Street Journal、说话人无关、无单独LM 10.6% WER、配三元LM 6.7% WER。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要给出全部数值与数据集。"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "verdict": "supported",
+        "reason": "模型描述明确基于Listen, Attend and Spell、注意力seq2seq直接转写为空格分隔字符、编码器-解码器含listener声学建模、speller输出字符、attention中介。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落逐项对应模型基础描述。"
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "verdict": "supported",
+        "reason": "实验小节明确WSJ、si284训练、dev93验证、eval92评估、Kaldi WSJ s5 recipe扩展词表三元LM、FST组合LM与拼写词典。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "段落直接给出数据集划分、LM构建与FST组合。"
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "46624614b15f70073141760c4fdd8c952c43b7b29e1311484718396e48febd96",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5515,
+        "completion_tokens": 898,
+        "total_tokens": 6413,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00136605,
+          "allowance": 0.00102454,
+          "tokens": {
+            "input": 5515,
+            "output": 898,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5515,
+        "output_tokens": 898,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6136.358499999915
+    }
+  ]
+}

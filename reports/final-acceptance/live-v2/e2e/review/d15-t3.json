@@ -1,0 +1,385 @@
+{
+  "id": "d15-t3",
+  "session_id": "d15",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": false,
+    "reason": "The request is an in-scope comparison of two papers that are both present in the evidence; 1612.02695 is about seq2seq speech recognition (not NMT), and 1806.09652 is about Siamese BiRNN sentence alignment plus NMT/SMT training on harvested data. The evidence is sufficient to answer the model questions partially and to state the comparability limits explicitly, so a refusal is not appropriate. A correct answer should describe 1612.02695's Listen, Attend and Spell attention-based seq2seq ASR model, note that it does not present an NMT model, and explain its proposals (label smoothing for overconfidence; coverage penalty/language model integration for incomplete transcriptions). For 1806.09652 it should describe the Siamese bidirectional RNN with GRU units for parallel sentence extraction and note that NMT/SMT systems are trained on the harvested data rather than proposing an architecture to fix seq2seq shortcomings. It should then say the two papers are only weakly comparable: both use seq2seq-style models, but 1612.02695 addresses ASR deficiencies while 1806.09652 addresses low-resource data scarcity via comparable-corpus mining. The refusal therefore omits required content and misstates evidence sufficiency.",
+    "claims": []
+  },
+  "error": null,
+  "payload": {
+    "question": "与《Towards better decoding and language model integration in sequence to sequence models》对比，分别说明两篇论文如何回答“Which models do they use for NMT?”与“What are the solutions proposed for the seq2seq shortcomings?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved": {
+      "intent": "compare",
+      "standalone_query": "对比 1806.09652 与 1612.02695 两篇论文：各自用于 NMT 的模型，以及针对 seq2seq 缺陷提出的解决方案，并评估可比性",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1806.09652",
+        "1612.02695"
+      ],
+      "resolved_entities": {
+        "comparison_paper": "1612.02695",
+        "reference_paper": "1806.09652"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-0b5bc372895d6d0706b56a8e",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Introduction",
+        "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.\n\nUnderstanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+        "text_hash": "28420c534a7cb4dbf7ddb929f504b7226ec7d22b3e9800a277b4c4c3a3376c90",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1148,
+            "text": "Deep learning BIBREF0 has led to many breakthroughs including speech and image recognition BIBREF1 , BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 . A subfamily of deep models, the Sequence-to-Sequence (seq2seq) neural networks have proved to be very successful on complex transduction tasks, such as machine translation BIBREF7 , BIBREF8 , BIBREF9 , speech recognition BIBREF10 , BIBREF11 , BIBREF12 , and lip-reading BIBREF13 . Seq2seq networks can typically be decomposed into modules that implement stages of a data processing pipeline: an encoding module that transforms its inputs into a hidden representation, a decoding (spelling) module which emits target sequences and an attention module that computes a soft alignment between the hidden representation and the targets. Training directly maximizes the probability of observing desired outputs conditioned on the inputs. This discriminative training mode is fundamentally different from the generative \"noisy channel\" formulation used to build classical state-of-the art speech recognition systems. As such, it has benefits and limitations that are different from classical ASR systems.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 568,
+            "text": "Understanding and preventing limitations specific to seq2seq models is crucial for their successful development. Discriminative training allows seq2seq models to focus on the most informative features. However, it also increases the risk of overfitting to those few distinguishing characteristics. We have observed that seq2seq models often yield very sharp predictions, and only a few hypotheses need to be considered to find the most likely transcription of a given utterance. However, high confidence reduces the diversity of transcripts obtained using beam search.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-8dad3bcc508acc296707d5fa",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Model",
+        "text": "Here, we describe the neural network architecture as shown in BIBREF6 ( BIBREF6 ), where the network learns to estimate the probability that the sentences in a given sentence pair, are translations of each other, INLINEFORM0 , where INLINEFORM1 is the candidate source sentence in the given pair, and INLINEFORM2 is the candidate target sentence.\n\nAs illustrated in Figure FIGREF5 (d), the architecture uses a siamese network BIBREF7 , consisting of a bidirectional RNN BIBREF8 sentence encoder with recurrent units such as long short-term memory units, or LSTMs BIBREF9 and gated recurrent units, or GRUs BIBREF10 learning a vector representation for the source and target sentences and the probability of any given pair of sentences being translations of each other. For seq2seq architectures, especially in translation, we have found the that the recommended recurrent unit is GRU, and all our experiments use this over LSTM.\n\nThe forward RNN reads the variable-length sentence and updates its recurrent state from the first token until the last one to create a fixed-size continuous vector representation of the sentence. The backward RNN processes the sentence in reverse. In our experiments, we use the concatenation of the last recurrent state in both directions as a final representation INLINEFORM0 DISPLAYFORM0 \n\nwhere INLINEFORM0 is the gated recurrent unit (GRU). After both source and target sentences have been encoded, we capture their matching information by using their element-wise product and absolute element-wise difference. We estimate the probability that the sentences are translations of each other by feeding the matching vectors into fully connected layers: DISPLAYFORM0 \n\nwhere INLINEFORM0 is the sigmoid function, INLINEFORM1 , INLINEFORM2 , INLINEFORM3 , INLINEFORM4 and INLINEFORM5 are model parameters. The model is trained by minimizing the cross entropy of our labeled sentence pairs: DISPLAYFORM0 ",
+        "text_hash": "576d8f2dd16ef6314a6f711c7707d329b96e4a2979dade1cedad3d9213be8a20",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Model",
+            "start": 0,
+            "end": 346,
+            "text": "Here, we describe the neural network architecture as shown in BIBREF6 ( BIBREF6 ), where the network learns to estimate the probability that the sentences in a given sentence pair, are translations of each other, INLINEFORM0 , where INLINEFORM1 is the candidate source sentence in the given pair, and INLINEFORM2 is the candidate target sentence.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Model",
+            "start": 0,
+            "end": 580,
+            "text": "As illustrated in Figure FIGREF5 (d), the architecture uses a siamese network BIBREF7 , consisting of a bidirectional RNN BIBREF8 sentence encoder with recurrent units such as long short-term memory units, or LSTMs BIBREF9 and gated recurrent units, or GRUs BIBREF10 learning a vector representation for the source and target sentences and the probability of any given pair of sentences being translations of each other. For seq2seq architectures, especially in translation, we have found the that the recommended recurrent unit is GRU, and all our experiments use this over LSTM.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Model",
+            "start": 0,
+            "end": 391,
+            "text": "The forward RNN reads the variable-length sentence and updates its recurrent state from the first token until the last one to create a fixed-size continuous vector representation of the sentence. The backward RNN processes the sentence in reverse. In our experiments, we use the concatenation of the last recurrent state in both directions as a final representation INLINEFORM0 DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Model",
+            "start": 0,
+            "end": 375,
+            "text": "where INLINEFORM0 is the gated recurrent unit (GRU). After both source and target sentences have been encoded, we capture their matching information by using their element-wise product and absolute element-wise difference. We estimate the probability that the sentences are translations of each other by feeding the matching vectors into fully connected layers: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p4",
+            "section": "Model",
+            "start": 0,
+            "end": 232,
+            "text": "where INLINEFORM0 is the sigmoid function, INLINEFORM1 , INLINEFORM2 , INLINEFORM3 , INLINEFORM4 and INLINEFORM5 are model parameters. The model is trained by minimizing the cross entropy of our labeled sentence pairs: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c1a01afddd733ef65ed6d199",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Abstract",
+        "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+        "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 782,
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7549a11343a20fbc64d6dc01",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Related Work",
+        "text": "Label smoothing was proposed as an efficient regularizer for the Inception architecture BIBREF15 . Several improved smoothing schemes were proposed, including sampling erroneous labels instead of using a fixed distribution BIBREF24 , using the marginal label probabilities BIBREF16 , or using early errors of the model BIBREF25 . Smoothing techniques increase the entropy of a model's predictions, a technique that was used to promote exploration in reinforcement learning BIBREF26 , BIBREF27 , BIBREF28 . Label smoothing prevents saturating the SoftMax nonlinearity and results in better gradient flow to lower layers of the network BIBREF15 . A similar concept, in which training targets were set slightly below the range of the output nonlinearity was proposed in BIBREF29 .\n\nOur seq2seq networks are locally normalized, i.e. the speller produces a probability distribution at every step. Alternatively normalization can be performed globally on whole transcripts. In discriminative training of classical ASR systems normalization is performed over lattices BIBREF30 . In the case of recurrent networks lattices are replaced by beam search results. Global normalization has yielded important benefits on many NLP tasks including parsing and translation BIBREF31 , BIBREF32 . Global normalization is expensive, because each training step requires running beam search inference. It remains to be established whether globally normalized models can be approximated by cheaper to train locally normalized models with proper regularization such as label smoothing.\n\nUsing source coverage vectors has been investigated in neural machine translation models. Past attentions vectors were used as auxiliary inputs in the emitting RNN either directly BIBREF33 , or as cumulative coverage information BIBREF34 . Coverage embeddings vectors associated with source words end modified during training were proposed in BIBREF35 . Our solution that employs a coverage penalty at decode time only is most similar to the one used by the Google Translation system BIBREF9 .",
+        "text_hash": "2cc0ea3c1061ea39fe21f7e45a50da37c0ac878ec0cff6be5e035fa1233165e0",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s12-p0",
+            "section": "Related Work",
+            "start": 0,
+            "end": 777,
+            "text": "Label smoothing was proposed as an efficient regularizer for the Inception architecture BIBREF15 . Several improved smoothing schemes were proposed, including sampling erroneous labels instead of using a fixed distribution BIBREF24 , using the marginal label probabilities BIBREF16 , or using early errors of the model BIBREF25 . Smoothing techniques increase the entropy of a model's predictions, a technique that was used to promote exploration in reinforcement learning BIBREF26 , BIBREF27 , BIBREF28 . Label smoothing prevents saturating the SoftMax nonlinearity and results in better gradient flow to lower layers of the network BIBREF15 . A similar concept, in which training targets were set slightly below the range of the output nonlinearity was proposed in BIBREF29 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p1",
+            "section": "Related Work",
+            "start": 0,
+            "end": 782,
+            "text": "Our seq2seq networks are locally normalized, i.e. the speller produces a probability distribution at every step. Alternatively normalization can be performed globally on whole transcripts. In discriminative training of classical ASR systems normalization is performed over lattices BIBREF30 . In the case of recurrent networks lattices are replaced by beam search results. Global normalization has yielded important benefits on many NLP tasks including parsing and translation BIBREF31 , BIBREF32 . Global normalization is expensive, because each training step requires running beam search inference. It remains to be established whether globally normalized models can be approximated by cheaper to train locally normalized models with proper regularization such as label smoothing.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p2",
+            "section": "Related Work",
+            "start": 0,
+            "end": 493,
+            "text": "Using source coverage vectors has been investigated in neural machine translation models. Past attentions vectors were used as auxiliary inputs in the emitting RNN either directly BIBREF33 , or as cumulative coverage information BIBREF34 . Coverage embeddings vectors associated with source words end modified during training were proposed in BIBREF35 . Our solution that employs a coverage penalty at decode time only is most similar to the one used by the Google Translation system BIBREF9 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-765ec796280535cd105fabf4",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Model Description",
+        "text": "Our speech recognition system, builds on the recently proposed Listen, Attend and Spell network BIBREF12 . It is an attention-based seq2seq model that is able to directly transcribe an audio recording INLINEFORM0 into a space-delimited sequence of characters INLINEFORM1 . Similarly to other seq2seq neural networks, it uses an encoder-decoder architecture composed of three parts: a listener module tasked with acoustic modeling, a speller module tasked with emitting characters and an attention module serving as the intermediary between the speller and the listener: DISPLAYFORM0 ",
+        "text_hash": "80a37feec3d65f7ccb164a735cd068abd93d038e71fd6c38a09c448b1b6c6159",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Model Description",
+            "start": 0,
+            "end": 583,
+            "text": "Our speech recognition system, builds on the recently proposed Listen, Attend and Spell network BIBREF12 . It is an attention-based seq2seq model that is able to directly transcribe an audio recording INLINEFORM0 into a space-delimited sequence of characters INLINEFORM1 . Similarly to other seq2seq neural networks, it uses an encoder-decoder architecture composed of three parts: a listener module tasked with acoustic modeling, a speller module tasked with emitting characters and an attention module serving as the intermediary between the speller and the listener: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-713c262decd20b8f527dcc24",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Related Work",
+        "text": "A lot of work has been done on the problem of automatic sentence alignment from comparable corpora, but a majority of them BIBREF2 , BIBREF1 , BIBREF3 use a pre-existing translation system as a precursor to ranking the candidate sentence pairs, which the low resource language pairs are not at the luxury of having; or use statistical machine learning approaches, where a Maximum Entropy classifier is used that relies on surface level features such as word overlap in order to obtain parallel sentence pairs BIBREF4 . However, the deep neural network model used in our paper is probably the first of its kind, which does not need any feature engineering and also does not need a pre-existing translation system.\n\n BIBREF4 ( BIBREF4 ) proposed a parallel sentence extraction system which used comparable corpora from newspaper articles to extract the parallel sentence pairs. In this procedure, a maximum entropy classifier is designed for all sentence pairs possible from the Cartesian product of a pair of documents and passed through a sentence-length ratio filter in order to obtain candidate sentence pairs. SMT systems were trained on the extracted sentence pairs using the additional features from the comparable corpora like distortion and position of current and previously aligned sentences. This resulted in a state of the art approach with respect to the translation performance of low resource languages.\n\nSimilar to our proposed approach, BIBREF5 ( BIBREF5 ) showed how using parallel documents from Wikipedia for domain specific alignment would improve translation quality of SMT systems on in-domain data. In this method, similarity between all pairs of cross-language sentences with different text similarity measures are estimated. The issue of domain definition is overcome by the use of IR techniques which use the characteristic vocabulary of the domain to query a Lucene search engine over the entire corpus. The candidate sentences are defined based on word overlap and the decision whether a sentence pair is parallel or not using the maximum entropy classifier. The difference in the BLEU scores between out of domain and domain-specific translation is proved clearly using the word embeddings from characteristic vocabulary extracted using the extracted additional bitexts.",
+        "text_hash": "229ca2f05648c86d869fd8066dae59702359ba598197b4005c0ef3eed9948ead",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Related Work",
+            "start": 0,
+            "end": 712,
+            "text": "A lot of work has been done on the problem of automatic sentence alignment from comparable corpora, but a majority of them BIBREF2 , BIBREF1 , BIBREF3 use a pre-existing translation system as a precursor to ranking the candidate sentence pairs, which the low resource language pairs are not at the luxury of having; or use statistical machine learning approaches, where a Maximum Entropy classifier is used that relies on surface level features such as word overlap in order to obtain parallel sentence pairs BIBREF4 . However, the deep neural network model used in our paper is probably the first of its kind, which does not need any feature engineering and also does not need a pre-existing translation system.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Related Work",
+            "start": 0,
+            "end": 703,
+            "text": " BIBREF4 ( BIBREF4 ) proposed a parallel sentence extraction system which used comparable corpora from newspaper articles to extract the parallel sentence pairs. In this procedure, a maximum entropy classifier is designed for all sentence pairs possible from the Cartesian product of a pair of documents and passed through a sentence-length ratio filter in order to obtain candidate sentence pairs. SMT systems were trained on the extracted sentence pairs using the additional features from the comparable corpora like distortion and position of current and previously aligned sentences. This resulted in a state of the art approach with respect to the translation performance of low resource languages.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p2",
+            "section": "Related Work",
+            "start": 0,
+            "end": 880,
+            "text": "Similar to our proposed approach, BIBREF5 ( BIBREF5 ) showed how using parallel documents from Wikipedia for domain specific alignment would improve translation quality of SMT systems on in-domain data. In this method, similarity between all pairs of cross-language sentences with different text similarity measures are estimated. The issue of domain definition is overcome by the use of IR techniques which use the characteristic vocabulary of the domain to query a Lucene search engine over the entire corpus. The candidate sentences are defined based on word overlap and the decision whether a sentence pair is parallel or not using the maximum entropy classifier. The difference in the BLEU scores between out of domain and domain-specific translation is proved clearly using the word embeddings from characteristic vocabulary extracted using the extracted additional bitexts.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-1ef4f6dc83e93c39e90f82dc",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Conclusion",
+        "text": "In this paper, we evaluated the benefits of using a neural network procedure to extract parallel sentences. Unlike traditional translation systems which make use of multi-step classification procedures, this method requires just a parallel corpus to extract parallel sentence pairs using a Siamese BiRNN encoder using GRU as the activation function.\n\nThis method is extremely beneficial for translating language pairs with very little parallel corpora. These parallel sentences facilitate significant improvement in machine translation quality when compared to a generic system as has been shown in our results.\n\nThe experiments are shown for English-Tamil and English-Hindi language pairs. Our model achieved a marked percentage increase in the BLEU score for both en–ta and en–hi language pairs. We demonstrated a percentage increase in BLEU scores of 11.03% and 14.7% for en–ta and en–hi pairs respectively, due to the use of parallel-sentence pairs extracted from comparable corpora using the neural architecture.\n\nAs a follow-up to this work, we would be comparing our framework against other sentence alignment methods described in BIBREF20 , BIBREF21 , BIBREF22 and BIBREF23 . It has also been interesting to note that the 2018 edition of the Workshop on Machine Translation (WMT) has released a new shared task called Parallel Corpus Filtering where participants develop methods to filter a given noisy parallel corpus (crawled from the web), to a smaller size of high quality sentence pairs. This would be the perfect avenue to test the efficacy of our neural network based approach of extracting parallel sentences from unaligned corpora.",
+        "text_hash": "0478792e85a0752e5b06f605df084928562fd978ba04d7b780155ebee69bc626",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 349,
+            "text": "In this paper, we evaluated the benefits of using a neural network procedure to extract parallel sentences. Unlike traditional translation systems which make use of multi-step classification procedures, this method requires just a parallel corpus to extract parallel sentence pairs using a Siamese BiRNN encoder using GRU as the activation function.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 260,
+            "text": "This method is extremely beneficial for translating language pairs with very little parallel corpora. These parallel sentences facilitate significant improvement in machine translation quality when compared to a generic system as has been shown in our results.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 404,
+            "text": "The experiments are shown for English-Tamil and English-Hindi language pairs. Our model achieved a marked percentage increase in the BLEU score for both en–ta and en–hi language pairs. We demonstrated a percentage increase in BLEU scores of 11.03% and 14.7% for en–ta and en–hi pairs respectively, due to the use of parallel-sentence pairs extracted from comparable corpora using the neural architecture.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p3",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 629,
+            "text": "As a follow-up to this work, we would be comparing our framework against other sentence alignment methods described in BIBREF20 , BIBREF21 , BIBREF22 and BIBREF23 . It has also been interesting to note that the 2018 edition of the Workshop on Machine Translation (WMT) has released a new shared task called Parallel Corpus Filtering where participants develop methods to filter a given noisy parallel corpus (crawled from the web), to a smaller size of high quality sentence pairs. This would be the perfect avenue to test the efficacy of our neural network based approach of extracting parallel sentences from unaligned corpora.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Abstract",
+        "text": "Resources for the non-English languages are scarce and this paper addresses this problem in the context of machine translation, by automatically extracting parallel sentence pairs from the multilingual articles available on the Internet. In this paper, we have used an end-to-end Siamese bidirectional recurrent neural network to generate parallel sentences from comparable multilingual articles in Wikipedia. Subsequently, we have showed that using the harvested dataset improved BLEU scores on both NMT and phrase-based SMT systems for the low-resource language pairs: English--Hindi and English--Tamil, when compared to training exclusively on the limited bilingual corpora collected for these language pairs.",
+        "text_hash": "31888ba50ae98c114dad39d1ec2ac9e3897e63098f51d913cd2a22d03cfb2606",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 712,
+            "text": "Resources for the non-English languages are scarce and this paper addresses this problem in the context of machine translation, by automatically extracting parallel sentence pairs from the multilingual articles available on the Internet. In this paper, we have used an end-to-end Siamese bidirectional recurrent neural network to generate parallel sentences from comparable multilingual articles in Wikipedia. Subsequently, we have showed that using the harvested dataset improved BLEU scores on both NMT and phrase-based SMT systems for the low-resource language pairs: English--Hindi and English--Tamil, when compared to training exclusively on the limited bilingual corpora collected for these language pairs.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "请检索以下问题的相关原文：关于论文《Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora》，Which models do they use for NMT?",
+      "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": false,
+    "reason": "The request is an in-scope comparison of two papers that are both present in the evidence; 1612.02695 is about seq2seq speech recognition (not NMT), and 1806.09652 is about Siamese BiRNN sentence alignment plus NMT/SMT training on harvested data. The evidence is sufficient to answer the model questions partially and to state the comparability limits explicitly, so a refusal is not appropriate. A correct answer should describe 1612.02695's Listen, Attend and Spell attention-based seq2seq ASR model, note that it does not present an NMT model, and explain its proposals (label smoothing for overconfidence; coverage penalty/language model integration for incomplete transcriptions). For 1806.09652 it should describe the Siamese bidirectional RNN with GRU units for parallel sentence extraction and note that NMT/SMT systems are trained on the harvested data rather than proposing an architecture to fix seq2seq shortcomings. It should then say the two papers are only weakly comparable: both use seq2seq-style models, but 1612.02695 addresses ASR deficiencies while 1806.09652 addresses low-resource data scarcity via comparable-corpus mining. The refusal therefore omits required content and misstates evidence sufficiency.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "48855284c32cd6a563714a32285578be524f3f9ad1febdd4b555b8f761a80186",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7249,
+        "completion_tokens": 278,
+        "total_tokens": 7527,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00125415,
+          "allowance": 0.00094061,
+          "tokens": {
+            "input": 7249,
+            "output": 278,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7249,
+        "output_tokens": 278,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4042.4348000015016
+    }
+  ]
+}

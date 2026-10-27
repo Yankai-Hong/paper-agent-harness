@@ -1,0 +1,251 @@
+{
+  "id": "d28-t3",
+  "session_id": "d28",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": false,
+    "reason": "The answer refused, but the evidence sufficiently covers both sides: paper 1705.10272 explains how N-gram language models score/rank humorous tweets, and the user's own prior history confirms the humor question targets that paper. The abuse-survey question is less directly supported (the supplied chunk only covers conclusions/metrics), so a refusal for the entire comparison is overbroad; at minimum it should answer the humor-model portion and flag partial insufficiency for the survey feature question.",
+    "claims": []
+  },
+  "error": null,
+  "payload": {
+    "question": "与《Tackling Online Abuse: A Survey of Automated Abuse Detection Methods》对比，分别说明两篇论文如何回答“How are the language models used to make predictions on humorous statements?”与“Did the survey provide insight into features commonly found to be predictive of abusive content on online platforms?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved": {
+      "intent": "compare",
+      "standalone_query": "对比论文 1705.10272 与 1908.06024 对幽默语句预测中语言模型使用方法及在线平台滥用内容预测特征的论述，并评估可比性",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1705.10272",
+        "1908.06024"
+      ],
+      "resolved_entities": {
+        "paper_1": "1705.10272",
+        "paper_2": "1908.06024"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-ab1f50c84fac89c654f4ed96",
+        "paper_id": "1705.10272",
+        "title": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+        "section": "Abstract",
+        "text": "Humor is a defining characteristic of human beings. Our goal is to develop methods that automatically detect humorous statements and rank them on a continuous scale. In this paper we report on results using a Language Model approach, and outline our plans for using methods from Deep Learning.",
+        "text_hash": "5f846f7b58a0203cb897f4584800e93bc42304b7c978c20f62355a21c5e6b16d",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1705.10272",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 293,
+            "text": "Humor is a defining characteristic of human beings. Our goal is to develop methods that automatically detect humorous statements and rank them on a continuous scale. In this paper we report on results using a Language Model approach, and outline our plans for using methods from Deep Learning.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-42b2a8b4190d48e2271bf4e7",
+        "paper_id": "1705.10272",
+        "title": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+        "section": "Language Models",
+        "text": "We used traditional Ngram language models as our first approach for two reasons : First, Ngram language models can learn a certain style of humor by using examples of that as the training data for the model. Second, they assign a probability to each input they are given, making it possible to rank statements relative to each other. Thus, Ngram language models make relative rankings of humorous statements based on a particular style of humor, thereby accounting for the continuous and subjective nature of humor.\n\nWe began this research by participating in SemEval-2017 Task 6 #HashtagWars: Learning a Sense of Humor BIBREF7 . This included two subtasks : Pairwise Comparison (Subtask A) and Semi-ranking (Subtask B). Pairwise comparison asks a system to choose the funnier of two tweets. Semi-ranking requires that each of the tweets associated with a particular hashtag be assigned to one of the following categories : top most funny tweet, next nine most funny tweets, and all remaining tweets.\n\nOur system estimated tweet probabilities using Ngram language models. We created models from two different corpora - a collection of funny tweets from the @midnight program, and a corpus of news data that is freely available for research. We scored tweets by assigning them a probability based on each model. Tweets that have a higher probability according to the funny tweet model are considered funnier since they are more like the humorous training data. However, tweets that have a lower probability according to the news language model are viewed as funnier since they are least like the (unfunny) news corpus. We took a standard approach to language modeling and used bigrams and trigrams as features in our models. We used KenLM BIBREF8 with modified Kneser-Ney smoothing and a back-off technique as our language modeling tool.",
+        "text_hash": "69eaadc2ffce93e518a8aad88544b78476b8e8862c44335ec9450a1e08854ba7",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1705.10272",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Language Models",
+            "start": 0,
+            "end": 515,
+            "text": "We used traditional Ngram language models as our first approach for two reasons : First, Ngram language models can learn a certain style of humor by using examples of that as the training data for the model. Second, they assign a probability to each input they are given, making it possible to rank statements relative to each other. Thus, Ngram language models make relative rankings of humorous statements based on a particular style of humor, thereby accounting for the continuous and subjective nature of humor.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Language Models",
+            "start": 0,
+            "end": 483,
+            "text": "We began this research by participating in SemEval-2017 Task 6 #HashtagWars: Learning a Sense of Humor BIBREF7 . This included two subtasks : Pairwise Comparison (Subtask A) and Semi-ranking (Subtask B). Pairwise comparison asks a system to choose the funnier of two tweets. Semi-ranking requires that each of the tweets associated with a particular hashtag be assigned to one of the following categories : top most funny tweet, next nine most funny tweets, and all remaining tweets.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p2",
+            "section": "Language Models",
+            "start": 0,
+            "end": 834,
+            "text": "Our system estimated tweet probabilities using Ngram language models. We created models from two different corpora - a collection of funny tweets from the @midnight program, and a corpus of news data that is freely available for research. We scored tweets by assigning them a probability based on each model. Tweets that have a higher probability according to the funny tweet model are considered funnier since they are more like the humorous training data. However, tweets that have a lower probability according to the news language model are viewed as funnier since they are least like the (unfunny) news corpus. We took a standard approach to language modeling and used bigrams and trigrams as features in our models. We used KenLM BIBREF8 with modified Kneser-Ney smoothing and a back-off technique as our language modeling tool.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9822af9285a96a5a347a69e2",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Conclusions",
+        "text": "Online abuse stands as a significant challenge before society. Its nature and characteristics constantly evolve, making it a complex phenomenon to study and model. Automated abuse detection methods have seen a lot of development in recent years: from simple rule-based methods aimed at identifying directed, explicit abuse to sophisticated methods that can capture rich semantic information and even aspects of user behavior. By comprehensively reviewing the investigated methods to date, our survey aims to provide a platform for future research, facilitating progress in this important area. While we see an array of challenges that lie ahead, e.g., modeling extra-propositional aspects of language, user behavior and wider conversation, we believe that recent progress in the areas of semantics, dialogue modeling and social media analysis put the research community in a strong position to address them. Summaries of public datasets In table TABREF4 , we summarize the datasets described in this paper that are publicly available and provide links to them. A discussion of metrics The performance results we have reported highlight that, throughout work on abuse detection, different researchers have utilized different evaluation metrics for their experiments – from area under the receiver operating characteristic curve (auroc) BIBREF79 , BIBREF48 to micro and macro F INLINEFORM0 BIBREF28 – regardless of the properties of their datasets. This makes the presented techniques more difficult to compare. In addition, as abuse is a relatively infrequent phenomenon, the datasets are typically skewed towards non-abusive samples BIBREF6 . Metrics such as auroc may, therefore, be unsuitable since they may mask poor performance on the abusive samples as a side-effect of the large number of non-abusive samples BIBREF52 . Macro-averaged precision, recall, and F INLINEFORM1 , as well as precision, recall, and F INLINEFORM2 on specifically the abusive classes, may provide a more informative evaluation strategy; the primary advantage being that macro-averaged metrics provide a sense of effectiveness on the minority classes BIBREF73 . Additionally, area under the precision-recall curve (aup",
+        "text_hash": "724128c314b08687c557f32e0aa7a3804aac80af9d0ec0316f8de07e0bb304b1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 2197,
+            "text": "Online abuse stands as a significant challenge before society. Its nature and characteristics constantly evolve, making it a complex phenomenon to study and model. Automated abuse detection methods have seen a lot of development in recent years: from simple rule-based methods aimed at identifying directed, explicit abuse to sophisticated methods that can capture rich semantic information and even aspects of user behavior. By comprehensively reviewing the investigated methods to date, our survey aims to provide a platform for future research, facilitating progress in this important area. While we see an array of challenges that lie ahead, e.g., modeling extra-propositional aspects of language, user behavior and wider conversation, we believe that recent progress in the areas of semantics, dialogue modeling and social media analysis put the research community in a strong position to address them. Summaries of public datasets In table TABREF4 , we summarize the datasets described in this paper that are publicly available and provide links to them. A discussion of metrics The performance results we have reported highlight that, throughout work on abuse detection, different researchers have utilized different evaluation metrics for their experiments – from area under the receiver operating characteristic curve (auroc) BIBREF79 , BIBREF48 to micro and macro F INLINEFORM0 BIBREF28 – regardless of the properties of their datasets. This makes the presented techniques more difficult to compare. In addition, as abuse is a relatively infrequent phenomenon, the datasets are typically skewed towards non-abusive samples BIBREF6 . Metrics such as auroc may, therefore, be unsuitable since they may mask poor performance on the abusive samples as a side-effect of the large number of non-abusive samples BIBREF52 . Macro-averaged precision, recall, and F INLINEFORM1 , as well as precision, recall, and F INLINEFORM2 on specifically the abusive classes, may provide a more informative evaluation strategy; the primary advantage being that macro-averaged metrics provide a sense of effectiveness on the minority classes BIBREF73 . Additionally, area under the precision-recall curve (aup",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-04fd36e8ebf0badf98e5c22f",
+        "paper_id": "1705.10272",
+        "title": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+        "section": "Introduction",
+        "text": "Computational humor is an emerging area of research that ties together ideas from psychology, linguistics, and cognitive science. Humor generation is the problem of automatically creating humorous statements (e.g., BIBREF0 , BIBREF1 ). Humor detection seeks to identify humor in text, and is sometimes cast as a binary classification problem that decides if some input is humorous or not (e.g., BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 ). However, our focus is on the continuous and subjective aspects of humor.\n\nWe learn a particular sense of humor from a data set of tweets which are geared towards a certain style of humor BIBREF6 . This data consists of humorous tweets which have been submitted in response to hashtag prompts provided during the Comedy Central TV show @midnight with Chris Hardwick. Since not all jokes are equally funny, we use Language Models and methods from Deep Learning to allow potentially humorous statements to be ranked relative to each other.",
+        "text_hash": "48d15e53b9f1718693523ac8e3530cc9e9c7462270726fe8dbfc3df7b9e63a99",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1705.10272",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 508,
+            "text": "Computational humor is an emerging area of research that ties together ideas from psychology, linguistics, and cognitive science. Humor generation is the problem of automatically creating humorous statements (e.g., BIBREF0 , BIBREF1 ). Humor detection seeks to identify humor in text, and is sometimes cast as a binary classification problem that decides if some input is humorous or not (e.g., BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 ). However, our focus is on the continuous and subjective aspects of humor.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 462,
+            "text": "We learn a particular sense of humor from a data set of tweets which are geared towards a certain style of humor BIBREF6 . This data consists of humorous tweets which have been submitted in response to hashtag prompts provided during the Comedy Central TV show @midnight with Chris Hardwick. Since not all jokes are equally funny, we use Language Models and methods from Deep Learning to allow potentially humorous statements to be ranked relative to each other.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-fe0545dbe9418ac897a44fc9",
+        "paper_id": "1705.10272",
+        "title": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+        "section": "Deep Learning",
+        "text": "One limitation of our language model approach is the large number of out of vocabulary words we encounter. This problem can not be solved by increasing the quantity of training data because humor relies on creative use of language. For example, jokes often include puns based on invented words, e.g., a singing cat makes beautiful meowsic. BIBREF6 suggests that character–based Convolutional Neural Networks (CNNs) are an effective solution for these situations since they are not dependent on observing tokens in training data. Previous work has also shown the CNNs are effective tools for language modeling, even in the presence of complex morphology BIBREF9 . Other recent work has shown that Recurrent Neural Networks (RNNs), in particular Long Short–Term Memory networks (LSTMs), are effective in a wide range of language modeling tasks (e.g., BIBREF10 , BIBREF11 ). This seems to be due to their ability to capture long distance dependencies, which is something that Ngram language models can not do.\n\n BIBREF6 finds that external knowledge is necessary to detect humor in tweet based data. This might include information about book and movie titles, song lyrics, biographies of celebrities etc. and is necessary given the reliance on current events and popular culture in making certain kinds of jokes.\n\nWe believe that Deep Learning techniques potentially offer improved handling of unknown words, long distance dependencies in text, and non–linear relationships among words and concepts. Moving forward we intend to explore a variety of these ideas and describe those briefly below.",
+        "text_hash": "cf29e6c08fc270cfdac89e37ce23565e0a17e0b32b403a04488030f43bc1a38c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1705.10272",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "Deep Learning",
+            "start": 0,
+            "end": 1006,
+            "text": "One limitation of our language model approach is the large number of out of vocabulary words we encounter. This problem can not be solved by increasing the quantity of training data because humor relies on creative use of language. For example, jokes often include puns based on invented words, e.g., a singing cat makes beautiful meowsic. BIBREF6 suggests that character–based Convolutional Neural Networks (CNNs) are an effective solution for these situations since they are not dependent on observing tokens in training data. Previous work has also shown the CNNs are effective tools for language modeling, even in the presence of complex morphology BIBREF9 . Other recent work has shown that Recurrent Neural Networks (RNNs), in particular Long Short–Term Memory networks (LSTMs), are effective in a wide range of language modeling tasks (e.g., BIBREF10 , BIBREF11 ). This seems to be due to their ability to capture long distance dependencies, which is something that Ngram language models can not do.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p1",
+            "section": "Deep Learning",
+            "start": 0,
+            "end": 301,
+            "text": " BIBREF6 finds that external knowledge is necessary to detect humor in tweet based data. This might include information about book and movie titles, song lyrics, biographies of celebrities etc. and is necessary given the reliance on current events and popular culture in making certain kinds of jokes.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p2",
+            "section": "Deep Learning",
+            "start": 0,
+            "end": 280,
+            "text": "We believe that Deep Learning techniques potentially offer improved handling of unknown words, long distance dependencies in text, and non–linear relationships among words and concepts. Moving forward we intend to explore a variety of these ideas and describe those briefly below.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "关于论文《Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!》，How are the language models used to make predictions on humorous statements?",
+      "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": false,
+    "reason": "The answer refused, but the evidence sufficiently covers both sides: paper 1705.10272 explains how N-gram language models score/rank humorous tweets, and the user's own prior history confirms the humor question targets that paper. The abuse-survey question is less directly supported (the supplied chunk only covers conclusions/metrics), so a refusal for the entire comparison is overbroad; at minimum it should answer the humor-model portion and flag partial insufficiency for the survey feature question.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "5290fd6c21829dd99e04713e979f5f834df1428d3538b2dbd2b4b2a9f3926543",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4616,
+        "completion_tokens": 112,
+        "total_tokens": 4728,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00070315,
+          "allowance": 0.00052736,
+          "tokens": {
+            "input": 4232,
+            "output": 112,
+            "reasoning": 0,
+            "cache_read": 384,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4232,
+        "output_tokens": 112,
+        "cache_read_input_tokens": 384,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2700.594199999614
+    }
+  ]
+}

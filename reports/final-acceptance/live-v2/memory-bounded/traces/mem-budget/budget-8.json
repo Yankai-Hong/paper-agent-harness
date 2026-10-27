@@ -1,0 +1,564 @@
+{
+  "turn_id": "budget-8",
+  "session_id": "mem-budget",
+  "question": "关于论文《Mapping Languages and Demographics with Georeferenced Corpora》，Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Mapping Languages and Demographics with Georeferenced Corpora》，Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.017000013031065464
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "关于论文《Mapping Languages and Demographics with Georeferenced Corpora》，Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "Do the authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?",
+        "needs_clarification": false,
+        "paper_ids": [
+          "2004.00809"
+        ],
+        "resolved_entities": {
+          "paper": "Mapping Languages and Demographics with Georeferenced Corpora"
+        }
+      },
+      "elapsed_ms": 2606.962600024417
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Do the authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-9887004ca215701b79e8e570",
+          "c-1bf564989651e887cbd88011",
+          "c-0efba46a0570e1863cb689f1",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-9112346152089bf519490033",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-162f98bff11b9de38d755b70",
+          "c-b60f4e4a6d050d048f70b660",
+          "c-d80dd59432fac531ad74efcf"
+        ]
+      },
+      "elapsed_ms": 41.62099992390722
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-9887004ca215701b79e8e570",
+          "c-1bf564989651e887cbd88011",
+          "c-0efba46a0570e1863cb689f1",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-9112346152089bf519490033",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-162f98bff11b9de38d755b70",
+          "c-b60f4e4a6d050d048f70b660",
+          "c-d80dd59432fac531ad74efcf"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-204aa49abd2af324ac170d44",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-9887004ca215701b79e8e570",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-2c5ce0fcf55ceae4996208b8"
+        ]
+      },
+      "elapsed_ms": 291.52159998193383
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-204aa49abd2af324ac170d44",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-9887004ca215701b79e8e570",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-2c5ce0fcf55ceae4996208b8"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "The evidence contains hypotheses/explanations relevant to why Twitter better predicts the language inventory: the Discussion section notes Twitter has fewer missing languages and more false positives (suggesting it captures more diverse language use), and explains that Twitter matches populations better when weighted by GDP (representing wealthier/urban populations), while noting English and Spanish are very common on Twitter so countries using these languages are well represented. The paper also explicitly states more research is needed to explain sources of false positives. It does not give a single complete causal theory, but it does offer hypotheses/explanations for the Twitter advantage."
+      },
+      "elapsed_ms": 3360.2137999841943
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "twitter_fewer_missing_languages",
+            "text": "The authors report that in countries where corpora do not represent all the languages produced by local populations, Twitter has fewer missing languages than the web-crawled data.",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "twitter_region_coverage",
+            "text": "The authors state that Twitter provides a better representation of North America and Oceania than the web-crawled corpus.",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+              }
+            ]
+          },
+          {
+            "key": "english_spanish_common_on_twitter",
+            "text": "The authors note that English and Spanish are very common on Twitter, so countries predominantly using these languages will have good representation by default.",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+              }
+            ]
+          },
+          {
+            "key": "twitter_gdp_weighting",
+            "text": "The authors find Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics, which they interpret to imply Twitter represents more wealthy populations than web-crawled data.",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "urban_alternative_interpretation",
+            "text": "The authors offer an alternate interpretation that their Twitter collection is based on urban areas, which tend to have more wealthy populations.",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "more_false_positives_twitter",
+            "text": "The authors note that while false positives are uncommon overall, there are more false positives in Twitter data than in the web-crawled corpus.",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-9887004ca215701b79e8e570"
+              }
+            ]
+          },
+          {
+            "key": "false_positive_sources_unresolved",
+            "text": "For Russia, the authors state that more research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages.",
+            "citations": [
+              {
+                "paper_id": "2004.00809",
+                "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 4811.264599906281
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": true,
+        "archive_id": "03f42e22763ac5ceca79908e0bd423afb5f3c04ec16adac8c01083a90f9129a7",
+        "method": "bounded_recent_state",
+        "context_chars_before": 4019,
+        "context_chars_after": 3780,
+        "token_estimate_before": 1005,
+        "token_estimate_after": 945,
+        "token_measurement": "character estimate; not API token usage",
+        "retained_facts": [
+          "[\"user_explicit\", null, \"experiment budget\"]"
+        ],
+        "retained_entities": [
+          "paper"
+        ],
+        "retained_fact_consistency": true
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "4081a2b3dd5d241384a58ebb458416f3b08f267fcdab9fa31ee17204bf906d04",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "9f5d20b65429dfec171edce94fceccf8f84034e5dc377b0df474891a6ab17184",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "8bb27b4d91babe20aaf0b1817d5c0ba6af8d900a3b153fef59bedfb98ec84735",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "66bcc04e407550eca91b4914345c81cbe88e1fabeaf893192d310e0aed1a71fe",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "2443c43532b666fd6514444dcf025d21395cab9701b9fa00075e4e5c6a3fd503",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "9eadc6218a6baa30208943877f973485116b7a93ca0d944213d0de788b6b7a70",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "df53f2ea5a3829349ae8325a707a75f7c47d62944a30d3d41f6bc3d9c4e16f58",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "mem-budget",
+        "entities": {
+          "paper": "Mapping Languages and Demographics with Georeferenced Corpora"
+        },
+        "facts": {
+          "[\"user_explicit\", null, \"experiment budget\"]": {
+            "text": "200 samples",
+            "evidence_ids": [],
+            "fact_id": "8d5d760becc470a7c18b957a29de6b74b73a6b67d62153eb90ca0753db1cefd1",
+            "turn_id": "budget-6",
+            "source_type": "user_explicit"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "2004.00809"
+          ]
+        }
+      },
+      "elapsed_ms": 21.547099924646318
+    }
+  ],
+  "started_at": 1793025964.8621953,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "twitter_fewer_missing_languages",
+        "text": "The authors report that in countries where corpora do not represent all the languages produced by local populations, Twitter has fewer missing languages than the web-crawled data.",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "twitter_region_coverage",
+        "text": "The authors state that Twitter provides a better representation of North America and Oceania than the web-crawled corpus.",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+          }
+        ]
+      },
+      {
+        "key": "english_spanish_common_on_twitter",
+        "text": "The authors note that English and Spanish are very common on Twitter, so countries predominantly using these languages will have good representation by default.",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+          }
+        ]
+      },
+      {
+        "key": "twitter_gdp_weighting",
+        "text": "The authors find Twitter data matches populations better when population numbers are weighted by GDP and worse when weighted by internet-usage statistics, which they interpret to imply Twitter represents more wealthy populations than web-crawled data.",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "urban_alternative_interpretation",
+        "text": "The authors offer an alternate interpretation that their Twitter collection is based on urban areas, which tend to have more wealthy populations.",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "more_false_positives_twitter",
+        "text": "The authors note that while false positives are uncommon overall, there are more false positives in Twitter data than in the web-crawled corpus.",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-9887004ca215701b79e8e570"
+          }
+        ]
+      },
+      {
+        "key": "false_positive_sources_unresolved",
+        "text": "For Russia, the authors state that more research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages.",
+        "citations": [
+          {
+            "paper_id": "2004.00809",
+            "chunk_id": "c-01b9a363a68a29a0e9af4ff8"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "4081a2b3dd5d241384a58ebb458416f3b08f267fcdab9fa31ee17204bf906d04",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "9f5d20b65429dfec171edce94fceccf8f84034e5dc377b0df474891a6ab17184",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "8bb27b4d91babe20aaf0b1817d5c0ba6af8d900a3b153fef59bedfb98ec84735",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "66bcc04e407550eca91b4914345c81cbe88e1fabeaf893192d310e0aed1a71fe",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "2443c43532b666fd6514444dcf025d21395cab9701b9fa00075e4e5c6a3fd503",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "9eadc6218a6baa30208943877f973485116b7a93ca0d944213d0de788b6b7a70",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "df53f2ea5a3829349ae8325a707a75f7c47d62944a30d3d41f6bc3d9c4e16f58",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 13,
+      "request_hash": "d610a764ed11338a724481589dbd60ce8f7afc60f504706211eb8e3c28f983e6",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5179,
+        "completion_tokens": 80,
+        "total_tokens": 5259,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0007684,
+          "allowance": 0.0005763,
+          "tokens": {
+            "input": 4795,
+            "output": 80,
+            "reasoning": 0,
+            "cache_read": 384,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4795,
+        "output_tokens": 80,
+        "cache_read_input_tokens": 384,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2501.478199963458
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 14,
+      "request_hash": "35509848240edc287fdbc3149191cc8bae69b69092fbc9008444155292a4884a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5102,
+        "completion_tokens": 130,
+        "total_tokens": 5232,
+        "prompt_tokens_details": {
+          "cached_tokens": 4864
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00012829,
+          "allowance": 9.622e-05,
+          "tokens": {
+            "input": 238,
+            "output": 130,
+            "reasoning": 0,
+            "cache_read": 4864,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 238,
+        "output_tokens": 130,
+        "cache_read_input_tokens": 4864,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3359.8457999760285
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 15,
+      "request_hash": "f4baf52813f5d158a11d89efa256fb6efa664742af40ece291892d607ace2fc3",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5205,
+        "completion_tokens": 610,
+        "total_tokens": 5815,
+        "prompt_tokens_details": {
+          "cached_tokens": 640
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00105267,
+          "allowance": 0.0007895,
+          "tokens": {
+            "input": 4565,
+            "output": 610,
+            "reasoning": 0,
+            "cache_read": 640,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4565,
+        "output_tokens": 610,
+        "cache_read_input_tokens": 640,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4810.902299941517
+    }
+  ]
+}

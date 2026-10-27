@@ -1,0 +1,546 @@
+{
+  "id": "d18-t1",
+  "session_id": "d18",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "The answer accurately describes the training corpora (Dutch Bible 1637/1888 and El Quijote 17th/21st century), correctly notes El Conde Lucanor was test-only using El Quijote-trained systems, correctly attributes SMT outperformance to small training corpora, correctly states future work on enriching the training corpus, and correctly reports joint BPE with 32,000 merge operations. All claims are supported by the cited evidence chunks.",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "The cited chunk describes the Dutch Bible corpus (1637 original, 1888 as modern Dutch) and El Quijote (17th century original, 21st century modern), consistent with the claim that these were the training corpora.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-2b39005de67979a14fc26cd7 explicitly states the Dutch Bible versions used (1637 original, 1888 modern) and El Quijote with its 21st century version."
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "The claim accurately reflects the paper: El Conde Lucanor used only as test due to small size, no suitable training corpus found, so El Quijote systems were used.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-2b39005de67979a14fc26cd7 explicitly states El Conde Lucanor (14th century, 21st century version) was used only as test due to small size and that El Quijote-trained systems were used to modernize it."
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "The claim correctly states small training corpora were likely why SMT outperformed NMT, a well-known NMT problem.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-98f92e50001a68c58a20c08e states SMT yielded best results, most likely due to small size of training corpora—a well-known problem in NMT."
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "The claim correctly reports future work on enriching the training corpus with additional data.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-e242628d1556d3af58dbaeaa states as future work they would like to explore techniques for enriching the training corpus with additional data."
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "The claim about joint BPE with 32,000 merge operations matches the paper's MT Systems section.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-c6a05839a9508ca94a3810f0 states joint byte pair encoding was applied to all corpora using 32,000 merge operations."
+          }
+        ]
+      }
+    ]
+  },
+  "error": null,
+  "payload": {
+    "question": "关于论文《An Interactive Machine Translation Framework for Modernizing Historical Documents》，What kind of data is used to train the model?",
+    "answer": {
+      "claims": [
+        {
+          "key": "training_corpora",
+          "text": "The model is trained on corpora consisting of historical documents paired with modern versions: the Dutch Bible (1637 version as original and 1888 version as modern Dutch) and El Quijote (17th century Spanish novel with its 21st century version).",
+          "citations": [
+            {
+              "paper_id": "1910.03355",
+              "chunk_id": "c-2b39005de67979a14fc26cd7"
+            }
+          ]
+        },
+        {
+          "key": "el_conde_lucanor_test_only",
+          "text": "El Conde Lucanor (14th century Spanish novel with its 21st century version) was used only as a test due to its small corpus size; because no suitable training corpus was found, the systems built for El Quijote were used to modernize it.",
+          "citations": [
+            {
+              "paper_id": "1910.03355",
+              "chunk_id": "c-2b39005de67979a14fc26cd7"
+            }
+          ]
+        },
+        {
+          "key": "small_training_corpora",
+          "text": "The training corpora were small in size, which the authors note is likely why SMT outperformed NMT, a well-known problem in NMT.",
+          "citations": [
+            {
+              "paper_id": "1910.03355",
+              "chunk_id": "c-98f92e50001a68c58a20c08e"
+            }
+          ]
+        },
+        {
+          "key": "future_enrich_training_corpus",
+          "text": "As future work, the authors want to explore techniques for enriching the training corpus with additional data.",
+          "citations": [
+            {
+              "paper_id": "1910.03355",
+              "chunk_id": "c-e242628d1556d3af58dbaeaa"
+            }
+          ]
+        },
+        {
+          "key": "byte_pair_encoding",
+          "text": "Joint byte pair encoding was applied to all corpora using 32,000 merge operations.",
+          "citations": [
+            {
+              "paper_id": "1910.03355",
+              "chunk_id": "c-c6a05839a9508ca94a3810f0"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved": {
+      "intent": "fact",
+      "standalone_query": "What kind of data is used to train the model in the interactive machine translation framework for modernizing historical documents?",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1910.03355"
+      ],
+      "resolved_entities": {
+        "paper": "An Interactive Machine Translation Framework for Modernizing Historical Documents"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-e0fab0266b412df784700e67",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Related Work",
+        "text": "While the lack of a spelling convention has been extensively researched for years BIBREF6, BIBREF7, BIBREF8, modernization of historical documents is a younger field. BIBREF1 organized a shared task in order to translate historical text to contemporary language. The main goal of this shared task was to tackle the spelling problem. However, they also approached document modernization using a set of rules. BIBREF9 proposed a modernization approach based on statistical machine translation (SMT). A neural machine translation (NMT) approach was proposed by BIBREF2. Finally, BIBREF10 extracted parallel phrases from an original parallel corpus and used them as an additional training data for their NMT approach.\n\nDespise the promising results achieved in last years, machine translation (MT) is still far from producing high-quality translations BIBREF11. Therefore, a human agent has to supervise these translation in a post-editing stage. IMT was introduced with the goal of combining the knowledge of a human translator and the efficiency of an MT system. Although many protocols have been proposed in recent years BIBREF12, BIBREF13, BIBREF14, BIBREF15, the prefix-based remains as one of the most successful approaches BIBREF5, BIBREF16, BIBREF17. In this approach, the user corrects the leftmost wrong word from the translation hypothesis, inherently validating a correct prefix. With each new correction, the system generates a suffix that completes the prefix to produce a new translation.",
+        "text_hash": "dd23f8529d3cb6f47cec3065a5a598839665e3cd0cbfc604890e0f23d7a2640f",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Related Work",
+            "start": 0,
+            "end": 713,
+            "text": "While the lack of a spelling convention has been extensively researched for years BIBREF6, BIBREF7, BIBREF8, modernization of historical documents is a younger field. BIBREF1 organized a shared task in order to translate historical text to contemporary language. The main goal of this shared task was to tackle the spelling problem. However, they also approached document modernization using a set of rules. BIBREF9 proposed a modernization approach based on statistical machine translation (SMT). A neural machine translation (NMT) approach was proposed by BIBREF2. Finally, BIBREF10 extracted parallel phrases from an original parallel corpus and used them as an additional training data for their NMT approach.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Related Work",
+            "start": 0,
+            "end": 784,
+            "text": "Despise the promising results achieved in last years, machine translation (MT) is still far from producing high-quality translations BIBREF11. Therefore, a human agent has to supervise these translation in a post-editing stage. IMT was introduced with the goal of combining the knowledge of a human translator and the efficiency of an MT system. Although many protocols have been proposed in recent years BIBREF12, BIBREF13, BIBREF14, BIBREF15, the prefix-based remains as one of the most successful approaches BIBREF5, BIBREF16, BIBREF17. In this approach, the user corrects the leftmost wrong word from the translation hypothesis, inherently validating a correct prefix. With each new correction, the system generates a suffix that completes the prefix to produce a new translation.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-12faba6617d3bb70ca950aa7",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Introduction",
+        "text": "In recent years, awareness of the importance of preserving our cultural heritage has increased. Historical documents are an important part of that heritage. In order to preserve them, there is an increased need in creating digital text versions which can be search and automatically processed BIBREF0. However, their linguistic properties create additional difficulties: due to the lack of a spelling convention, orthography changes depending on the time period and author. Furthermore, human language evolves with the passage of time, increasing the difficulty of the document's comprehension. Thus, historical documents are mostly accessible to scholars specialized in the time period in which each document was written.\n\nModernization tackles the language barrier in order to increase the accessibility of historical documents. To achieve this, it generates a new version of a historical document in the modern version of the language in which the document was originally written (fi:Shakespeare shows an example of modernizing a document). However, while modernization has been successful in order to increase the comprehension of historical documents BIBREF1, BIBREF2, it is still far from creating error-free modern versions. Therefore, this task still needs to be carried out by scholars.\n\nInteractive machine translation (IMT) fosters human–computer collaborations to generate error-free translations in a productive way BIBREF4, BIBREF5. In this work, we proposed to apply one of these protocols to historical documents modernization. We strive for creating an error-free modern version of a historical document, decreasing the human effort needed to achieve this goal.\n\nThe rest of this document is structured as follows: se:work introduces the related work. Then, in se:IMT we present our protocol. se:exp describes the experiments conducted in order to assess our proposal. The results of those experiments are presented and discussed in se:res. Finally, in se:conc, conclusions are drawn.",
+        "text_hash": "ff94572cb00c9881fd101c1b19de23780cb6d1fbd0658af23fc47e53059ed652",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 722,
+            "text": "In recent years, awareness of the importance of preserving our cultural heritage has increased. Historical documents are an important part of that heritage. In order to preserve them, there is an increased need in creating digital text versions which can be search and automatically processed BIBREF0. However, their linguistic properties create additional difficulties: due to the lack of a spelling convention, orthography changes depending on the time period and author. Furthermore, human language evolves with the passage of time, increasing the difficulty of the document's comprehension. Thus, historical documents are mostly accessible to scholars specialized in the time period in which each document was written.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 571,
+            "text": "Modernization tackles the language barrier in order to increase the accessibility of historical documents. To achieve this, it generates a new version of a historical document in the modern version of the language in which the document was originally written (fi:Shakespeare shows an example of modernizing a document). However, while modernization has been successful in order to increase the comprehension of historical documents BIBREF1, BIBREF2, it is still far from creating error-free modern versions. Therefore, this task still needs to be carried out by scholars.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 381,
+            "text": "Interactive machine translation (IMT) fosters human–computer collaborations to generate error-free translations in a productive way BIBREF4, BIBREF5. In this work, we proposed to apply one of these protocols to historical documents modernization. We strive for creating an error-free modern version of a historical document, decreasing the human effort needed to achieve this goal.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 321,
+            "text": "The rest of this document is structured as follows: se:work introduces the related work. Then, in se:IMT we present our protocol. se:exp describes the experiments conducted in order to assess our proposal. The results of those experiments are presented and discussed in se:res. Finally, in se:conc, conclusions are drawn.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e242628d1556d3af58dbaeaa",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Conclusions and Future Work",
+        "text": "In this work, we proposed a collaborative user–computer approach to create an error-free modern version of a historical document. We tested this proposal on a simulated environment, achieving significant reductions of the human effort. We built our modernization protocol based on both SMT and NMT approaches to prefix-based IMT. Although both systems yielded significant improvements for two data sets out of three, the SMT approach yielded the best results—both in terms of the human reduction and in the modernization quality of the initial system.\n\nAs a future work, we want to further research the behavior of the neural systems. For that, we would like to explore techniques for enriching the training corpus with additional data, and the incorrect generation of words due to subwords. We would also like to develop new protocols based on successful IMT approaches. Finally, we should test our proposal with real users to obtain actual measures of the effort reduction.",
+        "text_hash": "93307bb495fc0c67b2dcbaff25eef35bb5dc409163d423f784025db3f2a18b99",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Conclusions and Future Work",
+            "start": 0,
+            "end": 551,
+            "text": "In this work, we proposed a collaborative user–computer approach to create an error-free modern version of a historical document. We tested this proposal on a simulated environment, achieving significant reductions of the human effort. We built our modernization protocol based on both SMT and NMT approaches to prefix-based IMT. Although both systems yielded significant improvements for two data sets out of three, the SMT approach yielded the best results—both in terms of the human reduction and in the modernization quality of the initial system.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s13-p1",
+            "section": "Conclusions and Future Work",
+            "start": 0,
+            "end": 422,
+            "text": "As a future work, we want to further research the behavior of the neural systems. For that, we would like to explore techniques for enriching the training corpus with additional data, and the incorrect generation of words due to subwords. We would also like to develop new protocols based on successful IMT approaches. Finally, we should test our proposal with real users to obtain actual measures of the effort reduction.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-98f92e50001a68c58a20c08e",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Results",
+        "text": "ta:quality presents the quality of the modernization. Both SMT and NMT approaches were able to significantly improved the baseline. That is, the modernized documents are easier to comprehend by a contemporary reader than the original documents. An exception to this is El Conde Lucanor. The SMT approach yielded significant improvements in terms of TER, but was worse in terms of BLEU. Moreover, the NMT approach yielded worst results in terms of both BLEU and TER. Most likely, this results are due to having used the systems trained with El Quijote for modernizing El Conde Lucanor (see se:corp).\n\nWhen comparing the SMT and NMT approaches, we observe that SMT yielded the best results in all cases. This behavior was already perceived by BIBREF2 and is, most likely, due to the small size of the training corpora—a well-known problem in NMT. However, while the goal of modernization is making historical documents as easier to comprehend by contemporary people as possible, our goal is different. In this work, our goal is to obtain an error-free modern copy of a historical document. To achieve this, we proposed an interactive collaboration between a human expert and our modernizing system, in order to reduce the effort needed to generate such copy. ta:effort presents the experimental results.\n\nBoth SMT and NMT approaches yielded significant reductions of the human effort needed to modernize the Dutch Bible (up to 48 points in terms of WSR and 8 in terms of MAR) and El Quijote (up to 7 points in terms of WSR and 1 of MAR). For El Conde Lucanor, however, both approaches resulted in an increased of the effort need to generate an error-free modern version. This behavior was to be expected since the modernization quality for El Conde Lucanor was very low. Therefore, the system consistently generated wrong suffixes, resulting in the user having to make more corrections.",
+        "text_hash": "b0f8522b5860ce5ea53868f6aa140cc6fbad31751be1be821c1c60dc800e4243",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s11-p0",
+            "section": "Results",
+            "start": 0,
+            "end": 598,
+            "text": "ta:quality presents the quality of the modernization. Both SMT and NMT approaches were able to significantly improved the baseline. That is, the modernized documents are easier to comprehend by a contemporary reader than the original documents. An exception to this is El Conde Lucanor. The SMT approach yielded significant improvements in terms of TER, but was worse in terms of BLEU. Moreover, the NMT approach yielded worst results in terms of both BLEU and TER. Most likely, this results are due to having used the systems trained with El Quijote for modernizing El Conde Lucanor (see se:corp).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p1",
+            "section": "Results",
+            "start": 0,
+            "end": 701,
+            "text": "When comparing the SMT and NMT approaches, we observe that SMT yielded the best results in all cases. This behavior was already perceived by BIBREF2 and is, most likely, due to the small size of the training corpora—a well-known problem in NMT. However, while the goal of modernization is making historical documents as easier to comprehend by contemporary people as possible, our goal is different. In this work, our goal is to obtain an error-free modern copy of a historical document. To achieve this, we proposed an interactive collaboration between a human expert and our modernizing system, in order to reduce the effort needed to generate such copy. ta:effort presents the experimental results.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p2",
+            "section": "Results",
+            "start": 0,
+            "end": 581,
+            "text": "Both SMT and NMT approaches yielded significant reductions of the human effort needed to modernize the Dutch Bible (up to 48 points in terms of WSR and 8 in terms of MAR) and El Quijote (up to 7 points in terms of WSR and 1 of MAR). For El Conde Lucanor, however, both approaches resulted in an increased of the effort need to generate an error-free modern version. This behavior was to be expected since the modernization quality for El Conde Lucanor was very low. Therefore, the system consistently generated wrong suffixes, resulting in the user having to make more corrections.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-fe54cbd9a541e1a08dfd29a8",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Abstract",
+        "text": "Due to the nature of human language, historical documents are hard to comprehend by contemporary people. This limits their accessibility to scholars specialized in the time period in which the documents were written. Modernization aims at breaking this language barrier by generating a new version of a historical document, written in the modern version of the document's original language. However, while it is able to increase the document's comprehension, modernization is still far from producing an error-free version. In this work, we propose a collaborative framework in which a scholar can work together with the machine to generate the new version. We tested our approach on a simulated environment, achieving significant reductions of the human effort needed to produce the modernized version of the document.",
+        "text_hash": "0a23c220ef1ea3e2c9abcf1a1959b7e185afd72b0b82e04deaca8b97b7b97cb0",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 819,
+            "text": "Due to the nature of human language, historical documents are hard to comprehend by contemporary people. This limits their accessibility to scholars specialized in the time period in which the documents were written. Modernization aims at breaking this language barrier by generating a new version of a historical document, written in the modern version of the document's original language. However, while it is able to increase the document's comprehension, modernization is still far from producing an error-free version. In this work, we propose a collaborative framework in which a scholar can work together with the machine to generate the new version. We tested our approach on a simulated environment, achieving significant reductions of the human effort needed to produce the modernized version of the document.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2b39005de67979a14fc26cd7",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Experiments ::: Corpora",
+        "text": "The first corpus used in our experimental session was the Dutch Bible BIBREF1. This corpus consists in a collection of different versions of the Dutch Bible: a version from 1637, another from 1657, another from 1888 and another from 2010. Except for the 2010 version, which is missing the last books, all versions contain the same texts. Moreover, since the authors mentioned that the translation from this last version is not very reliable and, considering that Dutch has not evolved significantly between 1637 and 1657, we decided to only use the 1637 version—considering this as the original document—and the 1888 version—considering 19$^{\\mathrm {th}}$ century Dutch as modern Dutch.\n\nWe selected El Quijote BIBREF2 as our second corpus. This corpus contains the famous 17$^{\\mathrm {th}}$ century Spanish novel by Miguel de Cervantes, and its correspondent 21$^{\\mathrm {st}}$ century version. Finally, we used El Conde Lucanor BIBREF2 as a third corpus. This data set contains the original 14$^{\\mathrm {th}}$ century Spanish novel by Don Juan Manuel, and its correspondent 21$^{\\mathrm {st}}$ century version. Due to the small size of the corpus, we decided to use it only as a test. Additionally, unable to find a suitable training corpus, we used the systems built for El Quijote—despite the original documents belonging to different time periods—in order to modernize El Conde Lucanor.\n\nta:corp presents the corpora statistics.",
+        "text_hash": "f20c4549884ea9fdaea1d6799d961b9f2829908aaa395f1e8048e4f9d69da4c5",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s8-p0",
+            "section": "Experiments ::: Corpora",
+            "start": 0,
+            "end": 687,
+            "text": "The first corpus used in our experimental session was the Dutch Bible BIBREF1. This corpus consists in a collection of different versions of the Dutch Bible: a version from 1637, another from 1657, another from 1888 and another from 2010. Except for the 2010 version, which is missing the last books, all versions contain the same texts. Moreover, since the authors mentioned that the translation from this last version is not very reliable and, considering that Dutch has not evolved significantly between 1637 and 1657, we decided to only use the 1637 version—considering this as the original document—and the 1888 version—considering 19$^{\\mathrm {th}}$ century Dutch as modern Dutch.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p1",
+            "section": "Experiments ::: Corpora",
+            "start": 0,
+            "end": 706,
+            "text": "We selected El Quijote BIBREF2 as our second corpus. This corpus contains the famous 17$^{\\mathrm {th}}$ century Spanish novel by Miguel de Cervantes, and its correspondent 21$^{\\mathrm {st}}$ century version. Finally, we used El Conde Lucanor BIBREF2 as a third corpus. This data set contains the original 14$^{\\mathrm {th}}$ century Spanish novel by Don Juan Manuel, and its correspondent 21$^{\\mathrm {st}}$ century version. Due to the small size of the corpus, we decided to use it only as a test. Additionally, unable to find a suitable training corpus, we used the systems built for El Quijote—despite the original documents belonging to different time periods—in order to modernize El Conde Lucanor.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s8-p2",
+            "section": "Experiments ::: Corpora",
+            "start": 0,
+            "end": 40,
+            "text": "ta:corp presents the corpora statistics.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a60e0e164c02b9a90b0b2bf3",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Results ::: Qualitative Analysis",
+        "text": "fi:exIMT shows an example of modernizing a sentence from El Quijote with the interactive SMT approach. While the system's initial suggestion contains five errors, with the IMT protocol, the user only needs to make three corrections. With each correction, the system is able to improve its suggestions, reducing the total effort needed to achieve an error-free modernization. Note that this example has been chosen for illustrative purposes of a correct functioning of the system. The average sentences from El Quijote are longer, and there are times in which the system fails to take the human knowledge into account, resulting in an increase of the number of corrections. Nonetheless, as seen in se:res, overall the system is able to significantly decrease the human effort.\n\nfi:exINMT contains an example of modernizing the same sentence as in fi:exIMT, using the interactive NMT approach. This is an example in which the system fails to take into account the user's corrections, resulting in an increase of the human effort. It is specially worth noting the introduction of non-existing words such as durdos and duradas. This problem was probably caused by an incorrect segmentation of a word, via the byte pair encoding process, and should be address in a future work. Nonetheless, as seen in se:res, overall the system is able to significantly decrease the human effort.",
+        "text_hash": "e19cbfad41712ac42606094d376bda5870aa43ec37e82d9a9314ab1acf49ddf9",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s12-p0",
+            "section": "Results ::: Qualitative Analysis",
+            "start": 0,
+            "end": 775,
+            "text": "fi:exIMT shows an example of modernizing a sentence from El Quijote with the interactive SMT approach. While the system's initial suggestion contains five errors, with the IMT protocol, the user only needs to make three corrections. With each correction, the system is able to improve its suggestions, reducing the total effort needed to achieve an error-free modernization. Note that this example has been chosen for illustrative purposes of a correct functioning of the system. The average sentences from El Quijote are longer, and there are times in which the system fails to take the human knowledge into account, resulting in an increase of the number of corrections. Nonetheless, as seen in se:res, overall the system is able to significantly decrease the human effort.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s12-p1",
+            "section": "Results ::: Qualitative Analysis",
+            "start": 0,
+            "end": 598,
+            "text": "fi:exINMT contains an example of modernizing the same sentence as in fi:exIMT, using the interactive NMT approach. This is an example in which the system fails to take into account the user's corrections, resulting in an increase of the human effort. It is specially worth noting the introduction of non-existing words such as durdos and duradas. This problem was probably caused by an incorrect segmentation of a word, via the byte pair encoding process, and should be address in a future work. Nonetheless, as seen in se:res, overall the system is able to significantly decrease the human effort.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c6a05839a9508ca94a3810f0",
+        "paper_id": "1910.03355",
+        "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents",
+        "section": "Experiments ::: MT Systems",
+        "text": "SMT systems were trained with Moses BIBREF29, following the standard procedure: we estimated a 5-gram language model—smoothed with the improved KneserNey method—using SRILM BIBREF30, and optimized the weights of the log-linear model with MERT BIBREF31.\n\nWe built our NMT systems using NMT-Keras BIBREF32. We used long short-term memory units BIBREF33, with all model dimensions set to 512. We trained the system using Adam BIBREF34 with a fixed learning rate of $0.0002$ and a batch size of 60. We applied label smoothing of $0.1$ BIBREF35. At inference time, we used beam search with a beam size of 6. We applied joint byte pair encoding to all corpora BIBREF36, using $32,000$ merge operations.\n\nStatistical IMT systems were implemented following the procedure of word graph exploration and generation of a best suffix for a given prefix described by BIBREF5. Neural IMT systems were built using the interactive branch of NMT-Keras.",
+        "text_hash": "7deccb8f22831d299bb3fd1e467ff8ad6c340d72e4971153c51fc631d53910b2",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.03355",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "Experiments ::: MT Systems",
+            "start": 0,
+            "end": 252,
+            "text": "SMT systems were trained with Moses BIBREF29, following the standard procedure: we estimated a 5-gram language model—smoothed with the improved KneserNey method—using SRILM BIBREF30, and optimized the weights of the log-linear model with MERT BIBREF31.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "Experiments ::: MT Systems",
+            "start": 0,
+            "end": 442,
+            "text": "We built our NMT systems using NMT-Keras BIBREF32. We used long short-term memory units BIBREF33, with all model dimensions set to 512. We trained the system using Adam BIBREF34 with a fixed learning rate of $0.0002$ and a batch size of 60. We applied label smoothing of $0.1$ BIBREF35. At inference time, we used beam search with a beam size of 6. We applied joint byte pair encoding to all corpora BIBREF36, using $32,000$ merge operations.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p2",
+            "section": "Experiments ::: MT Systems",
+            "start": 0,
+            "end": 236,
+            "text": "Statistical IMT systems were implemented following the procedure of word graph exploration and generation of a best suffix for a given prefix described by BIBREF5. Neural IMT systems were built using the interactive branch of NMT-Keras.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": []
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "The answer accurately describes the training corpora (Dutch Bible 1637/1888 and El Quijote 17th/21st century), correctly notes El Conde Lucanor was test-only using El Quijote-trained systems, correctly attributes SMT outperformance to small training corpora, correctly states future work on enriching the training corpus, and correctly reports joint BPE with 32,000 merge operations. All claims are supported by the cited evidence chunks.",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "The cited chunk describes the Dutch Bible corpus (1637 original, 1888 as modern Dutch) and El Quijote (17th century original, 21st century modern), consistent with the claim that these were the training corpora.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-2b39005de67979a14fc26cd7 explicitly states the Dutch Bible versions used (1637 original, 1888 modern) and El Quijote with its 21st century version."
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "The claim accurately reflects the paper: El Conde Lucanor used only as test due to small size, no suitable training corpus found, so El Quijote systems were used.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-2b39005de67979a14fc26cd7 explicitly states El Conde Lucanor (14th century, 21st century version) was used only as test due to small size and that El Quijote-trained systems were used to modernize it."
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "The claim correctly states small training corpora were likely why SMT outperformed NMT, a well-known NMT problem.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-98f92e50001a68c58a20c08e states SMT yielded best results, most likely due to small size of training corpora—a well-known problem in NMT."
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "The claim correctly reports future work on enriching the training corpus with additional data.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-e242628d1556d3af58dbaeaa states as future work they would like to explore techniques for enriching the training corpus with additional data."
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "The claim about joint BPE with 32,000 merge operations matches the paper's MT Systems section.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "Chunk c-c6a05839a9508ca94a3810f0 states joint byte pair encoding was applied to all corpora using 32,000 merge operations."
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "f44855adf2fcf4e4750e0384b61f96de586ab4233b95955ff3498b3b89640d28",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7557,
+        "completion_tokens": 685,
+        "total_tokens": 8242,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0014881,
+          "allowance": 0.00111608,
+          "tokens": {
+            "input": 7173,
+            "output": 685,
+            "reasoning": 0,
+            "cache_read": 384,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7173,
+        "output_tokens": 685,
+        "cache_read_input_tokens": 384,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6142.664999999397
+    }
+  ]
+}

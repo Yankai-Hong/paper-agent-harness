@@ -1,0 +1,569 @@
+{
+  "id": "d29-t2",
+  "session_id": "d29",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "所有8条主张均只引用论文《Tackling Online Abuse: A Survey of Automated Abuse Detection Methods》(1908.06024)，且逐条与对应证据块内容一致；未从常识补充结论，符合“保留引用、仅基于给定证据”的要求。引用块 c-891d7142a2d2cad4f16b6f9c、c-352921953f298264d3e703f1、c-3320dc6deb2038275888790b、c-99a9111c28f65d167ccf77d5 均在证据集中，且各主张的具体细节（作者、数据集、特征类别、结论、方向性比较）可在原文找到对应表述，无相互矛盾。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "证据块明确列出 Nobata 等人在 Yahoo! 数据集上用回归模型评估的四类特征：(1) 词和字符 n-gram；(2) 语言特征如礼貌/仇恨词数量和标点计数；(3) 句法特征如依存树中节点的父节点和祖父节点；(4) 分布语义特征如 paragraph2vec 评论表示，与主张完全一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块直接叙述 Nobata 等人评估的特征类别与数据集、模型，主张忠实转述，无添加。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "证据块指出最佳结果为全部特征组合，同时字符 n-gram 单独贡献显著多于其他特征，原因是其对噪声（混淆、拼写错误、未见词）具有稳健性，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块明确写出‘character n-grams on their own contributed significantly more than other features due to their robustness to noise (i.e., obfuscations, misspellings, unseen words)’，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "证据块说明 Mehdad 和 Tetreault 在 data-yahoo-fin-dj 上研究表明字符级特征优于词级特征，基于字符 n-gram 平均计数贝叶斯对数比向量的 SVM 分类器在 AUC 上优于 Nobata 等人方法，主张与之吻合。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块包含 data-yahoo-fin-dj、字符级优于词级、SVM 基于 Bayesian log-ratio 向量、AUC 优于 Nobata 等细节，均支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "证据块指出字符 n-gram 因对拼写变化稳健而仍是应对混淆最有效的特征之一，且依赖词级 CNN/RNN 的最先进方法仍易受词混淆影响，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块原文表述为‘Character n-gram ... remain one of the most effective features for addressing obfuscation due to their robustness to spelling variations’以及词级 CNN/RNN 仍易受混淆，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "证据块说明许多研究者仅依赖文本特征，但近期研究表明用户个人与社区画像特征显著提升最先进水平，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块直接写出‘Many researchers to date have exclusively relied on text based features ... personal and community-based profiling features of users significantly enhance the state of the art’，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "证据块描述 Yin 等人提取局部特征（词的 tf–idf 权重）、情感特征（脏词和代词的 tf–idf 权重）和上下文特征（如帖子与相邻帖子的相似度）训练线性 SVM，并结论重要上下文指标（如骚扰帖子通常偏离主题）无法仅由局部特征捕获，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块包含局部/情感/上下文特征的具体定义、线性 SVM、以及无法仅由局部特征捕获上下文指标的结论，均支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "verdict": "supported",
+        "reason": "证据块分别说明 Dadvar 等人结合用户年龄与词典特征检测网络欺凌、Galán-García 等人利用 Twitter 用户资料中的发布时间/地理位置/语言、Waseem 和 Hovy 利用 Twitter 用户性别与字符 n-gram 计数改善性别歧视和种族主义检测，与主张一一对应。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块逐一叙述三组作者及其用户画像特征用途，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "verdict": "supported",
+        "reason": "证据块指出在相同设置下加入社交网络信息（关注者和好友数量）、活动信息（状态更新和收藏数量）以及性别能进一步提升性能，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块明确列出社交网络、活动信息与性别‘further enhances performance’，支持主张。"
+          }
+        ]
+      }
+    ]
+  },
+  "error": null,
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "feature_categories_nobata",
+          "text": "Nobata 等人在 Yahoo! 数据集上用回归模型评估了一大类特征：(1) 词和字符 n-gram；(2) 语言特征，如礼貌/仇恨词数量和标点数量；(3) 句法特征，如依存树中节点的父节点和祖父节点；(4) 分布语义特征，如 paragraph2vec 评论表示。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-891d7142a2d2cad4f16b6f9c"
+            }
+          ]
+        },
+        {
+          "key": "char_ngram_robustness",
+          "text": "虽然全部特征组合取得了最佳结果，但字符 n-gram 单独贡献显著多于其他特征，因为其对噪声（混淆、拼写错误、未见词）具有稳健性。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-891d7142a2d2cad4f16b6f9c"
+            }
+          ]
+        },
+        {
+          "key": "char_vs_word_superiority",
+          "text": "Mehdad 和 Tetreault 在 data-yahoo-fin-dj 数据集上的结果表明字符级特征优于词级特征，基于字符 n-gram 平均计数贝叶斯对数比向量的 SVM 分类器在 AUC 上优于 Nobata 等人的方法。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-891d7142a2d2cad4f16b6f9c"
+            }
+          ]
+        },
+        {
+          "key": "char_ngram_obfuscation",
+          "text": "调查指出，字符 n-gram 仍是应对混淆最有效的特征之一，因为其对拼写变化具有稳健性；而依赖词级 CNN 和 RNN 的最先进方法仍易受词混淆影响。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-352921953f298264d3e703f1"
+            }
+          ]
+        },
+        {
+          "key": "text_only_features",
+          "text": "迄今为止许多研究者仅依赖基于文本的特征进行滥用检测，但近期研究表明用户的个人和社区画像特征显著提升了最先进水平。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-352921953f298264d3e703f1"
+            }
+          ]
+        },
+        {
+          "key": "yin_features",
+          "text": "Yin 等人提取局部特征（词的 tf–idf 权重）、情感特征（脏词和代词的 tf–idf 权重）和上下文特征（如帖子与其相邻帖子的相似度）来训练线性 SVM 分类器，并得出结论：重要的上下文指标（如骚扰帖子通常偏离主题）无法仅由局部特征捕获。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-3320dc6deb2038275888790b"
+            }
+          ]
+        },
+        {
+          "key": "user_profiling_features",
+          "text": "Dadvar 等人将用户年龄与词典特征结合检测网络欺凌；Galán-García 等人利用 Twitter 用户资料中的发布时间、地理位置和语言；Waseem 和 Hovy 利用 Twitter 用户性别与字符 n-gram 计数改善性别歧视和种族主义的检测。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-99a9111c28f65d167ccf77d5"
+            }
+          ]
+        },
+        {
+          "key": "social_activity_features",
+          "text": "Unsvåg 和 Gambäck 表明，在相同设置下加入用户的社交网络信息（关注者和好友数量）与活动信息（状态更新和收藏数量）以及性别，能进一步提升性能。",
+          "citations": [
+            {
+              "paper_id": "1908.06024",
+              "chunk_id": "c-99a9111c28f65d167ccf77d5"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved": {
+      "intent": "explain",
+      "standalone_query": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods 调查中关于在线平台上预测滥用内容的常用特征的证据",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1908.06024"
+      ],
+      "resolved_entities": {
+        "paper": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "paper_id": "1908.06024"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-41f24c32d37368600016c13a",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Abstract",
+        "text": "Abuse on the Internet represents an important societal problem of our time. Millions of Internet users face harassment, racism, personal attacks, and other types of abuse on online platforms. The psychological effects of such abuse on individuals can be profound and lasting. Consequently, over the past few years, there has been a substantial research effort towards automated abuse detection in the field of natural language processing (NLP). In this paper, we present a comprehensive survey of the methods that have been proposed to date, thus providing a platform for further development of this area. We describe the existing datasets and review the computational approaches to abuse detection, analyzing their strengths and limitations. We discuss the main trends that emerge, highlight the challenges that remain, outline possible solutions, and propose guidelines for ethics and explainability",
+        "text_hash": "8032b7c0d682f5ecf35d02bcb501cf08dc608fa0bcb820abfef72111a20927df",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 901,
+            "text": "Abuse on the Internet represents an important societal problem of our time. Millions of Internet users face harassment, racism, personal attacks, and other types of abuse on online platforms. The psychological effects of such abuse on individuals can be profound and lasting. Consequently, over the past few years, there has been a substantial research effort towards automated abuse detection in the field of natural language processing (NLP). In this paper, we present a comprehensive survey of the methods that have been proposed to date, thus providing a platform for further development of this area. We describe the existing datasets and review the computational approaches to abuse detection, analyzing their strengths and limitations. We discuss the main trends that emerge, highlight the challenges that remain, outline possible solutions, and propose guidelines for ethics and explainability",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9822af9285a96a5a347a69e2",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Conclusions",
+        "text": "Online abuse stands as a significant challenge before society. Its nature and characteristics constantly evolve, making it a complex phenomenon to study and model. Automated abuse detection methods have seen a lot of development in recent years: from simple rule-based methods aimed at identifying directed, explicit abuse to sophisticated methods that can capture rich semantic information and even aspects of user behavior. By comprehensively reviewing the investigated methods to date, our survey aims to provide a platform for future research, facilitating progress in this important area. While we see an array of challenges that lie ahead, e.g., modeling extra-propositional aspects of language, user behavior and wider conversation, we believe that recent progress in the areas of semantics, dialogue modeling and social media analysis put the research community in a strong position to address them. Summaries of public datasets In table TABREF4 , we summarize the datasets described in this paper that are publicly available and provide links to them. A discussion of metrics The performance results we have reported highlight that, throughout work on abuse detection, different researchers have utilized different evaluation metrics for their experiments – from area under the receiver operating characteristic curve (auroc) BIBREF79 , BIBREF48 to micro and macro F INLINEFORM0 BIBREF28 – regardless of the properties of their datasets. This makes the presented techniques more difficult to compare. In addition, as abuse is a relatively infrequent phenomenon, the datasets are typically skewed towards non-abusive samples BIBREF6 . Metrics such as auroc may, therefore, be unsuitable since they may mask poor performance on the abusive samples as a side-effect of the large number of non-abusive samples BIBREF52 . Macro-averaged precision, recall, and F INLINEFORM1 , as well as precision, recall, and F INLINEFORM2 on specifically the abusive classes, may provide a more informative evaluation strategy; the primary advantage being that macro-averaged metrics provide a sense of effectiveness on the minority classes BIBREF73 . Additionally, area under the precision-recall curve (aup",
+        "text_hash": "724128c314b08687c557f32e0aa7a3804aac80af9d0ec0316f8de07e0bb304b1",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Conclusions",
+            "start": 0,
+            "end": 2197,
+            "text": "Online abuse stands as a significant challenge before society. Its nature and characteristics constantly evolve, making it a complex phenomenon to study and model. Automated abuse detection methods have seen a lot of development in recent years: from simple rule-based methods aimed at identifying directed, explicit abuse to sophisticated methods that can capture rich semantic information and even aspects of user behavior. By comprehensively reviewing the investigated methods to date, our survey aims to provide a platform for future research, facilitating progress in this important area. While we see an array of challenges that lie ahead, e.g., modeling extra-propositional aspects of language, user behavior and wider conversation, we believe that recent progress in the areas of semantics, dialogue modeling and social media analysis put the research community in a strong position to address them. Summaries of public datasets In table TABREF4 , we summarize the datasets described in this paper that are publicly available and provide links to them. A discussion of metrics The performance results we have reported highlight that, throughout work on abuse detection, different researchers have utilized different evaluation metrics for their experiments – from area under the receiver operating characteristic curve (auroc) BIBREF79 , BIBREF48 to micro and macro F INLINEFORM0 BIBREF28 – regardless of the properties of their datasets. This makes the presented techniques more difficult to compare. In addition, as abuse is a relatively infrequent phenomenon, the datasets are typically skewed towards non-abusive samples BIBREF6 . Metrics such as auroc may, therefore, be unsuitable since they may mask poor performance on the abusive samples as a side-effect of the large number of non-abusive samples BIBREF52 . Macro-averaged precision, recall, and F INLINEFORM1 , as well as precision, recall, and F INLINEFORM2 on specifically the abusive classes, may provide a more informative evaluation strategy; the primary advantage being that macro-averaged metrics provide a sense of effectiveness on the minority classes BIBREF73 . Additionally, area under the precision-recall curve (aup",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-044c9e1fbb394aa584414ffd",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Introduction",
+        "text": "In this paper, we survey the methods that have been developed for automated detection of online abuse, analyzing their strengths and weaknesses. We first describe the datasets that exist for abuse. Then we review the various detection methods that have been investigated by the NLP community. Finally, we conclude with the main trends that emerge, highlight the challenges that remain, outline possible solutions, and propose guidelines for ethics and explainability. To the best of our knowledge, this is the first comprehensive survey in this area. We differ from previous surveys BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 in the following respects: 1) we discuss the categorizations of abuse based on coarse-grained vs. fine-grained taxonomies; 2) we present a detailed overview of datasets annotated for abuse; 3) we provide an extensive review of the existing abuse detection methods, including ones based on neural networks (omitted by previous surveys); 4) we discuss the key outstanding challenges in this area; and 5) we cover aspects of ethics and explainability.",
+        "text_hash": "5ea642f1f6e1e2dd1819c63be9d416c87d8c8008820d0cbcdbb85fe869f5cd87",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 1069,
+            "text": "In this paper, we survey the methods that have been developed for automated detection of online abuse, analyzing their strengths and weaknesses. We first describe the datasets that exist for abuse. Then we review the various detection methods that have been investigated by the NLP community. Finally, we conclude with the main trends that emerge, highlight the challenges that remain, outline possible solutions, and propose guidelines for ethics and explainability. To the best of our knowledge, this is the first comprehensive survey in this area. We differ from previous surveys BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 in the following respects: 1) we discuss the categorizations of abuse based on coarse-grained vs. fine-grained taxonomies; 2) we present a detailed overview of datasets annotated for abuse; 3) we provide an extensive review of the existing abuse detection methods, including ones based on neural networks (omitted by previous surveys); 4) we discuss the key outstanding challenges in this area; and 5) we cover aspects of ethics and explainability.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-b0bd2cc11534691fde563930",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Introduction",
+        "text": "That said, the notion of abuse has proven elusive and difficult to formalize. Different norms across (online) communities can affect what is considered abusive BIBREF1 . In the context of natural language, abuse is a term that encompasses many different types of fine-grained negative expressions. For example, Nobata et al. nobata use it to collectively refer to hate speech, derogatory language and profanity, while Mishra et al. mishra use it to discuss racism and sexism. The definitions for different types of abuse tend to be overlapping and ambiguous. However, regardless of the specific type, we define abuse as any expression that is meant to denigrate or offend a particular person or group. Taking a course-grained view, Waseem et al. W17-3012 classify abuse into broad categories based on explicitness and directness. Explicit abuse comes in the form of expletives, derogatory words or threats, while implicit abuse has a more subtle appearance characterized by the presence of ambiguous terms and figures of speech such as metaphor or sarcasm. Directed abuse targets a particular individual as opposed to generalized abuse, which is aimed at a larger group such as a particular gender or ethnicity. This categorization exposes some of the intricacies that lie within the task of automated abuse detection. While directed and explicit abuse is relatively straightforward to detect for humans and machines alike, the same is not true for implicit or generalized abuse. This is illustrated in the works of Dadvar et al. davdar and Waseem and Hovy waseemhovy: Dadvar et al. observed an inter-annotator agreement of INLINEFORM0 on their cyber-bullying dataset. Cyber-bullying is a classic example of directed and explicit abuse since there is typically a single target who is harassed with personal attacks. On the other hand, Waseem and Hovy noted that INLINEFORM1 of all the disagreements in annotation of their dataset occurred on the sexism class. Sexism is typically both generalized and implicit.",
+        "text_hash": "a6b85bd17dcc1047772f0ff28239773c660e2f2198de23bfa058c954ef7863e4",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 2010,
+            "text": "That said, the notion of abuse has proven elusive and difficult to formalize. Different norms across (online) communities can affect what is considered abusive BIBREF1 . In the context of natural language, abuse is a term that encompasses many different types of fine-grained negative expressions. For example, Nobata et al. nobata use it to collectively refer to hate speech, derogatory language and profanity, while Mishra et al. mishra use it to discuss racism and sexism. The definitions for different types of abuse tend to be overlapping and ambiguous. However, regardless of the specific type, we define abuse as any expression that is meant to denigrate or offend a particular person or group. Taking a course-grained view, Waseem et al. W17-3012 classify abuse into broad categories based on explicitness and directness. Explicit abuse comes in the form of expletives, derogatory words or threats, while implicit abuse has a more subtle appearance characterized by the presence of ambiguous terms and figures of speech such as metaphor or sarcasm. Directed abuse targets a particular individual as opposed to generalized abuse, which is aimed at a larger group such as a particular gender or ethnicity. This categorization exposes some of the intricacies that lie within the task of automated abuse detection. While directed and explicit abuse is relatively straightforward to detect for humans and machines alike, the same is not true for implicit or generalized abuse. This is illustrated in the works of Dadvar et al. davdar and Waseem and Hovy waseemhovy: Dadvar et al. observed an inter-annotator agreement of INLINEFORM0 on their cyber-bullying dataset. Cyber-bullying is a classic example of directed and explicit abuse since there is typically a single target who is harassed with personal attacks. On the other hand, Waseem and Hovy noted that INLINEFORM1 of all the disagreements in annotation of their dataset occurred on the sexism class. Sexism is typically both generalized and implicit.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-3320dc6deb2038275888790b",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Feature engineering based approaches",
+        "text": "In this section, we describe abuse detection methods that rely on hand-crafted rules and manual feature engineering. The first documented abuse detection method was designed by Spertus smokey who used a heuristic rule-based approach to produce feature vectors for the messages in the data-smokey dataset, followed by a decision tree generator to train a classification model. The model achieved a recall of INLINEFORM0 on the flame messages, and INLINEFORM1 on the non-flame ones in the test set. Spertus noted some limitations of adopting a heuristic rule-based approach, e.g., the inability to deal with sarcasm, and vulnerability to errors in spelling, punctuation and grammar. Yin et al. Yin09detectionof developed a method for detecting online harassment. Working with the three data-harass datasets, they extracted local features (tf–idf weights of words), sentiment-based features (tf–idf weights of foul words and pronouns) and contextual features (e.g., similarity of a post to its neighboring posts) to train a linear support vector machine (svm) classifier. The authors concluded that important contextual indicators (such as harassment posts generally being off-topic) cannot be captured by local features alone. Their approach achieved INLINEFORM2 F INLINEFORM3 on the MySpace dataset, INLINEFORM4 F INLINEFORM5 on the Slashdot dataset, and INLINEFORM6 F INLINEFORM7 on the Kongregate dataset.",
+        "text_hash": "2747e676419305a1e524052fbe06fabc7e23ee6323a894b3440395a5d1b0a0a6",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "Feature engineering based approaches",
+            "start": 0,
+            "end": 1406,
+            "text": "In this section, we describe abuse detection methods that rely on hand-crafted rules and manual feature engineering. The first documented abuse detection method was designed by Spertus smokey who used a heuristic rule-based approach to produce feature vectors for the messages in the data-smokey dataset, followed by a decision tree generator to train a classification model. The model achieved a recall of INLINEFORM0 on the flame messages, and INLINEFORM1 on the non-flame ones in the test set. Spertus noted some limitations of adopting a heuristic rule-based approach, e.g., the inability to deal with sarcasm, and vulnerability to errors in spelling, punctuation and grammar. Yin et al. Yin09detectionof developed a method for detecting online harassment. Working with the three data-harass datasets, they extracted local features (tf–idf weights of words), sentiment-based features (tf–idf weights of foul words and pronouns) and contextual features (e.g., similarity of a post to its neighboring posts) to train a linear support vector machine (svm) classifier. The authors concluded that important contextual indicators (such as harassment posts generally being off-topic) cannot be captured by local features alone. Their approach achieved INLINEFORM2 F INLINEFORM3 on the MySpace dataset, INLINEFORM4 F INLINEFORM5 on the Slashdot dataset, and INLINEFORM6 F INLINEFORM7 on the Kongregate dataset.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-352921953f298264d3e703f1",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Discussion",
+        "text": "Current trends. English has been the dominant language so far in terms of focus, followed by German, Hindi and Dutch. However, recent efforts have focused on compilation of datasets in other languages such as Slovene and Croatian BIBREF24 , Chinese BIBREF25 , Arabic BIBREF26 , and even some unconventional ones such as Hinglish BIBREF27 . Most of the research to date has been on racism, sexism, personal attacks, toxicity, and harassment. Other types of abuse such as obscenity, threats, insults, and grooming remain relatively unexplored. That said, we note that the majority of methods investigated to date and described herein are (in principle) applicable to a range of abuse types.\n\nWhile the recent state of the art approaches rely on word-level cnns and rnns, they remain vulnerable to obfuscation of words BIBREF28 . Character n-gram, on the other hand, remain one of the most effective features for addressing obfuscation due to their robustness to spelling variations. Many researchers to date have exclusively relied on text based features for abuse detection. But recent works have shown that personal and community-based profiling features of users significantly enhance the state of the art.",
+        "text_hash": "9cb669b506c66eb87fb25889de68a9aa61cd4ebd1d2f0c0b66e1d95c43c92ab7",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s4-p1",
+            "section": "Discussion",
+            "start": 0,
+            "end": 688,
+            "text": "Current trends. English has been the dominant language so far in terms of focus, followed by German, Hindi and Dutch. However, recent efforts have focused on compilation of datasets in other languages such as Slovene and Croatian BIBREF24 , Chinese BIBREF25 , Arabic BIBREF26 , and even some unconventional ones such as Hinglish BIBREF27 . Most of the research to date has been on racism, sexism, personal attacks, toxicity, and harassment. Other types of abuse such as obscenity, threats, insults, and grooming remain relatively unexplored. That said, we note that the majority of methods investigated to date and described herein are (in principle) applicable to a range of abuse types.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p2",
+            "section": "Discussion",
+            "start": 0,
+            "end": 517,
+            "text": "While the recent state of the art approaches rely on word-level cnns and rnns, they remain vulnerable to obfuscation of words BIBREF28 . Character n-gram, on the other hand, remain one of the most effective features for addressing obfuscation due to their robustness to spelling variations. Many researchers to date have exclusively relied on text based features for abuse detection. But recent works have shown that personal and community-based profiling features of users significantly enhance the state of the art.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-891d7142a2d2cad4f16b6f9c",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Neural network based approaches",
+        "text": "Building on the work of Djuric et al., Nobata et al. nobata evaluated the performance of a large range of features on the Yahoo! datasets (data-yahoo-*) using a regression model: (1) word and character n-grams; (2) linguistic features, e.g., number of polite/hate words and punctuation count; (3) syntactic features, e.g., parent and grandparent of node in a dependency tree; (4) distributional-semantic features, e.g., paragraph2vec comment representations. Although the best results were achieved with all features combined (F INLINEFORM0 INLINEFORM1 on data-yahoo-fin-a, INLINEFORM2 on data-yahoo-news-a), character n-grams on their own contributed significantly more than other features due to their robustness to noise (i.e., obfuscations, misspellings, unseen words). Experimenting with the data-yahoo-fin-dj dataset, Mehdad and Tetreault mehdad investigated whether character-level features are more indicative of abuse than word-level ones. Their results demonstrated the superiority of character-level features, showing that svm classifiers trained on Bayesian log-ratio vectors of average counts of character n-grams outperform the more intricate approach of Nobata et al. nobata in terms of AUC ( INLINEFORM3 vs. INLINEFORM4 ) as well as other rnn-based character and word-level models.",
+        "text_hash": "28d559a42c7df85d1f63da273d3a0a1a25f78fa9c81cd79ffb66b415bb31d7ad",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s3-p3",
+            "section": "Neural network based approaches",
+            "start": 0,
+            "end": 1297,
+            "text": "Building on the work of Djuric et al., Nobata et al. nobata evaluated the performance of a large range of features on the Yahoo! datasets (data-yahoo-*) using a regression model: (1) word and character n-grams; (2) linguistic features, e.g., number of polite/hate words and punctuation count; (3) syntactic features, e.g., parent and grandparent of node in a dependency tree; (4) distributional-semantic features, e.g., paragraph2vec comment representations. Although the best results were achieved with all features combined (F INLINEFORM0 INLINEFORM1 on data-yahoo-fin-a, INLINEFORM2 on data-yahoo-news-a), character n-grams on their own contributed significantly more than other features due to their robustness to noise (i.e., obfuscations, misspellings, unseen words). Experimenting with the data-yahoo-fin-dj dataset, Mehdad and Tetreault mehdad investigated whether character-level features are more indicative of abuse than word-level ones. Their results demonstrated the superiority of character-level features, showing that svm classifiers trained on Bayesian log-ratio vectors of average counts of character n-grams outperform the more intricate approach of Nobata et al. nobata in terms of AUC ( INLINEFORM3 vs. INLINEFORM4 ) as well as other rnn-based character and word-level models.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-99a9111c28f65d167ccf77d5",
+        "paper_id": "1908.06024",
+        "title": "Tackling Online Abuse: A Survey of Automated Abuse Detection Methods",
+        "section": "Feature engineering based approaches",
+        "text": "Several researchers have directly incorporated features and identity traits of users in order to model the likeliness of abusive behavior from users with certain traits, a process known as user profiling. Dadvar et al. davdar included the age of users alongside other traditional lexicon-based features to detect cyber-bullying, while Galán-García et al. galan2016supervised utilized the time of publication, geo-position and language in the profile of Twitter users. Waseem and Hovy waseemhovy exploited gender of Twitter users alongside character n-gram counts to improve detection of sexism and racism in tweets from data-twitter-wh (F INLINEFORM0 increased from INLINEFORM1 to INLINEFORM2 ). Using the same setup, Unsvåg and Gambäck unsvaag2018effects showed that the inclusion of social network-based (i.e., number of followers and friends) and activity-based (i.e., number of status updates and favorites) information of users alongside their gender further enhances performance ( INLINEFORM3 gain in F INLINEFORM4 ).",
+        "text_hash": "35de630644d482724586cb293c324ecbb8f0866730e8b07f1d43609fb7248925",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.06024",
+        "spans": [
+          {
+            "paragraph_id": "s2-p3",
+            "section": "Feature engineering based approaches",
+            "start": 0,
+            "end": 1023,
+            "text": "Several researchers have directly incorporated features and identity traits of users in order to model the likeliness of abusive behavior from users with certain traits, a process known as user profiling. Dadvar et al. davdar included the age of users alongside other traditional lexicon-based features to detect cyber-bullying, while Galán-García et al. galan2016supervised utilized the time of publication, geo-position and language in the profile of Twitter users. Waseem and Hovy waseemhovy exploited gender of Twitter users alongside character n-gram counts to improve detection of sexism and racism in tweets from data-twitter-wh (F INLINEFORM0 increased from INLINEFORM1 to INLINEFORM2 ). Using the same setup, Unsvåg and Gambäck unsvaag2018effects showed that the inclusion of social network-based (i.e., number of followers and friends) and activity-based (i.e., number of status updates and favorites) information of users alongside their gender further enhances performance ( INLINEFORM3 gain in F INLINEFORM4 ).",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "请检索以下问题的相关原文：关于论文《Tackling Online Abuse: A Survey of Automated Abuse Detection Methods》，Did the survey provide insight into features commonly found to be predictive of abusive content on online platforms?"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "所有8条主张均只引用论文《Tackling Online Abuse: A Survey of Automated Abuse Detection Methods》(1908.06024)，且逐条与对应证据块内容一致；未从常识补充结论，符合“保留引用、仅基于给定证据”的要求。引用块 c-891d7142a2d2cad4f16b6f9c、c-352921953f298264d3e703f1、c-3320dc6deb2038275888790b、c-99a9111c28f65d167ccf77d5 均在证据集中，且各主张的具体细节（作者、数据集、特征类别、结论、方向性比较）可在原文找到对应表述，无相互矛盾。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "证据块明确列出 Nobata 等人在 Yahoo! 数据集上用回归模型评估的四类特征：(1) 词和字符 n-gram；(2) 语言特征如礼貌/仇恨词数量和标点计数；(3) 句法特征如依存树中节点的父节点和祖父节点；(4) 分布语义特征如 paragraph2vec 评论表示，与主张完全一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块直接叙述 Nobata 等人评估的特征类别与数据集、模型，主张忠实转述，无添加。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "证据块指出最佳结果为全部特征组合，同时字符 n-gram 单独贡献显著多于其他特征，原因是其对噪声（混淆、拼写错误、未见词）具有稳健性，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块明确写出‘character n-grams on their own contributed significantly more than other features due to their robustness to noise (i.e., obfuscations, misspellings, unseen words)’，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "证据块说明 Mehdad 和 Tetreault 在 data-yahoo-fin-dj 上研究表明字符级特征优于词级特征，基于字符 n-gram 平均计数贝叶斯对数比向量的 SVM 分类器在 AUC 上优于 Nobata 等人方法，主张与之吻合。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块包含 data-yahoo-fin-dj、字符级优于词级、SVM 基于 Bayesian log-ratio 向量、AUC 优于 Nobata 等细节，均支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "证据块指出字符 n-gram 因对拼写变化稳健而仍是应对混淆最有效的特征之一，且依赖词级 CNN/RNN 的最先进方法仍易受词混淆影响，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块原文表述为‘Character n-gram ... remain one of the most effective features for addressing obfuscation due to their robustness to spelling variations’以及词级 CNN/RNN 仍易受混淆，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "证据块说明许多研究者仅依赖文本特征，但近期研究表明用户个人与社区画像特征显著提升最先进水平，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块直接写出‘Many researchers to date have exclusively relied on text based features ... personal and community-based profiling features of users significantly enhance the state of the art’，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "证据块描述 Yin 等人提取局部特征（词的 tf–idf 权重）、情感特征（脏词和代词的 tf–idf 权重）和上下文特征（如帖子与相邻帖子的相似度）训练线性 SVM，并结论重要上下文指标（如骚扰帖子通常偏离主题）无法仅由局部特征捕获，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块包含局部/情感/上下文特征的具体定义、线性 SVM、以及无法仅由局部特征捕获上下文指标的结论，均支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "verdict": "supported",
+        "reason": "证据块分别说明 Dadvar 等人结合用户年龄与词典特征检测网络欺凌、Galán-García 等人利用 Twitter 用户资料中的发布时间/地理位置/语言、Waseem 和 Hovy 利用 Twitter 用户性别与字符 n-gram 计数改善性别歧视和种族主义检测，与主张一一对应。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块逐一叙述三组作者及其用户画像特征用途，支持主张。"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "verdict": "supported",
+        "reason": "证据块指出在相同设置下加入社交网络信息（关注者和好友数量）、活动信息（状态更新和收藏数量）以及性别能进一步提升性能，与主张一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块明确列出社交网络、活动信息与性别‘further enhances performance’，支持主张。"
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "afeda82ed6e81ba69b373d4d22830053c4c9b4d74f949fcbe7fd5a24a80368af",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 7644,
+        "completion_tokens": 1214,
+        "total_tokens": 8858,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.001875,
+          "allowance": 0.00140625,
+          "tokens": {
+            "input": 7644,
+            "output": 1214,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 7644,
+        "output_tokens": 1214,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7942.959500000143
+    }
+  ]
+}

@@ -1,0 +1,376 @@
+{
+  "id": "language-9",
+  "session_id": "mem-language",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "The system correctly refused: the evidence consists of unrelated NLP papers and contains no information about output language settings, previous/updated/unresolved output language values, or memory state. The question's entities (previous English, updated/unresolved conflict) are not recoverable from the supplied evidence, so a citation-validated answer is impossible.",
+    "claims": []
+  },
+  "error": null,
+  "payload": {
+    "question": "What was the previous output language, its updated value, and the unresolved output language?",
+    "answer": {
+      "decision": "refuse",
+      "reason_code": "citation_validation_failed",
+      "text": "当前证据无法支撑可靠引用，因此不给出结论。",
+      "claims": []
+    },
+    "resolved": {
+      "intent": "fact",
+      "standalone_query": "output language previous value updated value unresolved conflict",
+      "needs_clarification": false,
+      "paper_ids": null,
+      "resolved_entities": {
+        "previous_output_language": "English",
+        "updated_output_language": "UNRESOLVED_CONFLICT",
+        "unresolved_output_language": "UNRESOLVED_CONFLICT"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-4f680f5b1e867fed938c3db7",
+        "paper_id": "1610.09722",
+        "title": "Represent, Aggregate, and Constrain: A Novel Architecture for Machine Reading from Noisy Sources",
+        "section": "Global Constraints",
+        "text": "While the combination of learned representations and aggregation produces an effective system in its own right, its predictions may reflect a lack of world knowledge. For instance, we may want to discourage the model from predicting the same value for multiple slots, as this is not a common occurrence.\n\nFollowing recent work in computer vision which proposes a differentiable interpretation of belief propagation inference BIBREF12 , BIBREF13 , we present a recurrent neural network (RNN) which implements inference under this constraint.\n\nA factor graph is a graphical model which factorizes the model function using a bipartite graph, consisting of variables and factors. Variables maintain beliefs over their values, and factors specify scores over configurations of these values for the variables they neighbor.\n\nWe constrain model output by applying a factor graph model to the INLINEFORM0 scores it produces. The slot INLINEFORM1 taking the value INLINEFORM2 is represented in the factor graph by a Boolean variable INLINEFORM3 . Each INLINEFORM4 is connected to a local factor INLINEFORM5 whose initial potential is derived from INLINEFORM6 . A combinatorial logic factor, Exactly-1 BIBREF14 , is (1) created for each slot, connected across all values, and (2) created for each value, connected across all slots. This is illustrated in Figure FIGREF22 . Each Exactly-1 factor provides a hard constraint over neighboring Boolean variables requiring exactly one variable's value to be true, therefore diminishing the possibility of duplicate predictions during inference.\n\nThe resulting graph contains cycles, preventing the use of exact message passing inference. We instead treat an RNN as implementing loopy belief propagation (LBP), an iterative approximate message passing inference algorithm. The hidden state of the RNN is the set of variable beliefs, and each round of message updates corresponds to one iteration of LBP, or one recurrence in the RNN.",
+        "text_hash": "5cf35307842abebcfe893be889c3932af8c87c00a15ce2a7634f353c1b1f9c3a",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1610.09722",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Global Constraints",
+            "start": 0,
+            "end": 303,
+            "text": "While the combination of learned representations and aggregation produces an effective system in its own right, its predictions may reflect a lack of world knowledge. For instance, we may want to discourage the model from predicting the same value for multiple slots, as this is not a common occurrence.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Global Constraints",
+            "start": 0,
+            "end": 235,
+            "text": "Following recent work in computer vision which proposes a differentiable interpretation of belief propagation inference BIBREF12 , BIBREF13 , we present a recurrent neural network (RNN) which implements inference under this constraint.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Global Constraints",
+            "start": 0,
+            "end": 275,
+            "text": "A factor graph is a graphical model which factorizes the model function using a bipartite graph, consisting of variables and factors. Variables maintain beliefs over their values, and factors specify scores over configurations of these values for the variables they neighbor.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Global Constraints",
+            "start": 0,
+            "end": 759,
+            "text": "We constrain model output by applying a factor graph model to the INLINEFORM0 scores it produces. The slot INLINEFORM1 taking the value INLINEFORM2 is represented in the factor graph by a Boolean variable INLINEFORM3 . Each INLINEFORM4 is connected to a local factor INLINEFORM5 whose initial potential is derived from INLINEFORM6 . A combinatorial logic factor, Exactly-1 BIBREF14 , is (1) created for each slot, connected across all values, and (2) created for each value, connected across all slots. This is illustrated in Figure FIGREF22 . Each Exactly-1 factor provides a hard constraint over neighboring Boolean variables requiring exactly one variable's value to be true, therefore diminishing the possibility of duplicate predictions during inference.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p4",
+            "section": "Global Constraints",
+            "start": 0,
+            "end": 386,
+            "text": "The resulting graph contains cycles, preventing the use of exact message passing inference. We instead treat an RNN as implementing loopy belief propagation (LBP), an iterative approximate message passing inference algorithm. The hidden state of the RNN is the set of variable beliefs, and each round of message updates corresponds to one iteration of LBP, or one recurrence in the RNN.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-df541c8369c06a4ec71366c7",
+        "paper_id": "1708.07252",
+        "title": "A Study on Neural Network Language Modeling",
+        "section": "Feed-forward Neural Network Language Model, FNNLM",
+        "text": "The INLINEFORM0 -th element of output vector INLINEFORM1 is the unnormalized conditional probability of the word with index INLINEFORM2 in the vocabulary. In order to guarantee all the conditional probabilities of words positive and summing to one, a softmax layer is always adopted following the output layer of FNN: INLINEFORM3 \n\nwhere INLINEFORM0 is the INLINEFORM1 -th element of output vector INLINEFORM2 , and INLINEFORM3 is the INLINEFORM4 -th word in the vocabulary.\n\nTraining of neural network language models is usually achieved by maximizing the penalized log-likelihood of the training data: INLINEFORM0 \n\nwhere, INLINEFORM0 is the set of model's parameters to be trained, INLINEFORM1 is a regularization term.\n\nThe recommended learning algorithm for neural network language models is stochastic gradient descent (SGD) method using backpropagation (BP) algorithm. A common choice for the loss function is the cross entroy loss which equals to negative log-likelihood here. The parameters are usually updated as: INLINEFORM0 \n\nwhere, INLINEFORM0 is learning rate and INLINEFORM1 is regularization parameter.\n\nThe performance of neural network language models is usually measured using perplexity (PPL) which can be defined as: INLINEFORM0 \n\nPerplexity can be defined as the exponential of the average number of bits required to encode the test data using a language model and lower perplexity indicates that the language model is closer to the true model which generates the test data.",
+        "text_hash": "53582cc5b5c04a22a132a8aa1f8917840e91314f38d96ff000df412f9513790c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1708.07252",
+        "spans": [
+          {
+            "paragraph_id": "s2-p3",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 330,
+            "text": "The INLINEFORM0 -th element of output vector INLINEFORM1 is the unnormalized conditional probability of the word with index INLINEFORM2 in the vocabulary. In order to guarantee all the conditional probabilities of words positive and summing to one, a softmax layer is always adopted following the output layer of FNN: INLINEFORM3 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p4",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 142,
+            "text": "where INLINEFORM0 is the INLINEFORM1 -th element of output vector INLINEFORM2 , and INLINEFORM3 is the INLINEFORM4 -th word in the vocabulary.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p5",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 140,
+            "text": "Training of neural network language models is usually achieved by maximizing the penalized log-likelihood of the training data: INLINEFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p6",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 104,
+            "text": "where, INLINEFORM0 is the set of model's parameters to be trained, INLINEFORM1 is a regularization term.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p7",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 312,
+            "text": "The recommended learning algorithm for neural network language models is stochastic gradient descent (SGD) method using backpropagation (BP) algorithm. A common choice for the loss function is the cross entroy loss which equals to negative log-likelihood here. The parameters are usually updated as: INLINEFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p8",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 80,
+            "text": "where, INLINEFORM0 is learning rate and INLINEFORM1 is regularization parameter.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p9",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 130,
+            "text": "The performance of neural network language models is usually measured using perplexity (PPL) which can be defined as: INLINEFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p10",
+            "section": "Feed-forward Neural Network Language Model, FNNLM",
+            "start": 0,
+            "end": 244,
+            "text": "Perplexity can be defined as the exponential of the average number of bits required to encode the test data using a language model and lower perplexity indicates that the language model is closer to the true model which generates the test data.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-25e4a5e7da61f86debd47567",
+        "paper_id": "1710.01789",
+        "title": "Enhanced Neural Machine Translation by Learning from Draft",
+        "section": "Decoder",
+        "text": "As soon as we get the context vector INLINEFORM0 from INLINEFORM1 at decoding step INLINEFORM2 , the conditional probability of selecting a word INLINEFORM3 is calculated as: DISPLAYFORM0 \n\nwhere INLINEFORM0 is the the hidden state of the decoder at the INLINEFORM1 step, and it is updated according to the previous hidden state INLINEFORM2 , the previous output INLINEFORM3 , and the context vector INLINEFORM4 : DISPLAYFORM0 \n\nUsing the concatenated context vector INLINEFORM0 , the decoder performs the translation as the conventional attention-based NMT: DISPLAYFORM0 \n\nwhere INLINEFORM0 . The hidden state of the decoder is computed the same as ( EQREF8 ), and the initial value of the hidden state is calculated as an average sum of the first backward annotations of the two input sequences: DISPLAYFORM0 ",
+        "text_hash": "96c93c6e31dccb4ef8ea1b4237c3c8ed77e9ba60988c553d1e633b5388382d55",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1710.01789",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Decoder",
+            "start": 0,
+            "end": 188,
+            "text": "As soon as we get the context vector INLINEFORM0 from INLINEFORM1 at decoding step INLINEFORM2 , the conditional probability of selecting a word INLINEFORM3 is calculated as: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Decoder",
+            "start": 0,
+            "end": 237,
+            "text": "where INLINEFORM0 is the the hidden state of the decoder at the INLINEFORM1 step, and it is updated according to the previous hidden state INLINEFORM2 , the previous output INLINEFORM3 , and the context vector INLINEFORM4 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Decoder",
+            "start": 0,
+            "end": 143,
+            "text": "Using the concatenated context vector INLINEFORM0 , the decoder performs the translation as the conventional attention-based NMT: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Decoder",
+            "start": 0,
+            "end": 237,
+            "text": "where INLINEFORM0 . The hidden state of the decoder is computed the same as ( EQREF8 ), and the initial value of the hidden state is calculated as an average sum of the first backward annotations of the two input sequences: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-d5f13af216852482248925c8",
+        "paper_id": "1707.06875",
+        "title": "Why We Need New Evaluation Metrics for NLG",
+        "section": "Human Data Collection",
+        "text": "To collect human rankings, we presented the MR together with 2 utterances generated by different systems side-by-side to crowdworkers, which were asked to score each utterance on a 6-point Likert scale for:\n\n $\\bullet $ Informativeness: Does the utterance provide all the useful information from the meaning representation?\n\n $\\bullet $ Naturalness: Could the utterance have been produced by a native speaker?\n\n $\\bullet $ Quality: How do you judge the overall quality of the utterance in terms of its grammatical correctness and fluency? Each system output (see Table 1 ) was scored by 3 different crowdworkers. To reduce participants' bias, the order of appearance of utterances produced by each system was randomised and crowdworkers were restricted to evaluate a maximum of 20 utterances. The crowdworkers were selected from English-speaking countries only, based on their IP addresses, and asked to confirm that English was their native language.\n\nTo assess the reliability of ratings, we calculated the intra-class correlation coefficient (ICC), which measures inter-observer reliability on ordinal data for more than two raters BIBREF30 . The overall ICC across all three datasets is 0.45 ( $p<0.001$ ), which corresponds to a moderate agreement. In general, we find consistent differences in inter-annotator agreement per system and dataset, with lower agreements for lols than for rnnlg and TGen. Agreement is highest for the SFHotel dataset, followed by SFRest and Bagel (details provided in supplementary material).",
+        "text_hash": "082c8d087140328acd2dff04ea7b151072224902670ada04d08a065a697837ec",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1707.06875",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Human Data Collection",
+            "start": 0,
+            "end": 206,
+            "text": "To collect human rankings, we presented the MR together with 2 utterances generated by different systems side-by-side to crowdworkers, which were asked to score each utterance on a 6-point Likert scale for:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Human Data Collection",
+            "start": 0,
+            "end": 115,
+            "text": " $\\bullet $ Informativeness: Does the utterance provide all the useful information from the meaning representation?",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Human Data Collection",
+            "start": 0,
+            "end": 84,
+            "text": " $\\bullet $ Naturalness: Could the utterance have been produced by a native speaker?",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Human Data Collection",
+            "start": 0,
+            "end": 540,
+            "text": " $\\bullet $ Quality: How do you judge the overall quality of the utterance in terms of its grammatical correctness and fluency? Each system output (see Table 1 ) was scored by 3 different crowdworkers. To reduce participants' bias, the order of appearance of utterances produced by each system was randomised and crowdworkers were restricted to evaluate a maximum of 20 utterances. The crowdworkers were selected from English-speaking countries only, based on their IP addresses, and asked to confirm that English was their native language.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p4",
+            "section": "Human Data Collection",
+            "start": 0,
+            "end": 573,
+            "text": "To assess the reliability of ratings, we calculated the intra-class correlation coefficient (ICC), which measures inter-observer reliability on ordinal data for more than two raters BIBREF30 . The overall ICC across all three datasets is 0.45 ( $p<0.001$ ), which corresponds to a moderate agreement. In general, we find consistent differences in inter-annotator agreement per system and dataset, with lower agreements for lols than for rnnlg and TGen. Agreement is highest for the SFHotel dataset, followed by SFRest and Bagel (details provided in supplementary material).",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-ac4e92b55948ed212a037ecb",
+        "paper_id": "1901.09501",
+        "title": "Toward Unsupervised Text Content Manipulation",
+        "section": "Qualitative Study",
+        "text": "We take a closer look at the model performance by studying generated sentences from different models.\n\nTable TABREF33 shows example outputs on three test cases given content record INLINEFORM0 and reference sentence INLINEFORM1 . We can see that, in general, the proposed full model can manipulate the reference sentence more accurately to express the new content. For example, in the first case, the rule-based method was confused between the winning and losing teams, due to its incapacity of understanding the semantics of text such as “held off”. The style transfer model AdvST failed to comprehend the content record well and generated irrelevant data “100 - 100”. The simplified variant without explicit coverage constraint copied the content of Bulls twice. In contrast, the full model successfully generates the desired sentence. Similarly, in the second and third cases, other methods tend to keep irrelevant content originally in the reference sentence (e.g., “and 5 rebounds” in the second case), or miss necessary information in the record (e.g., one of the player names was missed in the third case). The proposed model performs better in properly adding or deleting text portions for accurate content descriptions, though sometimes it can yield sentences of lower language quality (e.g., in the third case).\n\nTable TABREF34 shows some failure cases by the proposed model along with the respective desired outputs. Despite the enhanced performance over other methods, the model can still get confused in presence of complicated content records or non-straightforward correspondence between the semantic structures of content record and reference sentence. It is desirable to further improve the modeling of both content and reference to better understand the underlying semantics and achieve better manipulation results.",
+        "text_hash": "2c4f8d84748cd68d31c26cb69d7e90d5cd3ca4c0020b863b891d62fa2d6683f2",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1901.09501",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Qualitative Study",
+            "start": 0,
+            "end": 101,
+            "text": "We take a closer look at the model performance by studying generated sentences from different models.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Qualitative Study",
+            "start": 0,
+            "end": 1218,
+            "text": "Table TABREF33 shows example outputs on three test cases given content record INLINEFORM0 and reference sentence INLINEFORM1 . We can see that, in general, the proposed full model can manipulate the reference sentence more accurately to express the new content. For example, in the first case, the rule-based method was confused between the winning and losing teams, due to its incapacity of understanding the semantics of text such as “held off”. The style transfer model AdvST failed to comprehend the content record well and generated irrelevant data “100 - 100”. The simplified variant without explicit coverage constraint copied the content of Bulls twice. In contrast, the full model successfully generates the desired sentence. Similarly, in the second and third cases, other methods tend to keep irrelevant content originally in the reference sentence (e.g., “and 5 rebounds” in the second case), or miss necessary information in the record (e.g., one of the player names was missed in the third case). The proposed model performs better in properly adding or deleting text portions for accurate content descriptions, though sometimes it can yield sentences of lower language quality (e.g., in the third case).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Qualitative Study",
+            "start": 0,
+            "end": 510,
+            "text": "Table TABREF34 shows some failure cases by the proposed model along with the respective desired outputs. Despite the enhanced performance over other methods, the model can still get confused in presence of complicated content records or non-straightforward correspondence between the semantic structures of content record and reference sentence. It is desirable to further improve the modeling of both content and reference to better understand the underlying semantics and achieve better manipulation results.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "Remember: output language=Chinese",
+      "请检索以下问题的相关原文：关于论文《Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate》，Do the authors examine the real-world distribution of female workers in the country/countries where the gender neutral languages are spoken?",
+      "Research decision: keep output language for the experiment",
+      "Unresolved: verify the output language with the authors",
+      "请检索以下问题的相关原文：关于论文《Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate》，Do the authors examine the real-world distribution of female workers in the country/countries where the gender neutral languages are spoken?",
+      "Update memory: output language=English",
+      "Remember: output language=UNRESOLVED_CONFLICT",
+      "请检索以下问题的相关原文：关于论文《Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate》，Do the authors examine the real-world distribution of female workers in the country/countries where the gender neutral languages are spoken?"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "The system correctly refused: the evidence consists of unrelated NLP papers and contains no information about output language settings, previous/updated/unresolved output language values, or memory state. The question's entities (previous English, updated/unresolved conflict) are not recoverable from the supplied evidence, so a citation-validated answer is impossible.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "1398b389fc44c8735198b3cfe3a6b1e5b233a42fd057cffcbe4a81d3adb3958a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5736,
+        "completion_tokens": 84,
+        "total_tokens": 5820,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0009108,
+          "allowance": 0.0006831,
+          "tokens": {
+            "input": 5736,
+            "output": 84,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5736,
+        "output_tokens": 84,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2343.50319999794
+    }
+  ]
+}

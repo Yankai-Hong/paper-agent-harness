@@ -1,0 +1,510 @@
+{
+  "id": "d03-t3",
+  "session_id": "d03",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "回答正确按论文区分了 FEVER 规模与性能报告：仅 1910.07154 报告 FEVER 规模（约185k claims、5.4M Wikipedia文章），1603.09381 摘要未涉及 FEVER；1910.07154 报告80.2%/80.25%标签准确率并与HexaF定性可比，1603.09381仅称显著优于基线。可比性判断合理。所有引文ID均存在且支持相应陈述。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "引言明确称FEVER是最大数据集，约185k claims，来自5.4M Wikipedia文章语料。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-ab6380532554bfd8cf2dc78b 的引言段落包含该数字与表述。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "1603.09381摘要确实未提及FEVER或任何数据集规模。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-712a82e231bc15b7c11610b4 摘要全文无FEVER相关内容。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "摘要报告开发集80.2%、测试集80.25%标签准确率。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-7c69a28e7ffcb9ebd09842b6 摘要明确给出这两个数值。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "结果段落称与监督方法HexaF比较，φ=0.76时与HexaF可比，未给具体提升值。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-41beb2396050f5a800883bfc 的s6-p4段落支持该比较与无具体提升数值的陈述。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "1603.09381摘要仅称显著优于基线，无数值。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-712a82e231bc15b7c11610b4 末句为“significantly outperforms baselines”，无数值。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "综合各证据，可比性有限的判断有据：FEVER仅一方涉及，性能指标与报告方式不同。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-ab6380532554bfd8cf2dc78b 支持FEVER规模仅由fact-checking论文报告。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "c-7c69a28e7ffcb9ebd09842b6 支持标签准确率数值。"
+          },
+          {
+            "index": 2,
+            "verdict": "supported",
+            "reason": "c-41beb2396050f5a800883bfc 支持与HexaF的定性比较。"
+          },
+          {
+            "index": 3,
+            "verdict": "supported",
+            "reason": "c-712a82e231bc15b7c11610b4 支持临床论文仅称显著优于基线且不涉及FEVER。"
+          }
+        ]
+      }
+    ]
+  },
+  "error": null,
+  "payload": {
+    "question": "与《Clinical Information Extraction via Convolutional Neural Network》对比，分别说明两篇论文如何回答“How large is the FEVER dataset?”与“By how much did their model outperform baselines?”，并说明是否具有可比性。",
+    "answer": {
+      "claims": [
+        {
+          "key": "fever_size_uqa",
+          "text": "Unsupervised Question Answering for Fact-Checking 的引言指出，FEVER 是最大的数据集，包含约 185k 条 claim，来自 5.4M 篇维基百科文章的语料。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "fever_size_cnn_none",
+          "text": "提供的《Clinical Information Extraction via Convolutional Neural Network》摘要证据未涉及 FEVER 数据集，也未给出其规模。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-712a82e231bc15b7c11610b4"
+            }
+          ]
+        },
+        {
+          "key": "uqa_performance_numbers",
+          "text": "Unsupervised Question Answering for Fact-Checking 报告其在转换后数据集的开发集上标签准确率为 80.2%，在测试集上为 80.25%。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            }
+          ]
+        },
+        {
+          "key": "uqa_vs_baseline",
+          "text": "该文在“SUPPORTS”标签的标签准确率上与监督方法 HexaF 比较，并称在 φ = 0.76 时其方法可与 HexaF 相比，但未报告具体的提升幅度。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-41beb2396050f5a800883bfc"
+            }
+          ]
+        },
+        {
+          "key": "cnn_outperforms_claim",
+          "text": "《Clinical Information Extraction via Convolutional Neural Network》摘要仅称其方法显著优于基线，未给出具体数值提升。",
+          "citations": [
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-712a82e231bc15b7c11610b4"
+            }
+          ]
+        },
+        {
+          "key": "comparability",
+          "text": "两篇论文的可比性有限：FEVER 规模仅由 fact-checking 论文报告，临床信息抽取论文未涉及 FEVER；性能方面，前者报告标签准确率数值并与 HexaF 作定性比较，后者仅给出“显著优于基线”的无具体数值结论，二者任务与指标不同。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+            },
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-41beb2396050f5a800883bfc"
+            },
+            {
+              "paper_id": "1603.09381",
+              "chunk_id": "c-712a82e231bc15b7c11610b4"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved": {
+      "intent": "compare",
+      "standalone_query": "对比 Unsupervised Question Answering for Fact-Checking 与 Clinical Information Extraction via Convolutional Neural Network：两篇论文分别如何报告 FEVER 数据集的规模，以及各自模型相对基线提升了多少，二者是否具有可比性",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1910.07154",
+        "1603.09381"
+      ],
+      "resolved_entities": {
+        "paper_1": "Unsupervised Question Answering for Fact-Checking",
+        "paper_1_id": "1910.07154",
+        "paper_2": "Clinical Information Extraction via Convolutional Neural Network",
+        "paper_2_id": "1603.09381",
+        "dataset": "FEVER"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-7c69a28e7ffcb9ebd09842b6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Abstract",
+        "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+        "text_hash": "5595b86a318b1335f1c1e3a30af59c9210577acf141fbbd35593562139a75111",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 948,
+            "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-ab6380532554bfd8cf2dc78b",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Introduction",
+        "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.\n\nWikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.\n\nIn this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+        "text_hash": "1a74b3ec856c0b5535bd97a74b187eba4257ae4e9ca4fd56ab0d46e303c4d707",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 896,
+            "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 688,
+            "text": "Wikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 481,
+            "text": "In this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7d59a4589df766fa1261d8c6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Conclusion",
+        "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+        "text_hash": "5da0e3a8939dd1fb22080f0a1904a1bc665de8b33ac5767f8bccd665ad7c7def",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s9-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 750,
+            "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-41beb2396050f5a800883bfc",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Results",
+        "text": "For the subtask of question generation, the results in Table TABREF3 show that the system is able to generate questions given a claim with considerably good accuracy. The conversion accuracy is defined as the ratio of the number of claims in which the named entities are extracted to the number of claims. The results also support our assumption that the claims generally feature information about one or more entities.\n\nTable TABREF16 shows the performance of our Fact Checking system on the “SUPPORTS” label, the output of our system. We compare the results against two different classification thresholds. Table TABREF3 shows that on an average there are 3 questions generated per claim. Here, $\\phi $ = 0.76 suggests that at least 3 out of the 4 questions have to be answered correctly while $\\phi $ = 0.67 suggests that at least 2 out of the 3 questions has to be answered correctly for the claim to be classified as “SUPPORTS”.\n\nIf only 1 question is generated, then it has to be answered correctly for the claim to be classified as “SUPPORTS” in case of both the thresholds.\n\nIn contrast to the results reported in Table TABREF16, here we consider $\\phi $ = 0.76 to be a better classification threshold as it improvises over False Positives considerably over the entire dataset.\n\nAlthough our unsupervised model doesn't support all the labels, to show the effectiveness of the approach, we compare the label accuracy of “SUPPORTS” label against a supervised approach – HexaF. Results from Table TABREF17 suggests that our approach is comparable to HexaF for $\\phi $ = 0.76.",
+        "text_hash": "fb8d5f39d8d3feaf8b19c052cdfd6235bd6505e32d2e7508e5e347155606f5e9",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Results",
+            "start": 0,
+            "end": 419,
+            "text": "For the subtask of question generation, the results in Table TABREF3 show that the system is able to generate questions given a claim with considerably good accuracy. The conversion accuracy is defined as the ratio of the number of claims in which the named entities are extracted to the number of claims. The results also support our assumption that the claims generally feature information about one or more entities.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Results",
+            "start": 0,
+            "end": 512,
+            "text": "Table TABREF16 shows the performance of our Fact Checking system on the “SUPPORTS” label, the output of our system. We compare the results against two different classification thresholds. Table TABREF3 shows that on an average there are 3 questions generated per claim. Here, $\\phi $ = 0.76 suggests that at least 3 out of the 4 questions have to be answered correctly while $\\phi $ = 0.67 suggests that at least 2 out of the 3 questions has to be answered correctly for the claim to be classified as “SUPPORTS”.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p2",
+            "section": "Results",
+            "start": 0,
+            "end": 146,
+            "text": "If only 1 question is generated, then it has to be answered correctly for the claim to be classified as “SUPPORTS” in case of both the thresholds.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p3",
+            "section": "Results",
+            "start": 0,
+            "end": 202,
+            "text": "In contrast to the results reported in Table TABREF16, here we consider $\\phi $ = 0.76 to be a better classification threshold as it improvises over False Positives considerably over the entire dataset.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p4",
+            "section": "Results",
+            "start": 0,
+            "end": 293,
+            "text": "Although our unsupervised model doesn't support all the labels, to show the effectiveness of the approach, we compare the label accuracy of “SUPPORTS” label against a supervised approach – HexaF. Results from Table TABREF17 suggests that our approach is comparable to HexaF for $\\phi $ = 0.76.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-712a82e231bc15b7c11610b4",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Abstract",
+        "text": "We report an implementation of a clinical information extraction tool that leverages deep neural network to annotate event spans and their attributes from raw clinical notes and pathology reports. Our approach uses context words and their part-of-speech tags and shape information as features. Then we hire temporal (1D) convolutional neural network to learn hidden feature representations. Finally, we use Multilayer Perceptron (MLP) to predict event spans. The empirical evaluation demonstrates that our approach significantly outperforms baselines.",
+        "text_hash": "3b374779cda9647910ce923df05523f0dd0ab39d9a5e2f8581d763ba0fdb728c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 551,
+            "text": "We report an implementation of a clinical information extraction tool that leverages deep neural network to annotate event spans and their attributes from raw clinical notes and pathology reports. Our approach uses context words and their part-of-speech tags and shape information as features. Then we hire temporal (1D) convolutional neural network to learn hidden feature representations. Finally, we use Multilayer Perceptron (MLP) to predict event spans. The empirical evaluation demonstrates that our approach significantly outperforms baselines.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "请检索以下问题的相关原文：关于论文《Unsupervised Question Answering for Fact-Checking》，How large is the FEVER dataset?",
+      "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "回答正确按论文区分了 FEVER 规模与性能报告：仅 1910.07154 报告 FEVER 规模（约185k claims、5.4M Wikipedia文章），1603.09381 摘要未涉及 FEVER；1910.07154 报告80.2%/80.25%标签准确率并与HexaF定性可比，1603.09381仅称显著优于基线。可比性判断合理。所有引文ID均存在且支持相应陈述。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "引言明确称FEVER是最大数据集，约185k claims，来自5.4M Wikipedia文章语料。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-ab6380532554bfd8cf2dc78b 的引言段落包含该数字与表述。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "1603.09381摘要确实未提及FEVER或任何数据集规模。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-712a82e231bc15b7c11610b4 摘要全文无FEVER相关内容。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "摘要报告开发集80.2%、测试集80.25%标签准确率。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-7c69a28e7ffcb9ebd09842b6 摘要明确给出这两个数值。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "结果段落称与监督方法HexaF比较，φ=0.76时与HexaF可比，未给具体提升值。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-41beb2396050f5a800883bfc 的s6-p4段落支持该比较与无具体提升数值的陈述。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "1603.09381摘要仅称显著优于基线，无数值。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-712a82e231bc15b7c11610b4 末句为“significantly outperforms baselines”，无数值。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "综合各证据，可比性有限的判断有据：FEVER仅一方涉及，性能指标与报告方式不同。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "c-ab6380532554bfd8cf2dc78b 支持FEVER规模仅由fact-checking论文报告。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "c-7c69a28e7ffcb9ebd09842b6 支持标签准确率数值。"
+          },
+          {
+            "index": 2,
+            "verdict": "supported",
+            "reason": "c-41beb2396050f5a800883bfc 支持与HexaF的定性比较。"
+          },
+          {
+            "index": 3,
+            "verdict": "supported",
+            "reason": "c-712a82e231bc15b7c11610b4 支持临床论文仅称显著优于基线且不涉及FEVER。"
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "0e3b8b0dd3a31be0d6acf56294041f9c7bd033baaff3ed33e52376234b9e6be5",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4952,
+        "completion_tokens": 799,
+        "total_tokens": 5751,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00116575,
+          "allowance": 0.00087431,
+          "tokens": {
+            "input": 4568,
+            "output": 799,
+            "reasoning": 0,
+            "cache_read": 384,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4568,
+        "output_tokens": 799,
+        "cache_read_input_tokens": 384,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7107.153400000243
+    }
+  ]
+}

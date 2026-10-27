@@ -1,0 +1,261 @@
+{
+  "id": "budget-9",
+  "session_id": "mem-budget",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "The question asks about a fictional/conflicting 'experiment budget' (previous value, updated value, unresolved value) that appears only in conversation history, with conflicting values (100 samples, 200 samples, UNRESOLVED_CONFLICT). The supplied evidence consists of unrelated NLP/NMT/CNN papers containing no information about any experiment budget. No valid answer can be derived from the evidence, so the refusal ('insufficient corpus evidence or request out of paper library scope') is correct. The answer contains no claims, consistent with the refusal.",
+    "claims": []
+  },
+  "error": null,
+  "payload": {
+    "question": "What was the previous experiment budget, its updated value, and the unresolved experiment budget?",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved": {
+      "intent": "fact",
+      "standalone_query": "experiment budget previous value updated value unresolved experiment budget",
+      "needs_clarification": false,
+      "paper_ids": null,
+      "resolved_entities": {
+        "experiment_budget": "200 samples"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-d45d6ff2150669121e06d27f",
+        "paper_id": "2001.11316",
+        "title": "Adversarial Training for Aspect-Based Sentiment Analysis with BERT",
+        "section": "Ablation Study and Results Analysis",
+        "text": "In order to compare the effect of adversarial examples on the performance of the model, we choose the best dropout for each number of epochs and experiment with five different values for epsilon (perturbation size). The results for laptop and restaurant can be seen in Figure FIGREF7. As is noticeable, in terms of scores, they follow the same pattern as the original ones. Although most of the epsilon values improve the results, it can be seen in Figure FIGREF7 that not all of them will enhance the model's performance. In the case of $\\epsilon =5.0$ for AE, while it boosts the performance in the restaurant domain for most of the training epochs, it negatively affects the performance in the laptop domain. The reason for this could be the creation of adversarial examples which are not similar to the original ones but are labeled the same. In other words, the new examples greatly differ from the original ones but are fed to the net as being similar, leading to the network's poorer performance.\n\nObserving, from AE task, that higher dropouts perform poorly, we experiment with the 5 lower values for ASC task in BERT-PT experiments. In addition, for BAT experiments, two different values ($0.01, 0.1$) for epsilon are tested to make them more diverse. The results are depicted in Figures FIGREF9 and FIGREF10 for BERT-PT and BAT, respectively. While in AE, towards higher number of training epochs, there is an upward trend for restaurant and a downward trend for laptop, in ASC a clear pattern is not observed. Regarding the dropout, lower values ($0.1$ for laptop, $0.2$ for restaurant) yield the best results for BERT-PT in AE task, but in ASC a dropout probability of 0.4 results in top performance in both domains. The top performing epsilon value for both domains in ASC, as can be seen in Figure FIGREF10, is 5.0 which is the same as the best value for restaurant domain in AE task. This is different from the top performing $\\epsilon = 0.2$ for laptop in AE task which was mentioned above.",
+        "text_hash": "e9341002c9ef9efe8df3c81b727b8f735f1cd7160bea2a187879235dfae4943a",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2001.11316",
+        "spans": [
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Ablation Study and Results Analysis",
+            "start": 0,
+            "end": 1003,
+            "text": "In order to compare the effect of adversarial examples on the performance of the model, we choose the best dropout for each number of epochs and experiment with five different values for epsilon (perturbation size). The results for laptop and restaurant can be seen in Figure FIGREF7. As is noticeable, in terms of scores, they follow the same pattern as the original ones. Although most of the epsilon values improve the results, it can be seen in Figure FIGREF7 that not all of them will enhance the model's performance. In the case of $\\epsilon =5.0$ for AE, while it boosts the performance in the restaurant domain for most of the training epochs, it negatively affects the performance in the laptop domain. The reason for this could be the creation of adversarial examples which are not similar to the original ones but are labeled the same. In other words, the new examples greatly differ from the original ones but are fed to the net as being similar, leading to the network's poorer performance.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Ablation Study and Results Analysis",
+            "start": 0,
+            "end": 1001,
+            "text": "Observing, from AE task, that higher dropouts perform poorly, we experiment with the 5 lower values for ASC task in BERT-PT experiments. In addition, for BAT experiments, two different values ($0.01, 0.1$) for epsilon are tested to make them more diverse. The results are depicted in Figures FIGREF9 and FIGREF10 for BERT-PT and BAT, respectively. While in AE, towards higher number of training epochs, there is an upward trend for restaurant and a downward trend for laptop, in ASC a clear pattern is not observed. Regarding the dropout, lower values ($0.1$ for laptop, $0.2$ for restaurant) yield the best results for BERT-PT in AE task, but in ASC a dropout probability of 0.4 results in top performance in both domains. The top performing epsilon value for both domains in ASC, as can be seen in Figure FIGREF10, is 5.0 which is the same as the best value for restaurant domain in AE task. This is different from the top performing $\\epsilon = 0.2$ for laptop in AE task which was mentioned above.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9c070f7423009b63702e5ed9",
+        "paper_id": "2001.11316",
+        "title": "Adversarial Training for Aspect-Based Sentiment Analysis with BERT",
+        "section": "Ablation Study and Results Analysis",
+        "text": "To perform the ablation study, first we initialize our model with post-trained BERT which has been trained on uncased version of $\\mathbf {BERT_{BASE}}$. We attempt to discover what number of training epochs and which dropout probability yield the best performance for BERT-PT. Since one and two training epochs result in very low scores, results of 3 to 10 training epochs have been depicted for all experiments. For AE, we experiment with 10 different dropout values in the fully connected (linear) layer. The results can be seen in Figure FIGREF6 for laptop and restaurant datasets. To be consistent with the previous work and because of the results having high variance, each point in the figure (F1 score) is the average of 9 runs. In the end, for each number of training epochs, a dropout value, which outperforms the other values, is found. In our experiments, we noticed that the validation loss increases after 2 epochs as has been mentioned in the original paper. However, the test results do not follow the same pattern. Looking at the figures, it can be seen that as the number of training epochs increases, better results are produced in the restaurant domain while in the laptop domain the scores go down. This can be attributed to the selection of validation sets as for both domains the last 150 examples of the SemEval training set were selected. Therefore, it can be said that the examples in the validation and test sets for laptop have more similar patterns than those of restaurant dataset. To be consistent with BERT-PT, we performed the same selection.",
+        "text_hash": "9711d47fc967b03c70eb3ae0f2522de3dc663687cc947644eca7deb283edb8ea",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2001.11316",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Ablation Study and Results Analysis",
+            "start": 0,
+            "end": 1575,
+            "text": "To perform the ablation study, first we initialize our model with post-trained BERT which has been trained on uncased version of $\\mathbf {BERT_{BASE}}$. We attempt to discover what number of training epochs and which dropout probability yield the best performance for BERT-PT. Since one and two training epochs result in very low scores, results of 3 to 10 training epochs have been depicted for all experiments. For AE, we experiment with 10 different dropout values in the fully connected (linear) layer. The results can be seen in Figure FIGREF6 for laptop and restaurant datasets. To be consistent with the previous work and because of the results having high variance, each point in the figure (F1 score) is the average of 9 runs. In the end, for each number of training epochs, a dropout value, which outperforms the other values, is found. In our experiments, we noticed that the validation loss increases after 2 epochs as has been mentioned in the original paper. However, the test results do not follow the same pattern. Looking at the figures, it can be seen that as the number of training epochs increases, better results are produced in the restaurant domain while in the laptop domain the scores go down. This can be attributed to the selection of validation sets as for both domains the last 150 examples of the SemEval training set were selected. Therefore, it can be said that the examples in the validation and test sets for laptop have more similar patterns than those of restaurant dataset. To be consistent with BERT-PT, we performed the same selection.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-6a221f2d3e712d4ab9ceba6f",
+        "paper_id": "1603.09381",
+        "title": "Clinical Information Extraction via Convolutional Neural Network",
+        "section": "Evaluation Metrics",
+        "text": "All of the tasks were evaluated using the standard metrics of precision(P), recall(R) and INLINEFORM0 : DISPLAYFORM0 \n\nwhere INLINEFORM0 is the set of items predicted by the system and INLINEFORM1 is the set of items manually annotated by the humans. Applying these metrics of the tasks only requires a definition of what is considered an \"item\" for each task. For evaluating the spans of event expressions, items were tuples of character offsets. Thus, system only received credit for identifying events with exactly the same character offsets as the manually annotated ones. For evaluating the attributes of event expression types, items were tuples of (begin, end, value) where begin and end are character offsets and value is the value that was given to the relevant attribute. Thus, systems only received credit for an event attribute if they both found an event with correct character offsets and then assigned the correct value for that attribute BIBREF10 .",
+        "text_hash": "81694821bd7c29ecc67f108b68a7ba5beab3c0a7ff0a0ed6b8b0486445128c1b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1603.09381",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Evaluation Metrics",
+            "start": 0,
+            "end": 117,
+            "text": "All of the tasks were evaluated using the standard metrics of precision(P), recall(R) and INLINEFORM0 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Evaluation Metrics",
+            "start": 0,
+            "end": 845,
+            "text": "where INLINEFORM0 is the set of items predicted by the system and INLINEFORM1 is the set of items manually annotated by the humans. Applying these metrics of the tasks only requires a definition of what is considered an \"item\" for each task. For evaluating the spans of event expressions, items were tuples of character offsets. Thus, system only received credit for identifying events with exactly the same character offsets as the manually annotated ones. For evaluating the attributes of event expression types, items were tuples of (begin, end, value) where begin and end are character offsets and value is the value that was given to the relevant attribute. Thus, systems only received credit for an event attribute if they both found an event with correct character offsets and then assigned the correct value for that attribute BIBREF10 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e00a06e67e99cc0a78c45a63",
+        "paper_id": "1610.09722",
+        "title": "Represent, Aggregate, and Constrain: A Novel Architecture for Machine Reading from Noisy Sources",
+        "section": "Experiments",
+        "text": "In all experiments we train using adaptive online gradient updates (Adam, see kingma2014). Model architecture and parameter values were tuned on the development set, and are as follows (chosen values in bold):\n\nThe number of training epochs is determined via early stopping with respect to the model performance on development data. The pre-trained word embeddings are 200-dimensional GLoVe embeddings BIBREF16 .",
+        "text_hash": "c841c08c86c56371f518dfcd6e1bab84561cfa4de333803ab2a10f62245b9131",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1610.09722",
+        "spans": [
+          {
+            "paragraph_id": "s7-p0",
+            "section": "Experiments",
+            "start": 0,
+            "end": 209,
+            "text": "In all experiments we train using adaptive online gradient updates (Adam, see kingma2014). Model architecture and parameter values were tuned on the development set, and are as follows (chosen values in bold):",
+            "page": null
+          },
+          {
+            "paragraph_id": "s7-p1",
+            "section": "Experiments",
+            "start": 0,
+            "end": 201,
+            "text": "The number of training epochs is determined via early stopping with respect to the model performance on development data. The pre-trained word embeddings are 200-dimensional GLoVe embeddings BIBREF16 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-25e4a5e7da61f86debd47567",
+        "paper_id": "1710.01789",
+        "title": "Enhanced Neural Machine Translation by Learning from Draft",
+        "section": "Decoder",
+        "text": "As soon as we get the context vector INLINEFORM0 from INLINEFORM1 at decoding step INLINEFORM2 , the conditional probability of selecting a word INLINEFORM3 is calculated as: DISPLAYFORM0 \n\nwhere INLINEFORM0 is the the hidden state of the decoder at the INLINEFORM1 step, and it is updated according to the previous hidden state INLINEFORM2 , the previous output INLINEFORM3 , and the context vector INLINEFORM4 : DISPLAYFORM0 \n\nUsing the concatenated context vector INLINEFORM0 , the decoder performs the translation as the conventional attention-based NMT: DISPLAYFORM0 \n\nwhere INLINEFORM0 . The hidden state of the decoder is computed the same as ( EQREF8 ), and the initial value of the hidden state is calculated as an average sum of the first backward annotations of the two input sequences: DISPLAYFORM0 ",
+        "text_hash": "96c93c6e31dccb4ef8ea1b4237c3c8ed77e9ba60988c553d1e633b5388382d55",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1710.01789",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Decoder",
+            "start": 0,
+            "end": 188,
+            "text": "As soon as we get the context vector INLINEFORM0 from INLINEFORM1 at decoding step INLINEFORM2 , the conditional probability of selecting a word INLINEFORM3 is calculated as: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Decoder",
+            "start": 0,
+            "end": 237,
+            "text": "where INLINEFORM0 is the the hidden state of the decoder at the INLINEFORM1 step, and it is updated according to the previous hidden state INLINEFORM2 , the previous output INLINEFORM3 , and the context vector INLINEFORM4 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Decoder",
+            "start": 0,
+            "end": 143,
+            "text": "Using the concatenated context vector INLINEFORM0 , the decoder performs the translation as the conventional attention-based NMT: DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Decoder",
+            "start": 0,
+            "end": 237,
+            "text": "where INLINEFORM0 . The hidden state of the decoder is computed the same as ( EQREF8 ), and the initial value of the hidden state is calculated as an average sum of the first backward annotations of the two input sequences: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "Remember: experiment budget=100 samples",
+      "关于论文《Mapping Languages and Demographics with Georeferenced Corpora》，Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?",
+      "Research decision: keep experiment budget for the experiment",
+      "Unresolved: verify the experiment budget with the authors",
+      "关于论文《Mapping Languages and Demographics with Georeferenced Corpora》，Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?",
+      "Update memory: experiment budget=200 samples",
+      "Remember: experiment budget=UNRESOLVED_CONFLICT",
+      "关于论文《Mapping Languages and Demographics with Georeferenced Corpora》，Do they authors offer a hypothesis for why Twitter data makes better predictions about the inventory of languages used in each country?"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "The question asks about a fictional/conflicting 'experiment budget' (previous value, updated value, unresolved value) that appears only in conversation history, with conflicting values (100 samples, 200 samples, UNRESOLVED_CONFLICT). The supplied evidence consists of unrelated NLP/NMT/CNN papers containing no information about any experiment budget. No valid answer can be derived from the evidence, so the refusal ('insufficient corpus evidence or request out of paper library scope') is correct. The answer contains no claims, consistent with the refusal.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "cdfdb798bd2a4835e508bada1e136148c9b1ad7860d19b7dcd524eebc98d3673",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4410,
+        "completion_tokens": 125,
+        "total_tokens": 4535,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00068005,
+          "allowance": 0.00051004,
+          "tokens": {
+            "input": 4026,
+            "output": 125,
+            "reasoning": 0,
+            "cache_read": 384,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4026,
+        "output_tokens": 125,
+        "cache_read_input_tokens": 384,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3216.9662000014796
+    }
+  ]
+}

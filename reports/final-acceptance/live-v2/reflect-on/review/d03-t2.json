@@ -1,0 +1,395 @@
+{
+  "id": "d03-t2",
+  "session_id": "d03",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "回答完全基于所给证据，准确引用论文原文说明 FEVER 数据集规模、标签类别与 claims 字段，无常识补充，引用与对应 chunk 匹配，符合解释要求。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "证据 c-ab6380532554bfd8cf2dc78b 原文明确：“FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles”，且位于 Introduction。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该 chunk 的 Introduction 段落包含“FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles”，完全支持 claim 中的规模陈述。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "同一 chunk 原文明确：“The claims are labeled as \"SUPPORTS\", \"REFUTES\", or \"NOT ENOUGH INFO\", based on the evidence set”，与 claim 一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该 chunk 的 Introduction 段落包含标签类别及依据证据集的完整表述，支持该 claim。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "证据 c-c7c17ddf8a10b59543bbe5cd 原文明确：“In our case, FEVER claims are derived from Wikipedia. We first collect all the claims from the FEVER dataset along with \"id\", \"label\" and \"verifiable\" fields”，与该 claim 一致，且位于 Question Generation 部分。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该 chunk 的 Question Generation 段落包含 FEVER claims 来自 Wikipedia 及收集 id、label、verifiable 字段的原文，支持该 claim。"
+          }
+        ]
+      }
+    ]
+  },
+  "error": null,
+  "payload": {
+    "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+    "answer": {
+      "claims": [
+        {
+          "key": "fever_scale_statement",
+          "text": "该论文引言指出，FEVER 是最大的数据集，包含约 185k 条 claim，这些 claim 来自 5.4M 篇维基百科文章的语料。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "fever_label_categories",
+          "text": "这些 claim 根据证据集被标注为“SUPPORTS”、“REFUTES”或“NOT ENOUGH INFO”。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+            }
+          ]
+        },
+        {
+          "key": "fever_claims_source_and_fields",
+          "text": "在本文的实验中，FEVER 的 claim 来自维基百科；作者从 FEVER 数据集中收集所有 claim 及其“id”、“label”和“verifiable”字段。",
+          "citations": [
+            {
+              "paper_id": "1910.07154",
+              "chunk_id": "c-c7c17ddf8a10b59543bbe5cd"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved": {
+      "intent": "explain",
+      "standalone_query": "《Unsupervised Question Answering for Fact-Checking》中关于 FEVER 数据集规模的原文证据是什么？",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "resolved_entities": {
+        "paper": "Unsupervised Question Answering for Fact-Checking",
+        "paper_id": "1910.07154",
+        "dataset": "FEVER",
+        "question": "How large is the FEVER dataset?"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-ab6380532554bfd8cf2dc78b",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Introduction",
+        "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.\n\nWikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.\n\nIn this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+        "text_hash": "1a74b3ec856c0b5535bd97a74b187eba4257ae4e9ca4fd56ab0d46e303c4d707",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 896,
+            "text": "Every day textual information is being added/updated on Wikipedia, as well as other social media platforms like Facebook, Twitter, etc. These platforms receive a huge amount of unverified textual data from all its users such as News Channels, Bloggers, Journalists, Field-Experts which ought to be verified before other users start consuming it. This information boom has increased the demand of information verification also known as Fact Checking. Apart from the encyclopedia and other platforms, domains like scientific publications and e-commerce also require information verification for reliability purposes. Generally, Wikipedia authors, bloggers, journalists and scientists provide references to support their claims. Providing referenced text against the claims makes the fact checking task a little easier as the verification system no longer needs to search for the relevant documents.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 688,
+            "text": "Wikipedia manages to verify all this new information with a number of human reviewers. Manual review processes introduce delays in publishing and is not a well scalable approach. To address this issue, researchers have launched relevant challenges, such as the Fake News Challenge (BIBREF0), Fact Extraction and VERification (FEVER) (BIBREF1) challenge along with the datasets. Moreover, Thorne and Vlachos (BIBREF2) released a survey on the current models for automated fact-checking. FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles. The claims are labeled as “SUPPORTS”, “REFUTES”, or “NOT ENOUGH INFO”, based on the evidence set.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 481,
+            "text": "In this paper, we propose an unsupervised question-answering based approach for solving the fact-checking problem. This approach is inspired from the memory-based reading comprehension task that humans perform at an early age. As we know that kids in schools, first read and learn the syllabus content so that they can answer the questions in the exam. Similarly, our model learns a language model and linguistics features in unsupervised fashion from the provided Wikipedia pages.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7c69a28e7ffcb9ebd09842b6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Abstract",
+        "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+        "text_hash": "5595b86a318b1335f1c1e3a30af59c9210577acf141fbbd35593562139a75111",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 948,
+            "text": "Recent Deep Learning (DL) models have succeeded in achieving human-level accuracy on various natural language tasks such as question-answering, natural language inference (NLI), and textual entailment. These tasks not only require the contextual knowledge but also the reasoning abilities to be solved efficiently. In this paper, we propose an unsupervised question-answering based approach for a similar task, fact-checking. We transform the FEVER dataset into a Cloze-task by masking named entities provided in the claims. To predict the answer token, we utilize pre-trained Bidirectional Encoder Representations from Transformers (BERT). The classifier computes label based on the correctly answered questions and a threshold. Currently, the classifier is able to classify the claims as \"SUPPORTS\" and \"MANUAL_REVIEW\". This approach achieves a label accuracy of 80.2% on the development set and 80.25% on the test set of the transformed dataset.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-7d59a4589df766fa1261d8c6",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "Conclusion",
+        "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+        "text_hash": "5da0e3a8939dd1fb22080f0a1904a1bc665de8b33ac5767f8bccd665ad7c7def",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s9-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 750,
+            "text": "In this paper, we presented a transformer-based unsupervised question-answering pipeline to solve the fact checking task. The pipeline consisted of three stages: (1) Question Generation (similar to a Cloze-task), (2) Question Answering, (3) Label Classification. We use Stanford CoreNLP NER tagger to convert the claim into a Cloze-task by masking the named entities. The Question Generation task achieves almost 90% accuracy in transforming the FEVER dataset into a Cloze-task. To answer the questions generated, we utilize masked language modeling approach from the BERT model. We could achieve 80.2% label accuracy on “SUPPORTS” label. From the results, we conclude that it is possible to verify the facts with the right kind of factoid questions.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c7c17ddf8a10b59543bbe5cd",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "System Description ::: Question Generation",
+        "text": "The claims generally feature information about one or more entities. These entities can be of many types such as PERSON, CITY, DATE. Since the entities can be considered as the content words for the claim, we utilize these entities to generate the questions. Although function words such as conjunctions and prepositions form relationship between entities in the claims, we currently do not make use of such function words to avoid generating complex questions. The types of entities in a sentence can be recognized by using Stanford CoreNLP (BIBREF12) NER tagger.\n\nIn our case, FEVER claims are derived from Wikipedia. We first collect all the claims from the FEVER dataset along with “id”, “label” and “verifiable” fields. We don't perform any normalization on the claims such as lowercasing, transforming the spaces to underscore or parenthesis to special characters as it may decrease the accuracy of the NER tagger. These claims are then processed by the NER tagger to identify the named entities and their type. The named entities are then used to generate the questions by masking the entities for the subsequent stage.\n\nThis process not only transforms the dataset but also transforms the task into a Cloze-task or masked language modeling task. Although the original masked language modeling task masks some of the tokens randomly, here we mask the named entities for generating the questions.",
+        "text_hash": "d9f336f5f5b8a375a873addb6d421cc08484d640a84e008bb7716f3efe2cc7f9",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "System Description ::: Question Generation",
+            "start": 0,
+            "end": 564,
+            "text": "The claims generally feature information about one or more entities. These entities can be of many types such as PERSON, CITY, DATE. Since the entities can be considered as the content words for the claim, we utilize these entities to generate the questions. Although function words such as conjunctions and prepositions form relationship between entities in the claims, we currently do not make use of such function words to avoid generating complex questions. The types of entities in a sentence can be recognized by using Stanford CoreNLP (BIBREF12) NER tagger.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p1",
+            "section": "System Description ::: Question Generation",
+            "start": 0,
+            "end": 560,
+            "text": "In our case, FEVER claims are derived from Wikipedia. We first collect all the claims from the FEVER dataset along with “id”, “label” and “verifiable” fields. We don't perform any normalization on the claims such as lowercasing, transforming the spaces to underscore or parenthesis to special characters as it may decrease the accuracy of the NER tagger. These claims are then processed by the NER tagger to identify the named entities and their type. The named entities are then used to generate the questions by masking the entities for the subsequent stage.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p2",
+            "section": "System Description ::: Question Generation",
+            "start": 0,
+            "end": 274,
+            "text": "This process not only transforms the dataset but also transforms the task into a Cloze-task or masked language modeling task. Although the original masked language modeling task masks some of the tokens randomly, here we mask the named entities for generating the questions.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-9798bad262f70e8bf92a0cb7",
+        "paper_id": "1910.07154",
+        "title": "Unsupervised Question Answering for Fact-Checking",
+        "section": "System Description ::: Model and Training details",
+        "text": "We utilize standard pre-trained BERT-Base-uncased model configurations as given below:\n\nLayers: 12\n\nHidden Units: 768\n\nAttention heads: 12\n\nTrainable parameters: 110M\n\nWe fine-tune our model (BERT) on the masked language modeling task on the wiki-text provided along with the FEVER dataset for 2 epochs.\n\nNote that Stanford CoreNLP NER tagger and the BERT model are the same for all the experiments and all the sets (development set, test set, training set). We use the same PyTorch library mentioned in Section 2.2 for the fine-tuning as well.",
+        "text_hash": "025548259801d0446b8964e116755f2019bcdeea20ef704b4aaf501b64a27f40",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1910.07154",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "System Description ::: Model and Training details",
+            "start": 0,
+            "end": 86,
+            "text": "We utilize standard pre-trained BERT-Base-uncased model configurations as given below:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "System Description ::: Model and Training details",
+            "start": 0,
+            "end": 10,
+            "text": "Layers: 12",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "System Description ::: Model and Training details",
+            "start": 0,
+            "end": 17,
+            "text": "Hidden Units: 768",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "System Description ::: Model and Training details",
+            "start": 0,
+            "end": 19,
+            "text": "Attention heads: 12",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p4",
+            "section": "System Description ::: Model and Training details",
+            "start": 0,
+            "end": 26,
+            "text": "Trainable parameters: 110M",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p5",
+            "section": "System Description ::: Model and Training details",
+            "start": 0,
+            "end": 135,
+            "text": "We fine-tune our model (BERT) on the masked language modeling task on the wiki-text provided along with the FEVER dataset for 2 epochs.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p6",
+            "section": "System Description ::: Model and Training details",
+            "start": 0,
+            "end": 239,
+            "text": "Note that Stanford CoreNLP NER tagger and the BERT model are the same for all the experiments and all the sets (development set, test set, training set). We use the same PyTorch library mentioned in Section 2.2 for the fine-tuning as well.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "请检索以下问题的相关原文：关于论文《Unsupervised Question Answering for Fact-Checking》，How large is the FEVER dataset?"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "回答完全基于所给证据，准确引用论文原文说明 FEVER 数据集规模、标签类别与 claims 字段，无常识补充，引用与对应 chunk 匹配，符合解释要求。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "证据 c-ab6380532554bfd8cf2dc78b 原文明确：“FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles”，且位于 Introduction。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该 chunk 的 Introduction 段落包含“FEVER is the largest dataset and contains around 185k claims from the corpus of 5.4M Wikipedia articles”，完全支持 claim 中的规模陈述。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "同一 chunk 原文明确：“The claims are labeled as \"SUPPORTS\", \"REFUTES\", or \"NOT ENOUGH INFO\", based on the evidence set”，与 claim 一致。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该 chunk 的 Introduction 段落包含标签类别及依据证据集的完整表述，支持该 claim。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "证据 c-c7c17ddf8a10b59543bbe5cd 原文明确：“In our case, FEVER claims are derived from Wikipedia. We first collect all the claims from the FEVER dataset along with \"id\", \"label\" and \"verifiable\" fields”，与该 claim 一致，且位于 Question Generation 部分。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该 chunk 的 Question Generation 段落包含 FEVER claims 来自 Wikipedia 及收集 id、label、verifiable 字段的原文，支持该 claim。"
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "aec5a40efd1f7ecd5aa3de74d1616eac9bd038ed23538c3f283c860441d25541",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4580,
+        "completion_tokens": 438,
+        "total_tokens": 5018,
+        "prompt_tokens_details": {
+          "cached_tokens": 384
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00089335,
+          "allowance": 0.00067001,
+          "tokens": {
+            "input": 4196,
+            "output": 438,
+            "reasoning": 0,
+            "cache_read": 384,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4196,
+        "output_tokens": 438,
+        "cache_read_input_tokens": 384,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5582.912099998794
+    }
+  ]
+}

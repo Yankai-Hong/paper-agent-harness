@@ -1,0 +1,885 @@
+{
+  "turn_id": "d11-t2",
+  "session_id": "d11",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007200054824352264
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "UIT-ViIC 论文中基于该论文原文的证据：评估所使用深度神经网络模型的相关内容",
+        "needs_clarification": false,
+        "paper_ids": [
+          "2002.00175"
+        ],
+        "resolved_entities": {
+          "paper_id": "2002.00175",
+          "paper_title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning"
+        }
+      },
+      "elapsed_ms": 3361.503900028765
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "UIT-ViIC 论文中基于该论文原文的证据：评估所使用深度神经网络模型的相关内容"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-df82acb31723d02ba4213f1a",
+          "c-d92dab51d538bdf839e13705",
+          "c-65290b293c18e10a4850e14e",
+          "c-6852dc108ea13f52330d7bed",
+          "c-baaf1529cf89f93b61eb80a1",
+          "c-8b1d2df06c40fcd2ad390f83",
+          "c-a2dd94b291eab0fed37f7ddd",
+          "c-36149ddeebe58ed869e50c7b",
+          "c-94b848c452b3746ffb5c659d",
+          "c-6a524ef8fe27746863a8c5f0",
+          "c-f5b8834bc58a31131d2c6448",
+          "c-160e5ecc34a597d8853f9788",
+          "c-450ec8d6468e4855f7b93d12",
+          "c-1795aacd38a010afc7b170fc",
+          "c-27e8961780b9e393ade155f6",
+          "c-9fedf1b541248db996dda644",
+          "c-fa7a9e2d2573e027358ffcc5"
+        ]
+      },
+      "elapsed_ms": 471.6843001078814
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-df82acb31723d02ba4213f1a",
+          "c-d92dab51d538bdf839e13705",
+          "c-65290b293c18e10a4850e14e",
+          "c-6852dc108ea13f52330d7bed",
+          "c-baaf1529cf89f93b61eb80a1",
+          "c-8b1d2df06c40fcd2ad390f83",
+          "c-a2dd94b291eab0fed37f7ddd",
+          "c-36149ddeebe58ed869e50c7b",
+          "c-94b848c452b3746ffb5c659d",
+          "c-6a524ef8fe27746863a8c5f0",
+          "c-f5b8834bc58a31131d2c6448",
+          "c-160e5ecc34a597d8853f9788",
+          "c-450ec8d6468e4855f7b93d12",
+          "c-1795aacd38a010afc7b170fc",
+          "c-27e8961780b9e393ade155f6",
+          "c-9fedf1b541248db996dda644",
+          "c-fa7a9e2d2573e027358ffcc5"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-d92dab51d538bdf839e13705",
+          "c-df82acb31723d02ba4213f1a"
+        ]
+      },
+      "elapsed_ms": 277.8949000639841
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-d92dab51d538bdf839e13705",
+          "c-df82acb31723d02ba4213f1a"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "retrieve_again",
+        "reason": "问题要求基于原文证据解释“评估所使用深度神经网络模型的相关内容”。现有证据（c-721ac9d3…、c-df82acb3…）只提到 Pytorch-tutorial 模型与 NIC/Show and Tell 模型在两个模型/实验中运行，但未充分说明模型的具体架构、训练设置或其在评估中的角色等细节，无法在“不能从常识补充结论”的限制下给出完整解释。需要检索该论文 Methods/Experiments（如 Section 4 methods 部分）中关于模型定义与实验设置的原文。",
+        "next_query": "UIT-ViIC 论文 Methods 部分 图像描述模型 架构 Pytorch-tutorial NIC Show and Tell 训练 验证 设置"
+      },
+      "elapsed_ms": 5104.481999995187
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 2,
+      "input": {
+        "query": "UIT-ViIC 论文 Methods 部分 图像描述模型 架构 Pytorch-tutorial NIC Show and Tell 训练 验证 设置"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-6a524ef8fe27746863a8c5f0",
+          "c-65290b293c18e10a4850e14e",
+          "c-d92dab51d538bdf839e13705",
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-94b848c452b3746ffb5c659d",
+          "c-f5b8834bc58a31131d2c6448",
+          "c-6852dc108ea13f52330d7bed",
+          "c-baaf1529cf89f93b61eb80a1",
+          "c-df82acb31723d02ba4213f1a",
+          "c-36149ddeebe58ed869e50c7b",
+          "c-a2dd94b291eab0fed37f7ddd",
+          "c-8b1d2df06c40fcd2ad390f83",
+          "c-450ec8d6468e4855f7b93d12",
+          "c-27e8961780b9e393ade155f6",
+          "c-fa7a9e2d2573e027358ffcc5",
+          "c-160e5ecc34a597d8853f9788",
+          "c-1795aacd38a010afc7b170fc",
+          "c-9fedf1b541248db996dda644"
+        ]
+      },
+      "elapsed_ms": 119.3100999807939
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 2,
+      "input": {
+        "candidate_ids": [
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-6a524ef8fe27746863a8c5f0",
+          "c-65290b293c18e10a4850e14e",
+          "c-d92dab51d538bdf839e13705",
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-94b848c452b3746ffb5c659d",
+          "c-f5b8834bc58a31131d2c6448",
+          "c-6852dc108ea13f52330d7bed",
+          "c-baaf1529cf89f93b61eb80a1",
+          "c-df82acb31723d02ba4213f1a",
+          "c-36149ddeebe58ed869e50c7b",
+          "c-a2dd94b291eab0fed37f7ddd",
+          "c-8b1d2df06c40fcd2ad390f83",
+          "c-450ec8d6468e4855f7b93d12",
+          "c-27e8961780b9e393ade155f6",
+          "c-fa7a9e2d2573e027358ffcc5",
+          "c-160e5ecc34a597d8853f9788",
+          "c-1795aacd38a010afc7b170fc",
+          "c-9fedf1b541248db996dda644"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-d92dab51d538bdf839e13705",
+          "c-df82acb31723d02ba4213f1a"
+        ]
+      },
+      "elapsed_ms": 275.8127999259159
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 2,
+      "input": {
+        "evidence_ids": [
+          "c-bbd4db15d6773cfa30848a4a",
+          "c-e59a27dedbb0088b3ff146a4",
+          "c-721ac9d3e099bacb12ac84aa",
+          "c-d92dab51d538bdf839e13705",
+          "c-df82acb31723d02ba4213f1a"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据充分：摘要说明作者在深度神经网络模型上评估数据集并与英语及两个越南语数据集比较（c-bbd4db15d6773cfa30848a4a）；实验结果明确列出使用 Pytorch-tutorial 与 NIC/Show-and-Tell 两个模型，在 English-sportball、GT-sportball、UIT-ViIC 三个数据集上训练并用各验证子集 924 张图像验证（c-721ac9d3e099bacb12ac84aa）；结论重申在两个流行图像描述模型上做实验（c-df82acb31723d02ba4213f1a）。以下仅据这些证据归纳，不补充常识结论。"
+      },
+      "elapsed_ms": 4633.4538999944925
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "dataset_eval",
+            "text": "论文在深度神经网络模型上评估其数据集，并与英语数据集及两个用不同方法构建的越南语数据集进行了比较。",
+            "citations": [
+              {
+                "paper_id": "2002.00175",
+                "chunk_id": "c-bbd4db15d6773cfa30848a4a"
+              }
+            ]
+          },
+          {
+            "key": "models_used",
+            "text": "实验结果汇总了 Pytorch-tutorial 模型和 NIC（Show and Tell）模型的实验结果，这两个模型分别在 English-sportball、GT-sportball 和 UIT-ViIC 三个数据集上训练。",
+            "citations": [
+              {
+                "paper_id": "2002.00175",
+                "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+              }
+            ]
+          },
+          {
+            "key": "validation_images",
+            "text": "训练后，每个数据集验证子集的 924 张图像被用于验证模型。",
+            "citations": [
+              {
+                "paper_id": "2002.00175",
+                "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+              }
+            ]
+          },
+          {
+            "key": "pytorch_results",
+            "text": "在使用 Pytorch tutorial 模型时，MS-COCO 英语 sportball 类别字幕的结果优于两个越南语数据集；但随着 BLEU 的 gram 数增加，UIT-ViIC 的 BLEU 分数开始超过英语 sportball，且差距持续扩大，UIT-ViIC 模型的 CIDEr-D 分数也超过英语 sportball 对应结果。",
+            "citations": [
+              {
+                "paper_id": "2002.00175",
+                "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+              }
+            ]
+          },
+          {
+            "key": "showtell_results",
+            "text": "Show and Tell 模型的结果显示，MS-COCO sportball 英语字幕仅在 BLEU-1 上更好；从 BLEU-3 到 BLEU-4，GT-sportball 和 UIT-ViIC 均比英语 sportball 得分更高。",
+            "citations": [
+              {
+                "paper_id": "2002.00175",
+                "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+              }
+            ]
+          },
+          {
+            "key": "viic_vs_gt",
+            "text": "在两个越南语数据集之间比较时，UIT-ViIC 模型的表现优于由自动翻译得到的 sportball 数据集 GT-sportball；在 NIC 模型中两组结果差距更小，且随着 BLEU 的 n-gram 增大数值变小。",
+            "citations": [
+              {
+                "paper_id": "2002.00175",
+                "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+              }
+            ]
+          },
+          {
+            "key": "two_models_conclusion",
+            "text": "结论指出，作者在两个流行的已有图像描述模型上进行了若干实验，以评估它们在学习两个越南语数据集时的效率，并将结果与原始 MS-COCO 英语 sportball 类别进行比较。",
+            "citations": [
+              {
+                "paper_id": "2002.00175",
+                "chunk_id": "c-df82acb31723d02ba4213f1a"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 15951.006600051187
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "addfce785756d7779d355ef12785a2eeeb4fea1a869e904f16ebdf58291d59f7",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "51f84c950f93f6c90e57a8e2508e37021f4f67d3e717dbcece6db3f70ea007d5",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "84a3ec53411d984e9f71727c83b5ce211f8fd683c3b9652a8a634471ab2922bc",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "676dab0bb2aba346a831d5743c30c73481aca785856673a9eb6a9dc721087eba",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "728679245fcb212d1327c27e42305bf3a93f77d67171ae5d6b6107a9077c40a0",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "cb0d38f1e030cfd545fce2fe763414ff62f398427a31430fea88ed2e9e46a160",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "d7de30e54f312b0a70d3c20d03e3f1b387e7d2bd55e5bf53fb09a725a56ca222",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d11",
+        "entities": {
+          "paper_id": "2002.00175",
+          "paper_title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "2002.00175"
+          ]
+        }
+      },
+      "elapsed_ms": 12.579300091601908
+    }
+  ],
+  "started_at": 1793025093.2347336,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "0a2f45b6e1b8b44de6560b0805a5b132a55166c39c1215d60ceed251627fc754",
+      "session_id": "d11",
+      "canonical_key": "[\"paper_evidence\", \"2002.00175\", \"abstract eval\"]",
+      "text": "摘要指出，作者在深度神经网络模型上评估该数据集，并与英语数据集及两个用不同方法构建的越南语数据集进行了比较。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2002.00175",
+      "evidence_ids": [
+        "c-bbd4db15d6773cfa30848a4a"
+      ],
+      "turn_id": "d11-t1",
+      "created_at": 1793025093.2109678,
+      "updated_at": 1793025093.2109678,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2002.00175"
+      ],
+      "kind": "conflict",
+      "content": "摘要指出，作者在深度神经网络模型上评估该数据集，并与英语数据集及两个用不同方法构建的越南语数据集进行了比较。",
+      "record_id": "fact:0a2f45b6e1b8b44de6560b0805a5b132a55166c39c1215d60ceed251627fc754",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.4827586206896552,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "30d3d71568fe151566949ae79709dc9619481a2a0e7a60341df5590db31f47c7",
+      "session_id": "d11",
+      "canonical_key": "[\"paper_evidence\", \"2002.00175\", \"experiment models\"]",
+      "text": "实验结果表格汇总了 Pytorch-tutorial 模型和 NIC（Show and Tell）模型的结果，两个模型分别在 English-sportball、GT-sportball 和 UIT-ViIC 三个数据集上训练，并用每个验证子集的 924 张图像进行验证。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2002.00175",
+      "evidence_ids": [
+        "c-721ac9d3e099bacb12ac84aa"
+      ],
+      "turn_id": "d11-t1",
+      "created_at": 1793025093.2109678,
+      "updated_at": 1793025093.2109678,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2002.00175"
+      ],
+      "kind": "conflict",
+      "content": "实验结果表格汇总了 Pytorch-tutorial 模型和 NIC（Show and Tell）模型的结果，两个模型分别在 English-sportball、GT-sportball 和 UIT-ViIC 三个数据集上训练，并用每个验证子集的 924 张图像进行验证。",
+      "record_id": "fact:30d3d71568fe151566949ae79709dc9619481a2a0e7a60341df5590db31f47c7",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.27586206896551724,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "f6b24b3701cd98dcec43af8cc12712870ca7dd6b8ecd129834ebc0cf08a93028",
+      "session_id": "d11",
+      "canonical_key": "[\"paper_evidence\", \"2002.00175\", \"models evaluated\"]",
+      "text": "论文在数据集上训练和评估了两个已发表的图像描述模型：Neural Image Captioning (NIC) 模型和 Yunjey 的 Pytorch-tutorial 图像描述模型。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2002.00175",
+      "evidence_ids": [
+        "c-6a524ef8fe27746863a8c5f0"
+      ],
+      "turn_id": "d11-t1",
+      "created_at": 1793025093.2104652,
+      "updated_at": 1793025093.2104652,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2002.00175"
+      ],
+      "kind": "conflict",
+      "content": "论文在数据集上训练和评估了两个已发表的图像描述模型：Neural Image Captioning (NIC) 模型和 Yunjey 的 Pytorch-tutorial 图像描述模型。",
+      "record_id": "fact:f6b24b3701cd98dcec43af8cc12712870ca7dd6b8ecd129834ebc0cf08a93028",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.27586206896551724,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    },
+    {
+      "fact_id": "2577cdf9f665299ce9c9df0b201604f5231935771145ab39c20f0b7b7613e873",
+      "session_id": "d11",
+      "canonical_key": "[\"paper_evidence\", \"2002.00175\", \"two popular models\"]",
+      "text": "结论部分指出，作者在两个流行的已有图像描述模型上进行了若干实验，以评估它们在两个越南语数据集上的学习效率。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2002.00175",
+      "evidence_ids": [
+        "c-df82acb31723d02ba4213f1a"
+      ],
+      "turn_id": "d11-t1",
+      "created_at": 1793025093.2109678,
+      "updated_at": 1793025093.2109678,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2002.00175"
+      ],
+      "kind": "conflict",
+      "content": "结论部分指出，作者在两个流行的已有图像描述模型上进行了若干实验，以评估它们在两个越南语数据集上的学习效率。",
+      "record_id": "fact:2577cdf9f665299ce9c9df0b201604f5231935771145ab39c20f0b7b7613e873",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.2413793103448276,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 4,
+      "rank_score": 0.015625
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "dataset_eval",
+        "text": "论文在深度神经网络模型上评估其数据集，并与英语数据集及两个用不同方法构建的越南语数据集进行了比较。",
+        "citations": [
+          {
+            "paper_id": "2002.00175",
+            "chunk_id": "c-bbd4db15d6773cfa30848a4a"
+          }
+        ]
+      },
+      {
+        "key": "models_used",
+        "text": "实验结果汇总了 Pytorch-tutorial 模型和 NIC（Show and Tell）模型的实验结果，这两个模型分别在 English-sportball、GT-sportball 和 UIT-ViIC 三个数据集上训练。",
+        "citations": [
+          {
+            "paper_id": "2002.00175",
+            "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+          }
+        ]
+      },
+      {
+        "key": "validation_images",
+        "text": "训练后，每个数据集验证子集的 924 张图像被用于验证模型。",
+        "citations": [
+          {
+            "paper_id": "2002.00175",
+            "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+          }
+        ]
+      },
+      {
+        "key": "pytorch_results",
+        "text": "在使用 Pytorch tutorial 模型时，MS-COCO 英语 sportball 类别字幕的结果优于两个越南语数据集；但随着 BLEU 的 gram 数增加，UIT-ViIC 的 BLEU 分数开始超过英语 sportball，且差距持续扩大，UIT-ViIC 模型的 CIDEr-D 分数也超过英语 sportball 对应结果。",
+        "citations": [
+          {
+            "paper_id": "2002.00175",
+            "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+          }
+        ]
+      },
+      {
+        "key": "showtell_results",
+        "text": "Show and Tell 模型的结果显示，MS-COCO sportball 英语字幕仅在 BLEU-1 上更好；从 BLEU-3 到 BLEU-4，GT-sportball 和 UIT-ViIC 均比英语 sportball 得分更高。",
+        "citations": [
+          {
+            "paper_id": "2002.00175",
+            "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+          }
+        ]
+      },
+      {
+        "key": "viic_vs_gt",
+        "text": "在两个越南语数据集之间比较时，UIT-ViIC 模型的表现优于由自动翻译得到的 sportball 数据集 GT-sportball；在 NIC 模型中两组结果差距更小，且随着 BLEU 的 n-gram 增大数值变小。",
+        "citations": [
+          {
+            "paper_id": "2002.00175",
+            "chunk_id": "c-721ac9d3e099bacb12ac84aa"
+          }
+        ]
+      },
+      {
+        "key": "two_models_conclusion",
+        "text": "结论指出，作者在两个流行的已有图像描述模型上进行了若干实验，以评估它们在学习两个越南语数据集时的效率，并将结果与原始 MS-COCO 英语 sportball 类别进行比较。",
+        "citations": [
+          {
+            "paper_id": "2002.00175",
+            "chunk_id": "c-df82acb31723d02ba4213f1a"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "addfce785756d7779d355ef12785a2eeeb4fea1a869e904f16ebdf58291d59f7",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "51f84c950f93f6c90e57a8e2508e37021f4f67d3e717dbcece6db3f70ea007d5",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "84a3ec53411d984e9f71727c83b5ce211f8fd683c3b9652a8a634471ab2922bc",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "676dab0bb2aba346a831d5743c30c73481aca785856673a9eb6a9dc721087eba",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "728679245fcb212d1327c27e42305bf3a93f77d67171ae5d6b6107a9077c40a0",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "cb0d38f1e030cfd545fce2fe763414ff62f398427a31430fea88ed2e9e46a160",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "d7de30e54f312b0a70d3c20d03e3f1b387e7d2bd55e5bf53fb09a725a56ca222",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "b3a5f84c61301aa1c5bae37fbe196d699c598f0a7e75a89d3236204800e5389d",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4336,
+        "completion_tokens": 97,
+        "total_tokens": 4433,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00067097,
+          "allowance": 0.00050323,
+          "tokens": {
+            "input": 4080,
+            "output": 97,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4080,
+        "output_tokens": 97,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3351.4239999931306
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "709f4f07c3ff01b7c99a53aa9a770ba316f3bff9646e24f9ee9cf855f9871029",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6565,
+        "completion_tokens": 169,
+        "total_tokens": 6734,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00108615,
+          "allowance": 0.00081461,
+          "tokens": {
+            "input": 6565,
+            "output": 169,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6565,
+        "output_tokens": 169,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5104.087400017306
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "6628be32ced1059b6e527c0d845abfcae5cc8f39c813ff241596cca511649433",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6565,
+        "completion_tokens": 159,
+        "total_tokens": 6724,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00108015,
+          "allowance": 0.00081011,
+          "tokens": {
+            "input": 6565,
+            "output": 159,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6565,
+        "output_tokens": 159,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4633.066700072959
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "error",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "7ae7e90ec48e2bdf64708b8612540eba4ea7c6e0bdeff1a05bc7e08b3854af48",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6667,
+        "completion_tokens": 1215,
+        "total_tokens": 7882,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00172905,
+          "allowance": 0.00129679,
+          "tokens": {
+            "input": 6667,
+            "output": 1215,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6667,
+        "output_tokens": 1215,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "error_type": "ValidationError",
+      "schema_error_path": [
+        "claims"
+      ],
+      "schema_validator": "maxItems",
+      "elapsed_ms": 9730.731400079094,
+      "retry_reason": "structured_output_repair",
+      "retry_delay_seconds": 0
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": true,
+      "attempt": 8,
+      "request_hash": "15a31fd52ab992a1341406adc786cca4b18e54cf6b925976c832018d2263a2ef",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6686,
+        "completion_tokens": 642,
+        "total_tokens": 7328,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0013881,
+          "allowance": 0.00104108,
+          "tokens": {
+            "input": 6686,
+            "output": 642,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6686,
+        "output_tokens": 642,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6219.400799949653
+    }
+  ]
+}

@@ -1,0 +1,394 @@
+{
+  "turn_id": "budget-3",
+  "session_id": "mem-budget",
+  "question": "Research decision: keep experiment budget for the experiment",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "Research decision: keep experiment budget for the experiment"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.009800074622035027
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "Research decision: keep experiment budget for the experiment"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "What experimental budget or sample size do the authors use for experiments in Mapping Languages and Demographics with Georeferenced Corpora?",
+        "needs_clarification": false,
+        "paper_ids": [
+          "2004.00809"
+        ],
+        "resolved_entities": {
+          "experiment_budget": "100 samples"
+        }
+      },
+      "elapsed_ms": 2844.9950999347493
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "What experimental budget or sample size do the authors use for experiments in Mapping Languages and Demographics with Georeferenced Corpora?"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-9112346152089bf519490033",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-9887004ca215701b79e8e570",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-162f98bff11b9de38d755b70",
+          "c-0efba46a0570e1863cb689f1",
+          "c-d80dd59432fac531ad74efcf",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-1bf564989651e887cbd88011",
+          "c-b60f4e4a6d050d048f70b660"
+        ]
+      },
+      "elapsed_ms": 49.926199950277805
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-9112346152089bf519490033",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-204aa49abd2af324ac170d44",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-9887004ca215701b79e8e570",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-162f98bff11b9de38d755b70",
+          "c-0efba46a0570e1863cb689f1",
+          "c-d80dd59432fac531ad74efcf",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-1bf564989651e887cbd88011",
+          "c-b60f4e4a6d050d048f70b660"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-204aa49abd2af324ac170d44",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-9112346152089bf519490033"
+        ]
+      },
+      "elapsed_ms": 296.7647999757901
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-6f58065148eb1b788e1a9d54",
+          "c-204aa49abd2af324ac170d44",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-9112346152089bf519490033"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "reason": "The evidence describes corpus construction (e.g., Twitter corpus of 1,066,038,000 tweets, 4.14 billion words; Common Crawl 16.65 billion words) and evaluation methodology against census/population baselines, but nowhere reports an experimental budget or sample size allocated for experiments. The retrieved passages do not contain the requested information, and prior historical context is not evidence. No targeted next query is likely to surface an unstated experimental budget, so refusal is appropriate."
+      },
+      "elapsed_ms": 2863.717700005509
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001500011421740055
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "mem-budget",
+        "entities": {
+          "paper": "Mapping Languages and Demographics with Georeferenced Corpora"
+        },
+        "facts": {
+          "[\"user_explicit\", null, \"experiment budget\"]": {
+            "text": "100 samples",
+            "evidence_ids": [],
+            "fact_id": "716bcd1670d3de2c53a4753cf55cb5b6d67d9724c16135aedf82da60f8d9f747",
+            "turn_id": "budget-1",
+            "source_type": "user_explicit"
+          }
+        },
+        "unresolved": [
+          "Research decision: keep experiment budget for the experiment"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "2004.00809"
+          ]
+        }
+      },
+      "elapsed_ms": 13.541599968448281
+    }
+  ],
+  "started_at": 1793025859.802651,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": false,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "5f3adcf2958678326d64e15757e938434ccb4c77449b0095be761574b0e5323e",
+      "session_id": "mem-budget",
+      "canonical_key": "[\"paper_evidence\", \"2004.00809\", \"fewer missing\"]",
+      "text": "The authors state that in countries where the corpora do not represent all languages produced by local populations, Twitter has fewer missing languages.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2004.00809",
+      "evidence_ids": [
+        "c-9887004ca215701b79e8e570"
+      ],
+      "turn_id": "budget-2",
+      "created_at": 1793025859.7674544,
+      "updated_at": 1793025859.7674544,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2004.00809"
+      ],
+      "kind": "conflict",
+      "content": "The authors state that in countries where the corpora do not represent all languages produced by local populations, Twitter has fewer missing languages.",
+      "record_id": "fact:5f3adcf2958678326d64e15757e938434ccb4c77449b0095be761574b0e5323e",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "626a8e4c8135945af0bfba2ea319fc8b0dd075927653f4d529393a58fc74e6bc",
+      "session_id": "mem-budget",
+      "canonical_key": "[\"paper_evidence\", \"2004.00809\", \"regional advantage\"]",
+      "text": "The authors note that Twitter provides a better representation of North America and Oceania, while the two corpora otherwise largely agree on which languages they predict for each country.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2004.00809",
+      "evidence_ids": [
+        "c-01b9a363a68a29a0e9af4ff8"
+      ],
+      "turn_id": "budget-2",
+      "created_at": 1793025859.7674544,
+      "updated_at": 1793025859.7674544,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2004.00809"
+      ],
+      "kind": "conflict",
+      "content": "The authors note that Twitter provides a better representation of North America and Oceania, while the two corpora otherwise largely agree on which languages they predict for each country.",
+      "record_id": "fact:626a8e4c8135945af0bfba2ea319fc8b0dd075927653f4d529393a58fc74e6bc",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "b83889c8262b446c35ffdf2d4fcc09aa84d84346ac96bd7f27f3fc63a523f34b",
+      "session_id": "mem-budget",
+      "canonical_key": "[\"paper_evidence\", \"2004.00809\", \"unresolved sources\"]",
+      "text": "The authors state that more research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages in digital datasets.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2004.00809",
+      "evidence_ids": [
+        "c-01b9a363a68a29a0e9af4ff8"
+      ],
+      "turn_id": "budget-2",
+      "created_at": 1793025859.7674544,
+      "updated_at": 1793025859.7674544,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2004.00809"
+      ],
+      "kind": "conflict",
+      "content": "The authors state that more research is needed to distinguish between immigration, tourism, and business as alternate sources of false positive languages in digital datasets.",
+      "record_id": "fact:b83889c8262b446c35ffdf2d4fcc09aa84d84346ac96bd7f27f3fc63a523f34b",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.25,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "9dea3b20e94d5674b33a5fde306eed291bdf32ade74c4ede2f476e3aedb5c59a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5732,
+        "completion_tokens": 76,
+        "total_tokens": 5808,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00086777,
+          "allowance": 0.00065083,
+          "tokens": {
+            "input": 5476,
+            "output": 76,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5476,
+        "output_tokens": 76,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2601.01800004486
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "181ddcd1779d682324f3f4d243375de9c8cca8b4164502ed08f578dae789fd81",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6119,
+        "completion_tokens": 112,
+        "total_tokens": 6231,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00098505,
+          "allowance": 0.00073879,
+          "tokens": {
+            "input": 6119,
+            "output": 112,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6119,
+        "output_tokens": 112,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2863.3435000665486
+    }
+  ]
+}

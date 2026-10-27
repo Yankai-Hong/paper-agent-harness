@@ -1,0 +1,325 @@
+{
+  "turn_id": "d03-t4",
+  "session_id": "d03",
+  "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.0070999376475811005
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "私有未公开实验 run-02 的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "experiment": "run-02"
+        }
+      },
+      "elapsed_ms": 4167.084499960765
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.00100000761449337
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d03",
+        "entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking",
+          "paper_id": "1910.07154",
+          "question": "How large is the FEVER dataset?",
+          "paper_1": "Unsupervised Question Answering for Fact-Checking",
+          "paper_1_id": "1910.07154",
+          "paper_2": "Clinical Information Extraction via Convolutional Neural Network",
+          "paper_2_id": "1603.09381",
+          "dataset": "FEVER"
+        },
+        "facts": {},
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154",
+            "1603.09381"
+          ]
+        }
+      },
+      "elapsed_ms": 10.442099999636412
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793026107.0709965,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "6ee680271b547846f248ac5354c1d29ee7bb9be4b447851bf2292c95ee86bd3d",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"[\\\"1603.09381\\\", \\\"1910.07154\\\"]\", \"comparability\"]",
+      "text": "两篇论文的可比性有限：FEVER 规模仅由 fact-checking 论文报告，临床信息抽取论文未涉及 FEVER；性能方面，前者报告标签准确率数值并与 HexaF 作定性比较，后者仅给出“显著优于基线”的无具体数值结论，二者任务与指标不同。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "[\"1603.09381\", \"1910.07154\"]",
+      "evidence_ids": [
+        "c-ab6380532554bfd8cf2dc78b",
+        "c-7c69a28e7ffcb9ebd09842b6",
+        "c-41beb2396050f5a800883bfc",
+        "c-712a82e231bc15b7c11610b4"
+      ],
+      "turn_id": "d03-t3",
+      "created_at": 1793026107.0476406,
+      "updated_at": 1793026107.0476406,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1603.09381",
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "两篇论文的可比性有限：FEVER 规模仅由 fact-checking 论文报告，临床信息抽取论文未涉及 FEVER；性能方面，前者报告标签准确率数值并与 HexaF 作定性比较，后者仅给出“显著优于基线”的无具体数值结论，二者任务与指标不同。",
+      "record_id": "fact:6ee680271b547846f248ac5354c1d29ee7bb9be4b447851bf2292c95ee86bd3d",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.42857142857142855,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "71c7c80e2f4c1cbbee1fae2a1ba16e19fef0d7ad694bec5bdf1da3ea4cb56646",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"uqa vs baseline\"]",
+      "text": "该文在“SUPPORTS”标签的标签准确率上与监督方法 HexaF 比较，并称在 φ = 0.76 时其方法可与 HexaF 相比，但未报告具体的提升幅度。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-41beb2396050f5a800883bfc"
+      ],
+      "turn_id": "d03-t3",
+      "created_at": 1793026107.0476406,
+      "updated_at": 1793026107.0476406,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "该文在“SUPPORTS”标签的标签准确率上与监督方法 HexaF 比较，并称在 φ = 0.76 时其方法可与 HexaF 相比，但未报告具体的提升幅度。",
+      "record_id": "fact:71c7c80e2f4c1cbbee1fae2a1ba16e19fef0d7ad694bec5bdf1da3ea4cb56646",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.35714285714285715,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "e1fd24216a256ca59e34ff6bc0c901ac6b38343c23f3a9b4245a63eac649c6d0",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"uqa performance numbers\"]",
+      "text": "Unsupervised Question Answering for Fact-Checking 报告其在转换后数据集的开发集上标签准确率为 80.2%，在测试集上为 80.25%。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-7c69a28e7ffcb9ebd09842b6"
+      ],
+      "turn_id": "d03-t3",
+      "created_at": 1793026107.0466313,
+      "updated_at": 1793026107.0466313,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "Unsupervised Question Answering for Fact-Checking 报告其在转换后数据集的开发集上标签准确率为 80.2%，在测试集上为 80.25%。",
+      "record_id": "fact:e1fd24216a256ca59e34ff6bc0c901ac6b38343c23f3a9b4245a63eac649c6d0",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.35714285714285715,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    },
+    {
+      "fact_id": "526d00e9107830fa1a71bdc68dc512f19570953640ce495daa9ba9aed7c33b7b",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"fever claims source and fields\"]",
+      "text": "在本文的实验中，FEVER 的 claim 来自维基百科；作者从 FEVER 数据集中收集所有 claim 及其“id”、“label”和“verifiable”字段。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-c7c17ddf8a10b59543bbe5cd"
+      ],
+      "turn_id": "d03-t2",
+      "created_at": 1793026080.0331662,
+      "updated_at": 1793026080.0331662,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "在本文的实验中，FEVER 的 claim 来自维基百科；作者从 FEVER 数据集中收集所有 claim 及其“id”、“label”和“verifiable”字段。",
+      "record_id": "fact:526d00e9107830fa1a71bdc68dc512f19570953640ce495daa9ba9aed7c33b7b",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.2857142857142857,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 4,
+      "rank_score": 0.015625
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "0aa434ec9d4e9021a17c5d54de0a1adbfff614bb8f4749953f113277926545f8",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5325,
+        "completion_tokens": 61,
+        "total_tokens": 5386,
+        "prompt_tokens_details": {
+          "cached_tokens": 256,
+          "cache_write_tokens": null
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00079772,
+          "allowance": 0.00059829,
+          "tokens": {
+            "input": 5069,
+            "output": 61,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5069,
+        "output_tokens": 61,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4159.710699925199
+    }
+  ]
+}

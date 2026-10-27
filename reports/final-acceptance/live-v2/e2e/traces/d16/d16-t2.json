@@ -1,0 +1,721 @@
+{
+  "turn_id": "d16-t2",
+  "session_id": "d16",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.008100061677396297
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Towards better decoding and language model integration in sequence to sequence models 论文中指出的seq2seq缺陷及所提出的解决方案的证据与引用",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1612.02695"
+        ],
+        "resolved_entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models",
+          "paper_id": "1612.02695",
+          "topic": "seq2seq 语音识别的缺陷与解决方案"
+        }
+      },
+      "elapsed_ms": 2384.2277000658214
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Towards better decoding and language model integration in sequence to sequence models 论文中指出的seq2seq缺陷及所提出的解决方案的证据与引用"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4",
+          "c-584f58479e6aaaf4703e5890",
+          "c-753acdce1e13381d0f0064dc",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-de41334c9a60659c0e8f8592",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-064a283f41c1740b79fd7ed5",
+          "c-baaa5b8f20389a190a483b14",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-b0a75fbe402507f3ea2c17d0",
+          "c-317a4f696f4b18da509bd253"
+        ]
+      },
+      "elapsed_ms": 42.687400011345744
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-765ec796280535cd105fabf4",
+          "c-584f58479e6aaaf4703e5890",
+          "c-753acdce1e13381d0f0064dc",
+          "c-10d1ebcc07738e41f14a4005",
+          "c-5af5372cd7c24012fa2b327a",
+          "c-8df66f805cb20dd4b2c01daf",
+          "c-2d0c32cb8b39156b7f3fa54c",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-de41334c9a60659c0e8f8592",
+          "c-7549a11343a20fbc64d6dc01",
+          "c-bd5bc59751d9fec77ccff446",
+          "c-2a97da9c8e3dd5b7f857934d",
+          "c-064a283f41c1740b79fd7ed5",
+          "c-baaa5b8f20389a190a483b14",
+          "c-3ee68fb3839d5eedc414c446",
+          "c-b0a75fbe402507f3ea2c17d0",
+          "c-317a4f696f4b18da509bd253"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-753acdce1e13381d0f0064dc",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-765ec796280535cd105fabf4"
+        ]
+      },
+      "elapsed_ms": 271.0420999210328
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-c1a01afddd733ef65ed6d199",
+          "c-0b5bc372895d6d0706b56a8e",
+          "c-753acdce1e13381d0f0064dc",
+          "c-a30dc1a770cb3f6b7bc5f850",
+          "c-765ec796280535cd105fabf4"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "检索证据支持该问题的核心内容：摘要明确列出两个缺陷（预测过度自信、使用语言模型时产生不完整转写）并提出实用解决方案及WER结果；引言佐证过度自信与beam search多样性下降；解决方案章节详述不完整转写问题及应对策略（EOS概率约束、长度/覆盖项、覆盖准则）。所引历史条目虽标为冲突，但可由本文证据直接核实。仅存在少量细节可能缺失（如过度自信的具体解决方案名称），因此回答将严格限于证据所述，不作常识补充。"
+      },
+      "elapsed_ms": 7866.559599991888
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "two_shortcomings",
+            "text": "论文分析了一个直接将录音转写为字符的基于注意力的seq2seq语音识别系统，并观察到两个缺陷：对预测过度自信，以及在使用语言模型时倾向于生成不完整的转写。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "overconfidence_mechanism",
+            "text": "论文指出判别式训练使seq2seq模型能够聚焦最具信息量的特征，但也增加了过拟合于少数区分性特征的风险，模型常产生非常尖锐的预测，高置信度降低了束搜索所得转写的多样性。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+              }
+            ]
+          },
+          {
+            "key": "incomplete_transcripts_observation",
+            "text": "论文指出当使用语言模型时，宽束搜索常产生不完整转写；窄束下由于隐式假设剪枝该问题不明显。作者给出失败解码示例：标准答案在模型和语言模型下都是概率最低的转写，宽度100的束搜索配三元语言模型找到的是缺失话语开头的第二条转写，更宽束搜索可能出现严重不完整的转写。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "three_strategies",
+            "text": "论文比较了三种防止不完整转写的策略：第一种不改变束搜索准则，但除非EOS词元概率处于最可能词元概率的设定范围内否则禁止输出EOS；该策略可防止截断，但对转写中部的遗漏无效。另一种做法是扩展束搜索准则以鼓励长转写，即加入依赖转写长度的项（CTC和seq2seq中均有提出），但据报道使用困难，因为束搜索会在录音部分循环、需要额外约束。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_term",
+            "text": "为防止循环，论文提出使用覆盖项，统计累计注意力超过某阈值的帧数，公式记为DISPLAYFORM，文中未在文本片段中给出具体公式内容。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "coverage_mechanism",
+            "text": "覆盖准则通过以下方式防止在话语上循环：一旦某帧的累计注意力超过阈值，该帧即被计为已选择，后续再次选择该帧不会降低解码代价；实现中覆盖在每个束搜索迭代中用截至该步的所有注意力权重重新计算。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-753acdce1e13381d0f0064dc"
+              }
+            ]
+          },
+          {
+            "key": "reported_wer",
+            "text": "论文称针对这两个问题提出了实用解决方案，并在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为10.6% WER，结合三元语言模型时为6.7% WER。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-c1a01afddd733ef65ed6d199"
+              }
+            ]
+          },
+          {
+            "key": "model_basis",
+            "text": "该语音识别系统基于Listen, Attend and Spell网络，是直接把音频录音转写为以空格分隔的字符序列的注意力seq2seq模型，采用编码器-解码器结构，包含负责声学建模的listener模块、负责输出字符的speller模块以及作为二者中介的attention模块。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-765ec796280535cd105fabf4"
+              }
+            ]
+          },
+          {
+            "key": "experiment_setup",
+            "text": "所有实验在Wall Street Journal数据集上进行，用si284训练、dev93验证、eval92评估；涉及语言模型的实验使用Kaldi WSJ s5 recipe构建的扩展词表三元语言模型，并用FST框架将语言模型与拼写词典组合。",
+            "citations": [
+              {
+                "paper_id": "1612.02695",
+                "chunk_id": "c-a30dc1a770cb3f6b7bc5f850"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 8557.112299953587
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "3f4a032d52b1b0fb0905f3cc14e16b8744462d49aaa744d3652bdb3d64dc6257",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "c88e8a1d8beea6c18533a45ad692bd1874dffac2249847350dd8ad3a63b2c07a",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "8274cdd8116e633979baa0f8de38f2fa13ae9493c52b6d41ca836ed35e56b17d",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "271baf4c5532bc05bc032d82a3e7018f921b54b6d9322ae55238cf0a01ac22e6",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "fc7563c9633afde772696b2d593beb952082c4d552c9aee6565f3caab2cc5fa3",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "d6d80e8e399519430869ae8cd2542455d6b13a326e9a564a8083c6e2367806e6",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "048b533dbdf7ba632e0002fe8d8ac41e8fac79891487514ce9d6b512b04e9be5",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "0e8315e6f7ee51a09e1967bfc99f88ee688b76b9a8f0a9a51c46ed3b955b350b",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "4404e51eee912bd02ef4f93717e61e4a4cc821367148bde0a27d435775d5f249",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d16",
+        "entities": {
+          "paper": "Towards better decoding and language model integration in sequence to sequence models",
+          "paper_id": "1612.02695",
+          "topic": "seq2seq 语音识别的缺陷与解决方案"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1612.02695"
+          ]
+        }
+      },
+      "elapsed_ms": 14.73449997138232
+    }
+  ],
+  "started_at": 1793025598.142823,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "3a372f387c9b0738f54ec1088648d764a24aeedc32d30a176da38e94528f4b6a",
+      "session_id": "d16",
+      "canonical_key": "[\"paper_evidence\", \"1612.02695\", \"two shortcomings\"]",
+      "text": "论文指出基于注意力的seq2seq语音识别系统存在两个缺陷：预测过度自信，以及在使用语言模型时倾向于生成不完整的转写。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1612.02695",
+      "evidence_ids": [
+        "c-c1a01afddd733ef65ed6d199"
+      ],
+      "turn_id": "d16-t1",
+      "created_at": 1793025598.1137958,
+      "updated_at": 1793025598.1137958,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1612.02695"
+      ],
+      "kind": "conflict",
+      "content": "论文指出基于注意力的seq2seq语音识别系统存在两个缺陷：预测过度自信，以及在使用语言模型时倾向于生成不完整的转写。",
+      "record_id": "fact:3a372f387c9b0738f54ec1088648d764a24aeedc32d30a176da38e94528f4b6a",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3125,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "9badea2afa23c6900b4d2644472bac90de674d50e93b45f99dab18ab1b9e797d",
+      "session_id": "d16",
+      "canonical_key": "[\"paper_evidence\", \"1612.02695\", \"practical solutions\"]",
+      "text": "作者称针对这两个问题提出了实用解决方案，并在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不单独使用语言模型时为10.6% WER，结合三元语言模型时为6.7% WER。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1612.02695",
+      "evidence_ids": [
+        "c-c1a01afddd733ef65ed6d199"
+      ],
+      "turn_id": "d16-t1",
+      "created_at": 1793025598.1173253,
+      "updated_at": 1793025598.1173253,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1612.02695"
+      ],
+      "kind": "conflict",
+      "content": "作者称针对这两个问题提出了实用解决方案，并在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不单独使用语言模型时为10.6% WER，结合三元语言模型时为6.7% WER。",
+      "record_id": "fact:9badea2afa23c6900b4d2644472bac90de674d50e93b45f99dab18ab1b9e797d",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.28125,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "fd8b591e1f1dcb944e007bed8a35306f5964e0ea31dbe4a29f58a708b1642bd5",
+      "session_id": "d16",
+      "canonical_key": "[\"paper_evidence\", \"1612.02695\", \"coverage penalty decode only\"]",
+      "text": "作者采用仅在解码时施加覆盖惩罚的方案，这与Google翻译系统所用的方案最为相似；相关工作还提到覆盖向量在神经机器翻译中已被研究。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1612.02695",
+      "evidence_ids": [
+        "c-7549a11343a20fbc64d6dc01"
+      ],
+      "turn_id": "d16-t1",
+      "created_at": 1793025598.1173253,
+      "updated_at": 1793025598.1173253,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1612.02695"
+      ],
+      "kind": "conflict",
+      "content": "作者采用仅在解码时施加覆盖惩罚的方案，这与Google翻译系统所用的方案最为相似；相关工作还提到覆盖向量在神经机器翻译中已被研究。",
+      "record_id": "fact:fd8b591e1f1dcb944e007bed8a35306f5964e0ea31dbe4a29f58a708b1642bd5",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.28125,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "two_shortcomings",
+        "text": "论文分析了一个直接将录音转写为字符的基于注意力的seq2seq语音识别系统，并观察到两个缺陷：对预测过度自信，以及在使用语言模型时倾向于生成不完整的转写。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      },
+      {
+        "key": "overconfidence_mechanism",
+        "text": "论文指出判别式训练使seq2seq模型能够聚焦最具信息量的特征，但也增加了过拟合于少数区分性特征的风险，模型常产生非常尖锐的预测，高置信度降低了束搜索所得转写的多样性。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-0b5bc372895d6d0706b56a8e"
+          }
+        ]
+      },
+      {
+        "key": "incomplete_transcripts_observation",
+        "text": "论文指出当使用语言模型时，宽束搜索常产生不完整转写；窄束下由于隐式假设剪枝该问题不明显。作者给出失败解码示例：标准答案在模型和语言模型下都是概率最低的转写，宽度100的束搜索配三元语言模型找到的是缺失话语开头的第二条转写，更宽束搜索可能出现严重不完整的转写。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "three_strategies",
+        "text": "论文比较了三种防止不完整转写的策略：第一种不改变束搜索准则，但除非EOS词元概率处于最可能词元概率的设定范围内否则禁止输出EOS；该策略可防止截断，但对转写中部的遗漏无效。另一种做法是扩展束搜索准则以鼓励长转写，即加入依赖转写长度的项（CTC和seq2seq中均有提出），但据报道使用困难，因为束搜索会在录音部分循环、需要额外约束。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_term",
+        "text": "为防止循环，论文提出使用覆盖项，统计累计注意力超过某阈值的帧数，公式记为DISPLAYFORM，文中未在文本片段中给出具体公式内容。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "coverage_mechanism",
+        "text": "覆盖准则通过以下方式防止在话语上循环：一旦某帧的累计注意力超过阈值，该帧即被计为已选择，后续再次选择该帧不会降低解码代价；实现中覆盖在每个束搜索迭代中用截至该步的所有注意力权重重新计算。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-753acdce1e13381d0f0064dc"
+          }
+        ]
+      },
+      {
+        "key": "reported_wer",
+        "text": "论文称针对这两个问题提出了实用解决方案，并在Wall Street Journal数据集上取得有竞争力的说话人无关词错误率：不使用单独语言模型时为10.6% WER，结合三元语言模型时为6.7% WER。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-c1a01afddd733ef65ed6d199"
+          }
+        ]
+      },
+      {
+        "key": "model_basis",
+        "text": "该语音识别系统基于Listen, Attend and Spell网络，是直接把音频录音转写为以空格分隔的字符序列的注意力seq2seq模型，采用编码器-解码器结构，包含负责声学建模的listener模块、负责输出字符的speller模块以及作为二者中介的attention模块。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-765ec796280535cd105fabf4"
+          }
+        ]
+      },
+      {
+        "key": "experiment_setup",
+        "text": "所有实验在Wall Street Journal数据集上进行，用si284训练、dev93验证、eval92评估；涉及语言模型的实验使用Kaldi WSJ s5 recipe构建的扩展词表三元语言模型，并用FST框架将语言模型与拼写词典组合。",
+        "citations": [
+          {
+            "paper_id": "1612.02695",
+            "chunk_id": "c-a30dc1a770cb3f6b7bc5f850"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "3f4a032d52b1b0fb0905f3cc14e16b8744462d49aaa744d3652bdb3d64dc6257",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "c88e8a1d8beea6c18533a45ad692bd1874dffac2249847350dd8ad3a63b2c07a",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "8274cdd8116e633979baa0f8de38f2fa13ae9493c52b6d41ca836ed35e56b17d",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "271baf4c5532bc05bc032d82a3e7018f921b54b6d9322ae55238cf0a01ac22e6",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "fc7563c9633afde772696b2d593beb952082c4d552c9aee6565f3caab2cc5fa3",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "d6d80e8e399519430869ae8cd2542455d6b13a326e9a564a8083c6e2367806e6",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "048b533dbdf7ba632e0002fe8d8ac41e8fac79891487514ce9d6b512b04e9be5",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "0e8315e6f7ee51a09e1967bfc99f88ee688b76b9a8f0a9a51c46ed3b955b350b",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "4404e51eee912bd02ef4f93717e61e4a4cc821367148bde0a27d435775d5f249",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "d019ba989f80835776ea026416a9d74050c367cf78cd863ea754c05af7d2b40b",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5612,
+        "completion_tokens": 112,
+        "total_tokens": 5724,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00087137,
+          "allowance": 0.00065353,
+          "tokens": {
+            "input": 5356,
+            "output": 112,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5356,
+        "output_tokens": 112,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2376.11419998575
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "e95bf6a571fee42de2ebc22b8881dcbfc7ee6579aaadfbc454103ceeec513684",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5625,
+        "completion_tokens": 126,
+        "total_tokens": 5751,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00091935,
+          "allowance": 0.00068951,
+          "tokens": {
+            "input": 5625,
+            "output": 126,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5625,
+        "output_tokens": 126,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7866.008799988776
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "41b1e05756f56c160cc1a49729037ce63d150edb1e628e297ce342879c884236",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5727,
+        "completion_tokens": 951,
+        "total_tokens": 6678,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00139202,
+          "allowance": 0.00104401,
+          "tokens": {
+            "input": 5471,
+            "output": 951,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5471,
+        "output_tokens": 951,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 8556.719499989413
+    }
+  ]
+}

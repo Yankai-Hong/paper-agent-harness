@@ -1,0 +1,278 @@
+{
+  "turn_id": "insufficient-2",
+  "session_id": "insufficient-2",
+  "question": "In the paper Unsupervised Question Answering for Fact-Checking, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure.",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "In the paper Unsupervised Question Answering for Fact-Checking, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure."
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.013799999578623101
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "In the paper Unsupervised Question Answering for Fact-Checking, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure."
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "Unsupervised Question Answering for Fact-Checking SHA256 checksum of raw experiment log",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1910.07154"
+        ],
+        "resolved_entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking"
+        }
+      },
+      "elapsed_ms": 2666.6549000001396
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Unsupervised Question Answering for Fact-Checking SHA256 checksum of raw experiment log"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-41beb2396050f5a800883bfc",
+          "c-c1927faa43ced5496949efab",
+          "c-010ec9cd6f2b1eb9cb5ec5c1",
+          "c-e2f96285ef83120572139947",
+          "c-513c3a94dd7b5afb6f19eb1f",
+          "c-9798bad262f70e8bf92a0cb7",
+          "c-c7c17ddf8a10b59543bbe5cd",
+          "c-876777c5fcd9dd053c8a41bf",
+          "c-0485dab4937aa7af5eecb9cd",
+          "c-e5f0f06f52cc22d21ea40e2f",
+          "c-313ba9596baf9efe08ef6205",
+          "c-1d3f6fb5890d214f46df80e8"
+        ]
+      },
+      "elapsed_ms": 315.2518999995664
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-41beb2396050f5a800883bfc",
+          "c-c1927faa43ced5496949efab",
+          "c-010ec9cd6f2b1eb9cb5ec5c1",
+          "c-e2f96285ef83120572139947",
+          "c-513c3a94dd7b5afb6f19eb1f",
+          "c-9798bad262f70e8bf92a0cb7",
+          "c-c7c17ddf8a10b59543bbe5cd",
+          "c-876777c5fcd9dd053c8a41bf",
+          "c-0485dab4937aa7af5eecb9cd",
+          "c-e5f0f06f52cc22d21ea40e2f",
+          "c-313ba9596baf9efe08ef6205",
+          "c-1d3f6fb5890d214f46df80e8"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-41beb2396050f5a800883bfc",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-010ec9cd6f2b1eb9cb5ec5c1"
+        ]
+      },
+      "elapsed_ms": 267.4044000013964
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-41beb2396050f5a800883bfc",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-010ec9cd6f2b1eb9cb5ec5c1"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "reason": "The supplied evidence contains only the paper's abstract, introduction, system description, results, and conclusion. None of it includes an unpublished raw experiment log or any SHA256 checksum. The requested value cannot be found in the evidence and must not be inferred or fabricated."
+      },
+      "elapsed_ms": 3249.8291000010795
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.0012000018614344299
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "insufficient-2",
+        "entities": {},
+        "facts": {},
+        "unresolved": [
+          "In the paper Unsupervised Question Answering for Fact-Checking, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure."
+        ],
+        "summary": {}
+      },
+      "elapsed_ms": 6.538699999509845
+    }
+  ],
+  "started_at": 1793076533.743525,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "f8b1d002a2d77150c570f1b30a45e9290a918c7732750e53634ff4b57c521e08",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3273,
+        "completion_tokens": 77,
+        "total_tokens": 3350,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00053715,
+          "allowance": 0.00040286,
+          "tokens": {
+            "input": 3273,
+            "output": 77,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3273,
+        "output_tokens": 77,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2660.6748000012885
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 2,
+      "request_hash": "db3b6c40b9570c361568bfcc714e15a678836ccf736f63a0123229ca3bb9477b",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4098,
+        "completion_tokens": 66,
+        "total_tokens": 4164,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0006543,
+          "allowance": 0.00049072,
+          "tokens": {
+            "input": 4098,
+            "output": 66,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4098,
+        "output_tokens": 66,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3249.5328999975754
+    }
+  ]
+}

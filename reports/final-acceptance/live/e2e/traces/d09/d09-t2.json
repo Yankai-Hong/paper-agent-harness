@@ -1,0 +1,918 @@
+{
+  "turn_id": "d09-t2",
+  "session_id": "d09",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.00609993003308773
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Understanding the Radical Mind: Identifying Signals to Detect Extremist Content on Twitter 中用于检测激进内容的行为特征及其证据，包括活跃度、关注者/被关注者比例、mention图中心性、HITS hub与authority等",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1905.08067"
+        ],
+        "resolved_entities": {
+          "paper": "1905.08067"
+        }
+      },
+      "elapsed_ms": 4290.941099985503
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Understanding the Radical Mind: Identifying Signals to Detect Extremist Content on Twitter 中用于检测激进内容的行为特征及其证据，包括活跃度、关注者/被关注者比例、mention图中心性、HITS hub与authority等"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-b09cb3e1017bca35035ac294",
+          "c-d5f2499401c5351f97c00c60",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-bbf9b41be02a61155bd9d333",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-b73d7e77c004a56112f29967",
+          "c-6ec029d3b40920ea1b9b5a88",
+          "c-e1321010cb4e591145b39338",
+          "c-6b9030fb1f613d380f3b244e",
+          "c-047e900b347ed83feba417a8",
+          "c-6d282fc827b834bb801ad957",
+          "c-330e5b566cdd85e2f4155c43",
+          "c-72855fdc305374349719a009",
+          "c-9ec98bb818104ce3b14b56b5",
+          "c-68e3feef17aaf79ccccf89e4"
+        ]
+      },
+      "elapsed_ms": 45.67639995366335
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-b09cb3e1017bca35035ac294",
+          "c-d5f2499401c5351f97c00c60",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-bbf9b41be02a61155bd9d333",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-b73d7e77c004a56112f29967",
+          "c-6ec029d3b40920ea1b9b5a88",
+          "c-e1321010cb4e591145b39338",
+          "c-6b9030fb1f613d380f3b244e",
+          "c-047e900b347ed83feba417a8",
+          "c-6d282fc827b834bb801ad957",
+          "c-330e5b566cdd85e2f4155c43",
+          "c-72855fdc305374349719a009",
+          "c-9ec98bb818104ce3b14b56b5",
+          "c-68e3feef17aaf79ccccf89e4"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-3bbf91195ea0736fb5887b71"
+        ]
+      },
+      "elapsed_ms": 326.2582999886945
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-3bbf91195ea0736fb5887b71"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "retrieve_again",
+        "next_query": "1905.08067 behavioural features activity followers/following ratio mention graph centrality HITS hub authority feature importance",
+        "reason": "当前证据只给出行为特征属于三类特征之一，并提到文本、心理与行为信号及心理特征最具区分性，但没有具体说明“活跃度、关注者/被关注者比例、mention图中心性、HITS hub与authority”这些行为特征及其重要性的原文证据；历史上下文中的相关说法被标为 conflict/不可作为证据。因此需要针对行为特征的具体定义与实验结果重新检索。"
+      },
+      "elapsed_ms": 3117.6987999351695
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 2,
+      "input": {
+        "query": "1905.08067 behavioural features activity followers/following ratio mention graph centrality HITS hub authority feature importance"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-d5f2499401c5351f97c00c60",
+          "c-b09cb3e1017bca35035ac294",
+          "c-72855fdc305374349719a009",
+          "c-bbf9b41be02a61155bd9d333",
+          "c-0996ce97ab0b0073667dab34",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-330e5b566cdd85e2f4155c43",
+          "c-6b9030fb1f613d380f3b244e",
+          "c-6ec029d3b40920ea1b9b5a88",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-a772d00cbba5e0fde933e477",
+          "c-6d282fc827b834bb801ad957",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-9ec98bb818104ce3b14b56b5",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-68e3feef17aaf79ccccf89e4",
+          "c-047e900b347ed83feba417a8",
+          "c-e1321010cb4e591145b39338",
+          "c-b73d7e77c004a56112f29967"
+        ]
+      },
+      "elapsed_ms": 40.40669999085367
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 2,
+      "input": {
+        "candidate_ids": [
+          "c-d5f2499401c5351f97c00c60",
+          "c-b09cb3e1017bca35035ac294",
+          "c-72855fdc305374349719a009",
+          "c-bbf9b41be02a61155bd9d333",
+          "c-0996ce97ab0b0073667dab34",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-330e5b566cdd85e2f4155c43",
+          "c-6b9030fb1f613d380f3b244e",
+          "c-6ec029d3b40920ea1b9b5a88",
+          "c-ac6bbbcbbe051f1804f88f38",
+          "c-a772d00cbba5e0fde933e477",
+          "c-6d282fc827b834bb801ad957",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-9ec98bb818104ce3b14b56b5",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-68e3feef17aaf79ccccf89e4",
+          "c-047e900b347ed83feba417a8",
+          "c-e1321010cb4e591145b39338",
+          "c-b73d7e77c004a56112f29967"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-d5f2499401c5351f97c00c60",
+          "c-b09cb3e1017bca35035ac294",
+          "c-72855fdc305374349719a009",
+          "c-330e5b566cdd85e2f4155c43"
+        ]
+      },
+      "elapsed_ms": 530.4785999469459
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 2,
+      "input": {
+        "evidence_ids": [
+          "c-0996ce97ab0b0073667dab34",
+          "c-a772d00cbba5e0fde933e477",
+          "c-d156d90baa1521acbf5ee43c",
+          "c-120b9edabe0a4b7c2521a5ec",
+          "c-3bbf91195ea0736fb5887b71",
+          "c-d5f2499401c5351f97c00c60",
+          "c-b09cb3e1017bca35035ac294",
+          "c-72855fdc305374349719a009",
+          "c-330e5b566cdd85e2f4155c43"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据完整支持该问题。c-d5f2499401c5351f97c00c60 明确列出行为特征包括活跃度（发推频率）、关注者/被关注者比例，以及基于mention有向图构造后使用degree centrality、betweenness centrality、HITS-Hub等中心性度量衡量影响力；c-b09cb3e1017bca35035ac294 补充HITS hub与authority排名及提及次数为高贡献特征，并解释其含义；c-0996ce97ab0b0073667dab34 确认行为特征属三类可区分信号之一。问题涵盖的各项均有直接证据，无需外部常识补充。"
+      },
+      "elapsed_ms": 7074.31529997848
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "three_feature_categories",
+            "text": "论文探索三类信息特征来检测激进内容：1) 激进语言（文本特征）；2) 心理信号（心理特征）；3) 行为特征，其中一些是基于用户的，另一些是基于消息的。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-d156d90baa1521acbf5ee43c"
+              }
+            ]
+          },
+          {
+            "key": "behavioural_features",
+            "text": "行为特征用于捕捉与用户及其行为相关的属性，包括用户活跃程度（发推频率）以及关注者/被关注者比例（followers/following ratio）。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-d5f2499401c5351f97c00c60"
+              }
+            ]
+          },
+          {
+            "key": "mention_graph",
+            "text": "论文利用 hashtag 和 mention 动作的特征捕捉用户互动，并构建 mention 交互图，该图为有向图，当用户 i 提及用户 j 时，两节点间存在边。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-d5f2499401c5351f97c00c60"
+              }
+            ]
+          },
+          {
+            "key": "centrality_measures",
+            "text": "构建 mention 图后，论文使用不同的中心性度量来衡量每个用户对其网络的影响力，例如 degree centrality、betweenness centrality 和 HITS-Hub。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-d5f2499401c5351f97c00c60"
+              }
+            ]
+          },
+          {
+            "key": "top_behavioural_features",
+            "text": "在最重要的特征中，与单个用户提及次数以及其在交互网络中的 HITS hub 和 authority 排名相关的行为特征位居前茅。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-b09cb3e1017bca35035ac294"
+              }
+            ]
+          },
+          {
+            "key": "behavioural_interpretation",
+            "text": "论文将这些行为特征与用户与他人互动的活跃程度以及其从社区获得关注的程度联系起来，并关联到激进用户传播意识形态和接触潜在同类者的目标。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-b09cb3e1017bca35035ac294"
+              }
+            ]
+          },
+          {
+            "key": "feature_importance_method",
+            "text": "论文使用随机森林的 mean decrease impurity 方法来确定每个特征类别中最重要的特征。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-b09cb3e1017bca35035ac294"
+              }
+            ]
+          },
+          {
+            "key": "psychological_top_feature",
+            "text": "用于区分激进推文的最重要特征是心理特征距离度量，其次是 Us-them 二分法（统计 I、they、we、you 等代词的总数）。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-b09cb3e1017bca35035ac294"
+              }
+            ]
+          },
+          {
+            "key": "overall_signal_claim",
+            "text": "论文报告激进用户确实表现出可区分的文本、心理和行为属性，并称心理属性是最具区分度的特征之一。",
+            "citations": [
+              {
+                "paper_id": "1905.08067",
+                "chunk_id": "c-0996ce97ab0b0073667dab34"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 5907.766900025308
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "d4a8648d11bfda2e5df7b4126437413cdaba9f1eaaad8560a9f923d7cd2b2193",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "dd63a7192368de5d062e26e868cb2e951d4fd3c40d723e396f9e34d16d622a62",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "a7fa3d3c6a31d8b880965888bdffcab9e97f43e0705a9025b003b8ab0235fbe7",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "6ee36c9794f89c4d3ae6531eaf7cd0068d50af13367ae1ee5f791ff2d2a15e3a",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "c8812ce1e9bf1df06dada369a908c04da18860e897471edb692c156c30c7375a",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "6a2fe6bc190926e038c74d862cef0c19a4280cdb913645816858aada29c8517e",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "93e04ab4fd44690b28d5d06bfcbf4caf92534c413a02f8c08f7ee5e14088c365",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "5f0bb6cc828370bf4f8472043dd2786ea7c9781946d6293dc09e203cfa990a51",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "82ff83a8cb2fab5ba0988cc4ea707684d4ef680300c178e387466eb4ccf0e61d",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d09",
+        "entities": {
+          "paper": "1905.08067"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1905.08067"
+          ]
+        }
+      },
+      "elapsed_ms": 21.522800088860095
+    }
+  ],
+  "started_at": 1793025088.671268,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "c5a50028966805b02332d05481b1bae0157e325103cf39f5c85d318521df0c64",
+      "session_id": "d09",
+      "canonical_key": "[\"paper_evidence\", \"1905.08067\", \"activity followers\"]",
+      "text": "行为特征包括用户活跃程度（发推频率）以及关注者/被关注者比例（followers/following ratio）。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1905.08067",
+      "evidence_ids": [
+        "c-d5f2499401c5351f97c00c60"
+      ],
+      "turn_id": "d09-t1",
+      "created_at": 1793025088.6487541,
+      "updated_at": 1793025088.6487541,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1905.08067"
+      ],
+      "kind": "conflict",
+      "content": "行为特征包括用户活跃程度（发推频率）以及关注者/被关注者比例（followers/following ratio）。",
+      "record_id": "fact:c5a50028966805b02332d05481b1bae0157e325103cf39f5c85d318521df0c64",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.34,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "633d7391c9d6bacea18dbb4093b9af3ccb322d5fd36f368210a98c8002afec28",
+      "session_id": "d09",
+      "canonical_key": "[\"paper_evidence\", \"1905.08067\", \"behavioural interpretation\"]",
+      "text": "这些行为特征反映了用户与他人互动的活跃程度及其从社区获得的关注度，这与激进用户传播意识形态和接触潜在同类的目标相关。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1905.08067",
+      "evidence_ids": [
+        "c-b09cb3e1017bca35035ac294"
+      ],
+      "turn_id": "d09-t1",
+      "created_at": 1793025088.6487541,
+      "updated_at": 1793025088.6487541,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1905.08067"
+      ],
+      "kind": "conflict",
+      "content": "这些行为特征反映了用户与他人互动的活跃程度及其从社区获得的关注度，这与激进用户传播意识形态和接触潜在同类的目标相关。",
+      "record_id": "fact:633d7391c9d6bacea18dbb4093b9af3ccb322d5fd36f368210a98c8002afec28",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.32,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "0e86819f59feb688883f2d0a66aaa69874ba45a4eba58b6700a4d7e68ca0ee4a",
+      "session_id": "d09",
+      "canonical_key": "[\"paper_evidence\", \"1905.08067\", \"mentions hits top\"]",
+      "text": "在重要特征中，与单个用户提及次数及其在交互网络中的HITS hub和authority排名相关的行为特征位居前茅。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1905.08067",
+      "evidence_ids": [
+        "c-b09cb3e1017bca35035ac294"
+      ],
+      "turn_id": "d09-t1",
+      "created_at": 1793025088.6487541,
+      "updated_at": 1793025088.6487541,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1905.08067"
+      ],
+      "kind": "conflict",
+      "content": "在重要特征中，与单个用户提及次数及其在交互网络中的HITS hub和authority排名相关的行为特征位居前茅。",
+      "record_id": "fact:0e86819f59feb688883f2d0a66aaa69874ba45a4eba58b6700a4d7e68ca0ee4a",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.28,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    },
+    {
+      "fact_id": "ce25e841b1a7d6c63216e740825d5048f69f148c1564e9a4e2b212d866c72fc8",
+      "session_id": "d09",
+      "canonical_key": "[\"paper_evidence\", \"1905.08067\", \"centrality\"]",
+      "text": "行为特征使用不同的中心性度量来衡量用户在社交网络中的影响力，例如degree centrality、betweenness centrality和HITS-Hub。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1905.08067",
+      "evidence_ids": [
+        "c-d5f2499401c5351f97c00c60"
+      ],
+      "turn_id": "d09-t1",
+      "created_at": 1793025088.6487541,
+      "updated_at": 1793025088.6487541,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1905.08067"
+      ],
+      "kind": "conflict",
+      "content": "行为特征使用不同的中心性度量来衡量用户在社交网络中的影响力，例如degree centrality、betweenness centrality和HITS-Hub。",
+      "record_id": "fact:ce25e841b1a7d6c63216e740825d5048f69f148c1564e9a4e2b212d866c72fc8",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.26,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 4,
+      "rank_score": 0.015625
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "three_feature_categories",
+        "text": "论文探索三类信息特征来检测激进内容：1) 激进语言（文本特征）；2) 心理信号（心理特征）；3) 行为特征，其中一些是基于用户的，另一些是基于消息的。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-d156d90baa1521acbf5ee43c"
+          }
+        ]
+      },
+      {
+        "key": "behavioural_features",
+        "text": "行为特征用于捕捉与用户及其行为相关的属性，包括用户活跃程度（发推频率）以及关注者/被关注者比例（followers/following ratio）。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-d5f2499401c5351f97c00c60"
+          }
+        ]
+      },
+      {
+        "key": "mention_graph",
+        "text": "论文利用 hashtag 和 mention 动作的特征捕捉用户互动，并构建 mention 交互图，该图为有向图，当用户 i 提及用户 j 时，两节点间存在边。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-d5f2499401c5351f97c00c60"
+          }
+        ]
+      },
+      {
+        "key": "centrality_measures",
+        "text": "构建 mention 图后，论文使用不同的中心性度量来衡量每个用户对其网络的影响力，例如 degree centrality、betweenness centrality 和 HITS-Hub。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-d5f2499401c5351f97c00c60"
+          }
+        ]
+      },
+      {
+        "key": "top_behavioural_features",
+        "text": "在最重要的特征中，与单个用户提及次数以及其在交互网络中的 HITS hub 和 authority 排名相关的行为特征位居前茅。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-b09cb3e1017bca35035ac294"
+          }
+        ]
+      },
+      {
+        "key": "behavioural_interpretation",
+        "text": "论文将这些行为特征与用户与他人互动的活跃程度以及其从社区获得关注的程度联系起来，并关联到激进用户传播意识形态和接触潜在同类者的目标。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-b09cb3e1017bca35035ac294"
+          }
+        ]
+      },
+      {
+        "key": "feature_importance_method",
+        "text": "论文使用随机森林的 mean decrease impurity 方法来确定每个特征类别中最重要的特征。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-b09cb3e1017bca35035ac294"
+          }
+        ]
+      },
+      {
+        "key": "psychological_top_feature",
+        "text": "用于区分激进推文的最重要特征是心理特征距离度量，其次是 Us-them 二分法（统计 I、they、we、you 等代词的总数）。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-b09cb3e1017bca35035ac294"
+          }
+        ]
+      },
+      {
+        "key": "overall_signal_claim",
+        "text": "论文报告激进用户确实表现出可区分的文本、心理和行为属性，并称心理属性是最具区分度的特征之一。",
+        "citations": [
+          {
+            "paper_id": "1905.08067",
+            "chunk_id": "c-0996ce97ab0b0073667dab34"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "d4a8648d11bfda2e5df7b4126437413cdaba9f1eaaad8560a9f923d7cd2b2193",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "dd63a7192368de5d062e26e868cb2e951d4fd3c40d723e396f9e34d16d622a62",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "a7fa3d3c6a31d8b880965888bdffcab9e97f43e0705a9025b003b8ab0235fbe7",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "6ee36c9794f89c4d3ae6531eaf7cd0068d50af13367ae1ee5f791ff2d2a15e3a",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "c8812ce1e9bf1df06dada369a908c04da18860e897471edb692c156c30c7375a",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "6a2fe6bc190926e038c74d862cef0c19a4280cdb913645816858aada29c8517e",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "93e04ab4fd44690b28d5d06bfcbf4caf92534c413a02f8c08f7ee5e14088c365",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "5f0bb6cc828370bf4f8472043dd2786ea7c9781946d6293dc09e203cfa990a51",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "82ff83a8cb2fab5ba0988cc4ea707684d4ef680300c178e387466eb4ccf0e61d",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "a4a50c42f1aa4f3da9ba88081f3a2781c17d02c864425e964fbb7162c30bc92a",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4009,
+        "completion_tokens": 101,
+        "total_tokens": 4110,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 256,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00062432,
+          "allowance": 0.00046824,
+          "tokens": {
+            "input": 3753,
+            "output": 101,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3753,
+        "output_tokens": 101,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4282.814200036228
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "5bfcf118cc78ce1494f077797375be537744773ce358f90f9e545618bf6fd89f",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5851,
+        "completion_tokens": 130,
+        "total_tokens": 5981,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00095565,
+          "allowance": 0.00071674,
+          "tokens": {
+            "input": 5851,
+            "output": 130,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5851,
+        "output_tokens": 130,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3117.293499992229
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "4242226de8604352743a7d1db0a9e635b4d6544895e2dc12d27604f673481773",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 9408,
+        "completion_tokens": 155,
+        "total_tokens": 9563,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0015042,
+          "allowance": 0.00112815,
+          "tokens": {
+            "input": 9408,
+            "output": 155,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 9408,
+        "output_tokens": 155,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7073.800900019705
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 8,
+      "request_hash": "3216ee8aee48bbffe310cf6842f2e7a15262f8c263eba92e8fae57a3117153a3",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 9510,
+        "completion_tokens": 794,
+        "total_tokens": 10304,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0019029,
+          "allowance": 0.00142718,
+          "tokens": {
+            "input": 9510,
+            "output": 794,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 9510,
+        "output_tokens": 794,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5907.116700080223
+    }
+  ]
+}

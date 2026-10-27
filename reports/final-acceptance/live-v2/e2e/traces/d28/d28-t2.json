@@ -1,0 +1,751 @@
+{
+  "turn_id": "d28-t2",
+  "session_id": "d28",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.0071999384090304375
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "How are language models used to make predictions on humorous statements in the paper Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1705.10272"
+        ],
+        "resolved_entities": {
+          "paper": "1705.10272"
+        }
+      },
+      "elapsed_ms": 5235.376300057396
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "How are language models used to make predictions on humorous statements in the paper Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-fe0545dbe9418ac897a44fc9",
+          "c-2e6195119fdfce8fe43dc752",
+          "c-c7e2689e7ebce1fdcfff6c6f"
+        ]
+      },
+      "elapsed_ms": 40.1482000015676
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-fe0545dbe9418ac897a44fc9",
+          "c-2e6195119fdfce8fe43dc752",
+          "c-c7e2689e7ebce1fdcfff6c6f"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-fe0545dbe9418ac897a44fc9",
+          "c-2e6195119fdfce8fe43dc752"
+        ]
+      },
+      "elapsed_ms": 130.80279994755983
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-04fd36e8ebf0badf98e5c22f",
+          "c-ab1f50c84fac89c654f4ed96",
+          "c-42b2a8b4190d48e2271bf4e7",
+          "c-fe0545dbe9418ac897a44fc9",
+          "c-2e6195119fdfce8fe43dc752"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "The resolved question asks how the paper uses language models to make predictions on humorous statements. The supplied evidence directly supports this: Ngram language models are trained on a funny-tweet corpus and a news corpus and assign probabilities used to score/rank tweets (c-42b2a8b4190d48e2271bf4e7); the goal is to detect and rank humorous statements on a continuous scale (c-ab1f50c84fac89c654f4ed96, c-04fd36e8ebf0badf98e5c22f); and results, including comparisons between models and corpora, are reported (c-2e6195119fdfce8fe43dc752). All key claims can be cited to retrieved spans without relying on the untrusted historical facts or outside common sense."
+      },
+      "elapsed_ms": 3740.6682000728324
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "goal_ranking",
+            "text": "论文的目标是开发自动检测幽默语句并在连续尺度上对其排序的方法。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-ab1f50c84fac89c654f4ed96"
+              }
+            ]
+          },
+          {
+            "key": "focus_continuous",
+            "text": "研究关注幽默的连续性和主观性方面，因为并非所有笑话都同样有趣，所以使用语言模型和深度学习方法让潜在幽默语句相互排序。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-04fd36e8ebf0badf98e5c22f"
+              }
+            ]
+          },
+          {
+            "key": "ngram_rationale",
+            "text": "作者首先采用传统 Ngram 语言模型，原因有两点：Ngram 语言模型可以通过训练数据学习某种幽默风格，并且能为每个输入赋予概率，从而可以相对排序语句。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "two_corpora",
+            "text": "系统使用 Ngram 语言模型估计推文概率，分别从两个语料库建模：来自 @midnight 节目的搞笑推文集合，以及可免费用于研究的新闻数据语料库。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "scoring_rule",
+            "text": "根据搞笑推文模型概率更高的推文被认为更有趣，因为它更像幽默训练数据；而根据新闻语言模型概率更低的推文被认为更有趣，因为它最不像（不幽默的）新闻语料。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "features_tool",
+            "text": "模型以 bigram 和 trigram 作为特征，使用 KenLM，并采用 modified Kneser-Ney 平滑和回退技术。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "semeval_tasks",
+            "text": "研究通过参加 SemEval-2017 Task 6 #HashtagWars 开始，包括两个子任务：成对比较（判断两条推文哪条更有趣）和半排序（将推文归入最有趣、接下来九条最有兴趣、其余全部三类）。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+              }
+            ]
+          },
+          {
+            "key": "results_comparison",
+            "text": "结果显示，新闻数据训练的模型显著优于推文模型，bigram 模型略好于 trigram 模型；提交的新闻数据 trigram 模型在子任务 A 中排名第四，在子任务 B 中排名第一。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-2e6195119fdfce8fe43dc752"
+              }
+            ]
+          },
+          {
+            "key": "data_size_explanation",
+            "text": "作者认为新闻数据相对推文数据的显著优势源于新闻数据量大得多：推文数据仅约 21,000 条推文，而新闻数据约 6.2 GB 文本。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-2e6195119fdfce8fe43dc752"
+              }
+            ]
+          },
+          {
+            "key": "oov_limitation",
+            "text": "语言模型方法的一个局限是遇到大量未登录词，而幽默依赖创造性语言使用（如基于生造词的双关），增加训练数据量无法解决该问题。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-fe0545dbe9418ac897a44fc9"
+              }
+            ]
+          },
+          {
+            "key": "deep_learning_plan",
+            "text": "作者提出字符级 CNN 可处理未登录词问题，LSTM 等 RNN 可捕捉 Ngram 模型无法捕捉的长距离依赖，并计划探索深度学习方法。",
+            "citations": [
+              {
+                "paper_id": "1705.10272",
+                "chunk_id": "c-fe0545dbe9418ac897a44fc9"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 9310.79369992949
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "2abecb9077744c650bed567504714caf15595022da99a2fb82de1773876b7ef1",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "c88171ae792a8f827bcdb5534ddb3e0d2f9aaee2df9bac3856c541363dd873a4",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "ecefa1163e241f655e5db7aae26d7e7cfb8f8d2c10b6243360a7244ceef131ac",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "ba382c7f33b28c2f22e2792c68ae5e9e9efc5028af158a60e58d30f695f36a4e",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "8f1015acd21cfaabe87d606044dc77c6ab23ac69d17bff833198d33093674374",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "7b3e408f1d13b43ebb84507ff5583997be41e3229092692403d639c9cdd4bc5c",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "80cb346a4683afe590f6c5e46c807e0dbdc1b074aa50dc2bcb43bd5c5e48968b",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "b784335840af068e03768d142f418115916da322a6cba865857e0292e5949c83",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "35ea309d700388a9d18eaadba31431415245ecccb0b9a2b11fd8d9e9e8ff4b79",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "0477aa79a3302e55b25f4210a8ed06a268e56f1a5f99364c865938f807903d92",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "f325df48646c7dcd3c6f3c1c34f61760a5cf987d8ec5bfc0665ba34bfbacffcb",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d28",
+        "entities": {
+          "paper": "1705.10272"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1705.10272"
+          ]
+        }
+      },
+      "elapsed_ms": 12.637299951165915
+    }
+  ],
+  "started_at": 1793025767.1175964,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "6578341024245c25220ec8f528604c6b071411d4e667ed17569b6a6315651cd1",
+      "session_id": "d28",
+      "canonical_key": "[\"paper_evidence\", \"1705.10272\", \"ranking goal\"]",
+      "text": "Because not all jokes are equally funny, the authors use Language Models and Deep Learning methods to rank potentially humorous statements relative to each other rather than only detecting humor.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1705.10272",
+      "evidence_ids": [
+        "c-04fd36e8ebf0badf98e5c22f"
+      ],
+      "turn_id": "d28-t1",
+      "created_at": 1793025767.0831306,
+      "updated_at": 1793025767.0831306,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1705.10272"
+      ],
+      "kind": "conflict",
+      "content": "Because not all jokes are equally funny, the authors use Language Models and Deep Learning methods to rank potentially humorous statements relative to each other rather than only detecting humor.",
+      "record_id": "fact:6578341024245c25220ec8f528604c6b071411d4e667ed17569b6a6315651cd1",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.4230769230769231,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "f3ae0345254293682ed40eadd8d3475a26cbfc05bc8ee9fafcb47cf016f4b6b5",
+      "session_id": "d28",
+      "canonical_key": "[\"paper_evidence\", \"1705.10272\", \"model type\"]",
+      "text": "The paper uses traditional Ngram language models as its first approach, because such models can learn a style of humor from training examples and assign a probability to each input, enabling relative ranking of statements.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1705.10272",
+      "evidence_ids": [
+        "c-42b2a8b4190d48e2271bf4e7"
+      ],
+      "turn_id": "d28-t1",
+      "created_at": 1793025767.0821285,
+      "updated_at": 1793025767.0821285,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1705.10272"
+      ],
+      "kind": "conflict",
+      "content": "The paper uses traditional Ngram language models as its first approach, because such models can learn a style of humor from training examples and assign a probability to each input, enabling relative ranking of statements.",
+      "record_id": "fact:f3ae0345254293682ed40eadd8d3475a26cbfc05bc8ee9fafcb47cf016f4b6b5",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3076923076923077,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "203408268d6b81ea2c7c45ee6d1c6257d6748be8ee396544da9c229e01939e0a",
+      "session_id": "d28",
+      "canonical_key": "[\"paper_evidence\", \"1705.10272\", \"results\"]",
+      "text": "Models trained on news data had a significant advantage over the tweets model, and bigram models performed slightly better than trigrams; the submitted news-trained trigram models placed fourth in Subtask A and first in Subtask B.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1705.10272",
+      "evidence_ids": [
+        "c-2e6195119fdfce8fe43dc752"
+      ],
+      "turn_id": "d28-t1",
+      "created_at": 1793025767.0831306,
+      "updated_at": 1793025767.0831306,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1705.10272"
+      ],
+      "kind": "conflict",
+      "content": "Models trained on news data had a significant advantage over the tweets model, and bigram models performed slightly better than trigrams; the submitted news-trained trigram models placed fourth in Subtask A and first in Subtask B.",
+      "record_id": "fact:203408268d6b81ea2c7c45ee6d1c6257d6748be8ee396544da9c229e01939e0a",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.23076923076923078,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "goal_ranking",
+        "text": "论文的目标是开发自动检测幽默语句并在连续尺度上对其排序的方法。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-ab1f50c84fac89c654f4ed96"
+          }
+        ]
+      },
+      {
+        "key": "focus_continuous",
+        "text": "研究关注幽默的连续性和主观性方面，因为并非所有笑话都同样有趣，所以使用语言模型和深度学习方法让潜在幽默语句相互排序。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-04fd36e8ebf0badf98e5c22f"
+          }
+        ]
+      },
+      {
+        "key": "ngram_rationale",
+        "text": "作者首先采用传统 Ngram 语言模型，原因有两点：Ngram 语言模型可以通过训练数据学习某种幽默风格，并且能为每个输入赋予概率，从而可以相对排序语句。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "two_corpora",
+        "text": "系统使用 Ngram 语言模型估计推文概率，分别从两个语料库建模：来自 @midnight 节目的搞笑推文集合，以及可免费用于研究的新闻数据语料库。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "scoring_rule",
+        "text": "根据搞笑推文模型概率更高的推文被认为更有趣，因为它更像幽默训练数据；而根据新闻语言模型概率更低的推文被认为更有趣，因为它最不像（不幽默的）新闻语料。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "features_tool",
+        "text": "模型以 bigram 和 trigram 作为特征，使用 KenLM，并采用 modified Kneser-Ney 平滑和回退技术。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "semeval_tasks",
+        "text": "研究通过参加 SemEval-2017 Task 6 #HashtagWars 开始，包括两个子任务：成对比较（判断两条推文哪条更有趣）和半排序（将推文归入最有趣、接下来九条最有兴趣、其余全部三类）。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-42b2a8b4190d48e2271bf4e7"
+          }
+        ]
+      },
+      {
+        "key": "results_comparison",
+        "text": "结果显示，新闻数据训练的模型显著优于推文模型，bigram 模型略好于 trigram 模型；提交的新闻数据 trigram 模型在子任务 A 中排名第四，在子任务 B 中排名第一。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-2e6195119fdfce8fe43dc752"
+          }
+        ]
+      },
+      {
+        "key": "data_size_explanation",
+        "text": "作者认为新闻数据相对推文数据的显著优势源于新闻数据量大得多：推文数据仅约 21,000 条推文，而新闻数据约 6.2 GB 文本。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-2e6195119fdfce8fe43dc752"
+          }
+        ]
+      },
+      {
+        "key": "oov_limitation",
+        "text": "语言模型方法的一个局限是遇到大量未登录词，而幽默依赖创造性语言使用（如基于生造词的双关），增加训练数据量无法解决该问题。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-fe0545dbe9418ac897a44fc9"
+          }
+        ]
+      },
+      {
+        "key": "deep_learning_plan",
+        "text": "作者提出字符级 CNN 可处理未登录词问题，LSTM 等 RNN 可捕捉 Ngram 模型无法捕捉的长距离依赖，并计划探索深度学习方法。",
+        "citations": [
+          {
+            "paper_id": "1705.10272",
+            "chunk_id": "c-fe0545dbe9418ac897a44fc9"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "2abecb9077744c650bed567504714caf15595022da99a2fb82de1773876b7ef1",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "c88171ae792a8f827bcdb5534ddb3e0d2f9aaee2df9bac3856c541363dd873a4",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "ecefa1163e241f655e5db7aae26d7e7cfb8f8d2c10b6243360a7244ceef131ac",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "ba382c7f33b28c2f22e2792c68ae5e9e9efc5028af158a60e58d30f695f36a4e",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "8f1015acd21cfaabe87d606044dc77c6ab23ac69d17bff833198d33093674374",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "7b3e408f1d13b43ebb84507ff5583997be41e3229092692403d639c9cdd4bc5c",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "80cb346a4683afe590f6c5e46c807e0dbdc1b074aa50dc2bcb43bd5c5e48968b",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "b784335840af068e03768d142f418115916da322a6cba865857e0292e5949c83",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "35ea309d700388a9d18eaadba31431415245ecccb0b9a2b11fd8d9e9e8ff4b79",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "0477aa79a3302e55b25f4210a8ed06a268e56f1a5f99364c865938f807903d92",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "f325df48646c7dcd3c6f3c1c34f61760a5cf987d8ec5bfc0665ba34bfbacffcb",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "47fe4255ae04f831ad68e8ff4417ec930a0fae4f32dae82206c887bd10238d98",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4159,
+        "completion_tokens": 81,
+        "total_tokens": 4240,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00063482,
+          "allowance": 0.00047611,
+          "tokens": {
+            "input": 3903,
+            "output": 81,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3903,
+        "output_tokens": 81,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5224.023300106637
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "2ecd4c90d333d4b7c61b28ccc6f3f47a5b5a733e9119f652fe4a158a232fd057",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5556,
+        "completion_tokens": 183,
+        "total_tokens": 5739,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0009432,
+          "allowance": 0.0007074,
+          "tokens": {
+            "input": 5556,
+            "output": 183,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5556,
+        "output_tokens": 183,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3740.205300040543
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "678367e5a19830ad85ae77100b1cd1da241916ca20a19f960ddeec3eb6a24cff",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5658,
+        "completion_tokens": 957,
+        "total_tokens": 6615,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0014229,
+          "allowance": 0.00106717,
+          "tokens": {
+            "input": 5658,
+            "output": 957,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5658,
+        "output_tokens": 957,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 9309.86739997752
+    }
+  ]
+}

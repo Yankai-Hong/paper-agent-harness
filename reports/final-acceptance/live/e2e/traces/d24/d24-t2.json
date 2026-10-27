@@ -1,0 +1,723 @@
+{
+  "turn_id": "d24-t2",
+  "session_id": "d24",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.006100046448409557
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Hungarian Layer: Logics Empowered Neural Architecture experimental evidence for training on Quora Question Pairs paraphrase identification",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1712.02555"
+        ],
+        "resolved_entities": {
+          "paper": "1712.02555"
+        }
+      },
+      "elapsed_ms": 5336.813700036146
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Hungarian Layer: Logics Empowered Neural Architecture experimental evidence for training on Quora Question Pairs paraphrase identification"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-70876748d6ad7c5c4f480427",
+          "c-960c4cb907b38a179597b601",
+          "c-486c0ce43082d60933f2417a",
+          "c-20c91ecf7cd2be2f85843f65",
+          "c-93293501afba2ed0cf8487d1",
+          "c-f1c9938e8916274c07715a88",
+          "c-daafca6e27d47b75a48e6301",
+          "c-b93622d46669d6b12cc20c53",
+          "c-f2c31c48060de190a862f031",
+          "c-ffab6d10ca334d4e4c9ee050",
+          "c-956f65c1cb82f7732d021a62",
+          "c-e02ebd81f0f8210ef85fd8bf",
+          "c-529aa1915e8e6445e47ea30c",
+          "c-60e8ec36008eae41d3546269",
+          "c-d75097ed3922317c741e3cbf",
+          "c-37a2de5aa724cae9b2619ca3",
+          "c-f79dd8184ea8983680333965",
+          "c-5112038595edcda02e8cf555",
+          "c-c28eebe6a41fbe8fa9811775",
+          "c-7e2ee42a8adbbc86d5480f4e",
+          "c-2a707615e42bfddfc3e342a3"
+        ]
+      },
+      "elapsed_ms": 130.7435999624431
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-70876748d6ad7c5c4f480427",
+          "c-960c4cb907b38a179597b601",
+          "c-486c0ce43082d60933f2417a",
+          "c-20c91ecf7cd2be2f85843f65",
+          "c-93293501afba2ed0cf8487d1",
+          "c-f1c9938e8916274c07715a88",
+          "c-daafca6e27d47b75a48e6301",
+          "c-b93622d46669d6b12cc20c53",
+          "c-f2c31c48060de190a862f031",
+          "c-ffab6d10ca334d4e4c9ee050",
+          "c-956f65c1cb82f7732d021a62",
+          "c-e02ebd81f0f8210ef85fd8bf",
+          "c-529aa1915e8e6445e47ea30c",
+          "c-60e8ec36008eae41d3546269",
+          "c-d75097ed3922317c741e3cbf",
+          "c-37a2de5aa724cae9b2619ca3",
+          "c-f79dd8184ea8983680333965",
+          "c-5112038595edcda02e8cf555",
+          "c-c28eebe6a41fbe8fa9811775",
+          "c-7e2ee42a8adbbc86d5480f4e",
+          "c-2a707615e42bfddfc3e342a3"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427",
+          "c-960c4cb907b38a179597b601",
+          "c-20c91ecf7cd2be2f85843f65",
+          "c-f2c31c48060de190a862f031",
+          "c-956f65c1cb82f7732d021a62"
+        ]
+      },
+      "elapsed_ms": 506.5014000283554
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-70876748d6ad7c5c4f480427",
+          "c-960c4cb907b38a179597b601",
+          "c-20c91ecf7cd2be2f85843f65",
+          "c-f2c31c48060de190a862f031",
+          "c-956f65c1cb82f7732d021a62"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "论文证据直接支持该问题：作者在公开基准数据集“Quora Question Pairs”上，针对释义识别（paraphrase identification）任务进行了实验（引用 chunk c-70876748d6ad7c5c4f480427，Introduction：“We conduct our experiments on the public benchmark dataset of 'Quora Question Pairs' for the task of paraphrase identification”）。Performance Evaluation 还补充了数据集规模、划分方式与基线（同一块的 s11-p0，引文 c-956f65c1cb82f7732d021a62：超过 400,000 个问题对；开发集为 5,000 条释义 + 5,000 条非释义，测试集同样各 5,000 条，其余为训练集；基线包括 Siamese CNN、Multi-Perspective CNN、Siamese LSTM、Multi-Perspective LSTM、L.D.C）。同一块还报告：作者对 L.D.C 与本文模型各测试五次，并做 t 检验，称提升在统计上显著（c-956f65c1cb82f7732d021a62，s11-p1、s11-p2）。关于方法证据：模型先用 BiLSTM 得到隐藏表示，再由 Hungarian layer 提取对齐的不匹配部分，最后用余弦相似度判别（c-70876748d6ad7c5c4f480427）；论文的假设是“aligned unmatched parts are semantically critical”，并由案例研究加以佐证（c-f2c31c48060de190a862f031，Case Study 摘要：“In summary, this case study justifies our assumption that 'the aligned unmatched parts are semantically critical'”）。因此答案严格依据所给证据，未从常识补充结论。"
+      },
+      "elapsed_ms": 5022.868700092658
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "dataset_used",
+            "text": "实验在公开基准数据集“Quora Question Pairs”上进行，任务为释义识别（paraphrase identification）。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "dataset_size_and_split",
+            "text": "该数据集包含超过400,000个问题对，每个问题对带有二元标注，表明两句是否为彼此释义；作者随机选取5,000个释义和5,000个非释义作为开发集，另采5,000个释义和5,000个非释义作为测试集，其余实例作为训练集。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-956f65c1cb82f7732d021a62"
+              }
+            ]
+          },
+          {
+            "key": "split_rules",
+            "text": "为公平比较，作者遵循BIBREF2的划分规则。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-956f65c1cb82f7732d021a62"
+              }
+            ]
+          },
+          {
+            "key": "baselines",
+            "text": "对比基线包括Siamese CNN、Multi-Perspective CNN、Siamese LSTM、Multi-Perspective LSTM和L.D.C，其中L.D.C为基于注意力的方法并达到当时最先进性能。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-956f65c1cb82f7732d021a62"
+              }
+            ]
+          },
+          {
+            "key": "significance_test",
+            "text": "作者对L.D.C和本模型各测试五次以评估均值与方差，并做统计显著性检验，使用t检验，称改进具有统计显著性。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-956f65c1cb82f7732d021a62"
+              }
+            ]
+          },
+          {
+            "key": "result_claim",
+            "text": "结果显示本方法优于所有基线，作者据此说明模型的有效性。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-956f65c1cb82f7732d021a62"
+              },
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "intro_result_claim",
+            "text": "引言称实验结果证明该模型广泛且显著地优于其他基线，验证了关于对齐未匹配部分的理论并说明方法的有效性。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "model_pipeline",
+            "text": "模型分三步：先用BiLSTM将输入句子解析为隐藏表示，再由Hungarian层利用隐藏表示提取对齐的未匹配部分，最后用余弦相似度度量这些部分以作最终判别。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "training_mechanism",
+            "text": "关于Hungarian层的训练，作者在前向与反向两个方向修改反向传播算法：前向传播中Hungarian层求出对齐关系，据此动态构建计算图，随后可按常规图进行反向传播。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-70876748d6ad7c5c4f480427"
+              }
+            ]
+          },
+          {
+            "key": "case_study_setting",
+            "text": "作者在“Quora Question Pairs”的实际场景下用其模型进行了案例研究，斜线网格表示对齐的匹配部分，交叉网格表示对齐的未匹配部分。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-f2c31c48060de190a862f031"
+              }
+            ]
+          },
+          {
+            "key": "case_study_conclusion",
+            "text": "案例研究支持作者的假设，即“对齐的未匹配部分在语义上是关键的”。",
+            "citations": [
+              {
+                "paper_id": "1712.02555",
+                "chunk_id": "c-f2c31c48060de190a862f031"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7943.619100027718
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "7670ef0796d667c0f85ce367c339c7e606ad2cef6625f93c6e92012ae6a6f04d",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "0603169238e262df71164eafda85457c61c5b51506ada8791495d1e328d865b9",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "115bdf364060ecda5022dc312431a0f7cab0f3906b0b541f61130ecaae950b0c",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "741e4e97d1382695827e017c55672e668113f03dde9d36ea37c64eb842eaf58d",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "bdeee258a3f49ea19b47bc479d723052702254716d93e858e3bff9250f779ed4",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "a559caf056be593e20d8169996ba22feb8b4bd698261cea2681a44116bd82403",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "9462c7875937fd3c3ebf3ed25da9fa020eed9562bb024d0be8530b3d1d9d5b69",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "5d4a15cc7b3d04d36878161e299ec98b74179a4c2a179e84eca13fd752f30428",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "1543ef57e07fa4b5515adfec8eed2ce34c53b7a9a23c9668647da9c56e36a9be",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "9575e7755da3569b8dd99f7809c9733513eb23cbb158f09c8635ab01f02dabfc",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "1ca7da3e361fbfe8e5f9c399c9a786ed10ed86a36265d2a96059c91d514e70e1",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d24",
+        "entities": {
+          "paper": "1712.02555"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1712.02555"
+          ]
+        }
+      },
+      "elapsed_ms": 19.92170000448823
+    }
+  ],
+  "started_at": 1793025295.187674,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "6a423bd590b994f128b28c4129358c9b6b23c16d7d7e2a0a5da8da57d54faaf8",
+      "session_id": "d24",
+      "canonical_key": "[\"paper_evidence\", \"1712.02555\", \"training dataset\"]",
+      "text": "The authors conduct their experiments on the public benchmark dataset \"Quora Question Pairs\" for the task of paraphrase identification.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1712.02555",
+      "evidence_ids": [
+        "c-70876748d6ad7c5c4f480427"
+      ],
+      "turn_id": "d24-t1",
+      "created_at": 1793025295.1637573,
+      "updated_at": 1793025295.1637573,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1712.02555"
+      ],
+      "kind": "conflict",
+      "content": "The authors conduct their experiments on the public benchmark dataset \"Quora Question Pairs\" for the task of paraphrase identification.",
+      "record_id": "fact:6a423bd590b994f128b28c4129358c9b6b23c16d7d7e2a0a5da8da57d54faaf8",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.5,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "dataset_used",
+        "text": "实验在公开基准数据集“Quora Question Pairs”上进行，任务为释义识别（paraphrase identification）。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-70876748d6ad7c5c4f480427"
+          }
+        ]
+      },
+      {
+        "key": "dataset_size_and_split",
+        "text": "该数据集包含超过400,000个问题对，每个问题对带有二元标注，表明两句是否为彼此释义；作者随机选取5,000个释义和5,000个非释义作为开发集，另采5,000个释义和5,000个非释义作为测试集，其余实例作为训练集。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-956f65c1cb82f7732d021a62"
+          }
+        ]
+      },
+      {
+        "key": "split_rules",
+        "text": "为公平比较，作者遵循BIBREF2的划分规则。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-956f65c1cb82f7732d021a62"
+          }
+        ]
+      },
+      {
+        "key": "baselines",
+        "text": "对比基线包括Siamese CNN、Multi-Perspective CNN、Siamese LSTM、Multi-Perspective LSTM和L.D.C，其中L.D.C为基于注意力的方法并达到当时最先进性能。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-956f65c1cb82f7732d021a62"
+          }
+        ]
+      },
+      {
+        "key": "significance_test",
+        "text": "作者对L.D.C和本模型各测试五次以评估均值与方差，并做统计显著性检验，使用t检验，称改进具有统计显著性。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-956f65c1cb82f7732d021a62"
+          }
+        ]
+      },
+      {
+        "key": "result_claim",
+        "text": "结果显示本方法优于所有基线，作者据此说明模型的有效性。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-956f65c1cb82f7732d021a62"
+          },
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-70876748d6ad7c5c4f480427"
+          }
+        ]
+      },
+      {
+        "key": "intro_result_claim",
+        "text": "引言称实验结果证明该模型广泛且显著地优于其他基线，验证了关于对齐未匹配部分的理论并说明方法的有效性。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-70876748d6ad7c5c4f480427"
+          }
+        ]
+      },
+      {
+        "key": "model_pipeline",
+        "text": "模型分三步：先用BiLSTM将输入句子解析为隐藏表示，再由Hungarian层利用隐藏表示提取对齐的未匹配部分，最后用余弦相似度度量这些部分以作最终判别。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-70876748d6ad7c5c4f480427"
+          }
+        ]
+      },
+      {
+        "key": "training_mechanism",
+        "text": "关于Hungarian层的训练，作者在前向与反向两个方向修改反向传播算法：前向传播中Hungarian层求出对齐关系，据此动态构建计算图，随后可按常规图进行反向传播。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-70876748d6ad7c5c4f480427"
+          }
+        ]
+      },
+      {
+        "key": "case_study_setting",
+        "text": "作者在“Quora Question Pairs”的实际场景下用其模型进行了案例研究，斜线网格表示对齐的匹配部分，交叉网格表示对齐的未匹配部分。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-f2c31c48060de190a862f031"
+          }
+        ]
+      },
+      {
+        "key": "case_study_conclusion",
+        "text": "案例研究支持作者的假设，即“对齐的未匹配部分在语义上是关键的”。",
+        "citations": [
+          {
+            "paper_id": "1712.02555",
+            "chunk_id": "c-f2c31c48060de190a862f031"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "7670ef0796d667c0f85ce367c339c7e606ad2cef6625f93c6e92012ae6a6f04d",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "0603169238e262df71164eafda85457c61c5b51506ada8791495d1e328d865b9",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "115bdf364060ecda5022dc312431a0f7cab0f3906b0b541f61130ecaae950b0c",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "741e4e97d1382695827e017c55672e668113f03dde9d36ea37c64eb842eaf58d",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "bdeee258a3f49ea19b47bc479d723052702254716d93e858e3bff9250f779ed4",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "a559caf056be593e20d8169996ba22feb8b4bd698261cea2681a44116bd82403",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "9462c7875937fd3c3ebf3ed25da9fa020eed9562bb024d0be8530b3d1d9d5b69",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "5d4a15cc7b3d04d36878161e299ec98b74179a4c2a179e84eca13fd752f30428",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "1543ef57e07fa4b5515adfec8eed2ce34c53b7a9a23c9668647da9c56e36a9be",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "9575e7755da3569b8dd99f7809c9733513eb23cbb158f09c8635ab01f02dabfc",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "1ca7da3e361fbfe8e5f9c399c9a786ed10ed86a36265d2a96059c91d514e70e1",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "8b678ca1f1188fc3777a995b694d7da4f2b7122497ab7a2bb03ba0a81fd1da98",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3693,
+        "completion_tokens": 74,
+        "total_tokens": 3767,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00056072,
+          "allowance": 0.00042054,
+          "tokens": {
+            "input": 3437,
+            "output": 74,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3437,
+        "output_tokens": 74,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5327.328100102022
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "6f756b1de7c6da511aae86575420b44c4447d385ee5cfb22e4f1e85f5bd417ec",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5849,
+        "completion_tokens": 387,
+        "total_tokens": 6236,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00110955,
+          "allowance": 0.00083216,
+          "tokens": {
+            "input": 5849,
+            "output": 387,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5849,
+        "output_tokens": 387,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5022.49469992239
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "da42365b488a60602dbdf466bc16c6fb98883006d37842f5fa939925628b5348",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5951,
+        "completion_tokens": 899,
+        "total_tokens": 6850,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00143205,
+          "allowance": 0.00107404,
+          "tokens": {
+            "input": 5951,
+            "output": 899,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5951,
+        "output_tokens": 899,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7943.167099962011
+    }
+  ]
+}

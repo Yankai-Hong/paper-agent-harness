@@ -1,0 +1,317 @@
+{
+  "turn_id": "d03-t4",
+  "session_id": "d03",
+  "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007700058631598949
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "未公开实验 run-02 的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 2590.2213999070227
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001300009898841381
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d03",
+        "entities": {
+          "paper": "Unsupervised Question Answering for Fact-Checking (1910.07154)",
+          "referenced_question": "How large is the FEVER dataset?",
+          "paper_1": "Unsupervised Question Answering for Fact-Checking (1910.07154)",
+          "paper_2": "Clinical Information Extraction via Convolutional Neural Network (1603.09381)",
+          "dataset": "FEVER"
+        },
+        "facts": {},
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-02 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154",
+            "1603.09381"
+          ]
+        }
+      },
+      "elapsed_ms": 12.509400025010109
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793026039.5126328,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": false,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "038d19a0b503c0748e60104ec9a02d8d63c29290f39b7ac046039eac409e85ef",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"[\\\"1603.09381\\\", \\\"1910.07154\\\"]\", \"not comparable\"]",
+      "text": "两篇论文的任务与评测对象不同（FEVER fact-checking标签准确率 vs 临床信息抽取），且临床论文证据未报告FEVER规模或具体提升数值，因此无法对“FEVER数据集大小”或“相对基线提升幅度”做可比对照。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "[\"1603.09381\", \"1910.07154\"]",
+      "evidence_ids": [
+        "c-ab6380532554bfd8cf2dc78b",
+        "c-09342b6b2a0eabec97459832"
+      ],
+      "turn_id": "d03-t3",
+      "created_at": 1793026039.4866095,
+      "updated_at": 1793026039.4866095,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1603.09381",
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "两篇论文的任务与评测对象不同（FEVER fact-checking标签准确率 vs 临床信息抽取），且临床论文证据未报告FEVER规模或具体提升数值，因此无法对“FEVER数据集大小”或“相对基线提升幅度”做可比对照。",
+      "record_id": "fact:038d19a0b503c0748e60104ec9a02d8d63c29290f39b7ac046039eac409e85ef",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.4166666666666667,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "0c68587de094015c8d8f829e62e8caf72d1972041a4baab3d3a7b28791f58bea",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"label accuracy\"]",
+      "text": "该方法的标签准确率在转换数据集的开发集上为 80.2%，在测试集上为 80.25%。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-7c69a28e7ffcb9ebd09842b6"
+      ],
+      "turn_id": "d03-t2",
+      "created_at": 1793026027.1222062,
+      "updated_at": 1793026027.1222062,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "该方法的标签准确率在转换数据集的开发集上为 80.2%，在测试集上为 80.25%。",
+      "record_id": "fact:0c68587de094015c8d8f829e62e8caf72d1972041a4baab3d3a7b28791f58bea",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.4166666666666667,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "c59e6a7b2138018c839fbebe6ebf170a2be9401ce3600e9bcb45ef86f479238e",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"conversion metric\"]",
+      "text": "转换准确率定义为抽取到命名实体的声明数与声明总数之比。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-41beb2396050f5a800883bfc"
+      ],
+      "turn_id": "d03-t2",
+      "created_at": 1793026027.1222062,
+      "updated_at": 1793026027.1222062,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "转换准确率定义为抽取到命名实体的声明数与声明总数之比。",
+      "record_id": "fact:c59e6a7b2138018c839fbebe6ebf170a2be9401ce3600e9bcb45ef86f479238e",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.4166666666666667,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    },
+    {
+      "fact_id": "e325d4ea9c96d4b5b71738996317b09403f1e98f8fb1092d35c409ab8910c97e",
+      "session_id": "d03",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"cloze accuracy\"]",
+      "text": "问题生成任务在将 FEVER 数据集转换为 Cloze-task 时达到近 90% 的准确率。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-7d59a4589df766fa1261d8c6"
+      ],
+      "turn_id": "d03-t2",
+      "created_at": 1793026027.1222062,
+      "updated_at": 1793026027.1222062,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "问题生成任务在将 FEVER 数据集转换为 Cloze-task 时达到近 90% 的准确率。",
+      "record_id": "fact:e325d4ea9c96d4b5b71738996317b09403f1e98f8fb1092d35c409ab8910c97e",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3333333333333333,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 4,
+      "rank_score": 0.015625
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "8cd981dc146a4b2b102106989d692be1fedb6272424636678fbfc9b408f4cd7b",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6914,
+        "completion_tokens": 46,
+        "total_tokens": 6960,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00102707,
+          "allowance": 0.0007703,
+          "tokens": {
+            "input": 6658,
+            "output": 46,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6658,
+        "output_tokens": 46,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2581.3074000179768
+    }
+  ]
+}

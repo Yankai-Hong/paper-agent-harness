@@ -1,0 +1,718 @@
+{
+  "turn_id": "d13-t2",
+  "session_id": "d13",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.006100046448409557
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Polyglot Semantic Role Labeling 使用了哪些资源来构建标注器 多语言词向量 跨语言训练数据 CoNLL 2009",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1805.11598"
+        ],
+        "resolved_entities": {
+          "paper": "Polyglot Semantic Role Labeling",
+          "paper_id": "1805.11598"
+        }
+      },
+      "elapsed_ms": 3480.911200051196
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Polyglot Semantic Role Labeling 使用了哪些资源来构建标注器 多语言词向量 跨语言训练数据 CoNLL 2009"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-3210a13443119c0f9b29ab8f",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-7b26dbacfa8fd36fd1a3764e",
+          "c-0e4670be40fbb93589dc7767",
+          "c-6c86cedc783cec95e28397e8",
+          "c-36d3fb4d80efb0798f42f613",
+          "c-c0833bf14f99f4badbdb1f45"
+        ]
+      },
+      "elapsed_ms": 62.51790001988411
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-f04cb29df42fdbc211d852cf",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-3210a13443119c0f9b29ab8f",
+          "c-a386f8ac42eeacc565dfa3e3",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-bb02e8199a80bde6c03e4d79",
+          "c-7b26dbacfa8fd36fd1a3764e",
+          "c-0e4670be40fbb93589dc7767",
+          "c-6c86cedc783cec95e28397e8",
+          "c-36d3fb4d80efb0798f42f613",
+          "c-c0833bf14f99f4badbdb1f45"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-f04cb29df42fdbc211d852cf"
+        ]
+      },
+      "elapsed_ms": 206.28400007262826
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-8b21bd8c4c41f76753d2758d",
+          "c-ab37506cf0e270f6ab4a5722",
+          "c-d2d99eebfd526f64d0796b70",
+          "c-9b03e56e9d4e26ccec14a017",
+          "c-f04cb29df42fdbc211d852cf"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据充分支持该问题：多语言词向量（c-9b03e56e9d4e26ccec14a017、c-f04cb29df42fdbc211d852cf）、跨语言训练数据与监督（c-ab37506cf0e270f6ab4a5722、c-8b21bd8c4c41f76753d2758d）以及 CoNLL 2009 共享任务资源（c-8b21bd8c4c41f76753d2758d、c-d2d99eebfd526f64d0796b70）均可直接引用；历史记忆条目虽标为 conflict，但所引证据 chunk 与当前证据一致，故仅以当前证据作答。"
+      },
+      "elapsed_ms": 7125.857800012454
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "conll2009_pair_language_resources",
+            "text": "该方法将 CoNLL 2009 共享任务中一对语言的资源结合起来构建多语言语义角色标注器。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+              }
+            ]
+          },
+          {
+            "key": "conll2009_dataset_languages",
+            "text": "CoNLL 2009 数据集包含七种语言，作者为每种语言训练了多个解析器：一个传统的单语版本，以及额外纳入该数据集英文部分监督信息的变体。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+              }
+            ]
+          },
+          {
+            "key": "multilingual_word_vectors_basis",
+            "text": "多语言训练的基础是使用预训练的多语言词向量，使不同语言的词汇在共享表示空间中表示，从而支持跨语言学习。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+              }
+            ]
+          },
+          {
+            "key": "embeddings_construction",
+            "text": "作者使用 ammar2016massively 的方法从单语词向量生成多语言词向量：对每种非英语语言，使用小型跨语言词典和典型相关分析，找到将非英语向量变换到英语向量空间的映射。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+              }
+            ]
+          },
+          {
+            "key": "union_of_annotations",
+            "text": "第一个多语言变体使用预训练多语言词向量，在两种语言标注的并集上训练，并用分层采样使两个数据集在训练中获得同等有效权重。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+              }
+            ]
+          },
+          {
+            "key": "language_specific_labels_senses",
+            "text": "由于语言对之间的论元标签集不相交且对应关系不明确，作者为每种语言的标签使用单独的表示；谓词义表示同样是语言特定的。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+              }
+            ]
+          },
+          {
+            "key": "no_parallel_data_needed",
+            "text": "这种方法允许在没有跨语言对齐、共享标注或平行数据的情况下进行共享；摘要也指出该研究没有平行数据。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-f04cb29df42fdbc211d852cf"
+              },
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+              }
+            ]
+          },
+          {
+            "key": "srl_evaluation_languages",
+            "text": "系统在 CoNLL-2009 共享任务的语义角色标注部分上，对全部七种语言（加泰罗尼亚语、中文、捷克语、英语、德语、日语和西班牙语）进行了评估。",
+            "citations": [
+              {
+                "paper_id": "1805.11598",
+                "chunk_id": "c-d2d99eebfd526f64d0796b70"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7232.2668000124395
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "d3bf05972c3de511159a77d36728369ca55f4747ebdb566714a223e2c749a947",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "9c0a969111ba890979b4fae142d825486ecf9d846ae837eef99ed7a1a05a41dd",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "1608b9c965256bdf8c66575d90dfd09f74ae349d993c611c9366137972d6611f",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "d77bf658d48bf963508973f738801c1a486cb3c4c1c6ac7d51cb06a45eb17864",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "5e6e46aa1327c8b409d2e8eac402a128fa4961a7e37d26fdb782d421ba7e1e04",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "81f93220e5d5287176975373ef5cecfba092c856eb07cd4340d6d0515cdd60ed",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "f4dd33680956fa10eb149db475ad1cbca46c4db93705eee31457a49aae885383",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "ffef0092e8651d8c93daf25c81c8670c7d4f959b08530487be8953214d3034a2",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d13",
+        "entities": {
+          "paper": "Polyglot Semantic Role Labeling",
+          "paper_id": "1805.11598"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1805.11598"
+          ]
+        }
+      },
+      "elapsed_ms": 10.466199950315058
+    }
+  ],
+  "started_at": 1793025549.4274838,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "dd85aebb629f3821e55aea1e69f5b290c9c580eecc3fbe1ef6843c0f3697cd2b",
+      "session_id": "d13",
+      "canonical_key": "[\"paper_evidence\", \"1805.11598\", \"multilingual word vectors training data\"]",
+      "text": "本文采用的简单多语言训练方法是使用多语言词向量，并结合跨语言的训练数据。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1805.11598",
+      "evidence_ids": [
+        "c-f04cb29df42fdbc211d852cf"
+      ],
+      "turn_id": "d13-t1",
+      "created_at": 1793025549.4044237,
+      "updated_at": 1793025549.4044237,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1805.11598"
+      ],
+      "kind": "conflict",
+      "content": "本文采用的简单多语言训练方法是使用多语言词向量，并结合跨语言的训练数据。",
+      "record_id": "fact:dd85aebb629f3821e55aea1e69f5b290c9c580eecc3fbe1ef6843c0f3697cd2b",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.43333333333333335,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "f4f203c804d0ce9159d85f4228318d27ca23a1035c75148514314723fae76dee",
+      "session_id": "d13",
+      "canonical_key": "[\"paper_evidence\", \"1805.11598\", \"language pair resources\"]",
+      "text": "该论文将 CoNLL 2009 共享任务中一对语言的资源结合起来，构建多语言语义角色标注器。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1805.11598",
+      "evidence_ids": [
+        "c-8b21bd8c4c41f76753d2758d"
+      ],
+      "turn_id": "d13-t1",
+      "created_at": 1793025549.4044237,
+      "updated_at": 1793025549.4044237,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1805.11598"
+      ],
+      "kind": "conflict",
+      "content": "该论文将 CoNLL 2009 共享任务中一对语言的资源结合起来，构建多语言语义角色标注器。",
+      "record_id": "fact:f4f203c804d0ce9159d85f4228318d27ca23a1035c75148514314723fae76dee",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.43333333333333335,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "a5ee67caf19f56b8437a0af1c1e15fc28b54674c875c7a705e559d580c34ca4d",
+      "session_id": "d13",
+      "canonical_key": "[\"paper_evidence\", \"1805.11598\", \"conll2009 dataset\"]",
+      "text": "CoNLL 2009 数据集包含七种语言，作者为每种语言训练了多个解析器：一个传统的单语版本，以及额外纳入英文部分监督信息的变体。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1805.11598",
+      "evidence_ids": [
+        "c-ab37506cf0e270f6ab4a5722"
+      ],
+      "turn_id": "d13-t1",
+      "created_at": 1793025549.4044237,
+      "updated_at": 1793025549.4044237,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1805.11598"
+      ],
+      "kind": "conflict",
+      "content": "CoNLL 2009 数据集包含七种语言，作者为每种语言训练了多个解析器：一个传统的单语版本，以及额外纳入英文部分监督信息的变体。",
+      "record_id": "fact:a5ee67caf19f56b8437a0af1c1e15fc28b54674c875c7a705e559d580c34ca4d",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.36666666666666664,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    },
+    {
+      "fact_id": "dec4b0a55e3e1e886021f99b18119d351669b661bd120a42eeb14198894d9d85",
+      "session_id": "d13",
+      "canonical_key": "[\"paper_evidence\", \"1805.11598\", \"srl data languages\"]",
+      "text": "系统在 CoNLL-2009 共享任务的语义角色标注部分上，对全部七种语言（加泰罗尼亚语、中文、捷克语、英语、德语、日语和西班牙语）进行了评估。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1805.11598",
+      "evidence_ids": [
+        "c-d2d99eebfd526f64d0796b70"
+      ],
+      "turn_id": "d13-t1",
+      "created_at": 1793025549.4054074,
+      "updated_at": 1793025549.4054074,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1805.11598"
+      ],
+      "kind": "conflict",
+      "content": "系统在 CoNLL-2009 共享任务的语义角色标注部分上，对全部七种语言（加泰罗尼亚语、中文、捷克语、英语、德语、日语和西班牙语）进行了评估。",
+      "record_id": "fact:dec4b0a55e3e1e886021f99b18119d351669b661bd120a42eeb14198894d9d85",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.23333333333333334,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 4,
+      "rank_score": 0.015625
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "conll2009_pair_language_resources",
+        "text": "该方法将 CoNLL 2009 共享任务中一对语言的资源结合起来构建多语言语义角色标注器。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+          }
+        ]
+      },
+      {
+        "key": "conll2009_dataset_languages",
+        "text": "CoNLL 2009 数据集包含七种语言，作者为每种语言训练了多个解析器：一个传统的单语版本，以及额外纳入该数据集英文部分监督信息的变体。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-ab37506cf0e270f6ab4a5722"
+          }
+        ]
+      },
+      {
+        "key": "multilingual_word_vectors_basis",
+        "text": "多语言训练的基础是使用预训练的多语言词向量，使不同语言的词汇在共享表示空间中表示，从而支持跨语言学习。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+          }
+        ]
+      },
+      {
+        "key": "embeddings_construction",
+        "text": "作者使用 ammar2016massively 的方法从单语词向量生成多语言词向量：对每种非英语语言，使用小型跨语言词典和典型相关分析，找到将非英语向量变换到英语向量空间的映射。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+          }
+        ]
+      },
+      {
+        "key": "union_of_annotations",
+        "text": "第一个多语言变体使用预训练多语言词向量，在两种语言标注的并集上训练，并用分层采样使两个数据集在训练中获得同等有效权重。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+          }
+        ]
+      },
+      {
+        "key": "language_specific_labels_senses",
+        "text": "由于语言对之间的论元标签集不相交且对应关系不明确，作者为每种语言的标签使用单独的表示；谓词义表示同样是语言特定的。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-9b03e56e9d4e26ccec14a017"
+          }
+        ]
+      },
+      {
+        "key": "no_parallel_data_needed",
+        "text": "这种方法允许在没有跨语言对齐、共享标注或平行数据的情况下进行共享；摘要也指出该研究没有平行数据。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-f04cb29df42fdbc211d852cf"
+          },
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-8b21bd8c4c41f76753d2758d"
+          }
+        ]
+      },
+      {
+        "key": "srl_evaluation_languages",
+        "text": "系统在 CoNLL-2009 共享任务的语义角色标注部分上，对全部七种语言（加泰罗尼亚语、中文、捷克语、英语、德语、日语和西班牙语）进行了评估。",
+        "citations": [
+          {
+            "paper_id": "1805.11598",
+            "chunk_id": "c-d2d99eebfd526f64d0796b70"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "d3bf05972c3de511159a77d36728369ca55f4747ebdb566714a223e2c749a947",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "9c0a969111ba890979b4fae142d825486ecf9d846ae837eef99ed7a1a05a41dd",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "1608b9c965256bdf8c66575d90dfd09f74ae349d993c611c9366137972d6611f",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "d77bf658d48bf963508973f738801c1a486cb3c4c1c6ac7d51cb06a45eb17864",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "5e6e46aa1327c8b409d2e8eac402a128fa4961a7e37d26fdb782d421ba7e1e04",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "81f93220e5d5287176975373ef5cecfba092c856eb07cd4340d6d0515cdd60ed",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "f4dd33680956fa10eb149db475ad1cbca46c4db93705eee31457a49aae885383",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "ffef0092e8651d8c93daf25c81c8670c7d4f959b08530487be8953214d3034a2",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "f543964884ee024d56355cc98d202d97063e88914b0bcc7a7f5a34516992cdf4",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3911,
+        "completion_tokens": 88,
+        "total_tokens": 3999,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00060182,
+          "allowance": 0.00045136,
+          "tokens": {
+            "input": 3655,
+            "output": 88,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3655,
+        "output_tokens": 88,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3473.070800071582
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "5e7aaf8d8505171decd13bfb8fe20f451b9c27df63d874d79fae2aca92560909",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5569,
+        "completion_tokens": 177,
+        "total_tokens": 5746,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00094155,
+          "allowance": 0.00070616,
+          "tokens": {
+            "input": 5569,
+            "output": 177,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5569,
+        "output_tokens": 177,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7125.434800051153
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "fa61b30a2ca20f85f02e6e03653ddacbbb034e2e86de7c40f1ca508702840a26",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5671,
+        "completion_tokens": 719,
+        "total_tokens": 6390,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00128205,
+          "allowance": 0.00096154,
+          "tokens": {
+            "input": 5671,
+            "output": 719,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5671,
+        "output_tokens": 719,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7231.892100069672
+    }
+  ]
+}

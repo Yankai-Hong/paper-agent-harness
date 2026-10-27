@@ -1,0 +1,293 @@
+{
+  "turn_id": "insufficient-1",
+  "session_id": "insufficient-1",
+  "question": "In the paper Mapping Languages and Demographics with Georeferenced Corpora, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure.",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "In the paper Mapping Languages and Demographics with Georeferenced Corpora, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure."
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.016100002540042624
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "In the paper Mapping Languages and Demographics with Georeferenced Corpora, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure."
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "exact SHA256 checksum of the authors' unpublished raw experiment log in Mapping Languages and Demographics with Georeferenced Corpora",
+        "needs_clarification": false,
+        "paper_ids": [
+          "2004.00809"
+        ],
+        "resolved_entities": {
+          "paper": "Mapping Languages and Demographics with Georeferenced Corpora",
+          "paper_id": "2004.00809"
+        }
+      },
+      "elapsed_ms": 2463.118099996791
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "exact SHA256 checksum of the authors' unpublished raw experiment log in Mapping Languages and Demographics with Georeferenced Corpora"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-6f58065148eb1b788e1a9d54",
+          "c-204aa49abd2af324ac170d44",
+          "c-9112346152089bf519490033",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-162f98bff11b9de38d755b70",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-b60f4e4a6d050d048f70b660",
+          "c-0efba46a0570e1863cb689f1",
+          "c-d80dd59432fac531ad74efcf",
+          "c-9887004ca215701b79e8e570",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-1bf564989651e887cbd88011"
+        ]
+      },
+      "elapsed_ms": 320.91639999998733
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-6f58065148eb1b788e1a9d54",
+          "c-204aa49abd2af324ac170d44",
+          "c-9112346152089bf519490033",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-5025cf2eb4de7a0db3b92064",
+          "c-3e99d6dd38c00f49b3a998a5",
+          "c-01b9a363a68a29a0e9af4ff8",
+          "c-162f98bff11b9de38d755b70",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-b60f4e4a6d050d048f70b660",
+          "c-0efba46a0570e1863cb689f1",
+          "c-d80dd59432fac531ad74efcf",
+          "c-9887004ca215701b79e8e570",
+          "c-2c5ce0fcf55ceae4996208b8",
+          "c-1bf564989651e887cbd88011"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-6f58065148eb1b788e1a9d54",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-204aa49abd2af324ac170d44"
+        ]
+      },
+      "elapsed_ms": 398.0434000004607
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-6f58065148eb1b788e1a9d54",
+          "c-4b8aa280af7395cdfd9edb64",
+          "c-84894003b7ee6fc081a4ecc6",
+          "c-227fd89576f8c0e3eb0ce352",
+          "c-204aa49abd2af324ac170d44"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "reason": "The supplied evidence contains no SHA256 checksum or any reference to an unpublished raw experiment log. The chunks cover abstract, introduction, corpora collection, population density, and demographics analysis, but none mention a checksum. This is not inferable and cannot be retrieved from the evidence; providing any value would be fabrication."
+      },
+      "elapsed_ms": 2700.9674000000814
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.0012000018614344299
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "insufficient-1",
+        "entities": {},
+        "facts": {},
+        "unresolved": [
+          "In the paper Mapping Languages and Demographics with Georeferenced Corpora, give the exact SHA256 checksum of the authors' unpublished raw experiment log. Do not infer it or give a procedure."
+        ],
+        "summary": {}
+      },
+      "elapsed_ms": 7.49079999877722
+    }
+  ],
+  "started_at": 1793076574.112158,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "3e9b20b7c7d0323fbf710c67e5b8d339a667d3e2a23080a9c33fcf55ca2e6b4c",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3296,
+        "completion_tokens": 96,
+        "total_tokens": 3392,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 3200,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 8.16e-05,
+          "allowance": 6.12e-05,
+          "tokens": {
+            "input": 96,
+            "output": 96,
+            "reasoning": 0,
+            "cache_read": 3200,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 96,
+        "output_tokens": 96,
+        "cache_read_input_tokens": 3200,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2456.6969000006793
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 2,
+      "request_hash": "2fab90685fd6e46744d3a4e7e19d59740a04bb1eab8535257d4e752fd66ed6b9",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4994,
+        "completion_tokens": 76,
+        "total_tokens": 5070,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0007947,
+          "allowance": 0.00059603,
+          "tokens": {
+            "input": 4994,
+            "output": 76,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4994,
+        "output_tokens": 76,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2700.594399997499
+    }
+  ]
+}

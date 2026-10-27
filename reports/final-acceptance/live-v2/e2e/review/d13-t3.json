@@ -1,0 +1,277 @@
+{
+  "id": "d13-t3",
+  "session_id": "d13",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": false,
+    "reason": "The decision to refuse is incorrect. The evidence contains explicit answers for both sub-questions: (1) for the labeler, the abstract states that resources from a pair of languages in CoNLL 2009 are combined to build a polyglot SRL labeler, and the introduction says supervision from several languages/English is combined; (2) for the recommendation-region question, the HotelRec evidence consistently describes HotelRec as a hotel-domain dataset, with no indication of a geographic-region restriction, and does not explicitly state whether recommendations are region-specific in a geographic sense. The comparison is also assessable: the questions are not comparable across the two papers (one about resources for building a labeler, the other about regional scope of recommendations), and the evidence allows stating that. Instead of refusing, the assistant should have answered with the available evidence and noted limits. However, the intent resolution would better match the question's \"两篇论文\" (compared paper = Polyglot SRL, baseline = HotelRec), which is what the resolution shows; still, the refusal is unwarranted given the evidence is sufficient for a substantive answer.",
+    "claims": []
+  },
+  "error": null,
+  "payload": {
+    "question": "与《HotelRec: a Novel Very Large-Scale Hotel Recommendation Dataset》对比，分别说明两篇论文如何回答“what resources are combined to build the labeler?”与“Are the recommendations specific to a region?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved": {
+      "intent": "compare",
+      "standalone_query": "Polyglot Semantic Role Labeling 与 HotelRec 数据集论文：labeler 构建所用资源、推荐是否特定于区域，两篇论文对这两个问题的回答是否具有可比性",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1805.11598",
+        "2002.06854"
+      ],
+      "resolved_entities": {
+        "baseline_paper": "HotelRec: a Novel Very Large-Scale Hotel Recommendation Dataset",
+        "baseline_paper_id": "2002.06854",
+        "compared_paper": "Polyglot Semantic Role Labeling",
+        "compared_paper_id": "1805.11598",
+        "question_1": "what resources are combined to build the labeler?",
+        "question_2": "Are the recommendations specific to a region?"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-9ea8ec75b42953a4feade650",
+        "paper_id": "2002.06854",
+        "title": "HotelRec: a Novel Very Large-Scale Hotel Recommendation Dataset",
+        "section": "Related Work",
+        "text": "Recommendation is an old problem that has been studied from a wide range of areas, such as Amazon products BIBREF14, beers BIBREF15, restaurants, images BIBREF16, music BIBREF4, and movies BIBREF1. The size of the datasets generally varies from hundreds of thousands to tens of millions of user-item interactions; an interaction always contains a rating and could have additional attributes, such as a user-written text, sub-ratings, the date, or whether the review was helpful. At the time of writing, and to the best of our knowledge, the largest available recommendation corpus on a specific domain and with textual reviews, is based on Amazon Books and proposed by he2016ups. It contains a total of 22 million book reviews. In comparison, HotelRec has $2.3$ times more reviews and is based on hotels. Consequently, HotelRec is the largest domain-specific public recommendation dataset with textual reviews and on a single domain. We highlight with textual reviews, because some other datasets (e.g., Netflix Prize BIBREF17) contain more interactions, that only includes the rating and the date.\n\nTo the best of our knowledge, only a few number of datasets for hotel reviews have been created: 35k BIBREF9, 68k BIBREF18, 140k BIBREF19, 142k BIBREF20, 235k BIBREF9, 435k BIBREF13, and 870k BIBREF11. However, the number of users, items, and interactions is limited compared to traditional recommendation datasets. In contrast, the HotelRec dataset has at least two orders of magnitude more examples. Statistics of HotelRec is available in Table TABREF2.",
+        "text_hash": "83688b4aa83c9994acb096325ece19756a37f6eddba53dd3493a579d526b7460",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.06854",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Related Work",
+            "start": 0,
+            "end": 1098,
+            "text": "Recommendation is an old problem that has been studied from a wide range of areas, such as Amazon products BIBREF14, beers BIBREF15, restaurants, images BIBREF16, music BIBREF4, and movies BIBREF1. The size of the datasets generally varies from hundreds of thousands to tens of millions of user-item interactions; an interaction always contains a rating and could have additional attributes, such as a user-written text, sub-ratings, the date, or whether the review was helpful. At the time of writing, and to the best of our knowledge, the largest available recommendation corpus on a specific domain and with textual reviews, is based on Amazon Books and proposed by he2016ups. It contains a total of 22 million book reviews. In comparison, HotelRec has $2.3$ times more reviews and is based on hotels. Consequently, HotelRec is the largest domain-specific public recommendation dataset with textual reviews and on a single domain. We highlight with textual reviews, because some other datasets (e.g., Netflix Prize BIBREF17) contain more interactions, that only includes the rating and the date.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Related Work",
+            "start": 0,
+            "end": 455,
+            "text": "To the best of our knowledge, only a few number of datasets for hotel reviews have been created: 35k BIBREF9, 68k BIBREF18, 140k BIBREF19, 142k BIBREF20, 235k BIBREF9, 435k BIBREF13, and 870k BIBREF11. However, the number of users, items, and interactions is limited compared to traditional recommendation datasets. In contrast, the HotelRec dataset has at least two orders of magnitude more examples. Statistics of HotelRec is available in Table TABREF2.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-ab37506cf0e270f6ab4a5722",
+        "paper_id": "1805.11598",
+        "title": "Polyglot Semantic Role Labeling",
+        "section": "Introduction",
+        "text": "The standard approach to multilingual NLP is to design a single architecture, but tune and train a separate model for each language. While this method allows for customizing the model to the particulars of each language and the available data, it also presents a problem when little data is available: extensive language-specific annotation is required. The reality is that most languages have very little annotated data for most NLP tasks.\n\nammar2016malopa found that using training data from multiple languages annotated with Universal Dependencies BIBREF1 , and represented using multilingual word vectors, outperformed monolingual training. Inspired by this, we apply the idea of training one model on multiple languages—which we call polyglot training—to PropBank-style semantic role labeling (SRL). We train several parsers for each language in the CoNLL 2009 dataset BIBREF0 : a traditional monolingual version, and variants which additionally incorporate supervision from English portion of the dataset. To our knowledge, this is the first multilingual SRL approach to combine supervision from several languages.\n\nThe CoNLL 2009 dataset includes seven different languages, allowing study of trends across the same. Unlike the Universal Dependencies dataset, however, the semantic label spaces are entirely language-specific, making our task more challenging. Nonetheless, the success of polyglot training in this setting demonstrates that sharing of statistical strength across languages does not depend on explicit alignment in annotation conventions, and can be done simply through parameter sharing. We show that polyglot training can result in better labeling accuracy than a monolingual parser, especially for low-resource languages. We find that even a simple combination of data is as effective as more complex kinds of polyglot training. We include a breakdown into label categories of the differences between the monolingual and polyglot models. Our findings indicate that polyglot training consistently improves label accuracy for common labels.",
+        "text_hash": "c7723e02c60da1ee4821ed97a0591c09a910766846d0dd159c0addbc432540df",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1805.11598",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 440,
+            "text": "The standard approach to multilingual NLP is to design a single architecture, but tune and train a separate model for each language. While this method allows for customizing the model to the particulars of each language and the available data, it also presents a problem when little data is available: extensive language-specific annotation is required. The reality is that most languages have very little annotated data for most NLP tasks.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 678,
+            "text": "ammar2016malopa found that using training data from multiple languages annotated with Universal Dependencies BIBREF1 , and represented using multilingual word vectors, outperformed monolingual training. Inspired by this, we apply the idea of training one model on multiple languages—which we call polyglot training—to PropBank-style semantic role labeling (SRL). We train several parsers for each language in the CoNLL 2009 dataset BIBREF0 : a traditional monolingual version, and variants which additionally incorporate supervision from English portion of the dataset. To our knowledge, this is the first multilingual SRL approach to combine supervision from several languages.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 941,
+            "text": "The CoNLL 2009 dataset includes seven different languages, allowing study of trends across the same. Unlike the Universal Dependencies dataset, however, the semantic label spaces are entirely language-specific, making our task more challenging. Nonetheless, the success of polyglot training in this setting demonstrates that sharing of statistical strength across languages does not depend on explicit alignment in annotation conventions, and can be done simply through parameter sharing. We show that polyglot training can result in better labeling accuracy than a monolingual parser, especially for low-resource languages. We find that even a simple combination of data is as effective as more complex kinds of polyglot training. We include a breakdown into label categories of the differences between the monolingual and polyglot models. Our findings indicate that polyglot training consistently improves label accuracy for common labels.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-8b21bd8c4c41f76753d2758d",
+        "paper_id": "1805.11598",
+        "title": "Polyglot Semantic Role Labeling",
+        "section": "Abstract",
+        "text": "Previous approaches to multilingual semantic dependency parsing treat languages independently, without exploiting the similarities between semantic structures across languages. We experiment with a new approach where we combine resources from a pair of languages in the CoNLL 2009 shared task to build a polyglot semantic role labeler. Notwithstanding the absence of parallel data, and the dissimilarity in annotations between languages, our approach results in an improvement in SRL performance on multiple languages over a monolingual baseline. Analysis of the polyglot model shows it to be advantageous in lower-resource settings.",
+        "text_hash": "ea39fa8ef2f105f645b30de155cafb2e6a027709d9092c1697b38099851fa8e3",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1805.11598",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 633,
+            "text": "Previous approaches to multilingual semantic dependency parsing treat languages independently, without exploiting the similarities between semantic structures across languages. We experiment with a new approach where we combine resources from a pair of languages in the CoNLL 2009 shared task to build a polyglot semantic role labeler. Notwithstanding the absence of parallel data, and the dissimilarity in annotations between languages, our approach results in an improvement in SRL performance on multiple languages over a monolingual baseline. Analysis of the polyglot model shows it to be advantageous in lower-resource settings.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-67c92985c297dc8704f31d5f",
+        "paper_id": "2002.06854",
+        "title": "HotelRec: a Novel Very Large-Scale Hotel Recommendation Dataset",
+        "section": "Conclusion",
+        "text": "In this work, we introduce HotelRec, a novel large-scale dataset of hotel reviews based on TripAdvisor, and containing approximately 50 million reviews. Each review includes the user profile, the hotel URL, the overall rating, the summary, the user-written text, the date, and multiple sub-ratings of aspects when provided. To the best of our knowledge, HotelRec is the largest publicly available dataset in the hotel domain ($50M$ versus $0.9M$) and additionally, the largest recommendation dataset in a single domain and with textual reviews ($50M$ versus $22M$).\n\nWe further analyze the HotelRec dataset and provide benchmark results for two tasks: rating prediction and recommendation performance. We apply multiple common baselines, from non-personalized methods to competitive models, and show that reasonable performance could be obtained, but still far from results achieved in other domains in the literature.\n\nIn future work, we could easily increase the dataset with other languages and use it for multilingual recommendation. We release HotelRec for further research: https://github.com/Diego999/HotelRec.",
+        "text_hash": "8fd39b90e95ded0952babc108896ef97acec3596c4d511f99e5c20542673b997",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.06854",
+        "spans": [
+          {
+            "paragraph_id": "s11-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 565,
+            "text": "In this work, we introduce HotelRec, a novel large-scale dataset of hotel reviews based on TripAdvisor, and containing approximately 50 million reviews. Each review includes the user profile, the hotel URL, the overall rating, the summary, the user-written text, the date, and multiple sub-ratings of aspects when provided. To the best of our knowledge, HotelRec is the largest publicly available dataset in the hotel domain ($50M$ versus $0.9M$) and additionally, the largest recommendation dataset in a single domain and with textual reviews ($50M$ versus $22M$).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p1",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 351,
+            "text": "We further analyze the HotelRec dataset and provide benchmark results for two tasks: rating prediction and recommendation performance. We apply multiple common baselines, from non-personalized methods to competitive models, and show that reasonable performance could be obtained, but still far from results achieved in other domains in the literature.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p2",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 197,
+            "text": "In future work, we could easily increase the dataset with other languages and use it for multilingual recommendation. We release HotelRec for further research: https://github.com/Diego999/HotelRec.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-d2d99eebfd526f64d0796b70",
+        "paper_id": "1805.11598",
+        "title": "Polyglot Semantic Role Labeling",
+        "section": "Data",
+        "text": "We evaluate our system on the semantic role labeling portion of the CoNLL-2009 shared task BIBREF0 , on all seven languages, namely Catalan, Chinese, Czech, English, German, Japanese and Spanish. For each language, certain tokens in each sentence in the dataset are marked as predicates. Each predicate takes as arguments other words in the same sentence, their relationship marked by labeled dependency arcs. Sentences may contain no predicates.\n\nDespite the consistency of this format, there are significant differences between the training sets across languages. English uses PropBank role labels BIBREF2 . Catalan, Chinese, English, German, and Spanish include (but are not limited to) labels such as “arg INLINEFORM0 -agt” (for “agent”) or “A INLINEFORM1 ” that may correspond to some degree to each other and to the English roles. Catalan and Spanish share most labels (being drawn from the same source corpus, AnCora; BIBREF3 ), and English and German share some labels. Czech and Japanese each have their own distinct sets of argument labels, most of which do not have clear correspondences to English or to each other.\n\nWe also note that, due to semi-automatic projection of annotations to construct the German dataset, more than half of German sentences do not include labeled predicate and arguments. Thus while German has almost as many sentences as Czech, it has by far the fewest training examples (predicate-argument structures); see Table TABREF3 .",
+        "text_hash": "99391ccc2c093f43a714487ff51f12551945db24bccb78ff9d0ebdb6a5ed2f8b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1805.11598",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Data",
+            "start": 0,
+            "end": 446,
+            "text": "We evaluate our system on the semantic role labeling portion of the CoNLL-2009 shared task BIBREF0 , on all seven languages, namely Catalan, Chinese, Czech, English, German, Japanese and Spanish. For each language, certain tokens in each sentence in the dataset are marked as predicates. Each predicate takes as arguments other words in the same sentence, their relationship marked by labeled dependency arcs. Sentences may contain no predicates.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Data",
+            "start": 0,
+            "end": 679,
+            "text": "Despite the consistency of this format, there are significant differences between the training sets across languages. English uses PropBank role labels BIBREF2 . Catalan, Chinese, English, German, and Spanish include (but are not limited to) labels such as “arg INLINEFORM0 -agt” (for “agent”) or “A INLINEFORM1 ” that may correspond to some degree to each other and to the English roles. Catalan and Spanish share most labels (being drawn from the same source corpus, AnCora; BIBREF3 ), and English and German share some labels. Czech and Japanese each have their own distinct sets of argument labels, most of which do not have clear correspondences to English or to each other.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p2",
+            "section": "Data",
+            "start": 0,
+            "end": 335,
+            "text": "We also note that, due to semi-automatic projection of annotations to construct the German dataset, more than half of German sentences do not include labeled predicate and arguments. Thus while German has almost as many sentences as Czech, it has by far the fewest training examples (predicate-argument structures); see Table TABREF3 .",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "请检索以下问题的相关原文：关于论文《Polyglot Semantic Role Labeling》，what resources are combined to build the labeler?",
+      "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": false,
+    "reason": "The decision to refuse is incorrect. The evidence contains explicit answers for both sub-questions: (1) for the labeler, the abstract states that resources from a pair of languages in CoNLL 2009 are combined to build a polyglot SRL labeler, and the introduction says supervision from several languages/English is combined; (2) for the recommendation-region question, the HotelRec evidence consistently describes HotelRec as a hotel-domain dataset, with no indication of a geographic-region restriction, and does not explicitly state whether recommendations are region-specific in a geographic sense. The comparison is also assessable: the questions are not comparable across the two papers (one about resources for building a labeler, the other about regional scope of recommendations), and the evidence allows stating that. Instead of refusing, the assistant should have answered with the available evidence and noted limits. However, the intent resolution would better match the question's \"两篇论文\" (compared paper = Polyglot SRL, baseline = HotelRec), which is what the resolution shows; still, the refusal is unwarranted given the evidence is sufficient for a substantive answer.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "25b9a0591482f2b1992116f7b5d35cb1f934eeb5837f0c1b099e5a3813adb6f6",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4724,
+        "completion_tokens": 248,
+        "total_tokens": 4972,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0008574,
+          "allowance": 0.00064305,
+          "tokens": {
+            "input": 4724,
+            "output": 248,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4724,
+        "output_tokens": 248,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5936.180900000181
+    }
+  ]
+}

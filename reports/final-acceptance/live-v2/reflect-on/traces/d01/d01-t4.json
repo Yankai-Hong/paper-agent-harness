@@ -1,0 +1,213 @@
+{
+  "turn_id": "d01-t4",
+  "session_id": "d01",
+  "question": "顺便查一下我明天的私人银行账户余额。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.004799920134246349
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "顺便查一下我明天的私人银行账户余额。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "查询明天的私人银行账户余额",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {}
+      },
+      "elapsed_ms": 2865.4938000254333
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001100008375942707
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d01",
+        "entities": {
+          "paper": "1809.02208",
+          "paper_title": "Assessing Gender Bias in Machine Translation -- A Case Study with Google Translate",
+          "system": "Google Translate"
+        },
+        "facts": {},
+        "unresolved": [
+          "顺便查一下我明天的私人银行账户余额。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1809.02208"
+          ]
+        }
+      },
+      "elapsed_ms": 11.384600074961782
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793026087.754782,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "820142cc8d067f47961c5fcb03d5ce6a7656bda8a782c24eefb585d1cfb68af8",
+      "session_id": "d01",
+      "canonical_key": "[\"paper_evidence\", \"1809.02208\", \"assumption for bias\"]",
+      "text": "作者明确假设：翻译代词分布可以偏离50:50，但不应偏离到歪曲职业人口统计的程度；若男性默认频率高估了某职业中男性雇员对女性雇员的（可能不平等的）分布，则认定Google Translate存在负向性别偏见。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1809.02208",
+      "evidence_ids": [
+        "c-bf50e77dea8722dc9d0a44b4"
+      ],
+      "turn_id": "d01-t2",
+      "created_at": 1793026079.2168825,
+      "updated_at": 1793026079.2168825,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1809.02208"
+      ],
+      "kind": "conflict",
+      "content": "作者明确假设：翻译代词分布可以偏离50:50，但不应偏离到歪曲职业人口统计的程度；若男性默认频率高估了某职业中男性雇员对女性雇员的（可能不平等的）分布，则认定Google Translate存在负向性别偏见。",
+      "record_id": "fact:820142cc8d067f47961c5fcb03d5ce6a7656bda8a782c24eefb585d1cfb68af8",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.23076923076923078,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 9,
+      "request_hash": "0c2c0a2378946fcc2eb2f90198cd79659c6b69b0613191b76576bfe0ec7aa285",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5095,
+        "completion_tokens": 46,
+        "total_tokens": 5141,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00075422,
+          "allowance": 0.00056566,
+          "tokens": {
+            "input": 4839,
+            "output": 46,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4839,
+        "output_tokens": 46,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2857.5592000270262
+    }
+  ]
+}

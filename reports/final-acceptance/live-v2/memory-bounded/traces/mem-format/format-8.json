@@ -1,0 +1,641 @@
+{
+  "turn_id": "format-8",
+  "session_id": "mem-format",
+  "question": "请检索以下问题的相关原文：关于论文《Unsupervised Question Answering for Fact-Checking》，How large is the FEVER dataset?",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请检索以下问题的相关原文：关于论文《Unsupervised Question Answering for Fact-Checking》，How large is the FEVER dataset?"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.016200006939470768
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请检索以下问题的相关原文：关于论文《Unsupervised Question Answering for Fact-Checking》，How large is the FEVER dataset?"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "fact",
+        "standalone_query": "Unsupervised Question Answering for Fact-Checking FEVER dataset size claims Wikipedia corpus",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1910.07154"
+        ],
+        "resolved_entities": {
+          "paper_title": "Unsupervised Question Answering for Fact-Checking",
+          "dataset": "FEVER",
+          "paper_id": "1910.07154"
+        }
+      },
+      "elapsed_ms": 3833.2050000317395
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Unsupervised Question Answering for Fact-Checking FEVER dataset size claims Wikipedia corpus"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-c1927faa43ced5496949efab",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-c7c17ddf8a10b59543bbe5cd",
+          "c-41beb2396050f5a800883bfc",
+          "c-9798bad262f70e8bf92a0cb7",
+          "c-e5f0f06f52cc22d21ea40e2f",
+          "c-010ec9cd6f2b1eb9cb5ec5c1",
+          "c-e2f96285ef83120572139947",
+          "c-513c3a94dd7b5afb6f19eb1f",
+          "c-313ba9596baf9efe08ef6205",
+          "c-0485dab4937aa7af5eecb9cd",
+          "c-876777c5fcd9dd053c8a41bf",
+          "c-1d3f6fb5890d214f46df80e8"
+        ]
+      },
+      "elapsed_ms": 34.382899990305305
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-c1927faa43ced5496949efab",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-c7c17ddf8a10b59543bbe5cd",
+          "c-41beb2396050f5a800883bfc",
+          "c-9798bad262f70e8bf92a0cb7",
+          "c-e5f0f06f52cc22d21ea40e2f",
+          "c-010ec9cd6f2b1eb9cb5ec5c1",
+          "c-e2f96285ef83120572139947",
+          "c-513c3a94dd7b5afb6f19eb1f",
+          "c-313ba9596baf9efe08ef6205",
+          "c-0485dab4937aa7af5eecb9cd",
+          "c-876777c5fcd9dd053c8a41bf",
+          "c-1d3f6fb5890d214f46df80e8"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-c7c17ddf8a10b59543bbe5cd",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-41beb2396050f5a800883bfc"
+        ]
+      },
+      "elapsed_ms": 443.1773000396788
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-ab6380532554bfd8cf2dc78b",
+          "c-7c69a28e7ffcb9ebd09842b6",
+          "c-c7c17ddf8a10b59543bbe5cd",
+          "c-7d59a4589df766fa1261d8c6",
+          "c-41beb2396050f5a800883bfc"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据 c-ab6380532554bfd8cf2dc78b（论文 Introduction 部分）明确给出了 FEVER 数据集的规模：该数据集包含约 18.5 万条 claims，来自 540 万篇 Wikipedia 文章组成的语料库，因此该问题已被现有证据完整支持。"
+      },
+      "elapsed_ms": 2836.297700065188
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "fever_claims_count",
+            "text": "FEVER 是最大的数据集，包含约 185k 条 claims。",
+            "citations": [
+              {
+                "paper_id": "1910.07154",
+                "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+              }
+            ]
+          },
+          {
+            "key": "fever_wikipedia_corpus_size",
+            "text": "这些 claims 来自 5.4M 篇 Wikipedia 文章的语料库。",
+            "citations": [
+              {
+                "paper_id": "1910.07154",
+                "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+              }
+            ]
+          },
+          {
+            "key": "fever_claim_labels",
+            "text": "claims 根据证据集被标注为“SUPPORTS”、“REFUTES”或“NOT ENOUGH INFO”。",
+            "citations": [
+              {
+                "paper_id": "1910.07154",
+                "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+              }
+            ]
+          },
+          {
+            "key": "fever_claims_derived_from_wikipedia",
+            "text": "论文指出其使用的 FEVER claims 源自 Wikipedia。",
+            "citations": [
+              {
+                "paper_id": "1910.07154",
+                "chunk_id": "c-c7c17ddf8a10b59543bbe5cd"
+              }
+            ]
+          },
+          {
+            "key": "fever_to_cloze_task",
+            "text": "论文通过掩蔽 claims 中的命名实体，将 FEVER 数据集转换为 Cloze-task。",
+            "citations": [
+              {
+                "paper_id": "1910.07154",
+                "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 5201.914299977943
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": true,
+        "archive_id": "d2b58a8490f935595ec3665e405b53242236f03289e1f7f79f30178ce3611fdb",
+        "method": "bounded_recent_state",
+        "context_chars_before": 3694,
+        "context_chars_after": 3459,
+        "token_estimate_before": 924,
+        "token_estimate_after": 865,
+        "token_measurement": "character estimate; not API token usage",
+        "retained_facts": [
+          "[\"user_explicit\", null, \"output format\"]"
+        ],
+        "retained_entities": [
+          "paper_title",
+          "dataset",
+          "paper_id"
+        ],
+        "retained_fact_consistency": true
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "74a53635f368d9709ab7257d05eb9456d95f996a1a89ee91cec0cea7f58e98e9",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "949449b447343fbe893648ad843ef5e46c4a4a89dfa54881764fd5c7f42e8978",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "a4a839b0563d8494554444f9a5aaf3467dc8f2126531ed999fb4822b6dfa21ae",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "5bd227ea47b3e6d95abc6ab354a0e6c7c8efec915d306b17a5bcba59f5bf67ac",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "6acb109bbba42538ccca6552ffb0ba442e3b3e0581a996a5a152ce5398319e88",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "mem-format",
+        "entities": {
+          "paper_title": "Unsupervised Question Answering for Fact-Checking",
+          "dataset": "FEVER",
+          "paper_id": "1910.07154"
+        },
+        "facts": {
+          "[\"user_explicit\", null, \"output format\"]": {
+            "text": "table",
+            "evidence_ids": [],
+            "fact_id": "2b9f12f72f58b34aa3d575c4bd709cfe24a0f58b1d8c2c79948e326709256e0b",
+            "turn_id": "format-6",
+            "source_type": "user_explicit"
+          }
+        },
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1910.07154"
+          ]
+        }
+      },
+      "elapsed_ms": 21.263499977067113
+    }
+  ],
+  "started_at": 1793025966.2379723,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "turn_id": "format-7",
+      "content": "{\"question\": \"Remember: output format=UNRESOLVED_CONFLICT\", \"answer\": {\"claims\": [{\"key\": \"fever_dataset_size\", \"text\": \"FEVER 是最大的数据集，包含约 185k 条 claims。\", \"citations\": [{\"paper_id\": \"1910.07154\", \"chunk_id\": \"c-ab6380532554bfd8cf2dc78b\"}]}, {\"key\": \"fever_corpus_size\", \"text\": \"该数据集来自 5.4M 篇 Wikipedia 文章的语料库。\", \"citations\": [{\"paper_id\": \"1910.07154\", \"chunk_id\": \"c-ab6380532554bfd8cf2dc78b\"}]}, {\"key\": \"fever_claim_labels\", \"text\": \"Claims 根据证据集被标注为“SUPPORTS”、“REFUTES”或“NOT ENOUGH INFO”。\", \"citations\": [{\"paper_id\": \"1910.07154\", \"chunk_id\": \"c-ab6380532554bfd8cf2dc78b\"}]}, {\"key\": \"fever_claims_source\", \"text\": \"论文说明其使用的 FEVER claims 源自 Wikipedia。\", \"citations\": [{\"paper_id\": \"1910.07154\", \"chunk_id\": \"c-c7c17ddf8a10b59543bbe5cd\"}]}, {\"key\": \"fever_transformation\", \"text\": \"论文将 FEVER 数据集通过掩蔽 claims 中的命名实体转换为 Cloze-task。\", \"citations\": [{\"paper_id\": \"1910.07154\", \"chunk_id\": \"c-7c69a28e7ffcb9ebd09842b6\"}]}, {\"key\": \"system_label_accuracy\", \"text\": \"该方法的标签准确率在开发集上为 80.2%，在转换后数据集的测试集上为 80.25%。\", \"citations\": [{\"paper_id\": \"1910.07154\", \"chunk_id\": \"c-7c69a28e7ffcb9ebd09842b6\"}]}], \"decision\": \"answer\"}}",
+      "event_type": "user_preference",
+      "retention_reason": "explicit_user_marker",
+      "created_at": 1793025965.9828856,
+      "source_type": "conversation",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "evidence_ids": [
+        "c-7c69a28e7ffcb9ebd09842b6",
+        "c-ab6380532554bfd8cf2dc78b",
+        "c-c7c17ddf8a10b59543bbe5cd"
+      ],
+      "similar_episode_ids": [
+        "40d9927b752b88a6bad7519b3fbeee9f2e882ae01b9fd486ef1f4f2f493ea016",
+        "4b851a73840d25ba28d3e21009d788cd94008c4695c0fdaaf9ff9e1908925c4a",
+        "7147393681408bfc0169d9898cf74fc767ee941d52afa8a6c0b40568da646aea"
+      ],
+      "session_id": "mem-format",
+      "episode_id": "9990a295035767667fa22e4b1e0d3eae74bab2f27f7758434e8eaa1634d6367a",
+      "kind": "episode",
+      "distance": 0.6949757940699418,
+      "metric": "l2",
+      "record_id": "event:mem-format:format-7",
+      "retrieval_source": "chroma",
+      "status": "historical",
+      "relevance_score": 0.6525121029650292,
+      "score_kind": "cosine_similarity",
+      "relevance_tier": 2,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": false,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "archive_id": "297b2c95541c5c56b10ee28406977c9093f560e3f26e706862cd77a469387045",
+      "turn_id": "format-5",
+      "turn_order": 7,
+      "kind": "message",
+      "content": {
+        "role": "assistant",
+        "content": {
+          "claims": [
+            {
+              "key": "fever_size",
+              "text": "论文指出 FEVER 是最大的数据集，包含约 185k 条 claims，来自 5.4M 篇 Wikipedia 文章的语料库。",
+              "citations": [
+                {
+                  "paper_id": "1910.07154",
+                  "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+                }
+              ]
+            }
+          ],
+          "decision": "answer"
+        },
+        "turn_id": "format-5"
+      },
+      "entities": {
+        "paper_title": "Unsupervised Question Answering for Fact-Checking",
+        "dataset": "FEVER"
+      },
+      "evidence_ids": [
+        "c-ab6380532554bfd8cf2dc78b"
+      ],
+      "superseded": false,
+      "score": 3,
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "created_at": 0,
+      "session_id": "mem-format",
+      "record_id": "archive:a6c879627280900416d9e60cb580dc4d9e49c06520da21798283b18d58eaf2db",
+      "retrieval_source": "archive",
+      "source_type": "conversation",
+      "status": "historical",
+      "relevance_score": 0.25,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": false,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "7e02d7e82d2ad1d05c3360bd15573a125d4fffaa53eeed6427ae9c77f04ed067",
+      "session_id": "mem-format",
+      "canonical_key": "[\"paper_evidence\", \"1910.07154\", \"fever corpus size\"]",
+      "text": "该数据集来自 5.4M 篇 Wikipedia 文章的语料库。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.07154",
+      "evidence_ids": [
+        "c-ab6380532554bfd8cf2dc78b"
+      ],
+      "turn_id": "format-7",
+      "created_at": 1793025966.0202923,
+      "updated_at": 1793025966.0202923,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.07154"
+      ],
+      "kind": "conflict",
+      "content": "该数据集来自 5.4M 篇 Wikipedia 文章的语料库。",
+      "record_id": "fact:7e02d7e82d2ad1d05c3360bd15573a125d4fffaa53eeed6427ae9c77f04ed067",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3333333333333333,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "fever_claims_count",
+        "text": "FEVER 是最大的数据集，包含约 185k 条 claims。",
+        "citations": [
+          {
+            "paper_id": "1910.07154",
+            "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+          }
+        ]
+      },
+      {
+        "key": "fever_wikipedia_corpus_size",
+        "text": "这些 claims 来自 5.4M 篇 Wikipedia 文章的语料库。",
+        "citations": [
+          {
+            "paper_id": "1910.07154",
+            "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+          }
+        ]
+      },
+      {
+        "key": "fever_claim_labels",
+        "text": "claims 根据证据集被标注为“SUPPORTS”、“REFUTES”或“NOT ENOUGH INFO”。",
+        "citations": [
+          {
+            "paper_id": "1910.07154",
+            "chunk_id": "c-ab6380532554bfd8cf2dc78b"
+          }
+        ]
+      },
+      {
+        "key": "fever_claims_derived_from_wikipedia",
+        "text": "论文指出其使用的 FEVER claims 源自 Wikipedia。",
+        "citations": [
+          {
+            "paper_id": "1910.07154",
+            "chunk_id": "c-c7c17ddf8a10b59543bbe5cd"
+          }
+        ]
+      },
+      {
+        "key": "fever_to_cloze_task",
+        "text": "论文通过掩蔽 claims 中的命名实体，将 FEVER 数据集转换为 Cloze-task。",
+        "citations": [
+          {
+            "paper_id": "1910.07154",
+            "chunk_id": "c-7c69a28e7ffcb9ebd09842b6"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "74a53635f368d9709ab7257d05eb9456d95f996a1a89ee91cec0cea7f58e98e9",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "949449b447343fbe893648ad843ef5e46c4a4a89dfa54881764fd5c7f42e8978",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "a4a839b0563d8494554444f9a5aaf3467dc8f2126531ed999fb4822b6dfa21ae",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "5bd227ea47b3e6d95abc6ab354a0e6c7c8efec915d306b17a5bcba59f5bf67ac",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "6acb109bbba42538ccca6552ffb0ba442e3b3e0581a996a5a152ce5398319e88",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 14,
+      "request_hash": "90d839be836d4f9fbf1d801cbc047592dac0e60b3800207f34024b0c5900e3d6",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5827,
+        "completion_tokens": 95,
+        "total_tokens": 5922,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00089342,
+          "allowance": 0.00067006,
+          "tokens": {
+            "input": 5571,
+            "output": 95,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5571,
+        "output_tokens": 95,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3720.9484999766573
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 15,
+      "request_hash": "3dceafa96eee73f2acaea6859a6be6e4fda84a34795c29aae72c3eb6c0b17e16",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6214,
+        "completion_tokens": 78,
+        "total_tokens": 6292,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0009789,
+          "allowance": 0.00073417,
+          "tokens": {
+            "input": 6214,
+            "output": 78,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6214,
+        "output_tokens": 78,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2835.9101000241935
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 16,
+      "request_hash": "888f98149b1fc63895a4ef82b8aae7774c13fa44bddecb900ff312be001fff8b",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6317,
+        "completion_tokens": 335,
+        "total_tokens": 6652,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00111092,
+          "allowance": 0.00083319,
+          "tokens": {
+            "input": 6061,
+            "output": 335,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6061,
+        "output_tokens": 335,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 5201.518199988641
+    }
+  ]
+}

@@ -1,0 +1,595 @@
+{
+  "turn_id": "d15-t2",
+  "session_id": "d15",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007300055585801601
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "论文 Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora 中使用的 NMT 模型、SMT 基线和平行句抽取模型及其实验结果",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1806.09652"
+        ],
+        "resolved_entities": {
+          "paper": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        }
+      },
+      "elapsed_ms": 7956.573999952525
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "论文 Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora 中使用的 NMT 模型、SMT 基线和平行句抽取模型及其实验结果"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-2de814ddcd37609de37a6670",
+          "c-713c262decd20b8f527dcc24",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-03eb48d6b0f5e69885835a45",
+          "c-8a4b729b48561645af3437bf",
+          "c-8dad3bcc508acc296707d5fa",
+          "c-46c2afcbb7205384ef1596a4",
+          "c-40a65b4f16ad6c9a09e7ec3e",
+          "c-278ad02ec178a2aa94b5e9d0",
+          "c-e63db193b77a701b1a303a7e",
+          "c-cb82b97d01dcb120f9968ca8",
+          "c-a018f125f2922810bde8f7f2"
+        ]
+      },
+      "elapsed_ms": 136.46000006701797
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-2de814ddcd37609de37a6670",
+          "c-713c262decd20b8f527dcc24",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-03eb48d6b0f5e69885835a45",
+          "c-8a4b729b48561645af3437bf",
+          "c-8dad3bcc508acc296707d5fa",
+          "c-46c2afcbb7205384ef1596a4",
+          "c-40a65b4f16ad6c9a09e7ec3e",
+          "c-278ad02ec178a2aa94b5e9d0",
+          "c-e63db193b77a701b1a303a7e",
+          "c-cb82b97d01dcb120f9968ca8",
+          "c-a018f125f2922810bde8f7f2"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-2de814ddcd37609de37a6670",
+          "c-1ef4f6dc83e93c39e90f82dc"
+        ]
+      },
+      "elapsed_ms": 373.3485999982804
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-2de814ddcd37609de37a6670",
+          "c-1ef4f6dc83e93c39e90f82dc"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "所给证据（论文 1806.09652 的摘要、引言、机器翻译章节和结论）直接支持所问的三个方面：(1) NMT 模型——OpenNMT 的 TensorFlow 实现，采用基于注意力机制的 transformer 架构［c-0377bffbf88cf9ead25b03ff，Machine Translation 节］；(2) SMT 基线——基于短语的 SMT，用 Moses 训练，采用 grow-diag-final-and、lexicalised reordering 和 Batch MIRA 调参，语言模型为 KenLM 训练的 5-gram Kneser-Ney 模型，并且分别在有、无抽取的平行句对的情况下训练，语言对为 en–ta 和 en–hi［同一 chunk］；(3) 平行句抽取模型——端到端 Siamese 双向 RNN，以 GRU 作为激活函数，在同一 chunk 中又叫 Siamese BiRNN encoder，无需特征工程，也无需预先存在的翻译系统［c-1dd6dc3c2f7d9eb29dc26d9f Abstract；c-1ef4f6dc83e93c39e90f82dc Conclusion；c-713c262decd20b8f527dcc24 Related Work］。已报告的结果：NMT 的 BLEU 在两个语言对上均高于 SMT［c-0377bffbf88cf9ead25b03ff］；使用从可比语料中抽取的平行句对后，en–ta 的 BLEU 提升（百分比）为 11.03%，en–hi 为 14.7%［c-1ef4f6dc83e93c39e90f82dc］；摘要称，与仅使用有限的平行语料相比，抽取的数据同时提升了 NMT 和 SMT 的 BLEU［c-1dd6dc3c2f7d9eb29dc26d9f］。所有结论都限定在所给的文本范围内，没有从常识补充任何内容。证据中唯一缺少的是逐表的具体 BLEU 数值，但本问题（模型和已报告的结果）不需要这些数值。"
+      },
+      "elapsed_ms": 6218.00130000338
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "sentence_extraction_model",
+            "text": "论文使用端到端的 Siamese 双向循环神经网络（编码器使用 GRU 作为激活函数），从 Wikipedia 中可比的多语文章生成平行句对。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+              },
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+              }
+            ]
+          },
+          {
+            "key": "extraction_training_requirement",
+            "text": "该神经平行句抽取模型仅需一个小规模的平行句对引导集即可端到端学习，不需要特征工程，也不需要已有的翻译系统。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-713c262decd20b8f527dcc24"
+              },
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-2de814ddcd37609de37a6670"
+              }
+            ]
+          },
+          {
+            "key": "nmt_system",
+            "text": "NMT 模型使用 TensorFlow 实现的 OpenNMT，采用基于注意力的 transformer 架构。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "smt_baseline",
+            "text": "短语-based SMT 基线使用 Moses 训练，采用 grow-diag-final-and 短语抽取启发式、词汇化重排序、Batch MIRA 调参（Moses 默认参数），并用 KenLM 训练带 Kneser-Ney 平滑的 5-gram 语言模型。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "training_data_setup",
+            "text": "机器翻译系统训练使用通过贪心解码、按翻译概率排序抽取的高精度句对；SMT 系统在 en–ta 和 en–hi 上分别在有/无抽取平行句对的情况下训练。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "nmt_vs_smt_bleu",
+            "text": "对于 en–ta 和 en–hi 两个语言对，NMT 模型的 BLEU 分数均高于 SMT 模型。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "bleu_improvement",
+            "text": "使用从可比语料抽取的平行句对后，en–ta 的 BLEU 分数提升 11.03%，en–hi 提升 14.7%。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+              }
+            ]
+          },
+          {
+            "key": "augmentation_effect",
+            "text": "相比仅使用为这些语言对收集的有限双语语料训练，使用抽取数据集提升了 NMT 和短语-based SMT 系统在 en–hi 和 en–ta 上的 BLEU 分数。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 10755.352000007406
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "0058da3183f3322193d4061d4aabb96975031e532c09b62539e6ead3d888eb4b",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "a3cd746f182a5cc1bd319d7198950812d71e77d23b8709144254755f82c33ee2",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "198c8e812abc49121084e6aabd55dd6f30674b16badd170cf602529412982a2a",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "8c2285d8a1eb745d484667ec71804598cb13592d6c56914f1f9139542d931b80",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "434398ea13429468350f058e64e27acb36d4495832dbc878f999f1bf6103cb54",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "9833b3d0447ae9c3e29d1cdce74bd570a9eab5962433ac65e9902a58e7b1df06",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "ee49fe461aef1932ea8300c15d4bbad6ac5f10a813c09664e01d05e6dc0d5470",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "e37e4e3667f1cb305afbf0990faff304edb29746888033d9f7a3cb37ca16de04",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d15",
+        "entities": {
+          "paper": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1806.09652"
+          ]
+        }
+      },
+      "elapsed_ms": 10.898700100369751
+    }
+  ],
+  "started_at": 1793025587.2995226,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "sentence_extraction_model",
+        "text": "论文使用端到端的 Siamese 双向循环神经网络（编码器使用 GRU 作为激活函数），从 Wikipedia 中可比的多语文章生成平行句对。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+          },
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+          }
+        ]
+      },
+      {
+        "key": "extraction_training_requirement",
+        "text": "该神经平行句抽取模型仅需一个小规模的平行句对引导集即可端到端学习，不需要特征工程，也不需要已有的翻译系统。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-713c262decd20b8f527dcc24"
+          },
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-2de814ddcd37609de37a6670"
+          }
+        ]
+      },
+      {
+        "key": "nmt_system",
+        "text": "NMT 模型使用 TensorFlow 实现的 OpenNMT，采用基于注意力的 transformer 架构。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "smt_baseline",
+        "text": "短语-based SMT 基线使用 Moses 训练，采用 grow-diag-final-and 短语抽取启发式、词汇化重排序、Batch MIRA 调参（Moses 默认参数），并用 KenLM 训练带 Kneser-Ney 平滑的 5-gram 语言模型。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "training_data_setup",
+        "text": "机器翻译系统训练使用通过贪心解码、按翻译概率排序抽取的高精度句对；SMT 系统在 en–ta 和 en–hi 上分别在有/无抽取平行句对的情况下训练。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "nmt_vs_smt_bleu",
+        "text": "对于 en–ta 和 en–hi 两个语言对，NMT 模型的 BLEU 分数均高于 SMT 模型。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "bleu_improvement",
+        "text": "使用从可比语料抽取的平行句对后，en–ta 的 BLEU 分数提升 11.03%，en–hi 提升 14.7%。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+          }
+        ]
+      },
+      {
+        "key": "augmentation_effect",
+        "text": "相比仅使用为这些语言对收集的有限双语语料训练，使用抽取数据集提升了 NMT 和短语-based SMT 系统在 en–hi 和 en–ta 上的 BLEU 分数。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "0058da3183f3322193d4061d4aabb96975031e532c09b62539e6ead3d888eb4b",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "a3cd746f182a5cc1bd319d7198950812d71e77d23b8709144254755f82c33ee2",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "198c8e812abc49121084e6aabd55dd6f30674b16badd170cf602529412982a2a",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "8c2285d8a1eb745d484667ec71804598cb13592d6c56914f1f9139542d931b80",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "434398ea13429468350f058e64e27acb36d4495832dbc878f999f1bf6103cb54",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "9833b3d0447ae9c3e29d1cdce74bd570a9eab5962433ac65e9902a58e7b1df06",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "ee49fe461aef1932ea8300c15d4bbad6ac5f10a813c09664e01d05e6dc0d5470",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "e37e4e3667f1cb305afbf0990faff304edb29746888033d9f7a3cb37ca16de04",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "f6f292f4ed26cc7ed5802f408de2cdadbbea6a490447d9fcbcb933cd9db9d8ca",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3713,
+        "completion_tokens": 117,
+        "total_tokens": 3830,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00058952,
+          "allowance": 0.00044214,
+          "tokens": {
+            "input": 3457,
+            "output": 117,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3457,
+        "output_tokens": 117,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7949.229899910279
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "d15ae8cdfe1f7dc2f3e5af694ee00c5cd288d8a7c636ae3ba6141bd4325e8c94",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4869,
+        "completion_tokens": 479,
+        "total_tokens": 5348,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00101775,
+          "allowance": 0.00076331,
+          "tokens": {
+            "input": 4869,
+            "output": 479,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4869,
+        "output_tokens": 479,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 6217.675199965015
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "429fd01592b64f008c7528008c2d8e4b8a9a4e7cc7e2d06a0edda15fb782d285",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4971,
+        "completion_tokens": 760,
+        "total_tokens": 5731,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00120165,
+          "allowance": 0.00090124,
+          "tokens": {
+            "input": 4971,
+            "output": 760,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4971,
+        "output_tokens": 760,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 10755.007600062527
+    }
+  ]
+}

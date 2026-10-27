@@ -1,0 +1,214 @@
+{
+  "turn_id": "d15-t4",
+  "session_id": "d15",
+  "question": "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.011199968867003918
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-14 未公开实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "run_id": "run-14"
+        }
+      },
+      "elapsed_ms": 4231.7062999354675
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001300009898841381
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d15",
+        "entities": {
+          "paper_title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        },
+        "facts": {},
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-14 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1806.09652"
+          ]
+        }
+      },
+      "elapsed_ms": 11.6897999541834
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793025186.39019,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "a4a6ff27c28d4ff815d775b0795abd227686bb1efad53e5d53d8e68c0c5900f4",
+      "session_id": "d15",
+      "canonical_key": "[\"paper_evidence\", \"1806.09652\", \"nmt training data\"]",
+      "text": "在训练机器翻译系统时，作者使用通过贪心解码抽取的高精度句子，并按翻译概率对句对进行排序。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1806.09652",
+      "evidence_ids": [
+        "c-0377bffbf88cf9ead25b03ff"
+      ],
+      "turn_id": "d15-t2",
+      "created_at": 1793025177.8667297,
+      "updated_at": 1793025177.8667297,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1806.09652"
+      ],
+      "kind": "conflict",
+      "content": "在训练机器翻译系统时，作者使用通过贪心解码抽取的高精度句子，并按翻译概率对句对进行排序。",
+      "record_id": "fact:a4a6ff27c28d4ff815d775b0795abd227686bb1efad53e5d53d8e68c0c5900f4",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.25,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 9,
+      "request_hash": "0b8e624197e51a6724118868d5f48670f3e9ec18557ee1930edf5ecb9d608737",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4868,
+        "completion_tokens": 59,
+        "total_tokens": 4927,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00072797,
+          "allowance": 0.00054598,
+          "tokens": {
+            "input": 4612,
+            "output": 59,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4612,
+        "output_tokens": 59,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4223.62860001158
+    }
+  ]
+}

@@ -1,0 +1,795 @@
+{
+  "turn_id": "d18-t2",
+  "session_id": "d18",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.02729997504502535
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "What data is used to train the interactive machine translation model for modernizing historical documents?",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1910.03355"
+        ],
+        "resolved_entities": {
+          "paper": "1910.03355",
+          "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents"
+        }
+      },
+      "elapsed_ms": 2918.1934000225738
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "What data is used to train the interactive machine translation model for modernizing historical documents?"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-12faba6617d3bb70ca950aa7",
+          "c-fe54cbd9a541e1a08dfd29a8",
+          "c-e0fab0266b412df784700e67",
+          "c-98f92e50001a68c58a20c08e",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-a60e0e164c02b9a90b0b2bf3",
+          "c-2b26a61e593868a4e2810356",
+          "c-2b39005de67979a14fc26cd7",
+          "c-a82ec4778da900f19e218a6d",
+          "c-c6a05839a9508ca94a3810f0",
+          "c-c848845b4f77de9cda66bcbe",
+          "c-42484863e1f3deab651c90a5",
+          "c-8fc9d3b1c3927dbda3aee8ff",
+          "c-ab6e4f648559a50bb0a797c2",
+          "c-96b17628a26131808f684349",
+          "c-eae4d3328574972d2108eb40",
+          "c-37e34e2a97e1b6a6bb277496"
+        ]
+      },
+      "elapsed_ms": 211.6965000750497
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-12faba6617d3bb70ca950aa7",
+          "c-fe54cbd9a541e1a08dfd29a8",
+          "c-e0fab0266b412df784700e67",
+          "c-98f92e50001a68c58a20c08e",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-a60e0e164c02b9a90b0b2bf3",
+          "c-2b26a61e593868a4e2810356",
+          "c-2b39005de67979a14fc26cd7",
+          "c-a82ec4778da900f19e218a6d",
+          "c-c6a05839a9508ca94a3810f0",
+          "c-c848845b4f77de9cda66bcbe",
+          "c-42484863e1f3deab651c90a5",
+          "c-8fc9d3b1c3927dbda3aee8ff",
+          "c-ab6e4f648559a50bb0a797c2",
+          "c-96b17628a26131808f684349",
+          "c-eae4d3328574972d2108eb40",
+          "c-37e34e2a97e1b6a6bb277496"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-e0fab0266b412df784700e67",
+          "c-12faba6617d3bb70ca950aa7",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-98f92e50001a68c58a20c08e",
+          "c-fe54cbd9a541e1a08dfd29a8"
+        ]
+      },
+      "elapsed_ms": 493.6496999580413
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-e0fab0266b412df784700e67",
+          "c-12faba6617d3bb70ca950aa7",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-98f92e50001a68c58a20c08e",
+          "c-fe54cbd9a541e1a08dfd29a8"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "retrieve_again",
+        "next_query": "training corpora Dutch Bible El Quijote El Conde Lucanor original modern versions corpus construction SMT NMT",
+        "reason": "The resolved question asks which data are used to train the IMT modernization model. The supplied evidence chunks mention results on the Dutch Bible, El Quijote, and El Conde Lucanor, and reference 'systems trained with El Quijote' and 'se:corp', but none of the chunks describe the actual training corpora (e.g., which historical/modern version pairs were used). The historical memory contains specific claims about the Dutch Bible 1637/1888 and El Quijote corpora, but those are marked as untrusted historical context with 'semantic_support_unverified' status and must not be used as evidence. Since the required corpus-construction details are absent from the retrieved evidence, targeted retrieval of the corpus section is needed."
+      },
+      "elapsed_ms": 3809.9745999788865
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 2,
+      "input": {
+        "query": "training corpora Dutch Bible El Quijote El Conde Lucanor original modern versions corpus construction SMT NMT"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-2b39005de67979a14fc26cd7",
+          "c-98f92e50001a68c58a20c08e",
+          "c-a60e0e164c02b9a90b0b2bf3",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-ab6e4f648559a50bb0a797c2",
+          "c-8fc9d3b1c3927dbda3aee8ff",
+          "c-eae4d3328574972d2108eb40",
+          "c-c6a05839a9508ca94a3810f0",
+          "c-e0fab0266b412df784700e67",
+          "c-a82ec4778da900f19e218a6d",
+          "c-12faba6617d3bb70ca950aa7",
+          "c-37e34e2a97e1b6a6bb277496",
+          "c-fe54cbd9a541e1a08dfd29a8",
+          "c-c848845b4f77de9cda66bcbe",
+          "c-2b26a61e593868a4e2810356",
+          "c-42484863e1f3deab651c90a5",
+          "c-96b17628a26131808f684349"
+        ]
+      },
+      "elapsed_ms": 42.660600040107965
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 2,
+      "input": {
+        "candidate_ids": [
+          "c-2b39005de67979a14fc26cd7",
+          "c-98f92e50001a68c58a20c08e",
+          "c-a60e0e164c02b9a90b0b2bf3",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-ab6e4f648559a50bb0a797c2",
+          "c-8fc9d3b1c3927dbda3aee8ff",
+          "c-eae4d3328574972d2108eb40",
+          "c-c6a05839a9508ca94a3810f0",
+          "c-e0fab0266b412df784700e67",
+          "c-a82ec4778da900f19e218a6d",
+          "c-12faba6617d3bb70ca950aa7",
+          "c-37e34e2a97e1b6a6bb277496",
+          "c-fe54cbd9a541e1a08dfd29a8",
+          "c-c848845b4f77de9cda66bcbe",
+          "c-2b26a61e593868a4e2810356",
+          "c-42484863e1f3deab651c90a5",
+          "c-96b17628a26131808f684349"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-e0fab0266b412df784700e67",
+          "c-12faba6617d3bb70ca950aa7",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-98f92e50001a68c58a20c08e",
+          "c-fe54cbd9a541e1a08dfd29a8",
+          "c-2b39005de67979a14fc26cd7",
+          "c-a60e0e164c02b9a90b0b2bf3",
+          "c-8fc9d3b1c3927dbda3aee8ff"
+        ]
+      },
+      "elapsed_ms": 262.2384999413043
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 2,
+      "input": {
+        "evidence_ids": [
+          "c-e0fab0266b412df784700e67",
+          "c-12faba6617d3bb70ca950aa7",
+          "c-e242628d1556d3af58dbaeaa",
+          "c-98f92e50001a68c58a20c08e",
+          "c-fe54cbd9a541e1a08dfd29a8",
+          "c-2b39005de67979a14fc26cd7",
+          "c-a60e0e164c02b9a90b0b2bf3",
+          "c-8fc9d3b1c3927dbda3aee8ff"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据已完整支持该问题：论文（1910.03355）在“Experiments ::: Corpora”（c-2b39005de67979a14fc26cd7）中明确说明了所用的语料。检索到的证据文本指出，荷兰圣经语料把1637年版视为原始文献、把1888年版视为现代荷兰语；El Quijote 语料是17世纪西班牙语小说及其21世纪版本；El Conde Lucanor 语料因规模小仅用作测试，且由于找不到合适的训练语料，改用为 El Quijote 构建的系统来对其进行现代化。这些要点直接回答了训练/使用数据的问题，无需依赖常识补充。"
+      },
+      "elapsed_ms": 3539.6582999965176
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "dutch_bible_corpus",
+            "text": "荷兰圣经语料包含1637、1657、1888和2010四个版本；由于作者提到2010版翻译不太可靠，且荷兰语在1637至1657年间变化不大，实验只使用1637版作为原始文档、1888版作为现代荷兰语。",
+            "citations": [
+              {
+                "paper_id": "1910.03355",
+                "chunk_id": "c-2b39005de67979a14fc26cd7"
+              }
+            ]
+          },
+          {
+            "key": "el_quijote_corpus",
+            "text": "El Quijote语料包含17世纪塞万提斯所著的西班牙语小说及其对应的21世纪版本，被选为第二个语料。",
+            "citations": [
+              {
+                "paper_id": "1910.03355",
+                "chunk_id": "c-2b39005de67979a14fc26cd7"
+              }
+            ]
+          },
+          {
+            "key": "el_conde_lucanor_test_only",
+            "text": "El Conde Lucanor语料包含14世纪Don Juan Manuel的西班牙语小说原文及对应的21世纪版本；由于语料规模小，仅用作测试，并且由于找不到合适的训练语料，作者使用为El Quijote构建的系统来现代化El Conde Lucanor。",
+            "citations": [
+              {
+                "paper_id": "1910.03355",
+                "chunk_id": "c-2b39005de67979a14fc26cd7"
+              }
+            ]
+          },
+          {
+            "key": "small_training_corpora_effect",
+            "text": "作者指出SMT在所有情况下都优于NMT，很可能是因为训练语料规模小——这是NMT的一个已知问题；同样，神经模型可能因训练语料小而未能达到最佳性能。",
+            "citations": [
+              {
+                "paper_id": "1910.03355",
+                "chunk_id": "c-98f92e50001a68c58a20c08e"
+              },
+              {
+                "paper_id": "1910.03355",
+                "chunk_id": "c-8fc9d3b1c3927dbda3aee8ff"
+              }
+            ]
+          },
+          {
+            "key": "future_enrich_corpus",
+            "text": "作为未来工作，作者希望探索用额外数据丰富训练语料的技术，以及处理由子词导致的错误生成词问题。",
+            "citations": [
+              {
+                "paper_id": "1910.03355",
+                "chunk_id": "c-e242628d1556d3af58dbaeaa"
+              }
+            ]
+          },
+          {
+            "key": "smnt_systems",
+            "text": "作者基于SMT和NMT两种方法构建了基于前缀的IMT现代化协议，并在模拟环境中测试。",
+            "citations": [
+              {
+                "paper_id": "1910.03355",
+                "chunk_id": "c-e242628d1556d3af58dbaeaa"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 4727.523799985647
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "e8de0cdeeeb225b961b5f01d9aebb21e9773595ad9a9e19dd2c466a1561a8814",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "ea1ab5aab5a83b8e16c884d797a7c33914975d46d83507ad38f62b82e92de7af",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "2f6521e5ce7d9608bb5e901d51dedab31c6dbd7d06bebff48d1e36535443e68d",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "e0ed4836070f67cf02b7c127a1df16b14d71862a697055b4fabf0383d71e7270",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "349556676a8e03557464051c6106ed6a4964942426b856798ff7fbc352eda065",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "0ee0878b0901da12d29c26fe55c7e6cb4b02761ba73c1e148a5825824f08b490",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d18",
+        "entities": {
+          "paper": "1910.03355",
+          "title": "An Interactive Machine Translation Framework for Modernizing Historical Documents"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1910.03355"
+          ]
+        }
+      },
+      "elapsed_ms": 10.425099986605346
+    }
+  ],
+  "started_at": 1793025648.8816001,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "3b54be6c289e8e510f617dd7e176fa5fc96ab6dc1724bfbeaeeaa1aa445d73f4",
+      "session_id": "d18",
+      "canonical_key": "[\"paper_evidence\", \"1910.03355\", \"training corpora\"]",
+      "text": "The model is trained on corpora consisting of historical documents paired with modern versions: the Dutch Bible (1637 version as original and 1888 version as modern Dutch) and El Quijote (17th century Spanish novel with its 21st century version).",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.03355",
+      "evidence_ids": [
+        "c-2b39005de67979a14fc26cd7"
+      ],
+      "turn_id": "d18-t1",
+      "created_at": 1793025648.7913294,
+      "updated_at": 1793025648.7913294,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.03355"
+      ],
+      "kind": "conflict",
+      "content": "The model is trained on corpora consisting of historical documents paired with modern versions: the Dutch Bible (1637 version as original and 1888 version as modern Dutch) and El Quijote (17th century Spanish novel with its 21st century version).",
+      "record_id": "fact:3b54be6c289e8e510f617dd7e176fa5fc96ab6dc1724bfbeaeeaa1aa445d73f4",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3333333333333333,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "735d6b9d4ee75a0cf00fbaef3c97eba69285fec17ec33d8c05e237924745a884",
+      "session_id": "d18",
+      "canonical_key": "[\"paper_evidence\", \"1910.03355\", \"future enrich training corpus\"]",
+      "text": "As future work, the authors want to explore techniques for enriching the training corpus with additional data.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.03355",
+      "evidence_ids": [
+        "c-e242628d1556d3af58dbaeaa"
+      ],
+      "turn_id": "d18-t1",
+      "created_at": 1793025648.7971914,
+      "updated_at": 1793025648.7971914,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.03355"
+      ],
+      "kind": "conflict",
+      "content": "As future work, the authors want to explore techniques for enriching the training corpus with additional data.",
+      "record_id": "fact:735d6b9d4ee75a0cf00fbaef3c97eba69285fec17ec33d8c05e237924745a884",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.26666666666666666,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "9ca195d435514cb5dc5154a381c56fdd5c60ae62e72057b83b37691a342da134",
+      "session_id": "d18",
+      "canonical_key": "[\"paper_evidence\", \"1910.03355\", \"el conde lucanor test only\"]",
+      "text": "El Conde Lucanor (14th century Spanish novel with its 21st century version) was used only as a test due to its small corpus size; because no suitable training corpus was found, the systems built for El Quijote were used to modernize it.",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1910.03355",
+      "evidence_ids": [
+        "c-2b39005de67979a14fc26cd7"
+      ],
+      "turn_id": "d18-t1",
+      "created_at": 1793025648.7961946,
+      "updated_at": 1793025648.7961946,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1910.03355"
+      ],
+      "kind": "conflict",
+      "content": "El Conde Lucanor (14th century Spanish novel with its 21st century version) was used only as a test due to its small corpus size; because no suitable training corpus was found, the systems built for El Quijote were used to modernize it.",
+      "record_id": "fact:9ca195d435514cb5dc5154a381c56fdd5c60ae62e72057b83b37691a342da134",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.26666666666666666,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "dutch_bible_corpus",
+        "text": "荷兰圣经语料包含1637、1657、1888和2010四个版本；由于作者提到2010版翻译不太可靠，且荷兰语在1637至1657年间变化不大，实验只使用1637版作为原始文档、1888版作为现代荷兰语。",
+        "citations": [
+          {
+            "paper_id": "1910.03355",
+            "chunk_id": "c-2b39005de67979a14fc26cd7"
+          }
+        ]
+      },
+      {
+        "key": "el_quijote_corpus",
+        "text": "El Quijote语料包含17世纪塞万提斯所著的西班牙语小说及其对应的21世纪版本，被选为第二个语料。",
+        "citations": [
+          {
+            "paper_id": "1910.03355",
+            "chunk_id": "c-2b39005de67979a14fc26cd7"
+          }
+        ]
+      },
+      {
+        "key": "el_conde_lucanor_test_only",
+        "text": "El Conde Lucanor语料包含14世纪Don Juan Manuel的西班牙语小说原文及对应的21世纪版本；由于语料规模小，仅用作测试，并且由于找不到合适的训练语料，作者使用为El Quijote构建的系统来现代化El Conde Lucanor。",
+        "citations": [
+          {
+            "paper_id": "1910.03355",
+            "chunk_id": "c-2b39005de67979a14fc26cd7"
+          }
+        ]
+      },
+      {
+        "key": "small_training_corpora_effect",
+        "text": "作者指出SMT在所有情况下都优于NMT，很可能是因为训练语料规模小——这是NMT的一个已知问题；同样，神经模型可能因训练语料小而未能达到最佳性能。",
+        "citations": [
+          {
+            "paper_id": "1910.03355",
+            "chunk_id": "c-98f92e50001a68c58a20c08e"
+          },
+          {
+            "paper_id": "1910.03355",
+            "chunk_id": "c-8fc9d3b1c3927dbda3aee8ff"
+          }
+        ]
+      },
+      {
+        "key": "future_enrich_corpus",
+        "text": "作为未来工作，作者希望探索用额外数据丰富训练语料的技术，以及处理由子词导致的错误生成词问题。",
+        "citations": [
+          {
+            "paper_id": "1910.03355",
+            "chunk_id": "c-e242628d1556d3af58dbaeaa"
+          }
+        ]
+      },
+      {
+        "key": "smnt_systems",
+        "text": "作者基于SMT和NMT两种方法构建了基于前缀的IMT现代化协议，并在模拟环境中测试。",
+        "citations": [
+          {
+            "paper_id": "1910.03355",
+            "chunk_id": "c-e242628d1556d3af58dbaeaa"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "e8de0cdeeeb225b961b5f01d9aebb21e9773595ad9a9e19dd2c466a1561a8814",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "ea1ab5aab5a83b8e16c884d797a7c33914975d46d83507ad38f62b82e92de7af",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "2f6521e5ce7d9608bb5e901d51dedab31c6dbd7d06bebff48d1e36535443e68d",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "e0ed4836070f67cf02b7c127a1df16b14d71862a697055b4fabf0383d71e7270",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "349556676a8e03557464051c6106ed6a4964942426b856798ff7fbc352eda065",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "0ee0878b0901da12d29c26fe55c7e6cb4b02761ba73c1e148a5825824f08b490",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "3b5ce17591f532f4a8b78726681235f77c6c35657e78a6467d45d9c2abd45477",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3831,
+        "completion_tokens": 83,
+        "total_tokens": 3914,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 256,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00058682,
+          "allowance": 0.00044011,
+          "tokens": {
+            "input": 3575,
+            "output": 83,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3575,
+        "output_tokens": 83,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2884.242100059055
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "ac6b43f561c6ea043055351703bd9adeed38c5f8dc6ddbfd181c88c8092c4d3f",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5818,
+        "completion_tokens": 198,
+        "total_tokens": 6016,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0009915,
+          "allowance": 0.00074363,
+          "tokens": {
+            "input": 5818,
+            "output": 198,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5818,
+        "output_tokens": 198,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3808.1247999798506
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 7,
+      "request_hash": "35056d2551e20c00dd07d1f286eeed11b4d1e3b2798de3ab5311b200bd3c24fe",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8097,
+        "completion_tokens": 154,
+        "total_tokens": 8251,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 2048,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00100589,
+          "allowance": 0.00075442,
+          "tokens": {
+            "input": 6049,
+            "output": 154,
+            "reasoning": 0,
+            "cache_read": 2048,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6049,
+        "output_tokens": 154,
+        "cache_read_input_tokens": 2048,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3539.13640009705
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 8,
+      "request_hash": "925a40caa7efca696b26c814c2fedc17a5cb00353096b3ce90f896d2eed3b7cb",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 8199,
+        "completion_tokens": 568,
+        "total_tokens": 8767,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00157065,
+          "allowance": 0.00117799,
+          "tokens": {
+            "input": 8199,
+            "output": 568,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 8199,
+        "output_tokens": 568,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4727.0136999432
+    }
+  ]
+}

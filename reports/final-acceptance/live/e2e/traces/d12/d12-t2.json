@@ -1,0 +1,691 @@
+{
+  "turn_id": "d12-t2",
+  "session_id": "d12",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.007400056347250938
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Common-Knowledge Concept Recognition for SEVA 论文中关于模型性能的证据：微调模型的 F1 分数、80-20 数据划分、BERT 预训练 cased 模型与 BertForTokenClassification、spaCy 基线、表 2 和表 3",
+        "needs_clarification": false,
+        "paper_ids": [
+          "2003.11687"
+        ],
+        "resolved_entities": {
+          "paper": "Common-Knowledge Concept Recognition for SEVA",
+          "paper_id": "2003.11687",
+          "dataset": "SEVA"
+        }
+      },
+      "elapsed_ms": 3512.3100000200793
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Common-Knowledge Concept Recognition for SEVA 论文中关于模型性能的证据：微调模型的 F1 分数、80-20 数据划分、BERT 预训练 cased 模型与 BertForTokenClassification、spaCy 基线、表 2 和表 3"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-35ae853dec5dd79f61ef4980",
+          "c-7e9b5fdcd1b735fa2b7de65a",
+          "c-31214b784b9f4dcaddc0adf6",
+          "c-945a37a61c8991cd2adfcf07",
+          "c-c721d66657a8536d02534408",
+          "c-afe0d2d17a1da30b77a1dee1",
+          "c-fd11fb267731e9e813af4ac0",
+          "c-0cfe431be5b12444b9c06244",
+          "c-5992c95c4909c36d86106cb8",
+          "c-65dac677154f3622e1bf3209",
+          "c-14c3c1a5ed80fad9e32b7320",
+          "c-e0526663c801aefc0bcea793",
+          "c-3899256e7182e7d2a4ef0837",
+          "c-ccf91a5ba272f6579efb6ae7",
+          "c-f5efa6b40ae326f1abad725b",
+          "c-41f10ce4d4a575fcbf985171"
+        ]
+      },
+      "elapsed_ms": 123.57609998434782
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-35ae853dec5dd79f61ef4980",
+          "c-7e9b5fdcd1b735fa2b7de65a",
+          "c-31214b784b9f4dcaddc0adf6",
+          "c-945a37a61c8991cd2adfcf07",
+          "c-c721d66657a8536d02534408",
+          "c-afe0d2d17a1da30b77a1dee1",
+          "c-fd11fb267731e9e813af4ac0",
+          "c-0cfe431be5b12444b9c06244",
+          "c-5992c95c4909c36d86106cb8",
+          "c-65dac677154f3622e1bf3209",
+          "c-14c3c1a5ed80fad9e32b7320",
+          "c-e0526663c801aefc0bcea793",
+          "c-3899256e7182e7d2a4ef0837",
+          "c-ccf91a5ba272f6579efb6ae7",
+          "c-f5efa6b40ae326f1abad725b",
+          "c-41f10ce4d4a575fcbf985171"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-7e9b5fdcd1b735fa2b7de65a",
+          "c-31214b784b9f4dcaddc0adf6",
+          "c-945a37a61c8991cd2adfcf07",
+          "c-35ae853dec5dd79f61ef4980",
+          "c-c721d66657a8536d02534408"
+        ]
+      },
+      "elapsed_ms": 260.43790008407086
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-7e9b5fdcd1b735fa2b7de65a",
+          "c-31214b784b9f4dcaddc0adf6",
+          "c-945a37a61c8991cd2adfcf07",
+          "c-35ae853dec5dd79f61ef4980",
+          "c-c721d66657a8536d02534408"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "检索证据（chunk c-35ae853dec5dd79f61ef4980）完整覆盖了问题所要求的各项：使用 BERT 预训练 cased 语言模型进行多类分类并通过 BertForTokenClassification 全量微调、80-20 数据划分、概念识别任务 F1 分数为 0.89、spaCy 基线产生相似结果，以及详细性能见表 2 和表 3（原文为 'shown in Table 2 and 3'）。c-7e9b5fdcd1b735fa2b7de65a 也佐证了词级标注数据集与序列模型训练，无需再检索。"
+      },
+      "elapsed_ms": 4249.947999953292
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "task_formulation",
+            "text": "该论文将问题表述为与命名实体抽取类似的 token 分类任务，并用预训练语言模型在标注的概念数据集上微调。",
+            "citations": [
+              {
+                "paper_id": "2003.11687",
+                "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a"
+              }
+            ]
+          },
+          {
+            "key": "model_choice_bert_cased",
+            "text": "作者选择 BERT，原因在于其通用性及上下文词嵌入；具体使用 BERT 的预训练 cased 语言模型进行多类分类，并依照教程使用 BertForTokenClassification。",
+            "citations": [
+              {
+                "paper_id": "2003.11687",
+                "chunk_id": "c-35ae853dec5dd79f61ef4980"
+              }
+            ]
+          },
+          {
+            "key": "f1_score",
+            "text": "经过全量微调后，该模型在概念识别任务上取得 F1 分数 0.89。",
+            "citations": [
+              {
+                "paper_id": "2003.11687",
+                "chunk_id": "c-35ae853dec5dd79f61ef4980"
+              }
+            ]
+          },
+          {
+            "key": "data_split",
+            "text": "训练和评估采用 80-20 的数据划分。",
+            "citations": [
+              {
+                "paper_id": "2003.11687",
+                "chunk_id": "c-35ae853dec5dd79f61ef4980"
+              }
+            ]
+          },
+          {
+            "key": "tables_2_3",
+            "text": "概念识别的详细性能展示在表 2 和表 3 中。",
+            "citations": [
+              {
+                "paper_id": "2003.11687",
+                "chunk_id": "c-35ae853dec5dd79f61ef4980"
+              }
+            ]
+          },
+          {
+            "key": "spacy_baseline",
+            "text": "论文称另外用 spaCy 实现了概念识别，并称其也产生了相似的结果。",
+            "citations": [
+              {
+                "paper_id": "2003.11687",
+                "chunk_id": "c-35ae853dec5dd79f61ef4980"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7120.944399968721
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "99261f57680b1d3818443c7709930546978ba80bb127b1be96e4482c31f2faa3",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "4b4c56dd3df7b110d3ac998e7f3884a443721ab6ceb58891cb69da02ebc7a878",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "fc4a89682dbab6b6f7b5e5a1fcacc629a803446d4c655131bd80abc8a0db0c03",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "cdd57602fabc6622581f469eb4b831af785514350cbda37f1f89e6b62f3b5df7",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "99705f293a968719ca6144e3b9fe322b1d27c7fc14a884411a6cb837238556cf",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "3dcda46070322e155224123ccc56cc02318790f6b636b3f3bfc1259fd6e44657",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d12",
+        "entities": {
+          "paper": "Common-Knowledge Concept Recognition for SEVA",
+          "paper_id": "2003.11687",
+          "dataset": "SEVA"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "2003.11687"
+          ]
+        }
+      },
+      "elapsed_ms": 21.066100103780627
+    }
+  ],
+  "started_at": 1793025124.2345538,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "f7ae8f714fd035e7f5bda649fb57a18253612100ceb19bde43f5b4b48eb27b1d",
+      "session_id": "d12",
+      "canonical_key": "[\"paper_evidence\", \"2003.11687\", \"model choice\"]",
+      "text": "作者选择 BERT 的预训练 cased 语言模型进行多类分类，使用 BertForTokenClassification 进行全量微调。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2003.11687",
+      "evidence_ids": [
+        "c-35ae853dec5dd79f61ef4980"
+      ],
+      "turn_id": "d12-t1",
+      "created_at": 1793025124.2131803,
+      "updated_at": 1793025124.2131803,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2003.11687"
+      ],
+      "kind": "conflict",
+      "content": "作者选择 BERT 的预训练 cased 语言模型进行多类分类，使用 BertForTokenClassification 进行全量微调。",
+      "record_id": "fact:f7ae8f714fd035e7f5bda649fb57a18253612100ceb19bde43f5b4b48eb27b1d",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.3,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "b50dbe7bd6c516112e867a54aee78ff6a14b7f206ce99bb7986b46dc1843fb1a",
+      "session_id": "d12",
+      "canonical_key": "[\"paper_evidence\", \"2003.11687\", \"training split\"]",
+      "text": "训练和评估采用 80-20 的数据划分。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2003.11687",
+      "evidence_ids": [
+        "c-35ae853dec5dd79f61ef4980"
+      ],
+      "turn_id": "d12-t1",
+      "created_at": 1793025124.2131803,
+      "updated_at": 1793025124.2131803,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2003.11687"
+      ],
+      "kind": "conflict",
+      "content": "训练和评估采用 80-20 的数据划分。",
+      "record_id": "fact:b50dbe7bd6c516112e867a54aee78ff6a14b7f206ce99bb7986b46dc1843fb1a",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.25,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "dcad24a00c4c0d045bb9bd0f945c40ffa10750f855d150158236c11d890a79d4",
+      "session_id": "d12",
+      "canonical_key": "[\"paper_evidence\", \"2003.11687\", \"detailed results location\"]",
+      "text": "概念识别的详细性能展示在论文的表 2 和表 3 中。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2003.11687",
+      "evidence_ids": [
+        "c-35ae853dec5dd79f61ef4980"
+      ],
+      "turn_id": "d12-t1",
+      "created_at": 1793025124.2131803,
+      "updated_at": 1793025124.2131803,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2003.11687"
+      ],
+      "kind": "conflict",
+      "content": "概念识别的详细性能展示在论文的表 2 和表 3 中。",
+      "record_id": "fact:dcad24a00c4c0d045bb9bd0f945c40ffa10750f855d150158236c11d890a79d4",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.25,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    },
+    {
+      "fact_id": "f2ccb13bdd024989268c102f7b81b6cb5b9ff5cc068278188e8f11dec2c9d8db",
+      "session_id": "d12",
+      "canonical_key": "[\"paper_evidence\", \"2003.11687\", \"dataset construction\"]",
+      "text": "数据集是与领域专家合作、通过仔细定义标注方案构建的词级标注数据集，用于训练识别系统工程概念的序列模型。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2003.11687",
+      "evidence_ids": [
+        "c-7e9b5fdcd1b735fa2b7de65a"
+      ],
+      "turn_id": "d12-t1",
+      "created_at": 1793025124.2131803,
+      "updated_at": 1793025124.2131803,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2003.11687"
+      ],
+      "kind": "conflict",
+      "content": "数据集是与领域专家合作、通过仔细定义标注方案构建的词级标注数据集，用于训练识别系统工程概念的序列模型。",
+      "record_id": "fact:f2ccb13bdd024989268c102f7b81b6cb5b9ff5cc068278188e8f11dec2c9d8db",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.225,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 4,
+      "rank_score": 0.015625
+    },
+    {
+      "fact_id": "cfc41fc585feaf9628508aaa49a34f8d8b758abd1ed010913db74bbfa1a0c783",
+      "session_id": "d12",
+      "canonical_key": "[\"paper_evidence\", \"2003.11687\", \"f1 score\"]",
+      "text": "在使用手工标注数据集进行全量微调后，该模型在概念识别任务上取得了 0.89 的 F1 分数。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "2003.11687",
+      "evidence_ids": [
+        "c-35ae853dec5dd79f61ef4980"
+      ],
+      "turn_id": "d12-t1",
+      "created_at": 1793025124.2120035,
+      "updated_at": 1793025124.2120035,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "2003.11687"
+      ],
+      "kind": "conflict",
+      "content": "在使用手工标注数据集进行全量微调后，该模型在概念识别任务上取得了 0.89 的 F1 分数。",
+      "record_id": "fact:cfc41fc585feaf9628508aaa49a34f8d8b758abd1ed010913db74bbfa1a0c783",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.225,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 5,
+      "rank_score": 0.015384615384615385
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "task_formulation",
+        "text": "该论文将问题表述为与命名实体抽取类似的 token 分类任务，并用预训练语言模型在标注的概念数据集上微调。",
+        "citations": [
+          {
+            "paper_id": "2003.11687",
+            "chunk_id": "c-7e9b5fdcd1b735fa2b7de65a"
+          }
+        ]
+      },
+      {
+        "key": "model_choice_bert_cased",
+        "text": "作者选择 BERT，原因在于其通用性及上下文词嵌入；具体使用 BERT 的预训练 cased 语言模型进行多类分类，并依照教程使用 BertForTokenClassification。",
+        "citations": [
+          {
+            "paper_id": "2003.11687",
+            "chunk_id": "c-35ae853dec5dd79f61ef4980"
+          }
+        ]
+      },
+      {
+        "key": "f1_score",
+        "text": "经过全量微调后，该模型在概念识别任务上取得 F1 分数 0.89。",
+        "citations": [
+          {
+            "paper_id": "2003.11687",
+            "chunk_id": "c-35ae853dec5dd79f61ef4980"
+          }
+        ]
+      },
+      {
+        "key": "data_split",
+        "text": "训练和评估采用 80-20 的数据划分。",
+        "citations": [
+          {
+            "paper_id": "2003.11687",
+            "chunk_id": "c-35ae853dec5dd79f61ef4980"
+          }
+        ]
+      },
+      {
+        "key": "tables_2_3",
+        "text": "概念识别的详细性能展示在表 2 和表 3 中。",
+        "citations": [
+          {
+            "paper_id": "2003.11687",
+            "chunk_id": "c-35ae853dec5dd79f61ef4980"
+          }
+        ]
+      },
+      {
+        "key": "spacy_baseline",
+        "text": "论文称另外用 spaCy 实现了概念识别，并称其也产生了相似的结果。",
+        "citations": [
+          {
+            "paper_id": "2003.11687",
+            "chunk_id": "c-35ae853dec5dd79f61ef4980"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "99261f57680b1d3818443c7709930546978ba80bb127b1be96e4482c31f2faa3",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "4b4c56dd3df7b110d3ac998e7f3884a443721ab6ceb58891cb69da02ebc7a878",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "fc4a89682dbab6b6f7b5e5a1fcacc629a803446d4c655131bd80abc8a0db0c03",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "cdd57602fabc6622581f469eb4b831af785514350cbda37f1f89e6b62f3b5df7",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "99705f293a968719ca6144e3b9fe322b1d27c7fc14a884411a6cb837238556cf",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "3dcda46070322e155224123ccc56cc02318790f6b636b3f3bfc1259fd6e44657",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "6ce3025f8b1e561dd9cd46c65af1f72fc3a864d237bb075eac49732b32bcda58",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3921,
+        "completion_tokens": 134,
+        "total_tokens": 4055,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00063092,
+          "allowance": 0.00047319,
+          "tokens": {
+            "input": 3665,
+            "output": 134,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3665,
+        "output_tokens": 134,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3503.4164999378845
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "5b01b9a48726bc5e8790fa2fc8385d241154d5d2d8b4c092e7878e4e2686c42d",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5910,
+        "completion_tokens": 156,
+        "total_tokens": 6066,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0009801,
+          "allowance": 0.00073508,
+          "tokens": {
+            "input": 5910,
+            "output": 156,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5910,
+        "output_tokens": 156,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4249.538999982178
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "d3bb85af7c85c32db9b3a447f42a1b32bd2e5bdc54d8f3c4494fb72c3e9f1cd1",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 6012,
+        "completion_tokens": 420,
+        "total_tokens": 6432,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0011538,
+          "allowance": 0.00086535,
+          "tokens": {
+            "input": 6012,
+            "output": 420,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 6012,
+        "output_tokens": 420,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7120.526400045492
+    }
+  ]
+}

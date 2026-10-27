@@ -1,0 +1,816 @@
+{
+  "id": "d16-t3",
+  "session_id": "d16",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "答案正确对比了两篇论文：1908.10090 提出精确解码（beam search + DFS）和最小长度约束，并说明其关于模型偏置的结论；1612.02695 提出标签平滑、EOS 概率约束、温度调整和带 coverage 的 LM 集成。测试集规模分别为 WMT15 en-de news-test2015 的 2,169 句和 WSJ eval92（未给出句数），并解释了不可比性。所有主张均有证据支持，引用与主张匹配。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "1908.10090 摘要明确描述基于 beam search 与 depth-first search 结合的精确推理，引言段说明利用条件对数概率为负的单调性安全丢弃部分假设。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要说明提出结合 beam search 和 depth-first search 的精确推理过程。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "引言段明确说明条件对数概率恒为负，部分假设分数低于完整假设即可安全丢弃。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "摘要明确说明通过加最小翻译长度约束，发现空翻译问题根源是偏向更短翻译的固有偏置。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要直接给出该最小长度约束实验与结论。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "摘要结论与引言结论均说明 vanilla NMT 需要“恰到好处”的 beam search 错误、从建模角度极不令人满意，并希望激发改进 NMT 充分性建模的努力，而非给出修复偏置的具体方案。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要给出该结论原文。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "引言段末尾表达希望激发改进 NMT 建模能力（尤其充分性）的努力。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "1612.02695 摘要明确观察到两个缺陷：过度自信与使用语言模型时产生不完整转写，并提出实用方案。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要原文列出 overconfidence 和不完整转写两个缺陷及提出实用方案。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "实验段说明比较 unigram smoothing 与 neighborhood smoothing，并用小型网格搜索调参；不使用语言模型、beam size 为 10 的实验带来大幅错误率下降。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块描述两种标签平滑方法、网格搜索，以及 beam size 10、无语言模型下标签平滑带来大幅错误率下降。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "过度自信段落说明约束仅在 EOS 概率与最可能 token 概率处于狭窄范围时输出 EOS，比较更尖锐/更平滑温度；各策略贪心准确率相同，因温度不改变最可能字符选择；温度升高需防止截断。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块逐项包含 EOS 约束、温度比较、贪心不受影响与截断风险。"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "verdict": "supported",
+        "reason": "LM 集成段说明在 beam search 代价中加入 LM 项，指出两个挑战（过度自信使项间难平衡、需 coverage 项避免不完整转写），coverage 项促进更长转写。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块明确描述 LM 项、两个挑战及覆盖项。"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "verdict": "supported",
+        "reason": "结果段明确说明在完整 WMT15 英德 news-test2015 测试集（2,169 句）上实验，使用 WMT18 数据（不含 ParaCrawl）训练的 Transformer base 模型。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块逐字包含测试集规模、模型与训练数据描述。"
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "verdict": "supported",
+        "reason": "实验段说明所有实验在 WSJ 上进行，训练 si284、验证 dev93、测试 eval92；该证据未给出 eval92 句数，故“未给出”属实。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块列出 si284/dev93/eval92，全文该证据无 eval92 句数。"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "verdict": "supported",
+        "reason": "1908.10090 证据为 WMT15 英德 2,169 句、BLEU；1612.02695 证据为 WSJ eval92、WER，任务、语言方向、模态、指标不同且后者句数缺失，不可直接比较。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块支持 1908.10090 的 WMT15 测试集与 BLEU 评价。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "该块支持 1612.02695 的 WSJ eval92 设置且未提供句数。"
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "verdict": "supported",
+        "reason": "1908.10090 关注搜索错误与模型错误（空翻译、偏短偏置），1612.02695 关注过度自信与不完整转写，二者针对不同缺陷。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要给出搜索/模型错误与偏短偏置。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "摘要给出过度自信与不完整转写两个缺陷。"
+          }
+        ]
+      }
+    ]
+  },
+  "error": null,
+  "payload": {
+    "question": "与《On NMT Search Errors and Model Errors: Cat Got Your Tongue?》对比，分别说明两篇论文如何回答“What are the solutions proposed for the seq2seq shortcomings?”与“what is the test set size?”，并说明是否具有可比性。",
+    "answer": {
+      "claims": [
+        {
+          "key": "exact_search_solution",
+          "text": "1908.10090 提出一种精确推理（解码）算法，将 beam search 与 depth-first search 结合，利用 NMT 分数的单调性（条件对数概率均为负，部分假设分数低于任一完整假设的对数概率时即可安全丢弃）。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-e75fba389a988f777decdfb0"
+            },
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-42b4672bc1ec7157b6049d92"
+            }
+          ]
+        },
+        {
+          "key": "min_length_constraint",
+          "text": "1908.10090 通过给搜索加最小翻译长度约束，说明空翻译问题的根源是模型固有的偏向更短翻译的偏置。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-e75fba389a988f777decdfb0"
+            }
+          ]
+        },
+        {
+          "key": "1908_conclusion_no_cure",
+          "text": "1908.10090 的结论是当前形式的 vanilla NMT 需要“恰到好处”的 beam search 错误，这从建模角度看是极不令人满意的，其工作希望激发在充分性方面改进 NMT 建模能力的努力，而非给出修复模型偏置的具体方案。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-e75fba389a988f777decdfb0"
+            },
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-42b4672bc1ec7157b6049d92"
+            }
+          ]
+        },
+        {
+          "key": "1612_two_shortcomings",
+          "text": "1612.02695 观察到注意力 seq2seq 语音识别系统的两个缺陷：对预测过度自信（overconfidence），以及在使用语言模型时倾向于产生不完整转写，并提出针对两者的实用解决方案。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        },
+        {
+          "key": "1612_label_smoothing",
+          "text": "1612.02695 方案包括标签平滑（unigram smoothing 与 neighborhood smoothing），用小型网格搜索调参，并在不使用语言模型、beam size 为 10 的实验中带来大幅错误率下降。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-3ee68fb3839d5eedc414c446"
+            }
+          ]
+        },
+        {
+          "key": "1612_eos_and_temperature",
+          "text": "1612.02695 通过约束搜索仅在 EOS 概率与最可能 token 概率处于狭窄范围时才输出 EOS，并比较不同温度（更尖锐或更平滑的分布）来缓解截断/删除问题；温度不影响贪心解码结果，但提高温度时需防止转写被截断。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-10d1ebcc07738e41f14a4005"
+            }
+          ]
+        },
+        {
+          "key": "1612_lm_integration_coverage",
+          "text": "1612.02695 在 beam search 代价中加入语言模型项，并指出加入语言模型的两个挑战（过度自信导致项间难以平衡、若不加入 coverage 项会产生不完整转写），使用促进更长转写的 coverage 项。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-8df66f805cb20dd4b2c01daf"
+            }
+          ]
+        },
+        {
+          "key": "1908_test_size",
+          "text": "1908.10090 在完整的 WMT15 英德 news-test2015 测试集（2,169 句）上实验，使用在 WMT18 数据（不含 ParaCrawl）上训练的 Transformer base 模型。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            }
+          ]
+        },
+        {
+          "key": "1612_test_set",
+          "text": "1612.02695 全部实验在 Wall Street Journal 数据集上进行：训练用 si284、验证用 dev93、测试评估用 eval92；证据中未给出 eval92 的句子数。",
+          "citations": [
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-a30dc1a770cb3f6b7bc5f850"
+            }
+          ]
+        },
+        {
+          "key": "comparability",
+          "text": "两篇论文的测试集不可直接比较：1908.10090 用的是 WMT15 英德机器翻译测试集（2,169 句，BLEU 评价），1612.02695 用的是 WSJ eval92 语音识别测试集（WER 评价），任务、语言方向、模态与评价指标均不同，且 1612.02695 的证据未提供 eval92 句数。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0"
+            },
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-a30dc1a770cb3f6b7bc5f850"
+            }
+          ]
+        },
+        {
+          "key": "comparability_solutions",
+          "text": "两篇论文的解决方案也针对不同缺陷且不可直接对比：1908.10090 关注 NMT 解码中的搜索错误与模型错误（空翻译、偏短偏置），1612.02695 关注语音识别 seq2seq 的过度自信与不完整转写。",
+          "citations": [
+            {
+              "paper_id": "1908.10090",
+              "chunk_id": "c-e75fba389a988f777decdfb0"
+            },
+            {
+              "paper_id": "1612.02695",
+              "chunk_id": "c-c1a01afddd733ef65ed6d199"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved": {
+      "intent": "compare",
+      "standalone_query": "对比《Towards better decoding and language model integration in sequence to sequence models》与《On NMT Search Errors and Model Errors: Cat Got Your Tongue?》：各自针对seq2seq缺陷提出的解决方案，以及各自的测试集规模，并说明二者是否可比",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1612.02695",
+        "1908.10090"
+      ],
+      "resolved_entities": {
+        "对比论文": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "当前论文": "Towards better decoding and language model integration in sequence to sequence models"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-e75fba389a988f777decdfb0",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Abstract",
+        "text": "We report on search errors and model errors in neural machine translation (NMT). We present an exact inference procedure for neural sequence models based on a combination of beam search and depth-first search. We use our exact search to find the global best model scores under a Transformer base model for the entire WMT15 English-German test set. Surprisingly, beam search fails to find these global best model scores in most cases, even with a very large beam size of 100. For more than 50% of the sentences, the model in fact assigns its global best score to the empty translation, revealing a massive failure of neural models in properly accounting for adequacy. We show by constraining search with a minimum translation length that at the root of the problem of empty translations lies an inherent bias towards shorter translations. We conclude that vanilla NMT in its current form requires just the right amount of beam search errors, which, from a modelling perspective, is a highly unsatisfactory conclusion indeed, as the model often prefers an empty translation.",
+        "text_hash": "c42961fafa5cd4caa4b9e02d6c08c051ac939f2c149f860a30704df9283c876b",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1072,
+            "text": "We report on search errors and model errors in neural machine translation (NMT). We present an exact inference procedure for neural sequence models based on a combination of beam search and depth-first search. We use our exact search to find the global best model scores under a Transformer base model for the entire WMT15 English-German test set. Surprisingly, beam search fails to find these global best model scores in most cases, even with a very large beam size of 100. For more than 50% of the sentences, the model in fact assigns its global best score to the empty translation, revealing a massive failure of neural models in properly accounting for adequacy. We show by constraining search with a minimum translation length that at the root of the problem of empty translations lies an inherent bias towards shorter translations. We conclude that vanilla NMT in its current form requires just the right amount of beam search errors, which, from a modelling perspective, is a highly unsatisfactory conclusion indeed, as the model often prefers an empty translation.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c018cb200993c8ef36611d4a",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Exact Inference for Neural Models",
+        "text": "Decoding in NMT (Eq. EQREF2 ) is usually tackled with beam search, which is a time-synchronous approximate search algorithm that builds up hypotheses from left to right. A formal algorithm description is given in Alg. SECREF1 . Beam search maintains a set of active hypotheses INLINEFORM0 . In each iteration, all hypotheses in INLINEFORM1 that do not end with the end-of-sentence symbol INLINEFORM2 are expanded and collected in INLINEFORM3 . The best INLINEFORM4 items in INLINEFORM5 constitute the set of active hypotheses INLINEFORM6 in the next iteration (line 11 in Alg. SECREF1 ), where INLINEFORM7 is the beam size. The algorithm terminates when the best hypothesis in INLINEFORM8 ends with the end-of-sentence symbol INLINEFORM9 . Hypotheses are called complete if they end with INLINEFORM10 and partial if they do not.\n\nBeam search is the ubiquitous decoding algorithm for NMT, but it is prone to search errors as the number of active hypotheses is limited by INLINEFORM0 . In particular, beam search never compares partial hypotheses of different lengths with each other. As we will see in later sections, this is one of the main sources of search errors. However, in many cases, the model score found by beam search is a reasonable approximation to the global best model score. Let INLINEFORM1 be the model score found by beam search ( INLINEFORM2 in line 12, Alg. SECREF1 ), which is a lower bound on the global best model score: INLINEFORM3 . Furthermore, since the conditionals INLINEFORM4 in Eq. EQREF1 are log-probabilities and thus non-positive, expanding a partial hypothesis is guaranteed to result in a lower model score, i.e.: DISPLAYFORM0 ",
+        "text_hash": "ea7bc53f278bf14e006f6daa8a1638baa6e0012a33a6776d170b26010e65f64e",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Exact Inference for Neural Models",
+            "start": 0,
+            "end": 828,
+            "text": "Decoding in NMT (Eq. EQREF2 ) is usually tackled with beam search, which is a time-synchronous approximate search algorithm that builds up hypotheses from left to right. A formal algorithm description is given in Alg. SECREF1 . Beam search maintains a set of active hypotheses INLINEFORM0 . In each iteration, all hypotheses in INLINEFORM1 that do not end with the end-of-sentence symbol INLINEFORM2 are expanded and collected in INLINEFORM3 . The best INLINEFORM4 items in INLINEFORM5 constitute the set of active hypotheses INLINEFORM6 in the next iteration (line 11 in Alg. SECREF1 ), where INLINEFORM7 is the beam size. The algorithm terminates when the best hypothesis in INLINEFORM8 ends with the end-of-sentence symbol INLINEFORM9 . Hypotheses are called complete if they end with INLINEFORM10 and partial if they do not.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Exact Inference for Neural Models",
+            "start": 0,
+            "end": 832,
+            "text": "Beam search is the ubiquitous decoding algorithm for NMT, but it is prone to search errors as the number of active hypotheses is limited by INLINEFORM0 . In particular, beam search never compares partial hypotheses of different lengths with each other. As we will see in later sections, this is one of the main sources of search errors. However, in many cases, the model score found by beam search is a reasonable approximation to the global best model score. Let INLINEFORM1 be the model score found by beam search ( INLINEFORM2 in line 12, Alg. SECREF1 ), which is a lower bound on the global best model score: INLINEFORM3 . Furthermore, since the conditionals INLINEFORM4 in Eq. EQREF1 are log-probabilities and thus non-positive, expanding a partial hypothesis is guaranteed to result in a lower model score, i.e.: DISPLAYFORM0 ",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c1a01afddd733ef65ed6d199",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Abstract",
+        "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+        "text_hash": "58b11be69af2f1e4eb78c7257af77114d649328bba9fcd1a6c1266823f3e1f01",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 782,
+            "text": "The recently proposed Sequence-to-Sequence (seq2seq) framework advocates replacing complex data processing pipelines, such as an entire automatic speech recognition system, with a single neural network trained in an end-to-end fashion. In this contribution, we analyse an attention-based seq2seq speech recognition system that directly transcribes recordings into characters. We observe two shortcomings: overconfidence in its predictions and a tendency to produce incomplete transcriptions when language models are used. We propose practical solutions to both problems achieving competitive speaker independent word error rates on the Wall Street Journal dataset: without separate language models we reach 10.6% WER, while together with a trigram language model, we reach 6.7% WER.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-42b4672bc1ec7157b6049d92",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Introduction",
+        "text": " INLINEFORM0 : Lower bound INLINEFORM1 INLINEFORM2 Trigger INLINEFORM3 update INLINEFORM4 Initialize INLINEFORM5 with dummy value INLINEFORM6 INLINEFORM7 INLINEFORM8 INLINEFORM9 INLINEFORM10 INLINEFORM11 INLINEFORM12 \n\nIn this work we propose such an exact decoding algorithm for NMT that exploits the monotonicity of NMT scores: Since the conditional log-probabilities in Eq. EQREF1 are always negative, partial hypotheses can be safely discarded once their score drops below the log-probability of any complete hypothesis. Using our exact inference scheme we show that beam search does not find the global best model score for more than half of the sentences. However, these search errors, paradoxically, often prevent the decoder from suffering from a frequent but very serious model error in NMT, namely that the empty hypothesis often gets the global best model score. Our findings suggest a reassessment of the amount of model and search errors in NMT, and we hope that they will spark new efforts in improving NMT modeling capabilities, especially in terms of adequacy.",
+        "text_hash": "6121d94f97c308471ce945174d9cb0f0eb04d723e18af8af36b8c4f81fbfdc6d",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "s0-p8",
+            "section": "Introduction",
+            "start": 0,
+            "end": 217,
+            "text": " INLINEFORM0 : Lower bound INLINEFORM1 INLINEFORM2 Trigger INLINEFORM3 update INLINEFORM4 Initialize INLINEFORM5 with dummy value INLINEFORM6 INLINEFORM7 INLINEFORM8 INLINEFORM9 INLINEFORM10 INLINEFORM11 INLINEFORM12 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p9",
+            "section": "Introduction",
+            "start": 0,
+            "end": 857,
+            "text": "In this work we propose such an exact decoding algorithm for NMT that exploits the monotonicity of NMT scores: Since the conditional log-probabilities in Eq. EQREF1 are always negative, partial hypotheses can be safely discarded once their score drops below the log-probability of any complete hypothesis. Using our exact inference scheme we show that beam search does not find the global best model score for more than half of the sentences. However, these search errors, paradoxically, often prevent the decoder from suffering from a frequent but very serious model error in NMT, namely that the empty hypothesis often gets the global best model score. Our findings suggest a reassessment of the amount of model and search errors in NMT, and we hope that they will spark new efforts in improving NMT modeling capabilities, especially in terms of adequacy.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-c4953b9c4ea7ec3abed8a6e0",
+        "paper_id": "1908.10090",
+        "title": "On NMT Search Errors and Model Errors: Cat Got Your Tongue?",
+        "section": "Results without Length Constraints",
+        "text": "We conduct all our experiments in this section on the entire English-German WMT news-test2015 test set (2,169 sentences) with a Transformer base BIBREF13 model trained with Tensor2Tensor BIBREF14 on parallel WMT18 data excluding ParaCrawl. Our pre-processing is as described by BIBREF15 and includes joint subword segmentation using byte pair encoding BIBREF16 with 32K merges. We report cased BLEU scores. An open-source implementation of our exact inference scheme is available in the SGNMT decoder BIBREF17 , BIBREF4 .\n\nOur main result is shown in Tab. TABREF9 . Greedy and beam search both achieve reasonable BLEU scores but rely on a high number of search errors to not be affected by a serious NMT model error: For 51.8% of the sentences, NMT assigns the global best model score to the empty translation, i.e. a single INLINEFORM0 token. Fig. FIGREF10 visualizes the relationship between BLEU and the number of search errors. Large beam sizes reduce the number of search errors, but the BLEU score drops because translations are too short. Even a large beam size of 100 produces 53.62% search errors. Fig. FIGREF11 shows that beam search effectively reduces search errors with respect to greedy decoding to some degree, but is ineffective in reducing search errors even further. For example, Beam-10 yields 15.9% fewer search errors (absolute) than greedy decoding (57.68% vs. 73.58%), but Beam-100 improves search only slightly (53.62% search errors) despite being 10 times slower than beam-10.\n\nThe problem of empty translations is also visible in the histogram over length ratios (Fig. FIGREF13 ). Beam search – although still slightly too short – roughly follows the reference distribution, but exact search has an isolated peak in INLINEFORM0 from the empty translations.",
+        "text_hash": "f813624428798bebae76bb437c23e23c9d6e676da1c5acd0b1c049ddb685308f",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1908.10090",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "Results without Length Constraints",
+            "start": 0,
+            "end": 521,
+            "text": "We conduct all our experiments in this section on the entire English-German WMT news-test2015 test set (2,169 sentences) with a Transformer base BIBREF13 model trained with Tensor2Tensor BIBREF14 on parallel WMT18 data excluding ParaCrawl. Our pre-processing is as described by BIBREF15 and includes joint subword segmentation using byte pair encoding BIBREF16 with 32K merges. We report cased BLEU scores. An open-source implementation of our exact inference scheme is available in the SGNMT decoder BIBREF17 , BIBREF4 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p1",
+            "section": "Results without Length Constraints",
+            "start": 0,
+            "end": 978,
+            "text": "Our main result is shown in Tab. TABREF9 . Greedy and beam search both achieve reasonable BLEU scores but rely on a high number of search errors to not be affected by a serious NMT model error: For 51.8% of the sentences, NMT assigns the global best model score to the empty translation, i.e. a single INLINEFORM0 token. Fig. FIGREF10 visualizes the relationship between BLEU and the number of search errors. Large beam sizes reduce the number of search errors, but the BLEU score drops because translations are too short. Even a large beam size of 100 produces 53.62% search errors. Fig. FIGREF11 shows that beam search effectively reduces search errors with respect to greedy decoding to some degree, but is ineffective in reducing search errors even further. For example, Beam-10 yields 15.9% fewer search errors (absolute) than greedy decoding (57.68% vs. 73.58%), but Beam-100 improves search only slightly (53.62% search errors) despite being 10 times slower than beam-10.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p2",
+            "section": "Results without Length Constraints",
+            "start": 0,
+            "end": 279,
+            "text": "The problem of empty translations is also visible in the histogram over length ratios (Fig. FIGREF13 ). Beam search – although still slightly too short – roughly follows the reference distribution, but exact search has an isolated peak in INLINEFORM0 from the empty translations.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a30dc1a770cb3f6b7bc5f850",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Experiments",
+        "text": "We conducted all experiments on the Wall Street Journal dataset, training on si284, validating on dev93 and evaluating on eval92 set. The models were trained on 80-dimensional mel-scale filterbanks extracted every 10ms form 25ms windows, extended with their temporal first and second order differences and per-speaker mean and variance normalization. Our character set consisted of lowercase letters, the space, the apostrophe, a noise marker, and start- and end- of sequence tokens. For comparison with previously published results, experiments involving language models used an extended-vocabulary trigram language model built by the Kaldi WSJ s5 recipe BIBREF17 . We have use the FST framework to compose the language model with a \"spelling lexicon\" BIBREF5 , BIBREF11 , BIBREF18 . All models were implemented using the Tensorflow framework BIBREF19 .\n\nOur base configuration implemented the Listener using 4 bidirectional LSTM layers of 256 units per direction (512 total), interleaved with 3 time-pooling layers which resulted in an 8-fold reduction of the input sequence length, approximately equating the length of hidden activations to the number of characters in the transcript. The Speller was a single LSTM layer with 256 units. Input characters were embedded into 30 dimensions. The attention MLP used 128 hidden units, previous attention weights were accessed using 3 convolutional filters spanning 100 frames. LSTM weights were initialized uniformly over the range INLINEFORM0 . Networks were trained using 8 asynchronous replica workers each employing the ADAM algorithm BIBREF20 with default parameters and the learning rate set initially to INLINEFORM1 , then reduced to INLINEFORM2 and INLINEFORM3 after 400k and 500k training steps, respectively. Static Gaussian weight noise with standard deviation 0.075 was applied to all weight matrices after 20000 training steps. We have also used a small weight decay of INLINEFORM4 .",
+        "text_hash": "a2607700b9bdd0e9d32f96a2a206e197cbcf75ca237b325c6c2abfe62a823f8a",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s11-p0",
+            "section": "Experiments",
+            "start": 0,
+            "end": 854,
+            "text": "We conducted all experiments on the Wall Street Journal dataset, training on si284, validating on dev93 and evaluating on eval92 set. The models were trained on 80-dimensional mel-scale filterbanks extracted every 10ms form 25ms windows, extended with their temporal first and second order differences and per-speaker mean and variance normalization. Our character set consisted of lowercase letters, the space, the apostrophe, a noise marker, and start- and end- of sequence tokens. For comparison with previously published results, experiments involving language models used an extended-vocabulary trigram language model built by the Kaldi WSJ s5 recipe BIBREF17 . We have use the FST framework to compose the language model with a \"spelling lexicon\" BIBREF5 , BIBREF11 , BIBREF18 . All models were implemented using the Tensorflow framework BIBREF19 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p1",
+            "section": "Experiments",
+            "start": 0,
+            "end": 1087,
+            "text": "Our base configuration implemented the Listener using 4 bidirectional LSTM layers of 256 units per direction (512 total), interleaved with 3 time-pooling layers which resulted in an 8-fold reduction of the input sequence length, approximately equating the length of hidden activations to the number of characters in the transcript. The Speller was a single LSTM layer with 256 units. Input characters were embedded into 30 dimensions. The attention MLP used 128 hidden units, previous attention weights were accessed using 3 convolutional filters spanning 100 frames. LSTM weights were initialized uniformly over the range INLINEFORM0 . Networks were trained using 8 asynchronous replica workers each employing the ADAM algorithm BIBREF20 with default parameters and the learning rate set initially to INLINEFORM1 , then reduced to INLINEFORM2 and INLINEFORM3 after 400k and 500k training steps, respectively. Static Gaussian weight noise with standard deviation 0.075 was applied to all weight matrices after 20000 training steps. We have also used a small weight decay of INLINEFORM4 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-3ee68fb3839d5eedc414c446",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Experiments",
+        "text": "We have compared two label smoothing methods: unigram smoothing BIBREF16 with the probability of the correct label set to INLINEFORM0 and neighborhood smoothing with the probability of correct token set to INLINEFORM1 and the remaining probability mass distributed symmetrically over neighbors at distance INLINEFORM2 and INLINEFORM3 with a INLINEFORM4 ratio. We have tuned the smoothing parameters with a small grid search and have found that good results can be obtained for a broad range of settings.\n\nWe have gathered results obtained without language models in Table TABREF20 . We have used a beam size of 10 and no mechanism to promote longer sequences. We report averages of two runs taken at the epoch with the lowest validation WER. Label smoothing brings a large error rate reduction, nearly matching the performance achieved with very deep and sophisticated encoders BIBREF21 .\n\nTable TABREF21 gathers results that use the extended trigram language model. We report averages of two runs. For each run we have tuned beam search parameters on the validation set and applied them on the test set. A typical setup used beam width 200, language model weight INLINEFORM0 , coverage weight INLINEFORM1 and coverage threshold INLINEFORM2 . Our best result surpasses CTC-based networks BIBREF5 and matches the results of a DNN-HMM and CTC ensemble BIBREF22 .",
+        "text_hash": "991b66cc92a006152aadc85cf2621d6276d3087a00597eab61b11596771126e7",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s11-p2",
+            "section": "Experiments",
+            "start": 0,
+            "end": 503,
+            "text": "We have compared two label smoothing methods: unigram smoothing BIBREF16 with the probability of the correct label set to INLINEFORM0 and neighborhood smoothing with the probability of correct token set to INLINEFORM1 and the remaining probability mass distributed symmetrically over neighbors at distance INLINEFORM2 and INLINEFORM3 with a INLINEFORM4 ratio. We have tuned the smoothing parameters with a small grid search and have found that good results can be obtained for a broad range of settings.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p3",
+            "section": "Experiments",
+            "start": 0,
+            "end": 383,
+            "text": "We have gathered results obtained without language models in Table TABREF20 . We have used a beam size of 10 and no mechanism to promote longer sequences. We report averages of two runs taken at the epoch with the lowest validation WER. Label smoothing brings a large error rate reduction, nearly matching the performance achieved with very deep and sophisticated encoders BIBREF21 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s11-p4",
+            "section": "Experiments",
+            "start": 0,
+            "end": 470,
+            "text": "Table TABREF21 gathers results that use the extended trigram language model. We report averages of two runs. For each run we have tuned beam search parameters on the validation set and applied them on the test set. A typical setup used beam width 200, language model weight INLINEFORM0 , coverage weight INLINEFORM1 and coverage threshold INLINEFORM2 . Our best result surpasses CTC-based networks BIBREF5 and matches the results of a DNN-HMM and CTC ensemble BIBREF22 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-10d1ebcc07738e41f14a4005",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Impact of Model Overconfidence",
+        "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+        "text_hash": "85395b43efbdd516c21e9d70a5be7168aa04220e6a55148342a1e45710d8f8f2",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s8-p4",
+            "section": "Impact of Model Overconfidence",
+            "start": 0,
+            "end": 768,
+            "text": "Decoding results of a baseline model on the WSJ dev93 data set are presented in Figure FIGREF13 . We haven't used a language model. At high temperatures deletion errors dominated. We didn't want to change the beam search cost and instead constrained the search to emit the EOS token only when its probability was within a narrow range from the most probable token. We compare the default setting ( INLINEFORM0 ), with a sharper distribution ( INLINEFORM1 ) and smoother distributions ( INLINEFORM2 ). All strategies lead to the same greedy decoding accuracy, because temperature changes do not affect the selection of the most probable character. As temperature increases beam search finds better solutions, however care must be taken to prevent truncated transcripts.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-8df66f805cb20dd4b2c01daf",
+        "paper_id": "1612.02695",
+        "title": "Towards better decoding and language model integration in sequence to sequence models",
+        "section": "Language Model Integration",
+        "text": "The simplest solution to include a separate language model is to extend the beam search cost with a language modeling term BIBREF11 , BIBREF3 , BIBREF14 : DISPLAYFORM0 \n\nwhere coverage refers to a term that promotes longer transcripts described it in detail in Section SECREF16 .\n\nWe have identified two challenges in adding the language model. First, due to model overconfidence deviations from the best guess of the network drastically changed the term INLINEFORM0 , which made balancing the terms in eq. ( EQREF11 ) difficult. Second, incomplete transcripts were produced unless a recording coverage term was added.\n\nEquation ( EQREF11 ) is a heuristic involving the multiplication of a conditional and unconditional probabilities of the transcript INLINEFORM0 . We have tried to justify it by adding an intrinsic language model suppression term INLINEFORM1 that would transform INLINEFORM2 into INLINEFORM3 . We have estimated the language modeling capability of the speller INLINEFORM4 by replacing the encoded speech with a constant, separately trained, biasing vector. The per character perplexity obtained was about 6.5 and we didn't observe consistent gains from this extension of the beam search criterion.",
+        "text_hash": "779d24d75ac4a15600eb3776411db4e8372475e4e695000ea8a9b627b15a1336",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1612.02695",
+        "spans": [
+          {
+            "paragraph_id": "s6-p0",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 168,
+            "text": "The simplest solution to include a separate language model is to extend the beam search cost with a language modeling term BIBREF11 , BIBREF3 , BIBREF14 : DISPLAYFORM0 ",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p1",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 109,
+            "text": "where coverage refers to a term that promotes longer transcripts described it in detail in Section SECREF16 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p2",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 337,
+            "text": "We have identified two challenges in adding the language model. First, due to model overconfidence deviations from the best guess of the network drastically changed the term INLINEFORM0 , which made balancing the terms in eq. ( EQREF11 ) difficult. Second, incomplete transcripts were produced unless a recording coverage term was added.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s6-p3",
+            "section": "Language Model Integration",
+            "start": 0,
+            "end": 596,
+            "text": "Equation ( EQREF11 ) is a heuristic involving the multiplication of a conditional and unconditional probabilities of the transcript INLINEFORM0 . We have tried to justify it by adding an intrinsic language model suppression term INLINEFORM1 that would transform INLINEFORM2 into INLINEFORM3 . We have estimated the language modeling capability of the speller INLINEFORM4 by replacing the encoded speech with a constant, separately trained, biasing vector. The per character perplexity obtained was about 6.5 and we didn't observe consistent gains from this extension of the beam search criterion.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "关于论文《Towards better decoding and language model integration in sequence to sequence models》，What are the solutions proposed for the seq2seq shortcomings?",
+      "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "答案正确对比了两篇论文：1908.10090 提出精确解码（beam search + DFS）和最小长度约束，并说明其关于模型偏置的结论；1612.02695 提出标签平滑、EOS 概率约束、温度调整和带 coverage 的 LM 集成。测试集规模分别为 WMT15 en-de news-test2015 的 2,169 句和 WSJ eval92（未给出句数），并解释了不可比性。所有主张均有证据支持，引用与主张匹配。",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "1908.10090 摘要明确描述基于 beam search 与 depth-first search 结合的精确推理，引言段说明利用条件对数概率为负的单调性安全丢弃部分假设。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要说明提出结合 beam search 和 depth-first search 的精确推理过程。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "引言段明确说明条件对数概率恒为负，部分假设分数低于完整假设即可安全丢弃。"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "摘要明确说明通过加最小翻译长度约束，发现空翻译问题根源是偏向更短翻译的固有偏置。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要直接给出该最小长度约束实验与结论。"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "摘要结论与引言结论均说明 vanilla NMT 需要“恰到好处”的 beam search 错误、从建模角度极不令人满意，并希望激发改进 NMT 充分性建模的努力，而非给出修复偏置的具体方案。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要给出该结论原文。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "引言段末尾表达希望激发改进 NMT 建模能力（尤其充分性）的努力。"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "verdict": "supported",
+        "reason": "1612.02695 摘要明确观察到两个缺陷：过度自信与使用语言模型时产生不完整转写，并提出实用方案。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要原文列出 overconfidence 和不完整转写两个缺陷及提出实用方案。"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "verdict": "supported",
+        "reason": "实验段说明比较 unigram smoothing 与 neighborhood smoothing，并用小型网格搜索调参；不使用语言模型、beam size 为 10 的实验带来大幅错误率下降。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块描述两种标签平滑方法、网格搜索，以及 beam size 10、无语言模型下标签平滑带来大幅错误率下降。"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "verdict": "supported",
+        "reason": "过度自信段落说明约束仅在 EOS 概率与最可能 token 概率处于狭窄范围时输出 EOS，比较更尖锐/更平滑温度；各策略贪心准确率相同，因温度不改变最可能字符选择；温度升高需防止截断。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块逐项包含 EOS 约束、温度比较、贪心不受影响与截断风险。"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "verdict": "supported",
+        "reason": "LM 集成段说明在 beam search 代价中加入 LM 项，指出两个挑战（过度自信使项间难平衡、需 coverage 项避免不完整转写），coverage 项促进更长转写。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块明确描述 LM 项、两个挑战及覆盖项。"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "verdict": "supported",
+        "reason": "结果段明确说明在完整 WMT15 英德 news-test2015 测试集（2,169 句）上实验，使用 WMT18 数据（不含 ParaCrawl）训练的 Transformer base 模型。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块逐字包含测试集规模、模型与训练数据描述。"
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "verdict": "supported",
+        "reason": "实验段说明所有实验在 WSJ 上进行，训练 si284、验证 dev93、测试 eval92；该证据未给出 eval92 句数，故“未给出”属实。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块列出 si284/dev93/eval92，全文该证据无 eval92 句数。"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "verdict": "supported",
+        "reason": "1908.10090 证据为 WMT15 英德 2,169 句、BLEU；1612.02695 证据为 WSJ eval92、WER，任务、语言方向、模态、指标不同且后者句数缺失，不可直接比较。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "该块支持 1908.10090 的 WMT15 测试集与 BLEU 评价。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "该块支持 1612.02695 的 WSJ eval92 设置且未提供句数。"
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "verdict": "supported",
+        "reason": "1908.10090 关注搜索错误与模型错误（空翻译、偏短偏置），1612.02695 关注过度自信与不完整转写，二者针对不同缺陷。",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "摘要给出搜索/模型错误与偏短偏置。"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "摘要给出过度自信与不完整转写两个缺陷。"
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "e3c045db319888c3d7d9633176ff880a7f0886052fb5e94f0d858de490a104fd",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 9223,
+        "completion_tokens": 1396,
+        "total_tokens": 10619,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00222105,
+          "allowance": 0.00166579,
+          "tokens": {
+            "input": 9223,
+            "output": 1396,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 9223,
+        "output_tokens": 1396,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7777.777200000855
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "turn_id": "budget-1",
+  "session_id": "mem-budget",
+  "question": "Remember: experiment budget=100 samples",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "Remember: experiment budget=100 samples"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.012800097465515137
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "Remember: experiment budget=100 samples"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "experiment budget of 100 samples",
+        "needs_clarification": true,
+        "paper_ids": null,
+        "resolved_entities": {
+          "budget": "100 samples"
+        }
+      },
+      "elapsed_ms": 2406.120500061661
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.001100008375942707
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "action": "active",
+          "fact_id": "716bcd1670d3de2c53a4753cf55cb5b6d67d9724c16135aedf82da60f8d9f747",
+          "reason": "explicit_user_declaration"
+        },
+        {
+          "action": "queued",
+          "episode_id": "6b0ec09c3939952e4edfa15391b6d06887a8efdfd3302a6988a622158dea4e9c"
+        },
+        {
+          "operation": "chroma_repair_queued",
+          "episode_ids": [
+            "6b0ec09c3939952e4edfa15391b6d06887a8efdfd3302a6988a622158dea4e9c"
+          ]
+        }
+      ],
+      "output": {
+        "session_id": "mem-budget",
+        "entities": {},
+        "facts": {
+          "[\"user_explicit\", null, \"experiment budget\"]": {
+            "text": "100 samples",
+            "evidence_ids": [],
+            "fact_id": "716bcd1670d3de2c53a4753cf55cb5b6d67d9724c16135aedf82da60f8d9f747",
+            "turn_id": "budget-1",
+            "source_type": "user_explicit"
+          }
+        },
+        "unresolved": [
+          "Remember: experiment budget=100 samples"
+        ],
+        "summary": {}
+      },
+      "elapsed_ms": 263.41320003848523
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793025842.3409414,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": false,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "action": "active",
+      "fact_id": "716bcd1670d3de2c53a4753cf55cb5b6d67d9724c16135aedf82da60f8d9f747",
+      "reason": "explicit_user_declaration"
+    },
+    {
+      "action": "queued",
+      "episode_id": "6b0ec09c3939952e4edfa15391b6d06887a8efdfd3302a6988a622158dea4e9c"
+    },
+    {
+      "operation": "chroma_repair_queued",
+      "episode_ids": [
+        "6b0ec09c3939952e4edfa15391b6d06887a8efdfd3302a6988a622158dea4e9c"
+      ]
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "639bc1620c1c1a34969658e9593ed979e6f260b0c75533d769dc608f0b9b2ec2",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3262,
+        "completion_tokens": 54,
+        "total_tokens": 3316,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00048407,
+          "allowance": 0.00036305,
+          "tokens": {
+            "input": 3006,
+            "output": 54,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3006,
+        "output_tokens": 54,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2191.068600048311
+    }
+  ]
+}

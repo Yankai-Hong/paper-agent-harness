@@ -1,0 +1,643 @@
+{
+  "turn_id": "d15-t2",
+  "session_id": "d15",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.006400048732757568
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "论文 Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora 中使用的 NMT 模型及其证据",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1806.09652"
+        ],
+        "resolved_entities": {
+          "paper_title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        }
+      },
+      "elapsed_ms": 3593.8987999688834
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "论文 Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora 中使用的 NMT 模型及其证据"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-2de814ddcd37609de37a6670",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-03eb48d6b0f5e69885835a45",
+          "c-8a4b729b48561645af3437bf",
+          "c-8dad3bcc508acc296707d5fa",
+          "c-46c2afcbb7205384ef1596a4",
+          "c-278ad02ec178a2aa94b5e9d0",
+          "c-40a65b4f16ad6c9a09e7ec3e",
+          "c-e63db193b77a701b1a303a7e",
+          "c-cb82b97d01dcb120f9968ca8",
+          "c-a018f125f2922810bde8f7f2"
+        ]
+      },
+      "elapsed_ms": 51.77610006649047
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-713c262decd20b8f527dcc24",
+          "c-0377bffbf88cf9ead25b03ff",
+          "c-2de814ddcd37609de37a6670",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-03eb48d6b0f5e69885835a45",
+          "c-8a4b729b48561645af3437bf",
+          "c-8dad3bcc508acc296707d5fa",
+          "c-46c2afcbb7205384ef1596a4",
+          "c-278ad02ec178a2aa94b5e9d0",
+          "c-40a65b4f16ad6c9a09e7ec3e",
+          "c-e63db193b77a701b1a303a7e",
+          "c-cb82b97d01dcb120f9968ca8",
+          "c-a018f125f2922810bde8f7f2"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-713c262decd20b8f527dcc24",
+          "c-2de814ddcd37609de37a6670",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-0377bffbf88cf9ead25b03ff"
+        ]
+      },
+      "elapsed_ms": 233.5102999350056
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-1dd6dc3c2f7d9eb29dc26d9f",
+          "c-713c262decd20b8f527dcc24",
+          "c-2de814ddcd37609de37a6670",
+          "c-1ef4f6dc83e93c39e90f82dc",
+          "c-0377bffbf88cf9ead25b03ff"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据 c-0377bffbf88cf9ead25b03ff（1806.09652，Machine Translation 节）明确说明 NMT 训练使用 OpenNMT 的 TensorFlow 实现与基于注意力的 transformer 架构，并指出 en–ta、en–hi 的 NMT BLEU 均高于 SMT；结论(Conclusion)节亦补充评价对象为英文-泰米尔与英文-印地语。所有结论均直接引自论文，未引入常识。"
+      },
+      "elapsed_ms": 3732.522099977359
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "nmt_implementation",
+            "text": "用于训练神经机器翻译模型时，作者使用了 OpenNMT 的 TensorFlow 实现，并采用基于注意力的 Transformer 架构。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "nmt_vs_smt_bleu",
+            "text": "对于 en–ta 和 en–hi 两种语言对，NMT 模型的 BLEU 分数均高于 SMT 模型（见论文表 TABREF23）。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "siamese_birnn_extractor",
+            "text": "论文使用端到端的 Siamese 双向循环神经网络，从 Wikipedia 的可比多语种文章中生成平行句对。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+              }
+            ]
+          },
+          {
+            "key": "siamese_gru",
+            "text": "该平行句对抽取方法仅需一个平行语料库，使用 Siamese BiRNN 编码器并以 GRU 作为激活函数。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+              }
+            ]
+          },
+          {
+            "key": "no_feature_engineering",
+            "text": "作者称其深度神经网络模型无需特征工程，也无需预先存在的翻译系统。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-713c262decd20b8f527dcc24"
+              }
+            ]
+          },
+          {
+            "key": "end_to_end_bootstrap",
+            "text": "用于抽取平行句子的神经模型仅使用少量平行句对作为 bootstrap 集进行端到端学习。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-2de814ddcd37609de37a6670"
+              }
+            ]
+          },
+          {
+            "key": "nmt_training_data",
+            "text": "在训练机器翻译系统时，作者使用通过贪心解码抽取的高精度句子，并按翻译概率对句对进行排序。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+              }
+            ]
+          },
+          {
+            "key": "bleu_gains",
+            "text": "使用通过该神经架构从可比语料中抽取的平行句对，en–ta 和 en–hi 的 BLEU 分数分别提升了 11.03% 和 14.7%。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+              }
+            ]
+          },
+          {
+            "key": "harvested_data_effect",
+            "text": "与仅使用为这些语言对收集的有限双语语料训练相比，使用收集的数据集提升了 en–hi 和 en–ta 上 NMT 与基于短语的 SMT 系统的 BLEU 分数。",
+            "citations": [
+              {
+                "paper_id": "1806.09652",
+                "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7658.269500010647
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "3d47448b9acb2fddc292800cb9152e7ab8ab9e4047d49ee15ad80d07d5412260",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "ce18eddc17ce2488c1898ae1ca55d3aefb62ddb1452cb0f6761b8838d901e339",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "815635ce16f8c9a63b625b2cee3550783a2cfe38befdf80e27444fe115255f49",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "92fc61a39d57f97dade6709c609d09189b66fd72c3a65762c3536d128f174418",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "e94993c1ddf55f4d70613e4b4c6b9bb27551e65eff2b7e562f37e59718bbcc85",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "9d35cf1ec0e7ebf7589e1ae5fd5cb513259a9f8d6c8e5650c7064c42e4d38298",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "a4a6ff27c28d4ff815d775b0795abd227686bb1efad53e5d53d8e68c0c5900f4",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "8b093b499413f16a234eb0f9f7d67d6bafe90ded98136d5a4088860d461e016e",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "99cfef5735cdb452d8125330c9a75440aae3b32af9cbef34aed70186eb466d58",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d15",
+        "entities": {
+          "paper_title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+          "paper_id": "1806.09652"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1806.09652"
+          ]
+        }
+      },
+      "elapsed_ms": 41.8614000082016
+    }
+  ],
+  "started_at": 1793025162.5627477,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "ceb65ae566707dd5bc0a047851da4565c5f99d3aa770e29d3f0b27dd1a28c48a",
+      "session_id": "d15",
+      "canonical_key": "[\"paper_evidence\", \"1806.09652\", \"nmt model\"]",
+      "text": "为了训练神经机器翻译模型，作者使用了 OpenNMT 的 TensorFlow 实现，并采用基于注意力的 Transformer 架构。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1806.09652",
+      "evidence_ids": [
+        "c-0377bffbf88cf9ead25b03ff"
+      ],
+      "turn_id": "d15-t1",
+      "created_at": 1793025162.5379922,
+      "updated_at": 1793025162.5379922,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1806.09652"
+      ],
+      "kind": "conflict",
+      "content": "为了训练神经机器翻译模型，作者使用了 OpenNMT 的 TensorFlow 实现，并采用基于注意力的 Transformer 架构。",
+      "record_id": "fact:ceb65ae566707dd5bc0a047851da4565c5f99d3aa770e29d3f0b27dd1a28c48a",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.2222222222222222,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "nmt_implementation",
+        "text": "用于训练神经机器翻译模型时，作者使用了 OpenNMT 的 TensorFlow 实现，并采用基于注意力的 Transformer 架构。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "nmt_vs_smt_bleu",
+        "text": "对于 en–ta 和 en–hi 两种语言对，NMT 模型的 BLEU 分数均高于 SMT 模型（见论文表 TABREF23）。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "siamese_birnn_extractor",
+        "text": "论文使用端到端的 Siamese 双向循环神经网络，从 Wikipedia 的可比多语种文章中生成平行句对。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+          }
+        ]
+      },
+      {
+        "key": "siamese_gru",
+        "text": "该平行句对抽取方法仅需一个平行语料库，使用 Siamese BiRNN 编码器并以 GRU 作为激活函数。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+          }
+        ]
+      },
+      {
+        "key": "no_feature_engineering",
+        "text": "作者称其深度神经网络模型无需特征工程，也无需预先存在的翻译系统。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-713c262decd20b8f527dcc24"
+          }
+        ]
+      },
+      {
+        "key": "end_to_end_bootstrap",
+        "text": "用于抽取平行句子的神经模型仅使用少量平行句对作为 bootstrap 集进行端到端学习。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-2de814ddcd37609de37a6670"
+          }
+        ]
+      },
+      {
+        "key": "nmt_training_data",
+        "text": "在训练机器翻译系统时，作者使用通过贪心解码抽取的高精度句子，并按翻译概率对句对进行排序。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+          }
+        ]
+      },
+      {
+        "key": "bleu_gains",
+        "text": "使用通过该神经架构从可比语料中抽取的平行句对，en–ta 和 en–hi 的 BLEU 分数分别提升了 11.03% 和 14.7%。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+          }
+        ]
+      },
+      {
+        "key": "harvested_data_effect",
+        "text": "与仅使用为这些语言对收集的有限双语语料训练相比，使用收集的数据集提升了 en–hi 和 en–ta 上 NMT 与基于短语的 SMT 系统的 BLEU 分数。",
+        "citations": [
+          {
+            "paper_id": "1806.09652",
+            "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "3d47448b9acb2fddc292800cb9152e7ab8ab9e4047d49ee15ad80d07d5412260",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "ce18eddc17ce2488c1898ae1ca55d3aefb62ddb1452cb0f6761b8838d901e339",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "815635ce16f8c9a63b625b2cee3550783a2cfe38befdf80e27444fe115255f49",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "92fc61a39d57f97dade6709c609d09189b66fd72c3a65762c3536d128f174418",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "e94993c1ddf55f4d70613e4b4c6b9bb27551e65eff2b7e562f37e59718bbcc85",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "9d35cf1ec0e7ebf7589e1ae5fd5cb513259a9f8d6c8e5650c7064c42e4d38298",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "a4a6ff27c28d4ff815d775b0795abd227686bb1efad53e5d53d8e68c0c5900f4",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "8b093b499413f16a234eb0f9f7d67d6bafe90ded98136d5a4088860d461e016e",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "99cfef5735cdb452d8125330c9a75440aae3b32af9cbef34aed70186eb466d58",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "73d90abbb3acb41f52c5e17bd24455ac4af0407a37e8cdb7962385ef3583a1f9",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 3813,
+        "completion_tokens": 106,
+        "total_tokens": 3919,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00059792,
+          "allowance": 0.00044844,
+          "tokens": {
+            "input": 3557,
+            "output": 106,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 3557,
+        "output_tokens": 106,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3586.1327999737114
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "4a645363732a613c020dad70bb792d8308969c935e2e3f4b19c205052f766a4c",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5269,
+        "completion_tokens": 117,
+        "total_tokens": 5386,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00086055,
+          "allowance": 0.00064541,
+          "tokens": {
+            "input": 5269,
+            "output": 117,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5269,
+        "output_tokens": 117,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3732.135699945502
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "1bb0d296e85379ed77f011f8e26ccbfc7d320a444b7754edbf92680c241bbba1",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5371,
+        "completion_tokens": 721,
+        "total_tokens": 6092,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00123825,
+          "allowance": 0.00092869,
+          "tokens": {
+            "input": 5371,
+            "output": 721,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5371,
+        "output_tokens": 721,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7657.8237999929115
+    }
+  ]
+}

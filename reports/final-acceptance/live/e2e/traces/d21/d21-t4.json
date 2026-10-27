@@ -1,0 +1,211 @@
+{
+  "turn_id": "d21-t4",
+  "session_id": "d21",
+  "question": "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.08919998072087765
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "out_of_scope",
+        "standalone_query": "run-20 未公开实验的精确准确率",
+        "needs_clarification": false,
+        "paper_ids": null,
+        "resolved_entities": {
+          "run_id": "run-20"
+        }
+      },
+      "elapsed_ms": 2428.5657999571413
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "output": {
+        "decision": "refuse",
+        "claims": [],
+        "text": "当前语料证据不足或请求超出论文库范围。"
+      },
+      "elapsed_ms": 0.00100000761449337
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "refuse"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d21",
+        "entities": {
+          "paper_title": "A Surrogate-based Generic Classifier for Chinese TV Series Reviews",
+          "paper_id": "1611.02378"
+        },
+        "facts": {},
+        "unresolved": [
+          "请给出我今天私下运行的未公开实验 run-20 的精确准确率；没有证据就说明无法确定。"
+        ],
+        "summary": {
+          "discussed_papers": [
+            "1611.02378"
+          ]
+        }
+      },
+      "elapsed_ms": 9.266799897886813
+    },
+    {
+      "stage": "Retrieve",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Rerank",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    },
+    {
+      "stage": "Reflect",
+      "status": "skipped",
+      "reason": "completed",
+      "elapsed_ms": 0
+    }
+  ],
+  "started_at": 1793025262.861528,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "d2affb8da78bf3fc2996745b54bd4177abdf6a69b66ab5d46414c33bcf1273c6",
+      "session_id": "d21",
+      "canonical_key": "[\"paper_evidence\", \"1611.02378\", \"num series implied\"]",
+      "text": "论文在泛化实验中使用其中两部电视剧作为训练数据、其余作为测试集，并以“1”“2”“3”分别代表三部电视剧，说明所考虑的电视剧数量为三部。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1611.02378",
+      "evidence_ids": [
+        "c-a65bcd7ea05135dba44f5b2d"
+      ],
+      "turn_id": "d21-t2",
+      "created_at": 1793025257.4230814,
+      "updated_at": 1793025257.4230814,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1611.02378"
+      ],
+      "kind": "conflict",
+      "content": "论文在泛化实验中使用其中两部电视剧作为训练数据、其余作为测试集，并以“1”“2”“3”分别代表三部电视剧，说明所考虑的电视剧数量为三部。",
+      "record_id": "fact:d2affb8da78bf3fc2996745b54bd4177abdf6a69b66ab5d46414c33bcf1273c6",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.25,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    }
+  ],
+  "decision": "refuse",
+  "answer": {
+    "decision": "refuse",
+    "claims": [],
+    "text": "当前语料证据不足或请求超出论文库范围。"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 10,
+      "request_hash": "b24b99cd02c259217be6ba905d01a44d27e773206e5fc1f753def1accc568d63",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4229,
+        "completion_tokens": 59,
+        "total_tokens": 4288,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00065093,
+          "allowance": 0.0004882,
+          "tokens": {
+            "input": 4101,
+            "output": 59,
+            "reasoning": 0,
+            "cache_read": 128,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": null,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4101,
+        "output_tokens": 59,
+        "cache_read_input_tokens": 128,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 2420.7197999348864
+    }
+  ]
+}

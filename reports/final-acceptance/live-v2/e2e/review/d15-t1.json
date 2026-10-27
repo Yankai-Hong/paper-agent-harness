@@ -1,0 +1,411 @@
+{
+  "id": "d15-t1",
+  "session_id": "d15",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "The answer correctly identifies the NMT models (TensorFlow OpenNMT with attention-based transformer), the SMT baseline (Moses phrase-based), and the Siamese BiRNN/GRU model for sentence extraction, all supported by the provided evidence. All claims are properly cited.",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "The evidence chunk c-0377bffbf88cf9ead25b03ff states exactly that they used the TensorFlow implementation of OpenNMT with attention-based transformer architecture for training NMT models.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The cited text explicitly states 'For training neural machine translation models, we used the TensorFlow implementation of OpenNMT with attention-based transformer architecture.'"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "The evidence states Phrase-Based SMT systems were trained using Moses and that NMT BLEU scores were higher than SMT scores for both en–ta and en–hi pairs.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The cited text confirms Moses-trained phrase-based SMT systems as baseline and reports 'The BLEU scores for the NMT models were higher than for SMT models, for both en–ta and en–hi pairs.'"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "The abstract confirms an end-to-end Siamese bidirectional recurrent neural network for parallel sentence extraction, and the conclusion confirms 'Siamese BiRNN encoder using GRU as the activation function.'",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The abstract states 'we have used an end-to-end Siamese bidirectional recurrent neural network to generate parallel sentences from comparable multilingual articles in Wikipedia.'"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "The conclusion states the method extracts parallel sentence pairs 'using a Siamese BiRNN encoder using GRU as the activation function.'"
+          }
+        ]
+      }
+    ]
+  },
+  "error": null,
+  "payload": {
+    "question": "请检索以下问题的相关原文：关于论文《Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora》，Which models do they use for NMT?",
+    "answer": {
+      "claims": [
+        {
+          "key": "nmt_model",
+          "text": "For training neural machine translation models, the paper uses the TensorFlow implementation of OpenNMT with an attention-based transformer architecture.",
+          "citations": [
+            {
+              "paper_id": "1806.09652",
+              "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+            }
+          ]
+        },
+        {
+          "key": "smt_baseline",
+          "text": "Phrase-based SMT systems, trained with Moses, serve as the comparison baseline; the paper reports that NMT BLEU scores were higher than SMT scores for both en–ta and en–hi.",
+          "citations": [
+            {
+              "paper_id": "1806.09652",
+              "chunk_id": "c-0377bffbf88cf9ead25b03ff"
+            }
+          ]
+        },
+        {
+          "key": "siamese_model",
+          "text": "For parallel sentence extraction, the paper uses an end-to-end Siamese bidirectional recurrent neural network, specifically a Siamese BiRNN encoder using GRU as the activation function.",
+          "citations": [
+            {
+              "paper_id": "1806.09652",
+              "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f"
+            },
+            {
+              "paper_id": "1806.09652",
+              "chunk_id": "c-1ef4f6dc83e93c39e90f82dc"
+            }
+          ]
+        }
+      ],
+      "decision": "answer"
+    },
+    "resolved": {
+      "intent": "fact",
+      "standalone_query": "Which models are used for NMT in Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora?",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1806.09652"
+      ],
+      "resolved_entities": {
+        "paper": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "paper_id": "1806.09652"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-713c262decd20b8f527dcc24",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Related Work",
+        "text": "A lot of work has been done on the problem of automatic sentence alignment from comparable corpora, but a majority of them BIBREF2 , BIBREF1 , BIBREF3 use a pre-existing translation system as a precursor to ranking the candidate sentence pairs, which the low resource language pairs are not at the luxury of having; or use statistical machine learning approaches, where a Maximum Entropy classifier is used that relies on surface level features such as word overlap in order to obtain parallel sentence pairs BIBREF4 . However, the deep neural network model used in our paper is probably the first of its kind, which does not need any feature engineering and also does not need a pre-existing translation system.\n\n BIBREF4 ( BIBREF4 ) proposed a parallel sentence extraction system which used comparable corpora from newspaper articles to extract the parallel sentence pairs. In this procedure, a maximum entropy classifier is designed for all sentence pairs possible from the Cartesian product of a pair of documents and passed through a sentence-length ratio filter in order to obtain candidate sentence pairs. SMT systems were trained on the extracted sentence pairs using the additional features from the comparable corpora like distortion and position of current and previously aligned sentences. This resulted in a state of the art approach with respect to the translation performance of low resource languages.\n\nSimilar to our proposed approach, BIBREF5 ( BIBREF5 ) showed how using parallel documents from Wikipedia for domain specific alignment would improve translation quality of SMT systems on in-domain data. In this method, similarity between all pairs of cross-language sentences with different text similarity measures are estimated. The issue of domain definition is overcome by the use of IR techniques which use the characteristic vocabulary of the domain to query a Lucene search engine over the entire corpus. The candidate sentences are defined based on word overlap and the decision whether a sentence pair is parallel or not using the maximum entropy classifier. The difference in the BLEU scores between out of domain and domain-specific translation is proved clearly using the word embeddings from characteristic vocabulary extracted using the extracted additional bitexts.",
+        "text_hash": "229ca2f05648c86d869fd8066dae59702359ba598197b4005c0ef3eed9948ead",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "s1-p0",
+            "section": "Related Work",
+            "start": 0,
+            "end": 712,
+            "text": "A lot of work has been done on the problem of automatic sentence alignment from comparable corpora, but a majority of them BIBREF2 , BIBREF1 , BIBREF3 use a pre-existing translation system as a precursor to ranking the candidate sentence pairs, which the low resource language pairs are not at the luxury of having; or use statistical machine learning approaches, where a Maximum Entropy classifier is used that relies on surface level features such as word overlap in order to obtain parallel sentence pairs BIBREF4 . However, the deep neural network model used in our paper is probably the first of its kind, which does not need any feature engineering and also does not need a pre-existing translation system.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p1",
+            "section": "Related Work",
+            "start": 0,
+            "end": 703,
+            "text": " BIBREF4 ( BIBREF4 ) proposed a parallel sentence extraction system which used comparable corpora from newspaper articles to extract the parallel sentence pairs. In this procedure, a maximum entropy classifier is designed for all sentence pairs possible from the Cartesian product of a pair of documents and passed through a sentence-length ratio filter in order to obtain candidate sentence pairs. SMT systems were trained on the extracted sentence pairs using the additional features from the comparable corpora like distortion and position of current and previously aligned sentences. This resulted in a state of the art approach with respect to the translation performance of low resource languages.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s1-p2",
+            "section": "Related Work",
+            "start": 0,
+            "end": 880,
+            "text": "Similar to our proposed approach, BIBREF5 ( BIBREF5 ) showed how using parallel documents from Wikipedia for domain specific alignment would improve translation quality of SMT systems on in-domain data. In this method, similarity between all pairs of cross-language sentences with different text similarity measures are estimated. The issue of domain definition is overcome by the use of IR techniques which use the characteristic vocabulary of the domain to query a Lucene search engine over the entire corpus. The candidate sentences are defined based on word overlap and the decision whether a sentence pair is parallel or not using the maximum entropy classifier. The difference in the BLEU scores between out of domain and domain-specific translation is proved clearly using the word embeddings from characteristic vocabulary extracted using the extracted additional bitexts.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-1dd6dc3c2f7d9eb29dc26d9f",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Abstract",
+        "text": "Resources for the non-English languages are scarce and this paper addresses this problem in the context of machine translation, by automatically extracting parallel sentence pairs from the multilingual articles available on the Internet. In this paper, we have used an end-to-end Siamese bidirectional recurrent neural network to generate parallel sentences from comparable multilingual articles in Wikipedia. Subsequently, we have showed that using the harvested dataset improved BLEU scores on both NMT and phrase-based SMT systems for the low-resource language pairs: English--Hindi and English--Tamil, when compared to training exclusively on the limited bilingual corpora collected for these language pairs.",
+        "text_hash": "31888ba50ae98c114dad39d1ec2ac9e3897e63098f51d913cd2a22d03cfb2606",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 712,
+            "text": "Resources for the non-English languages are scarce and this paper addresses this problem in the context of machine translation, by automatically extracting parallel sentence pairs from the multilingual articles available on the Internet. In this paper, we have used an end-to-end Siamese bidirectional recurrent neural network to generate parallel sentences from comparable multilingual articles in Wikipedia. Subsequently, we have showed that using the harvested dataset improved BLEU scores on both NMT and phrase-based SMT systems for the low-resource language pairs: English--Hindi and English--Tamil, when compared to training exclusively on the limited bilingual corpora collected for these language pairs.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-2de814ddcd37609de37a6670",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Introduction",
+        "text": "Both neural and statistical machine translation approaches are highly reliant on the availability of large amounts of data and are known to perform poorly in low resource settings. Recent crowd-sourcing efforts and workshops on machine translation have resulted in small amounts of parallel texts for building viable machine translation systems for low-resource pairs BIBREF0 . But, they have been shown to suffer from low accuracy (incorrect translation) and low coverage (high out-of-vocabulary rates), due to insufficient training data. In this project, we try to address the high OOV rates in low-resource machine translation systems by leveraging the increasing amount of multilingual content available on the Internet for enriching the bilingual lexicon.\n\nComparable corpora such as Wikipedia, are collections of topic-aligned but non-sentence-aligned multilingual documents which are rich resources for extracting parallel sentences from. For example, Figure FIGREF1 shows that there are equivalent sentences on the page about Donald Trump in Tamil and English, and the phrase alignment for an example sentence is shown in Table TABREF4 .\n\nTable TABREF2 shows that there are at least tens of thousands of bilingual articles on Wikipedia which could potentially have at least as many parallel sentences that could be mined to address the scarcity of parallel sentences as indicated in column 2 which shows the number of sentence-pairs in the largest available bilingual corpora for xx-en. As shown by BIBREF1 ( BIBREF1 ), the illustrated data sparsity can be addressed by extending the scarce parallel sentence-pairs with those automatically extracted from Wikipedia and thereby improving the performance of statistical machine translation systems.\n\nIn this paper, we will propose a neural approach to parallel sentence extraction and compare the BLEU scores of machine translation systems with and without the use of the extracted sentence pairs to justify the effectiveness of this method. Compared to previous approaches which require specialized meta-data from document structure or significant amount of hand-engineered features, the neural model for extracting parallel sentences is learned end-to-end using only a small bootstrap set of parallel sentence pairs.",
+        "text_hash": "aba90381c2927c4f695e95e7bc0a9196d1763d6de5bd0d76d3886cd627d54ca4",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "s0-p0",
+            "section": "Introduction",
+            "start": 0,
+            "end": 760,
+            "text": "Both neural and statistical machine translation approaches are highly reliant on the availability of large amounts of data and are known to perform poorly in low resource settings. Recent crowd-sourcing efforts and workshops on machine translation have resulted in small amounts of parallel texts for building viable machine translation systems for low-resource pairs BIBREF0 . But, they have been shown to suffer from low accuracy (incorrect translation) and low coverage (high out-of-vocabulary rates), due to insufficient training data. In this project, we try to address the high OOV rates in low-resource machine translation systems by leveraging the increasing amount of multilingual content available on the Internet for enriching the bilingual lexicon.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p1",
+            "section": "Introduction",
+            "start": 0,
+            "end": 383,
+            "text": "Comparable corpora such as Wikipedia, are collections of topic-aligned but non-sentence-aligned multilingual documents which are rich resources for extracting parallel sentences from. For example, Figure FIGREF1 shows that there are equivalent sentences on the page about Donald Trump in Tamil and English, and the phrase alignment for an example sentence is shown in Table TABREF4 .",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p2",
+            "section": "Introduction",
+            "start": 0,
+            "end": 607,
+            "text": "Table TABREF2 shows that there are at least tens of thousands of bilingual articles on Wikipedia which could potentially have at least as many parallel sentences that could be mined to address the scarcity of parallel sentences as indicated in column 2 which shows the number of sentence-pairs in the largest available bilingual corpora for xx-en. As shown by BIBREF1 ( BIBREF1 ), the illustrated data sparsity can be addressed by extending the scarce parallel sentence-pairs with those automatically extracted from Wikipedia and thereby improving the performance of statistical machine translation systems.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 518,
+            "text": "In this paper, we will propose a neural approach to parallel sentence extraction and compare the BLEU scores of machine translation systems with and without the use of the extracted sentence pairs to justify the effectiveness of this method. Compared to previous approaches which require specialized meta-data from document structure or significant amount of hand-engineered features, the neural model for extracting parallel sentences is learned end-to-end using only a small bootstrap set of parallel sentence pairs.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-0377bffbf88cf9ead25b03ff",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Machine Translation",
+        "text": "We evaluated the quality of the extracted parallel sentence pairs, by performing machine translation experiments on the augmented parallel corpus.\n\nAs the dataset for training the machine translation systems, we used high precision sentences extracted with greedy decoding, by ranking the sentence-pairs on their translation probabilities. Phrase-Based SMT systems were trained using Moses BIBREF14 . We used the grow-diag-final-and heuristic for extracting phrases, lexicalised reordering and Batch MIRA BIBREF15 for tuning (the default parameters on Moses). We trained 5-gram language models with Kneser-Ney smoothing using KenLM BIBREF16 . With these parameters, we trained SMT systems for en–ta and en–hi language pairs, with and without the use of extracted parallel sentence pairs.\n\nFor training neural machine translation models, we used the TensorFlow BIBREF17 implementation of OpenNMT BIBREF18 with attention-based transformer architecture BIBREF19 . The BLEU scores for the NMT models were higher than for SMT models, for both en–ta and en–hi pairs, as can be seen in Table TABREF23 .",
+        "text_hash": "df7928b2fe7c3dff361774b72006c7f014c9fbb792ad7f5bf8c6142be3315940",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "s9-p0",
+            "section": "Machine Translation",
+            "start": 0,
+            "end": 146,
+            "text": "We evaluated the quality of the extracted parallel sentence pairs, by performing machine translation experiments on the augmented parallel corpus.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s9-p1",
+            "section": "Machine Translation",
+            "start": 0,
+            "end": 639,
+            "text": "As the dataset for training the machine translation systems, we used high precision sentences extracted with greedy decoding, by ranking the sentence-pairs on their translation probabilities. Phrase-Based SMT systems were trained using Moses BIBREF14 . We used the grow-diag-final-and heuristic for extracting phrases, lexicalised reordering and Batch MIRA BIBREF15 for tuning (the default parameters on Moses). We trained 5-gram language models with Kneser-Ney smoothing using KenLM BIBREF16 . With these parameters, we trained SMT systems for en–ta and en–hi language pairs, with and without the use of extracted parallel sentence pairs.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s9-p2",
+            "section": "Machine Translation",
+            "start": 0,
+            "end": 306,
+            "text": "For training neural machine translation models, we used the TensorFlow BIBREF17 implementation of OpenNMT BIBREF18 with attention-based transformer architecture BIBREF19 . The BLEU scores for the NMT models were higher than for SMT models, for both en–ta and en–hi pairs, as can be seen in Table TABREF23 .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-1ef4f6dc83e93c39e90f82dc",
+        "paper_id": "1806.09652",
+        "title": "Neural Machine Translation for Low Resource Languages using Bilingual Lexicon Induced from Comparable Corpora",
+        "section": "Conclusion",
+        "text": "In this paper, we evaluated the benefits of using a neural network procedure to extract parallel sentences. Unlike traditional translation systems which make use of multi-step classification procedures, this method requires just a parallel corpus to extract parallel sentence pairs using a Siamese BiRNN encoder using GRU as the activation function.\n\nThis method is extremely beneficial for translating language pairs with very little parallel corpora. These parallel sentences facilitate significant improvement in machine translation quality when compared to a generic system as has been shown in our results.\n\nThe experiments are shown for English-Tamil and English-Hindi language pairs. Our model achieved a marked percentage increase in the BLEU score for both en–ta and en–hi language pairs. We demonstrated a percentage increase in BLEU scores of 11.03% and 14.7% for en–ta and en–hi pairs respectively, due to the use of parallel-sentence pairs extracted from comparable corpora using the neural architecture.\n\nAs a follow-up to this work, we would be comparing our framework against other sentence alignment methods described in BIBREF20 , BIBREF21 , BIBREF22 and BIBREF23 . It has also been interesting to note that the 2018 edition of the Workshop on Machine Translation (WMT) has released a new shared task called Parallel Corpus Filtering where participants develop methods to filter a given noisy parallel corpus (crawled from the web), to a smaller size of high quality sentence pairs. This would be the perfect avenue to test the efficacy of our neural network based approach of extracting parallel sentences from unaligned corpora.",
+        "text_hash": "0478792e85a0752e5b06f605df084928562fd978ba04d7b780155ebee69bc626",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1806.09652",
+        "spans": [
+          {
+            "paragraph_id": "s10-p0",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 349,
+            "text": "In this paper, we evaluated the benefits of using a neural network procedure to extract parallel sentences. Unlike traditional translation systems which make use of multi-step classification procedures, this method requires just a parallel corpus to extract parallel sentence pairs using a Siamese BiRNN encoder using GRU as the activation function.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p1",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 260,
+            "text": "This method is extremely beneficial for translating language pairs with very little parallel corpora. These parallel sentences facilitate significant improvement in machine translation quality when compared to a generic system as has been shown in our results.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p2",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 404,
+            "text": "The experiments are shown for English-Tamil and English-Hindi language pairs. Our model achieved a marked percentage increase in the BLEU score for both en–ta and en–hi language pairs. We demonstrated a percentage increase in BLEU scores of 11.03% and 14.7% for en–ta and en–hi pairs respectively, due to the use of parallel-sentence pairs extracted from comparable corpora using the neural architecture.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s10-p3",
+            "section": "Conclusion",
+            "start": 0,
+            "end": 629,
+            "text": "As a follow-up to this work, we would be comparing our framework against other sentence alignment methods described in BIBREF20 , BIBREF21 , BIBREF22 and BIBREF23 . It has also been interesting to note that the 2018 edition of the Workshop on Machine Translation (WMT) has released a new shared task called Parallel Corpus Filtering where participants develop methods to filter a given noisy parallel corpus (crawled from the web), to a smaller size of high quality sentence pairs. This would be the perfect avenue to test the efficacy of our neural network based approach of extracting parallel sentences from unaligned corpora.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": []
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "The answer correctly identifies the NMT models (TensorFlow OpenNMT with attention-based transformer), the SMT baseline (Moses phrase-based), and the Siamese BiRNN/GRU model for sentence extraction, all supported by the provided evidence. All claims are properly cited.",
+    "claims": [
+      {
+        "index": 0,
+        "verdict": "supported",
+        "reason": "The evidence chunk c-0377bffbf88cf9ead25b03ff states exactly that they used the TensorFlow implementation of OpenNMT with attention-based transformer architecture for training NMT models.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The cited text explicitly states 'For training neural machine translation models, we used the TensorFlow implementation of OpenNMT with attention-based transformer architecture.'"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "verdict": "supported",
+        "reason": "The evidence states Phrase-Based SMT systems were trained using Moses and that NMT BLEU scores were higher than SMT scores for both en–ta and en–hi pairs.",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The cited text confirms Moses-trained phrase-based SMT systems as baseline and reports 'The BLEU scores for the NMT models were higher than for SMT models, for both en–ta and en–hi pairs.'"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "verdict": "supported",
+        "reason": "The abstract confirms an end-to-end Siamese bidirectional recurrent neural network for parallel sentence extraction, and the conclusion confirms 'Siamese BiRNN encoder using GRU as the activation function.'",
+        "citations": [
+          {
+            "index": 0,
+            "verdict": "supported",
+            "reason": "The abstract states 'we have used an end-to-end Siamese bidirectional recurrent neural network to generate parallel sentences from comparable multilingual articles in Wikipedia.'"
+          },
+          {
+            "index": 1,
+            "verdict": "supported",
+            "reason": "The conclusion states the method extracts parallel sentence pairs 'using a Siamese BiRNN encoder using GRU as the activation function.'"
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "7f6a76a1cc4cbc59b9ce1cf1c8b5444a52484fbe26a9964fb85c6702434d5af8",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 5279,
+        "completion_tokens": 463,
+        "total_tokens": 5742,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00106965,
+          "allowance": 0.00080224,
+          "tokens": {
+            "input": 5279,
+            "output": 463,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 5279,
+        "output_tokens": 463,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4276.1462999988
+    }
+  ]
+}

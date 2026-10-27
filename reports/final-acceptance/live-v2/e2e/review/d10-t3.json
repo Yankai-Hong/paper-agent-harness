@@ -1,0 +1,669 @@
+{
+  "id": "d10-t3",
+  "session_id": "d10",
+  "human_reviewed": false,
+  "judgment": {
+    "task_correct": true,
+    "reason": "The question asks to compare two papers on annotation-process questions and evaluated DNN models, and to state comparability. The evidence provides, for the CAp 2017 paper, the annotation protocol (hashtag/mention annotation conditions, entity types) and system descriptions including RNN/GRU-CRF, biLSTM-CNN, and CRF-based submissions; for UIT-ViIC, it provides annotation guidelines (rules rather than stated questions) and mentions two models (Pytorch-tutorial and NIC Show-and-Tell) in experiments. The papers are clearly in different tasks (NER vs image captioning) and differ in how each question is reported, and the answer correctly refuses. A refusal is appropriate here because the specific 'What questions were asked' framing is not directly evidenced for either paper—neither reports an explicit list of questions posed to annotators—and the comparison scope is partly unsupported. Answering with a refusal and no claims is defensible as evidence-insufficient/out-of-scope for the exact comparison requested.",
+    "claims": []
+  },
+  "error": null,
+  "payload": {
+    "question": "与《UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning》对比，分别说明两篇论文如何回答“What questions were asked in the annotation process?”与“What deep neural network models are used in evaluation?”，并说明是否具有可比性。",
+    "answer": {
+      "decision": "refuse",
+      "claims": [],
+      "text": "当前语料证据不足或请求超出论文库范围。"
+    },
+    "resolved": {
+      "intent": "compare",
+      "standalone_query": "对比 CAp 2017 challenge: Twitter Named Entity Recognition 与 UIT-ViIC 论文中标注过程所提问题（What questions were asked in the annotation process?）以及评估中使用的深度神经网络模型（What deep neural network models are used in evaluation?），并说明两篇论文是否具有可比性",
+      "needs_clarification": false,
+      "paper_ids": [
+        "1707.07568",
+        "2002.00175"
+      ],
+      "resolved_entities": {
+        "对比论文": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "对比论文ID": "2002.00175",
+        "基线论文": "CAp 2017 challenge: Twitter Named Entity Recognition",
+        "基线论文ID": "1707.07568"
+      }
+    },
+    "evidence": [
+      {
+        "chunk_id": "c-2da092855580ca68f6de58a1",
+        "paper_id": "1707.07568",
+        "title": "CAp 2017 challenge: Twitter Named Entity Recognition",
+        "section": "Guidelines for Participation",
+        "text": "The CAp 2017 challenge concerns the problem of NER for tweets written in French. A significant milestone while organizing the challenge was the creation of a suitable benchmark. While one may be able to find Twitter datasets for NER in English, to the best of our knowledge, this is the first resource for Twitter NER in French. Following this observation, our expectations for developing the novel benchmark are twofold: first, we hope that it will further stimulate the research efforts for French NER with a focus on in user-generated text social media. Second, as its size is comparable with datasets previously released for English NER we expect it to become a reference dataset for the community.\n\nThe task of NER decouples as follows: given a text span like a tweet, one needs to identify contiguous words within the span that correspond to entities. Given, for instance, a tweet “Les Parisiens supportent PSG ;-)” one needs to identify that the abbreviation “PSG” refers to an entity, namely the football team “Paris Saint-Germain”. Therefore, there two main challenges in the problem. First one needs to identify the boundaries of an entity (in the example PSG is a single word entity), and then to predict the type of the entity. In the CAp 2017 challenge one needs to identify among 13 types of entities: person, musicartist, organisation, geoloc, product, transportLine, media, sportsteam, event, tvshow, movie, facility, other in a given tweets. Importantly, we do not allow the entities to be hierarchical, that is contiguous words belong to an entity as a whole and a single entity type is associated per word. It is also to be noted that some of the tweets may not contain entities and therefore systems should not be biased towards predicting one or more entities for each tweet.",
+        "text_hash": "4739753c79512988317b0e9d58fa1aa39eef97bc8c72c54fdec4295f8c49588c",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1707.07568",
+        "spans": [
+          {
+            "paragraph_id": "s2-p0",
+            "section": "Guidelines for Participation",
+            "start": 0,
+            "end": 702,
+            "text": "The CAp 2017 challenge concerns the problem of NER for tweets written in French. A significant milestone while organizing the challenge was the creation of a suitable benchmark. While one may be able to find Twitter datasets for NER in English, to the best of our knowledge, this is the first resource for Twitter NER in French. Following this observation, our expectations for developing the novel benchmark are twofold: first, we hope that it will further stimulate the research efforts for French NER with a focus on in user-generated text social media. Second, as its size is comparable with datasets previously released for English NER we expect it to become a reference dataset for the community.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s2-p1",
+            "section": "Guidelines for Participation",
+            "start": 0,
+            "end": 1092,
+            "text": "The task of NER decouples as follows: given a text span like a tweet, one needs to identify contiguous words within the span that correspond to entities. Given, for instance, a tweet “Les Parisiens supportent PSG ;-)” one needs to identify that the abbreviation “PSG” refers to an entity, namely the football team “Paris Saint-Germain”. Therefore, there two main challenges in the problem. First one needs to identify the boundaries of an entity (in the example PSG is a single word entity), and then to predict the type of the entity. In the CAp 2017 challenge one needs to identify among 13 types of entities: person, musicartist, organisation, geoloc, product, transportLine, media, sportsteam, event, tvshow, movie, facility, other in a given tweets. Importantly, we do not allow the entities to be hierarchical, that is contiguous words belong to an entity as a whole and a single entity type is associated per word. It is also to be noted that some of the tweets may not contain entities and therefore systems should not be biased towards predicting one or more entities for each tweet.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-78f3bd1d48efb38bcc8ce848",
+        "paper_id": "1707.07568",
+        "title": "CAp 2017 challenge: Twitter Named Entity Recognition",
+        "section": "Annotation",
+        "text": "In the framework of the challenge, we were required to first identify the entities occurring in the dataset and, then, annotate them with of the 13 possible types. Table TABREF12 provides a description for each type of entity that we made available both to the annotators and to the participants of the challenge.\n\nMentions (strings starting with @) and hashtags (strings starting with #) have a particular function in tweets. The former is used to refer to persons while the latter to indicate keywords. Therefore, in the annotation process we treated them using the following protocol: A hashtag or a mention should be annotated as an entity if:\n\nFor a hashtag or a mention to be annotated both conditions are to be met. Figure FIGREF16 elaborates on that:\n\nWe measure the inter-annotator agreement between the annotators based on the Cohen's Kappa (cf. Table TABREF15 ) calculated on the first 200 tweets of the training set. According to BIBREF1 our score for Cohen's Kappa (0,70) indicates a strong agreement.\n\nIn the example given in Figure FIGREF20 :\n\n[name=M1, matrix of nodes, row sep=10pt, column sep=3pt,ampersand replacement=&] schema) [text=black] Il; & schema-spezifisch) [text=black] rejoint; & nutzerinfo) [text=frenchrose] Pierre; & host) [text=frenchrose] Fabre;\n\nquery) [text=black] comme; & fragment) [text=black] directeur; & text=black] des; & text=black] marques;\n\nducray) [text=magenta] Ducray; & text=black] et; & a) [text=magenta] A;& text=magenta] -; & derma) [text=magenta] Derma;",
+        "text_hash": "fc287f808e9b6455f9dfb3e1a4e20ee77b8f04efadda6b2740d4ec3866022770",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1707.07568",
+        "spans": [
+          {
+            "paragraph_id": "s4-p0",
+            "section": "Annotation",
+            "start": 0,
+            "end": 313,
+            "text": "In the framework of the challenge, we were required to first identify the entities occurring in the dataset and, then, annotate them with of the 13 possible types. Table TABREF12 provides a description for each type of entity that we made available both to the annotators and to the participants of the challenge.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p1",
+            "section": "Annotation",
+            "start": 0,
+            "end": 332,
+            "text": "Mentions (strings starting with @) and hashtags (strings starting with #) have a particular function in tweets. The former is used to refer to persons while the latter to indicate keywords. Therefore, in the annotation process we treated them using the following protocol: A hashtag or a mention should be annotated as an entity if:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p2",
+            "section": "Annotation",
+            "start": 0,
+            "end": 109,
+            "text": "For a hashtag or a mention to be annotated both conditions are to be met. Figure FIGREF16 elaborates on that:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p3",
+            "section": "Annotation",
+            "start": 0,
+            "end": 254,
+            "text": "We measure the inter-annotator agreement between the annotators based on the Cohen's Kappa (cf. Table TABREF15 ) calculated on the first 200 tweets of the training set. According to BIBREF1 our score for Cohen's Kappa (0,70) indicates a strong agreement.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p4",
+            "section": "Annotation",
+            "start": 0,
+            "end": 41,
+            "text": "In the example given in Figure FIGREF20 :",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p5",
+            "section": "Annotation",
+            "start": 0,
+            "end": 221,
+            "text": "[name=M1, matrix of nodes, row sep=10pt, column sep=3pt,ampersand replacement=&] schema) [text=black] Il; & schema-spezifisch) [text=black] rejoint; & nutzerinfo) [text=frenchrose] Pierre; & host) [text=frenchrose] Fabre;",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p6",
+            "section": "Annotation",
+            "start": 0,
+            "end": 104,
+            "text": "query) [text=black] comme; & fragment) [text=black] directeur; & text=black] des; & text=black] marques;",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p7",
+            "section": "Annotation",
+            "start": 0,
+            "end": 120,
+            "text": "ducray) [text=magenta] Ducray; & text=black] et; & a) [text=magenta] A;& text=magenta] -; & derma) [text=magenta] Derma;",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-b04d61992fc7b6eeaf190b29",
+        "paper_id": "1707.07568",
+        "title": "CAp 2017 challenge: Twitter Named Entity Recognition",
+        "section": "Abstract",
+        "text": "The paper describes the CAp 2017 challenge. The challenge concerns the problem of Named Entity Recognition (NER) for tweets written in French. We first present the data preparation steps we followed for constructing the dataset released in the framework of the challenge. We begin by demonstrating why NER for tweets is a challenging problem especially when the number of entities increases. We detail the annotation process and the necessary decisions we made. We provide statistics on the inter-annotator agreement, and we conclude the data description part with examples and statistics for the data. We, then, describe the participation in the challenge, where 8 teams participated, with a focus on the methods employed by the challenge participants and the scores achieved in terms of F$_1$ measure. Importantly, the constructed dataset comprising $\\sim$6,000 tweets annotated for 13 types of entities, which to the best of our knowledge is the first such dataset in French, is publicly available at \\url{http://cap2017.imag.fr/competition.html} .",
+        "text_hash": "c65e2dcca4503a85e2479887e7afb028f6de6e390c8ddcfa2f158a7bd2f40b80",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1707.07568",
+        "spans": [
+          {
+            "paragraph_id": "abstract",
+            "section": "Abstract",
+            "start": 0,
+            "end": 1051,
+            "text": "The paper describes the CAp 2017 challenge. The challenge concerns the problem of Named Entity Recognition (NER) for tweets written in French. We first present the data preparation steps we followed for constructing the dataset released in the framework of the challenge. We begin by demonstrating why NER for tweets is a challenging problem especially when the number of entities increases. We detail the annotation process and the necessary decisions we made. We provide statistics on the inter-annotator agreement, and we conclude the data description part with examples and statistics for the data. We, then, describe the participation in the challenge, where 8 teams participated, with a focus on the methods employed by the challenge participants and the scores achieved in terms of F$_1$ measure. Importantly, the constructed dataset comprising $\\sim$6,000 tweets annotated for 13 types of entities, which to the best of our knowledge is the first such dataset in French, is publicly available at \\url{http://cap2017.imag.fr/competition.html} .",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-a7a052515decdca507dfbc5e",
+        "paper_id": "1707.07568",
+        "title": "CAp 2017 challenge: Twitter Named Entity Recognition",
+        "section": "Introduction",
+        "text": "The paper is organized in two parts. In the first, we discuss the data preparation steps (collection, annotation) and we describe the proposed dataset. The dataset was first released in the framework of the CAp 2017 challenge, where 8 systems participated. Following, the second part of the paper presents an overview of baseline systems and the approaches employed by the systems that participated. We conclude with a discussion of the performance of Twitter NER systems and remarks for future work.",
+        "text_hash": "f1f49f6974eb3684f2286b77d942dca989c7e57b06cdd432e539e425452ea01d",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1707.07568",
+        "spans": [
+          {
+            "paragraph_id": "s0-p3",
+            "section": "Introduction",
+            "start": 0,
+            "end": 500,
+            "text": "The paper is organized in two parts. In the first, we discuss the data preparation steps (collection, annotation) and we describe the proposed dataset. The dataset was first released in the framework of the CAp 2017 challenge, where 8 systems participated. Following, the second part of the paper presents an overview of baseline systems and the approaches employed by the systems that participated. We conclude with a discussion of the performance of Twitter NER systems and remarks for future work.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-5242cae8f8974ce6c63683b8",
+        "paper_id": "1707.07568",
+        "title": "CAp 2017 challenge: Twitter Named Entity Recognition",
+        "section": "The Released Dataset",
+        "text": "For the purposes of the CAp 2017 challenge we constructed a dataset for NER of French tweets. Overall, the dataset comprises 6,685 annotated tweets with the 13 types of entities presented in the previous section. The data were released in two parts: first, a training part was released for development purposes (dubbed “Training” hereafter). Then, to evaluate the performance of the developed systems a “Test” dataset was released that consists of 3,685 tweets. For compatibility with previous research, the data were released tokenized using the CoNLL format and the BIO encoding.\n\nTo collect the tweets that were used to construct the dataset we relied on the Twitter streaming API. The API makes available a part of Twitter flow and one may use particular keywords to filter the results. In order to collect tweets written in French and obtain a sample that would be unbiased towards particular types of entities we used common French words like articles, pronouns, and prepositions: “le”,“la”,“de”,“il”,“elle”, etc.. In total, we collected 10,000 unique tweets from September 1st until September the 15th of 2016.\n\nComplementary to the collection of tweets using the Twitter API, we used 886 tweets provided by the “Société Nationale des Chemins de fer Français” (SNCF), that is the French National Railway Corporation. The latter subset is biased towards information in the interest of the corporation such as train lines or names of train stations. To account for the different distribution of entities in the tweets collected by SNCF we incorporated them in the data as follows:\n\nFor the training set, which comprises 3,000 tweets, we used 2,557 tweets collected using the API and 443 tweets of those provided by SNCF.\n\nFor the test set, which comprises 3,685 consists we used 3,242 tweets from those collected using the API and the remaining 443 tweets from those provided by SNCF.",
+        "text_hash": "ceae801e90ae2f28382a21cb2e774d7c5bfae0266da65b5b381cdb99089be483",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1707.07568",
+        "spans": [
+          {
+            "paragraph_id": "s3-p0",
+            "section": "The Released Dataset",
+            "start": 0,
+            "end": 581,
+            "text": "For the purposes of the CAp 2017 challenge we constructed a dataset for NER of French tweets. Overall, the dataset comprises 6,685 annotated tweets with the 13 types of entities presented in the previous section. The data were released in two parts: first, a training part was released for development purposes (dubbed “Training” hereafter). Then, to evaluate the performance of the developed systems a “Test” dataset was released that consists of 3,685 tweets. For compatibility with previous research, the data were released tokenized using the CoNLL format and the BIO encoding.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p1",
+            "section": "The Released Dataset",
+            "start": 0,
+            "end": 534,
+            "text": "To collect the tweets that were used to construct the dataset we relied on the Twitter streaming API. The API makes available a part of Twitter flow and one may use particular keywords to filter the results. In order to collect tweets written in French and obtain a sample that would be unbiased towards particular types of entities we used common French words like articles, pronouns, and prepositions: “le”,“la”,“de”,“il”,“elle”, etc.. In total, we collected 10,000 unique tweets from September 1st until September the 15th of 2016.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p2",
+            "section": "The Released Dataset",
+            "start": 0,
+            "end": 466,
+            "text": "Complementary to the collection of tweets using the Twitter API, we used 886 tweets provided by the “Société Nationale des Chemins de fer Français” (SNCF), that is the French National Railway Corporation. The latter subset is biased towards information in the interest of the corporation such as train lines or names of train stations. To account for the different distribution of entities in the tweets collected by SNCF we incorporated them in the data as follows:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p3",
+            "section": "The Released Dataset",
+            "start": 0,
+            "end": 138,
+            "text": "For the training set, which comprises 3,000 tweets, we used 2,557 tweets collected using the API and 443 tweets of those provided by SNCF.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s3-p4",
+            "section": "The Released Dataset",
+            "start": 0,
+            "end": 162,
+            "text": "For the test set, which comprises 3,685 consists we used 3,242 tweets from those collected using the API and the remaining 443 tweets from those provided by SNCF.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-6852dc108ea13f52330d7bed",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Dataset Creation ::: Annotation Process",
+        "text": "In this section, we describes procedures of building our sportball Vietnamese dataset, called UIT-ViIC.\n\nOur human resources for dataset construction involve five writers, whose ages are from 22-25. Being native Vietnamese residents, they are fluent in Vietnamese. All five UIT-ViIC creators first research and are trained about sports knowledge as well as the specialized vocabulary before starting to work.\n\nDuring annotation process, there are inconsistencies and disagreements between human's understandings and the way they see images. According to Micah Hodosh et al BIBREF5, most images’ captions on Internet nowadays tend to introduce information that cannot be obtained from the image itself, such as people name, location name, time, etc. Therefore, to successfully compose meaningful descriptive captions we expect, their should be strict guidelines.\n\nInspired from MS-COCO annotation rules BIBREF16, we first sketched UIT-ViIC's guidelines for our captions:\n\nEach caption must contain at least ten Vietnamese words.\n\nOnly describe visible activities and objects included in image.\n\nExclude name of places, streets (Chinatown, New York, etc.) and number (apartment numbers, specific time on TV, etc.)\n\nFamiliar English words such as laptop, TV, tennis, etc. are allowed.\n\nEach caption must be a single sentence with continuous tense.\n\nPersonal opinion and emotion must be excluded while annotating.\n\nAnnotators can describe the activities and objects from different perspectives.\n\nVisible “thing” objects are the only one to be described.\n\nAmbiguous “stuff” objects which do not have obvious “border” are ignored.\n\nIn case of 10 to 15 objects which are in the same category or species, annotators do not need to include them in the caption.\n\nIn comparison with MS-COCO BIBREF16 data collection guidelines in terms of annotation, UIT-ViIC’s guidelines has similar rules (1, 2, 8, 9, 10) . We extend from MS-COCO’s guidelines with five new rules to our own and have modifications in the original ones.",
+        "text_hash": "08692a3e2689cc98ff7ec40195106bf9715d523953020ef5f2ab5dfe7cf7260d",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s4-p0",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 103,
+            "text": "In this section, we describes procedures of building our sportball Vietnamese dataset, called UIT-ViIC.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p1",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 303,
+            "text": "Our human resources for dataset construction involve five writers, whose ages are from 22-25. Being native Vietnamese residents, they are fluent in Vietnamese. All five UIT-ViIC creators first research and are trained about sports knowledge as well as the specialized vocabulary before starting to work.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p2",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 451,
+            "text": "During annotation process, there are inconsistencies and disagreements between human's understandings and the way they see images. According to Micah Hodosh et al BIBREF5, most images’ captions on Internet nowadays tend to introduce information that cannot be obtained from the image itself, such as people name, location name, time, etc. Therefore, to successfully compose meaningful descriptive captions we expect, their should be strict guidelines.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p3",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 106,
+            "text": "Inspired from MS-COCO annotation rules BIBREF16, we first sketched UIT-ViIC's guidelines for our captions:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p4",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 56,
+            "text": "Each caption must contain at least ten Vietnamese words.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p5",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 63,
+            "text": "Only describe visible activities and objects included in image.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p6",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 117,
+            "text": "Exclude name of places, streets (Chinatown, New York, etc.) and number (apartment numbers, specific time on TV, etc.)",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p7",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 68,
+            "text": "Familiar English words such as laptop, TV, tennis, etc. are allowed.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p8",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 61,
+            "text": "Each caption must be a single sentence with continuous tense.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p9",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 63,
+            "text": "Personal opinion and emotion must be excluded while annotating.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p10",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 79,
+            "text": "Annotators can describe the activities and objects from different perspectives.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p11",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 57,
+            "text": "Visible “thing” objects are the only one to be described.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p12",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 73,
+            "text": "Ambiguous “stuff” objects which do not have obvious “border” are ignored.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p13",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 125,
+            "text": "In case of 10 to 15 objects which are in the same category or species, annotators do not need to include them in the caption.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s4-p14",
+            "section": "Dataset Creation ::: Annotation Process",
+            "start": 0,
+            "end": 257,
+            "text": "In comparison with MS-COCO BIBREF16 data collection guidelines in terms of annotation, UIT-ViIC’s guidelines has similar rules (1, 2, 8, 9, 10) . We extend from MS-COCO’s guidelines with five new rules to our own and have modifications in the original ones.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-df82acb31723d02ba4213f1a",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Conclusion and Further Improvements",
+        "text": "In this paper, we constructed a Vietnamese dataset with images from MS-COCO, relating to the category within sportball, consisting of 3,850 images with 19,250 manually-written Vietnamese captions. Next, we conducted several experiments on two popular existed Image Captioning models to evaluate their efficiency when learning two Vietnamese datasets. The results are then compared with the original MS-COCO English categorized with sportball category.\n\nOverall, we can see that English set only out-performed Vietnamese ones in BLEU-1 metric, rather, the Vietnamese sets performing well basing on BLEU-2 to BLEU-4, especially CIDEr scores. On the other hand, when UIT-ViIC is compared with the dataset having captions translated by Google, the evaluation results and the output examples suggest that Google Translation service is able to perform acceptablly even though most translated captions are not perfectly natural and linguistically friendly. As a results, we proved that manually written captions for Vietnamese dataset is currently prefered.\n\nFor future improvements, extending the UIT-ViIC's cateogry into all types of sport to verify how the dataset's size and category affect the Image Captioning models' performance is considered as our highest priority. Moreover, the human resources for dataset construction will be expanded. Second, we will continue to finetune our experiments to find out proper parameters for models, especially with encoding and decoding architectures, for better learning performance with Vietnamese dataset, especially when the categories are limited.",
+        "text_hash": "c872ccc66fd4a88e4ebdc403385ef81864c9cc845dbb5fce70dc58146dda01e2",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s14-p0",
+            "section": "Conclusion and Further Improvements",
+            "start": 0,
+            "end": 451,
+            "text": "In this paper, we constructed a Vietnamese dataset with images from MS-COCO, relating to the category within sportball, consisting of 3,850 images with 19,250 manually-written Vietnamese captions. Next, we conducted several experiments on two popular existed Image Captioning models to evaluate their efficiency when learning two Vietnamese datasets. The results are then compared with the original MS-COCO English categorized with sportball category.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s14-p1",
+            "section": "Conclusion and Further Improvements",
+            "start": 0,
+            "end": 597,
+            "text": "Overall, we can see that English set only out-performed Vietnamese ones in BLEU-1 metric, rather, the Vietnamese sets performing well basing on BLEU-2 to BLEU-4, especially CIDEr scores. On the other hand, when UIT-ViIC is compared with the dataset having captions translated by Google, the evaluation results and the output examples suggest that Google Translation service is able to perform acceptablly even though most translated captions are not perfectly natural and linguistically friendly. As a results, we proved that manually written captions for Vietnamese dataset is currently prefered.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s14-p2",
+            "section": "Conclusion and Further Improvements",
+            "start": 0,
+            "end": 537,
+            "text": "For future improvements, extending the UIT-ViIC's cateogry into all types of sport to verify how the dataset's size and category affect the Image Captioning models' performance is considered as our highest priority. Moreover, the human resources for dataset construction will be expanded. Second, we will continue to finetune our experiments to find out proper parameters for models, especially with encoding and decoding architectures, for better learning performance with Vietnamese dataset, especially when the categories are limited.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-60b4320d99e1e1faf2f4644b",
+        "paper_id": "1707.07568",
+        "title": "CAp 2017 challenge: Twitter Named Entity Recognition",
+        "section": "Description of the Systems",
+        "text": "Overall, the results of 8 systems were submitted for evaluation. Among them, 7 submitted a paper discussing their implementation details. The participants proposed a variety of approaches principally using Deep Neural Networks (DNN) and Conditional Random Fields (CRF). In the rest of the section we provide a short overview for the approaches used by each system and discuss the achieved scores.\n\nSubmission 1 BIBREF2 The system relies on a recurrent neural network (RNN). More precisely, a bi-directional GRU network is used and a CRF layer is adde on top of the network to improve label prediction given information from the context of a word, that is the previous and next tags.\n\nSubmission 2 BIBREF3 The system follows a state-of-the-art approach by using a CRF for to tag sentences with NER tags. The authors develop a set of features divided into six families (orthographic, morphosyntactic, lexical, syntactic, polysemic traits, and language-modeling traits).\n\nSubmission 3 BIBREF4 , ranked first, employ CRF as a learning model. In the feature engineering process they use morphosyntactic features, distributional ones as well as word clusters based on these learned representations.\n\nSubmission 4 BIBREF5 The system also relies on a CRF classifier operating on features extracted for each word of the tweet such as POS tags etc. In addition, they employ an existing pattertn mining NER system (mXS) which is not trained for tweets. The addition of the system's results in improving the recall at the expense of precision.\n\nSubmission 5 BIBREF6 The authors propose a bidirectional LSTM neural network architecture embedding words, capitalization features and character embeddings learned with convolutional neural networks. This basic model is extended through a transfer learning approach in order to leverage English tweets and thus overcome data sparsity issues.",
+        "text_hash": "816b09f3e9946f5a2ea20eed6cfb66f4cbe6605b845948fcfa3b24a94285e318",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/1707.07568",
+        "spans": [
+          {
+            "paragraph_id": "s5-p0",
+            "section": "Description of the Systems",
+            "start": 0,
+            "end": 396,
+            "text": "Overall, the results of 8 systems were submitted for evaluation. Among them, 7 submitted a paper discussing their implementation details. The participants proposed a variety of approaches principally using Deep Neural Networks (DNN) and Conditional Random Fields (CRF). In the rest of the section we provide a short overview for the approaches used by each system and discuss the achieved scores.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p1",
+            "section": "Description of the Systems",
+            "start": 0,
+            "end": 284,
+            "text": "Submission 1 BIBREF2 The system relies on a recurrent neural network (RNN). More precisely, a bi-directional GRU network is used and a CRF layer is adde on top of the network to improve label prediction given information from the context of a word, that is the previous and next tags.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p2",
+            "section": "Description of the Systems",
+            "start": 0,
+            "end": 283,
+            "text": "Submission 2 BIBREF3 The system follows a state-of-the-art approach by using a CRF for to tag sentences with NER tags. The authors develop a set of features divided into six families (orthographic, morphosyntactic, lexical, syntactic, polysemic traits, and language-modeling traits).",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p3",
+            "section": "Description of the Systems",
+            "start": 0,
+            "end": 223,
+            "text": "Submission 3 BIBREF4 , ranked first, employ CRF as a learning model. In the feature engineering process they use morphosyntactic features, distributional ones as well as word clusters based on these learned representations.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p4",
+            "section": "Description of the Systems",
+            "start": 0,
+            "end": 337,
+            "text": "Submission 4 BIBREF5 The system also relies on a CRF classifier operating on features extracted for each word of the tweet such as POS tags etc. In addition, they employ an existing pattertn mining NER system (mXS) which is not trained for tweets. The addition of the system's results in improving the recall at the expense of precision.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s5-p5",
+            "section": "Description of the Systems",
+            "start": 0,
+            "end": 341,
+            "text": "Submission 5 BIBREF6 The authors propose a bidirectional LSTM neural network architecture embedding words, capitalization features and character embeddings learned with convolutional neural networks. This basic model is extended through a transfer learning approach in order to leverage English tweets and thus overcome data sparsity issues.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-e59a27dedbb0088b3ff146a4",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Introduction",
+        "text": "By concentrating on a specific domain we are more likely to improve performance of the Image Captioning models. We expect our dataset can be used to confirm or reject this hypothesis.\n\nSportball Image Captioning can be used in certain sport applications, such as supportting journalists describing great amount of images for their articles.\n\nOur primary contributions of this paper are as follows:\n\nFirstly, we introduce UIT-ViIC, the first Vietnamese dataset extending MS-COCO with manually written captions for Image Captioning. UIT-ViIC is published for research purposes.\n\nSecondly, we introduce our annotation tool for dataset construction, which is also published to help annotators conveniently create captions.\n\nFinally, we conduct experiments to evaluate state-of-the-art models (evaluated on English dataset) on UIT-ViIC dataset, then we analyze the performance results to have insights into our corpus.\n\nThe structure of the paper is organized as follows. Related documents and studies are presented in Section SECREF2. UIT-ViIC dataset creation is described in Section SECREF3. Section SECREF4 describes the methods we implement. The experimental results and analysis are presented in Section SECREF5. Conclusion and future work are deduced in Section SECREF6.",
+        "text_hash": "2a13875edcbb1216fa32d1345960a0b8307ed6453a224352bd531d58cbc184e4",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s0-p6",
+            "section": "Introduction",
+            "start": 0,
+            "end": 183,
+            "text": "By concentrating on a specific domain we are more likely to improve performance of the Image Captioning models. We expect our dataset can be used to confirm or reject this hypothesis.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p7",
+            "section": "Introduction",
+            "start": 0,
+            "end": 155,
+            "text": "Sportball Image Captioning can be used in certain sport applications, such as supportting journalists describing great amount of images for their articles.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p8",
+            "section": "Introduction",
+            "start": 0,
+            "end": 55,
+            "text": "Our primary contributions of this paper are as follows:",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p9",
+            "section": "Introduction",
+            "start": 0,
+            "end": 176,
+            "text": "Firstly, we introduce UIT-ViIC, the first Vietnamese dataset extending MS-COCO with manually written captions for Image Captioning. UIT-ViIC is published for research purposes.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p10",
+            "section": "Introduction",
+            "start": 0,
+            "end": 141,
+            "text": "Secondly, we introduce our annotation tool for dataset construction, which is also published to help annotators conveniently create captions.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p11",
+            "section": "Introduction",
+            "start": 0,
+            "end": 193,
+            "text": "Finally, we conduct experiments to evaluate state-of-the-art models (evaluated on English dataset) on UIT-ViIC dataset, then we analyze the performance results to have insights into our corpus.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s0-p12",
+            "section": "Introduction",
+            "start": 0,
+            "end": 357,
+            "text": "The structure of the paper is organized as follows. Related documents and studies are presented in Section SECREF2. UIT-ViIC dataset creation is described in Section SECREF3. Section SECREF4 describes the methods we implement. The experimental results and analysis are presented in Section SECREF5. Conclusion and future work are deduced in Section SECREF6.",
+            "page": null
+          }
+        ]
+      },
+      {
+        "chunk_id": "c-721ac9d3e099bacb12ac84aa",
+        "paper_id": "2002.00175",
+        "title": "UIT-ViIC: A Dataset for the First Evaluation on Vietnamese Image Captioning",
+        "section": "Experiments ::: Experiment Results",
+        "text": "The two following tables, Table TABREF36 and Table TABREF36, summarize experimental results of Pytorch-tutorial, NIC - Show and Tell models. The two models are trained with three mentioned datasets, which are English-sportball, GT-sportball, UIT-ViIC. After training, 924 images from validation subset for each dataset are used to validate the our models.\n\nAs can be seen in Table TABREF36, with model from Pytorch tutorial, MS-COCO English captions categorized with sportball yields better results than the two Vietnamese datasets. However, as number of consecutive words considered (BLEU gram) increase, UIT-ViIC’s BLEU scores start to pass that of English sportball and their gaps keep growing. The ROUGE-L and CIDEr-D scores for UIT-ViIC model prove the same thing, and interestingly, we can observe that the CIDEr-D score for the UIT-ViIC model surpasses English-sportball counterpart.\n\nThe same conclusion can be said from Table TABREF36. Show and Tell model’s results show that MS-COCO sportball English captions only gives better result at BLEU-1. From BLEU-3 to BLEU-4, both GT-sportball and UIT-ViIC yield superior scores to English-sportball. Besides, when limiting MS-COCO English dataset to sportball category only, the results are higher (0.689, 0.501, 0.355, 0.252) than when the model is trained on MS-COCO with all images, which scored only 0.629, 0.436, 0.290, 0.193 (results without tuning in 2018) from BLEU-1 to BLEU-4 respectively.\n\nWhen we compare between two Vietnamese datasets, UIT-ViIC models perform better than sportball dataset translated automatically, GT-sportball. The gaps between the two results sets are more trivial in NIC model, and the numbers get smaller as the BLEU’s n-gram increase.",
+        "text_hash": "ff3dbc5ff0744f024594d41078a98b3f3983324a99664d611c21ea1056e5c6dd",
+        "chunker": {
+          "tokenizer": "models/bge-m3",
+          "size": 500,
+          "overlap": 80
+        },
+        "source_url": "https://arxiv.org/abs/2002.00175",
+        "spans": [
+          {
+            "paragraph_id": "s13-p0",
+            "section": "Experiments ::: Experiment Results",
+            "start": 0,
+            "end": 355,
+            "text": "The two following tables, Table TABREF36 and Table TABREF36, summarize experimental results of Pytorch-tutorial, NIC - Show and Tell models. The two models are trained with three mentioned datasets, which are English-sportball, GT-sportball, UIT-ViIC. After training, 924 images from validation subset for each dataset are used to validate the our models.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s13-p1",
+            "section": "Experiments ::: Experiment Results",
+            "start": 0,
+            "end": 533,
+            "text": "As can be seen in Table TABREF36, with model from Pytorch tutorial, MS-COCO English captions categorized with sportball yields better results than the two Vietnamese datasets. However, as number of consecutive words considered (BLEU gram) increase, UIT-ViIC’s BLEU scores start to pass that of English sportball and their gaps keep growing. The ROUGE-L and CIDEr-D scores for UIT-ViIC model prove the same thing, and interestingly, we can observe that the CIDEr-D score for the UIT-ViIC model surpasses English-sportball counterpart.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s13-p2",
+            "section": "Experiments ::: Experiment Results",
+            "start": 0,
+            "end": 561,
+            "text": "The same conclusion can be said from Table TABREF36. Show and Tell model’s results show that MS-COCO sportball English captions only gives better result at BLEU-1. From BLEU-3 to BLEU-4, both GT-sportball and UIT-ViIC yield superior scores to English-sportball. Besides, when limiting MS-COCO English dataset to sportball category only, the results are higher (0.689, 0.501, 0.355, 0.252) than when the model is trained on MS-COCO with all images, which scored only 0.629, 0.436, 0.290, 0.193 (results without tuning in 2018) from BLEU-1 to BLEU-4 respectively.",
+            "page": null
+          },
+          {
+            "paragraph_id": "s13-p3",
+            "section": "Experiments ::: Experiment Results",
+            "start": 0,
+            "end": 270,
+            "text": "When we compare between two Vietnamese datasets, UIT-ViIC models perform better than sportball dataset translated automatically, GT-sportball. The gaps between the two results sets are more trivial in NIC model, and the numbers get smaller as the BLEU’s n-gram increase.",
+            "page": null
+          }
+        ]
+      }
+    ],
+    "history": [
+      "关于论文《CAp 2017 challenge: Twitter Named Entity Recognition》，What questions were asked in the annotation process?",
+      "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+    ]
+  },
+  "raw_judgment": {
+    "task_correct": true,
+    "reason": "The question asks to compare two papers on annotation-process questions and evaluated DNN models, and to state comparability. The evidence provides, for the CAp 2017 paper, the annotation protocol (hashtag/mention annotation conditions, entity types) and system descriptions including RNN/GRU-CRF, biLSTM-CNN, and CRF-based submissions; for UIT-ViIC, it provides annotation guidelines (rules rather than stated questions) and mentions two models (Pytorch-tutorial and NIC Show-and-Tell) in experiments. The papers are clearly in different tasks (NER vs image captioning) and differ in how each question is reported, and the answer correctly refuses. A refusal is appropriate here because the specific 'What questions were asked' framing is not directly evidenced for either paper—neither reports an explicit list of questions posed to annotators—and the comparison scope is partly unsupported. Answering with a refusal and no claims is defensible as evidence-insufficient/out-of-scope for the exact comparison requested.",
+    "claims": []
+  },
+  "calls": [
+    {
+      "stage": "final_review",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 1,
+      "request_hash": "bd86825ef599dcb53a290733217e283ba04c66f2ff29e777fa24248e8e5a3666",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 10973,
+        "completion_tokens": 229,
+        "total_tokens": 11202,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00178335,
+          "allowance": 0.00133751,
+          "tokens": {
+            "input": 10973,
+            "output": 229,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 10973,
+        "output_tokens": 229,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4293.94830000092
+    }
+  ]
+}

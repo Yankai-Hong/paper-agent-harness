@@ -1,0 +1,661 @@
+{
+  "turn_id": "d26-t2",
+  "session_id": "d26",
+  "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。",
+  "status": "completed",
+  "stages": [
+    {
+      "stage": "Guardrails",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "accepted": true
+      },
+      "elapsed_ms": 0.005599926225841045
+    },
+    {
+      "stage": "NLU",
+      "attempt": 1,
+      "input": {
+        "question": "请解释刚才那篇论文对于这个问题的证据，保留引用；不能从常识补充结论。"
+      },
+      "status": "ok",
+      "output": {
+        "intent": "explain",
+        "standalone_query": "Spoken Conversational Search for General Knowledge 论文中关于评估指标和评估范围的证据是什么",
+        "needs_clarification": false,
+        "paper_ids": [
+          "1909.11980"
+        ],
+        "resolved_entities": {
+          "paper_title": "Spoken Conversational Search for General Knowledge",
+          "paper_id": "1909.11980",
+          "topic": "评估方法（metrics 与评估范围）"
+        }
+      },
+      "elapsed_ms": 3626.7140000127256
+    },
+    {
+      "stage": "Retrieve",
+      "attempt": 1,
+      "input": {
+        "query": "Spoken Conversational Search for General Knowledge 论文中关于评估指标和评估范围的证据是什么"
+      },
+      "status": "ok",
+      "output": {
+        "candidate_ids": [
+          "c-c64ef8a63ba49a8f3c0aaf5e",
+          "c-b305401ec9a9c05028159ed3",
+          "c-5c32cf6a290887fe55d0cb9e",
+          "c-25081376dc5c3d8bd7d1b8ff",
+          "c-c6ceb7fd3070878b9c9cd9a0",
+          "c-daa0ec4d58444fa537967f05",
+          "c-a3cff1ebfd1eb54b3ec393b9",
+          "c-57cf5242fabad381380ece11",
+          "c-a742488be1dcb13b76f11c4e",
+          "c-8774c64ccb9a5d93a5c4301c",
+          "c-d3c8a3379cf3b245ad8a8a79",
+          "c-29b7655bb7c40285eb40f876",
+          "c-3ab3e2e6e86141630c37fecb",
+          "c-1a451ae2c038c12be1d1db5e",
+          "c-3d8ef2298034d7225863746a",
+          "c-0880a46592ae2efce32cda7a",
+          "c-3fb4f0553ec80047ee879617",
+          "c-db5c3307e5987028d71f91e4",
+          "c-f71273303a1b867393835b9d"
+        ]
+      },
+      "elapsed_ms": 41.18279996328056
+    },
+    {
+      "stage": "Rerank",
+      "attempt": 1,
+      "input": {
+        "candidate_ids": [
+          "c-c64ef8a63ba49a8f3c0aaf5e",
+          "c-b305401ec9a9c05028159ed3",
+          "c-5c32cf6a290887fe55d0cb9e",
+          "c-25081376dc5c3d8bd7d1b8ff",
+          "c-c6ceb7fd3070878b9c9cd9a0",
+          "c-daa0ec4d58444fa537967f05",
+          "c-a3cff1ebfd1eb54b3ec393b9",
+          "c-57cf5242fabad381380ece11",
+          "c-a742488be1dcb13b76f11c4e",
+          "c-8774c64ccb9a5d93a5c4301c",
+          "c-d3c8a3379cf3b245ad8a8a79",
+          "c-29b7655bb7c40285eb40f876",
+          "c-3ab3e2e6e86141630c37fecb",
+          "c-1a451ae2c038c12be1d1db5e",
+          "c-3d8ef2298034d7225863746a",
+          "c-0880a46592ae2efce32cda7a",
+          "c-3fb4f0553ec80047ee879617",
+          "c-db5c3307e5987028d71f91e4",
+          "c-f71273303a1b867393835b9d"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "evidence_ids": [
+          "c-c64ef8a63ba49a8f3c0aaf5e",
+          "c-b305401ec9a9c05028159ed3",
+          "c-5c32cf6a290887fe55d0cb9e",
+          "c-25081376dc5c3d8bd7d1b8ff",
+          "c-8774c64ccb9a5d93a5c4301c"
+        ]
+      },
+      "elapsed_ms": 154.17410002555698
+    },
+    {
+      "stage": "Reflect",
+      "attempt": 1,
+      "input": {
+        "evidence_ids": [
+          "c-c64ef8a63ba49a8f3c0aaf5e",
+          "c-b305401ec9a9c05028159ed3",
+          "c-5c32cf6a290887fe55d0cb9e",
+          "c-25081376dc5c3d8bd7d1b8ff",
+          "c-8774c64ccb9a5d93a5c4301c"
+        ]
+      },
+      "status": "ok",
+      "output": {
+        "decision": "answer",
+        "reason": "证据中的 Evaluation 部分（chunk c-25081376dc5c3d8bd7d1b8ff）直接支撑了评估范围与评估指标：它说明对各组成部件的评估在本工作范围之外，本文评估了脱离上下文的问题与共指消解模块（s15-p0）；并给出了 Bench'It 数据集上的 macro precision/recall/F-1 数值（s15-p1）；以及 CALOR 上共指消解模型的平均 precision/recall/F-1（s15-p2）。历史上下文中的事实被标记为冲突/非权威，未作为证据使用；答案仅基于以上引用证据，未补充常识结论。"
+      },
+      "elapsed_ms": 4393.299199989997
+    },
+    {
+      "stage": "Generate",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "citation_validation": {
+        "id_valid": true,
+        "source_consistent": true,
+        "semantic_support": "not_evaluated"
+      },
+      "output": {
+        "claims": [
+          {
+            "key": "eval_scope",
+            "text": "论文指出，对系统各组成部分的评估是在本工作范围之外完成的；论文只评估了脱离上下文的问题以及共指消解模块。",
+            "citations": [
+              {
+                "paper_id": "1909.11980",
+                "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+              }
+            ]
+          },
+          {
+            "key": "ooc_dataset",
+            "text": "脱离上下文问题的性能在 Bench'It 上评估，该数据集包含150个关于法语常识的开放式问题。",
+            "citations": [
+              {
+                "paper_id": "1909.11980",
+                "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+              }
+            ]
+          },
+          {
+            "key": "ooc_metrics",
+            "text": "在该评估中，系统达到宏观精确率64.14%、召回率64.33%和F-1值63.46%。",
+            "citations": [
+              {
+                "paper_id": "1909.11980",
+                "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+              }
+            ]
+          },
+          {
+            "key": "coref_dataset",
+            "text": "共指消解模型在CALOR测试集上进行了评估。",
+            "citations": [
+              {
+                "paper_id": "1909.11980",
+                "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+              }
+            ]
+          },
+          {
+            "key": "coref_metrics",
+            "text": "共指消解模型取得平均精确率65.59%、召回率48.86%和F-1值55.77%。",
+            "citations": [
+              {
+                "paper_id": "1909.11980",
+                "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+              }
+            ]
+          },
+          {
+            "key": "coref_english",
+            "text": "同一模型在英语上达到平均F-1值68.8%，而法语没有可比的测量结果。",
+            "citations": [
+              {
+                "paper_id": "1909.11980",
+                "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+              }
+            ]
+          },
+          {
+            "key": "las_metric",
+            "text": "在语言模块的测试中，通过人工标注约500个问题并合并入UD树库，标记依存分数（LAS）绝对提升了10%，达到92%。",
+            "citations": [
+              {
+                "paper_id": "1909.11980",
+                "chunk_id": "c-8774c64ccb9a5d93a5c4301c"
+              }
+            ]
+          }
+        ],
+        "decision": "answer"
+      },
+      "elapsed_ms": 7473.615500028245
+    },
+    {
+      "stage": "Memory",
+      "attempt": 1,
+      "input": {
+        "decision": "answer"
+      },
+      "status": "ok",
+      "compaction": {
+        "compressed": false
+      },
+      "memory_events": [
+        {
+          "operation": "redis_cache_hit"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "d5e88f5d516180c05ab79e17b6579c94c0114a1e26a50c65dada63c6db098c94",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "aba36dafe5082e54b51ab3ed06cc9abe89593901867224fabbade26306d904b2",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "bff5f8ff6b5348c05d337d5ba8285e5c228caf3b560e43802e0f5e1b99c2359d",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "f783bd56b824ac8d3dac9fb4b6e4a9dd93fe052f8adbafbc9bc3ff27aa88b134",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "045fe3811b4d2e3e2513c1b3291740f89efa302f0ab6b70fb36d2e37a88c55ea",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "857fb0010eb830dc88b7c9a64845847ddfbe72bfe875efd2a30495a95fa24631",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "conflict",
+          "fact_id": "c64c5a9ef4b4e28c1bcd314125a8cfca50567d93e1ac4de0e69e6b81032d774f",
+          "reason": "semantic_support_unverified"
+        },
+        {
+          "action": "skip_low_value"
+        }
+      ],
+      "output": {
+        "session_id": "d26",
+        "entities": {
+          "paper_title": "Spoken Conversational Search for General Knowledge",
+          "paper_id": "1909.11980",
+          "topic": "评估方法（metrics 与评估范围）"
+        },
+        "facts": {},
+        "unresolved": [],
+        "summary": {
+          "discussed_papers": [
+            "1909.11980"
+          ]
+        }
+      },
+      "elapsed_ms": 12.006300035864115
+    }
+  ],
+  "started_at": 1793025737.150112,
+  "corpus_hash": "03fd776bc579c2e7137ef29f3903a8b0955120b6ffe6e227e682d92623756f0e",
+  "mode": "rerank",
+  "rewrite": true,
+  "reflect": true,
+  "compact": true,
+  "memory_strategy": "bounded",
+  "memory_backend": "three_layer",
+  "degraded": false,
+  "degradation_reasons": [],
+  "commit_status": "committed",
+  "archive_recall": [
+    {
+      "fact_id": "17cba0628787c3c5072b960907233556f47b96a237e2a16a300d1d4d51f5235f",
+      "session_id": "d26",
+      "canonical_key": "[\"paper_evidence\", \"1909.11980\", \"scope\"]",
+      "text": "论文指出对系统各组成部分的评估是在本工作范围之外完成的，本文只评估了脱离上下文的问题以及共指消解模块。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1909.11980",
+      "evidence_ids": [
+        "c-25081376dc5c3d8bd7d1b8ff"
+      ],
+      "turn_id": "d26-t1",
+      "created_at": 1793025737.1283102,
+      "updated_at": 1793025737.1283102,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1909.11980"
+      ],
+      "kind": "conflict",
+      "content": "论文指出对系统各组成部分的评估是在本工作范围之外完成的，本文只评估了脱离上下文的问题以及共指消解模块。",
+      "record_id": "fact:17cba0628787c3c5072b960907233556f47b96a237e2a16a300d1d4d51f5235f",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.375,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 1,
+      "rank_score": 0.01639344262295082
+    },
+    {
+      "fact_id": "43bad3263ed68589c7cb5f00881c0f08175d9f106ae4f0ad720cb6faf7dfb57f",
+      "session_id": "d26",
+      "canonical_key": "[\"paper_evidence\", \"1909.11980\", \"out of context eval\"]",
+      "text": "针对脱离上下文的问题（out-of-context questions），系统在 Bench'It 数据集（150 个法语常识开放问题）上进行评估，取得宏观精确率 64.14%、召回率 64.33% 和 F-1 值 63.46%。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1909.11980",
+      "evidence_ids": [
+        "c-25081376dc5c3d8bd7d1b8ff"
+      ],
+      "turn_id": "d26-t1",
+      "created_at": 1793025737.1283102,
+      "updated_at": 1793025737.1283102,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1909.11980"
+      ],
+      "kind": "conflict",
+      "content": "针对脱离上下文的问题（out-of-context questions），系统在 Bench'It 数据集（150 个法语常识开放问题）上进行评估，取得宏观精确率 64.14%、召回率 64.33% 和 F-1 值 63.46%。",
+      "record_id": "fact:43bad3263ed68589c7cb5f00881c0f08175d9f106ae4f0ad720cb6faf7dfb57f",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.25,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 2,
+      "rank_score": 0.016129032258064516
+    },
+    {
+      "fact_id": "69961e5263056403c1070d4af593f55605da3f2e8bf5bf4c1f61180b9853b2ce",
+      "session_id": "d26",
+      "canonical_key": "[\"paper_evidence\", \"1909.11980\", \"overall metrics\"]",
+      "text": "评估使用了宏观精确率（macro precision）、召回率（recall）和 F-1 值作为评价指标。",
+      "status": "conflict",
+      "source_type": "paper_evidence",
+      "paper_id": "1909.11980",
+      "evidence_ids": [
+        "c-25081376dc5c3d8bd7d1b8ff"
+      ],
+      "turn_id": "d26-t1",
+      "created_at": 1793025737.1283102,
+      "updated_at": 1793025737.1283102,
+      "replaces": null,
+      "reason": "semantic_support_unverified",
+      "paper_ids": [
+        "1909.11980"
+      ],
+      "kind": "conflict",
+      "content": "评估使用了宏观精确率（macro precision）、召回率（recall）和 F-1 值作为评价指标。",
+      "record_id": "fact:69961e5263056403c1070d4af593f55605da3f2e8bf5bf4c1f61180b9853b2ce",
+      "retrieval_source": "sqlite",
+      "relevance_score": 0.20833333333333334,
+      "score_kind": "query_coverage",
+      "relevance_tier": 1,
+      "historical_context_not_evidence": true,
+      "is_authoritative": false,
+      "is_current_fact": false,
+      "requires_resolution": true,
+      "source_rank": 3,
+      "rank_score": 0.015873015873015872
+    }
+  ],
+  "decision": "answer",
+  "answer": {
+    "claims": [
+      {
+        "key": "eval_scope",
+        "text": "论文指出，对系统各组成部分的评估是在本工作范围之外完成的；论文只评估了脱离上下文的问题以及共指消解模块。",
+        "citations": [
+          {
+            "paper_id": "1909.11980",
+            "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+          }
+        ]
+      },
+      {
+        "key": "ooc_dataset",
+        "text": "脱离上下文问题的性能在 Bench'It 上评估，该数据集包含150个关于法语常识的开放式问题。",
+        "citations": [
+          {
+            "paper_id": "1909.11980",
+            "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+          }
+        ]
+      },
+      {
+        "key": "ooc_metrics",
+        "text": "在该评估中，系统达到宏观精确率64.14%、召回率64.33%和F-1值63.46%。",
+        "citations": [
+          {
+            "paper_id": "1909.11980",
+            "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+          }
+        ]
+      },
+      {
+        "key": "coref_dataset",
+        "text": "共指消解模型在CALOR测试集上进行了评估。",
+        "citations": [
+          {
+            "paper_id": "1909.11980",
+            "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+          }
+        ]
+      },
+      {
+        "key": "coref_metrics",
+        "text": "共指消解模型取得平均精确率65.59%、召回率48.86%和F-1值55.77%。",
+        "citations": [
+          {
+            "paper_id": "1909.11980",
+            "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+          }
+        ]
+      },
+      {
+        "key": "coref_english",
+        "text": "同一模型在英语上达到平均F-1值68.8%，而法语没有可比的测量结果。",
+        "citations": [
+          {
+            "paper_id": "1909.11980",
+            "chunk_id": "c-25081376dc5c3d8bd7d1b8ff"
+          }
+        ]
+      },
+      {
+        "key": "las_metric",
+        "text": "在语言模块的测试中，通过人工标注约500个问题并合并入UD树库，标记依存分数（LAS）绝对提升了10%，达到92%。",
+        "citations": [
+          {
+            "paper_id": "1909.11980",
+            "chunk_id": "c-8774c64ccb9a5d93a5c4301c"
+          }
+        ]
+      }
+    ],
+    "decision": "answer"
+  },
+  "memory_events": [
+    {
+      "operation": "redis_cache_hit"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "d5e88f5d516180c05ab79e17b6579c94c0114a1e26a50c65dada63c6db098c94",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "aba36dafe5082e54b51ab3ed06cc9abe89593901867224fabbade26306d904b2",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "bff5f8ff6b5348c05d337d5ba8285e5c228caf3b560e43802e0f5e1b99c2359d",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "f783bd56b824ac8d3dac9fb4b6e4a9dd93fe052f8adbafbc9bc3ff27aa88b134",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "045fe3811b4d2e3e2513c1b3291740f89efa302f0ab6b70fb36d2e37a88c55ea",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "857fb0010eb830dc88b7c9a64845847ddfbe72bfe875efd2a30495a95fa24631",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "conflict",
+      "fact_id": "c64c5a9ef4b4e28c1bcd314125a8cfca50567d93e1ac4de0e69e6b81032d774f",
+      "reason": "semantic_support_unverified"
+    },
+    {
+      "action": "skip_low_value"
+    }
+  ],
+  "api_calls": [
+    {
+      "stage": "nlu",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 4,
+      "request_hash": "130586c926d8d043a688ef6ce1c71d9587ff182e45ca0fb577ef2481533ecf7b",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4643,
+        "completion_tokens": 100,
+        "total_tokens": 4743,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.00071882,
+          "allowance": 0.00053911,
+          "tokens": {
+            "input": 4387,
+            "output": 100,
+            "reasoning": 0,
+            "cache_read": 256,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4387,
+        "output_tokens": 100,
+        "cache_read_input_tokens": 256,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 3619.662099983543
+    },
+    {
+      "stage": "reflect",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 5,
+      "request_hash": "8e1bfc7500ef6e00f112a737994ce02cb64af58b3dbcdd92ab5dc88593fd6de3",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4418,
+        "completion_tokens": 153,
+        "total_tokens": 4571,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0007545,
+          "allowance": 0.00056587,
+          "tokens": {
+            "input": 4418,
+            "output": 153,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4418,
+        "output_tokens": 153,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 4393.009799998254
+    },
+    {
+      "stage": "generate",
+      "model_requested": "deepseek-v4.1-flash",
+      "status": "ok",
+      "max_tokens": 4096,
+      "thinking_requested": "disabled",
+      "repair": false,
+      "attempt": 6,
+      "request_hash": "cb71e8af29ce5482a7e5c4e8d27471940aba76adb8f566a7fb12122829ea7410",
+      "model_returned": "deepseek-v4.1-flash",
+      "usage_raw": {
+        "prompt_tokens": 4520,
+        "completion_tokens": 519,
+        "total_tokens": 5039,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "cost": 0,
+        "opencode": {
+          "billing_source": "go",
+          "list_cost": 0.0009894,
+          "allowance": 0.00074205,
+          "tokens": {
+            "input": 4520,
+            "output": 519,
+            "reasoning": 0,
+            "cache_read": 0,
+            "cache_write_5m": 0,
+            "cache_write_1h": 0
+          }
+        }
+      },
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "usage": {
+        "input_tokens": 4520,
+        "output_tokens": 519,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0
+      },
+      "finish_reason": "stop",
+      "elapsed_ms": 7473.295100033283
+    }
+  ]
+}
