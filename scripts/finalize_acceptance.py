@@ -90,7 +90,7 @@ def main():
         "note":"Quality discrepancies are provisional, not all proven system errors. Full answers/evidence/reasons in each run's all-quality-failures.json and traces."}
     write_json(ROOT/"failure-catalog.json",failure_catalog)
 
-    suites=list(ET.parse("reports/acceptance-tests.xml").getroot().iter("testsuite"))
+    suites=list(ET.parse("reports/history/development/acceptance-tests.xml").getroot().iter("testsuite"))
     tests={k:sum(int(s.get(k,0)) for s in suites) for k in ("tests","failures","errors","skipped")}
     reliability=f'''# 可靠性与恢复测试
 
@@ -117,7 +117,7 @@ def main():
 
 边界：没有完整阶段 Checkpoint Resume；只有请求级有限重试与幂等提交。单 session 不支持多进程并发写；同一进程调用方应串行执行。真实线上断网/真实 429 并未主动制造，相关机制证据为故障注入。磁盘原子替换不是跨机器事务。
 '''
-    atomic_text("reports/RELIABILITY_RESULTS.md",reliability)
+    atomic_text("reports/history/development/RELIABILITY_RESULTS.md",reliability)
     remaining='''# 未完成项与验收边界
 
 本轮完成主要工程修正及核心开发实验，但不能宣称所有科研质量验收条件已满足。
@@ -133,7 +133,7 @@ def main():
 
 后续人工复核入口：data-audit-v04.json、各 semantic-summary.json 的 human_review_queue、all-quality-failures.json。完成标签审阅后可以直接用保存预测重新评分，无须默认重新调用模型。
 '''
-    atomic_text("reports/REMAINING_ISSUES.md",remaining)
+    atomic_text("reports/history/development/REMAINING_ISSUES.md",remaining)
     eq=quality["e2e-full"]
     em=runs["e2e-full"]["metrics"]
     rt=runs["e2e-full"]["telemetry"]
@@ -167,7 +167,7 @@ def main():
        "完整命令见 docs/evaluation.md。原目录使用 `.venv-gpu/Scripts/python.exe`；已有 data/models/indexes/.env 直接复用。先 pytest，再 smoke/小回归；检索用 --reuse-index；真实任务显式 --max-tokens 4096 --thinking disabled。报告重算不调用 API：", "",
        "```powershell\n.venv-gpu/Scripts/python.exe scripts/quality_statistics.py\n.venv-gpu/Scripts/python.exe scripts/summarize_acceptance.py\n.venv-gpu/Scripts/python.exe scripts/finalize_acceptance.py\n.venv-gpu/Scripts/python.exe scripts/check_artifacts.py\n```", "",
        "待完成项目见 REMAINING_ISSUES.md：人工金标/引用复核、正式证据不足子集、真实长期事实更新与召回精确率、更多自然长会话。已执行核心消融不等于已证明增益；不把未审核草稿、Mock 或参考截图当项目科研成果。"]
-    atomic_text("reports/FINAL_REPORT.md","\n".join(final)+"\n")
+    atomic_text("reports/history/development/FINAL_REPORT.md","\n".join(final)+"\n")
     hashes={str(p).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for folder in ('src','scripts','tests','docs','configs') for p in Path(folder).rglob('*') if p.is_file() and p.suffix in {'.py','.md','.json'}}
     write_json(ROOT/"final-source-hashes.json",hashes)
     print({"tests":tests,"requests_known":ledger['known_total_requests'],"tokens_known":ledger['known_total_tokens']})

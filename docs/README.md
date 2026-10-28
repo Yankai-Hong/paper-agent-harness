@@ -1,24 +1,17 @@
-# 组件文档
+# 文档导航
 
-最新 Phase A：[数据审核](../reports/PHASE_A_AUDIT_REPORT.md)、[逐 Claim 引用评测](../reports/CLAIM_CITATION_EVAL.md)、[完整回归与阻塞项](../reports/PHASE_A_FINAL_REPORT.md)。下方 acceptance 报告保留为历史对照。
+当前结论以 [最终工程验收](../reports/FINAL_ACCEPTANCE.md) 为准。源码、运行配置与评测证据一致；结果为工程验收和模型辅助评审，不是人工金标或论文级增益证明。
 
-建议先读架构，再依次读数据、检索、路由、生成、记忆与评测。所有实现入口均指向当前代码；来源和许可证集中在 [THIRD_PARTY_NOTICES](../THIRD_PARTY_NOTICES.md)。
+| 文档 | 内容 |
+|---|---|
+| [安装与运行](setup.md) | 环境、模型、数据、索引、API 与完整三层问答 |
+| [架构](architecture.md) | 七阶段、状态、分支与实现边界 |
+| [当前验收审计](implementation-audit.md) | 修复、验证与保留限制 |
+| [语料](corpus.md) | PDF/JSONL、段落与滑窗、来源元数据 |
+| [检索](rag-retrieval.md) / [重排](reranking.md) | BGE、FAISS、BM25、RRF、Cross-Encoder |
+| [路由](routing.md) / [反思](reflection.md) / [生成](generation.md) | NLU、证据充分性、引用与拒答 |
+| [记忆](memory.md) | Redis/SQLite/Chroma、版本、提交隔离与恢复 |
+| [追踪](runtime-tracing.md) / [API](api.md) | Trace、请求预算、有限重试与费用边界 |
+| [评测](evaluation.md) | 当前配置、分母、复现与结果解释 |
 
-| 文档 | 内容 | 实现 |
-|---|---|---|
-| [实现审计](implementation-audit.md) | 七阶段逐项核对、缺陷与修改建议 | 全源码 |
-| [架构与七阶段](architecture.md) | 状态、流程、重试、职责边界 | pipeline.py |
-| [语料与分块](corpus.md) | PDF/JSONL、token 窗口、元信息 | corpus.py |
-| [RAG 与检索](rag-retrieval.md) | BM25、BGE-M3、FAISS、RRF | retrieval.py |
-| [重排序](reranking.md) | Cross-Encoder、候选预算、GPU | retrieval.py |
-| [路由与 Query 改写](routing.md) | 五类意图、指代、论文范围、澄清 | providers.py / pipeline.py |
-| [证据反思](reflection.md) | 证据充分性、二次检索、拒答 | pipeline.py |
-| [生成与引用](generation.md) | 结构化事实、引用校验、限制 | providers.py / memory.py |
-| [记忆机制](memory.md) | Redis/SQLite/Chroma、事实版本、恢复、压缩、归档 | memory_manager.py / memory_stores.py / memory.py |
-| [工具循环与追踪](runtime-tracing.md) | learn-claude-code 复用、trace、usage | runtime.py / pipeline.py |
-| [API 配置](api.md) | OpenCode 实测、超时重试、预算与费用边界 | providers.py |
-| [评测与复现](evaluation.md) | GPU 实测、eval 子命令、Judge、消融 | scripts/ / eval_cli.py / judge.py |
-
-当前验收记录：[最终验收](../reports/FINAL_REPORT.md)、[真实检索结果](../reports/qasper-suite/RESULTS.md)、[真实 API 评测](../reports/LIVE_EVAL_RESULTS.md)。
-
-配套报告：[消融](../reports/ABLATION_RESULTS.md)、[记忆](../reports/MEMORY_EVAL_RESULTS.md)、[可靠性](../reports/RELIABILITY_RESULTS.md)。未完成项清单与复现计划为内部记录，未随仓库发布。
+历史实验统一见 [报告导航](../reports/README.md)，历史分数不替代当前成绩。上游来源与许可见 [THIRD_PARTY_NOTICES](../THIRD_PARTY_NOTICES.md)。

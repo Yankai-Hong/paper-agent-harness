@@ -22,5 +22,3 @@
 ## 本轮资源与标签版本
 
 直接复用原 data/qasper、models 与 indexes/bge，未重建语料或下载模型。修订评测集为 data/eval/v0.3，manifest 保存来源与哈希；原 data/eval 文件保留。人工复核状态不由静态检查或 LLM Judge 提升。
-
-本轮实际 API 数据冻结为 v0.3；后续 v0.4 补充显式 history session/turn 元数据、论文 ID/标题别名和实体指标适用范围。v0.4 的 Rewrite 分数是对保存的 v0.3 预测离线重算（`reports/acceptance/rewrite/rescored-v04.json`），不是新 API 实验；两版均保留草稿标签与原始结果。

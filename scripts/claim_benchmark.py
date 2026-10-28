@@ -16,7 +16,7 @@ def recording_reasoner(config, session):
 
 
 def main():
-    root = Path('reports/phase-a/claim-benchmark')
+    root = Path('reports/history/development/phase-a/claim-benchmark')
     root.mkdir(parents=True, exist_ok=False)
     chunk = next(r for r in read_jsonl('indexes/bge/chunks.jsonl') if r['chunk_id']=='c-89f9839c13d2f99e19b625a3')
     cite = {'paper_id':chunk['paper_id'], 'chunk_id':chunk['chunk_id']}

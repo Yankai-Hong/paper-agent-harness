@@ -1,85 +1,54 @@
-# 评测协议与复现
+# 当前评测与复现
 
-当前 Phase A 来源规则审核集固定在 `data/eval/v0.6/`，逐条 original/proposed/reason/basis/status 见 audit.jsonl；人工集合 human-gold.jsonl 为空。source-verified 与 needs_human_review 单独保存。v0.3/v0.4 和旧运行产物保留为历史，v0.5 是已标记废弃的审核开发输出。QASPER 官方证据标注与新人工审核必须区分。以下 acceptance 命令为历史复现，最新命令见文末。
+当前唯一验收结论：[FINAL_ACCEPTANCE.md](../reports/FINAL_ACCEPTANCE.md)。主配置为 `configs/final-acceptance.json`：真实 BGE-M3/FAISS、BM25/RRF、Cross-Encoder 与 three_layer 记忆。默认 CLI 的 BM25/legacy 不代表该配置。
 
-## 历史与分母
+## 数据与指标
 
-`prepare_eval.session_history` 仅按同一 session 的严格较早 turn 构造历史，排序后保存 role/content/turn_id；单轮历史为空。历史是用户问题上下文，不伪造助手答案。v0.6 的 90 条 expected_query 均有来源规则参考，其中 10 条歧义问题保留 expected_action=clarify；不是唯一措辞或人工 gold。Rewrite token overlap 只是诊断，语义保持需辅助 Judge 或人工评估。API 错误和缺失预测在适用指标分母中计零。
+| 项目 | 数据与计分 |
+|---|---|
+| Intent | v0.6，100 条来源规则标签；不冒充人工金标 |
+| Rewrite | v0.6，90 条；60 条论文指代主视图，指代/含义约束/独立检索分别判断 |
+| Retrieval | 100 条 QASPER 已知论文问题；四组统一 chunks、候选预算与段落覆盖 Recall@5 |
+| Boundary | 55 条；仅问题及完整历史完全一致时复用本轮 E2E；决策与拒答 P/R、误拒答分列 |
+| E2E | 30×4=120 轮；70-turn 为执行完整历史后的固定计分视图 |
+| Citation | 最终输出 ID/来源合法率与同模型语义支持率分开，unknown 留在分母 |
+| Memory | 3 场景×9 轮，full/bounded；事实值、更新、版本、冲突、事件召回契约 |
+| Reflect | 固定12轮×3设置，另6例×3诊断；自然效果与强制分支测试分开 |
+| Token | 实际 usage 包含生成、反思、摘要与重试；Judge 另计，缺失 usage 不按零 |
 
-## Phase A 复现
+正式结果目录 `reports/final-acceptance/live-v2`。Intent/Rewrite 复用本次早期已完整完成的 NLU-only 结果；检索复用2026-10-26独立重跑，校验记录在 `retrieval-reused/`。失败、中断和重跑保留，不覆盖成一次成功实验。
 
-从干净代码检出开始，使用原目录 `.venv-gpu/Scripts/python.exe`；新环境可按 pyproject.toml 安装项目与 `models,api,dev` 依赖，并指向已有 data/models/indexes/.env。不重新下载权重、生成数据或重建索引。Windows 原 Conda 环境加载 SSL 需正常宿主权限，本次沙箱 DLL 失败不能当成 API 故障。
+## 成功判定与限制
 
-```powershell
-$py = '.\.venv-gpu\Scripts\python.exe'
-& $py -m pytest -q --junitxml=reports/phase-a/final-tests.xml
-# 仅在目标版本尚不存在时生成；已有 v0.6 直接复用
-& $py scripts/phase_a_audit.py
-# full 必须是新目录；脚本拒绝覆盖历史结果
-& $py scripts/run_phase_a.py
-& $py -m paper_agent.cli eval intent data/eval/v0.6/intent.jsonl --output reports/phase-a/final-intent --max-tokens 4096 --thinking disabled --max-calls 200
-& $py -m paper_agent.cli eval rewrite data/eval/v0.6/query_rewrite.jsonl --output reports/phase-a/final-rewrite --max-tokens 4096 --thinking disabled --max-calls 200
-& $py scripts/review_rewrite.py --run reports/phase-a/final-rewrite --data data/eval/v0.6/query_rewrite.jsonl --dialogs data/eval/v0.6/dialogs.jsonl
-& $py scripts/claim_benchmark.py
-& $py scripts/evaluate_claims.py reports/phase-a/full/e2e
-& $py scripts/freeze_phase_a.py
-& $py scripts/report_phase_a.py
-& $py scripts/phase_a_costs.py
-& $py scripts/phase_a_diagnostics.py
-& $py scripts/verify_phase_a.py
-```
+`eval_protocol.assess` 区分 execution、behavior、task、pipeline。未提供独立答案质量时为 unknown，不凭引用存在推断正确。模型辅助 task_correct 单列，不填充人工 reviewed 字段。
 
-完整跑次已包含 Claim 评测，最后独立 evaluate_claims 命令仅用于另一次指定运行，不应重复付费执行。原始命令见 full/jobs.json；新运行可用 `run_phase_a.py --output reports/phase-a-repeat/full`，审核重建可用 `phase_a_audit.py --output data/eval/new-version`。报告汇总脚本固定读取本次 phase-a 路径；复跑结果须独立保存并注明对应目录，不能覆盖本次产物。配置矩阵 `configs/phase-a.json` 的 Reflect/Memory 使用原有 v0.3 子集，与 v0.6 全量结果独立统计。
+检索 Recall 以 gold 段落覆盖宏平均、多标注最佳替代路径计分；命中长段落某个窗口仍只是覆盖代理。全库检索与 known-paper 不是同一任务。语义支持 Judge 与生成模型相同，尚无用户人工抽查。
 
-Claim 指标复用主 Pipeline 结构：每个 Claim 一次；同 Claim 的重复引用去重；每个 Claim-引用对用于 Citation Precision。支持/矛盾/不足三类与 unknown 分开，失败不从总分母排除。Claim Support、Unsupported、Contradiction 的分母均为全部 Claim；Validity、Precision 分母为全部引用对。unknown 导致支持与不支持率之和可能小于 1。按 session 簇 Bootstrap；单簇诊断集不可外推。所有语义结果为 provisional，人工验证缺失明确披露。
+本次 bounded token 增加1.20%，Reflect 未证明稳定增益。Memory 契约通过率不等于任意自然对话准确率。完整失败、unknown 和30例复核包随报告保存。
 
-`scripts/judge_phase_a.py` 对保存的全量 Memory、八组消融及 E2E 做独立辅助答案质量评审，`scripts/audit_qasper_annotations.py` 从原始本地 tgz 核对全部官方标注。100 条检索问题存在 12 条可回答性分歧和 2 条 yes/no 分歧，复核列表单列；主指标保持原定 100 条分母，不做结果驱动删样。Claim 人工抽查队列包含全部非支持/未知结果与固定每十条抽样，见 phase-a/claim-human-review-queue.jsonl。
+## 复现顺序
 
-Boundary 默认 `--boundary-mode replay`：依次执行历史用户问题，使用真实生成的助手答案再执行目标问题。`context-only` 则注入指定消息。每条案例使用独立执行会话，统计聚类仍按原 session。两个模式不可混合汇总。Replay 历史失败导致目标失败，仍保留该案例在分母中。
-
-## 成功判定
-
-`eval_protocol.assess` 分开记录 execution_success、task_success、pipeline_success：
-
-- execution：未发生未处理异常且 trace completed。
-- task：最终 decision 与预定义条件一致；应回答案例还要求独立 reviewed_answer_correct。没有质量标签时为 null，不以引用存在代替正确性。
-- pipeline：execution、输出 schema、应执行阶段、引用 ID/来源结构校验（回答时）或合适拒答、Memory 提交与 task 全部通过。
-
-所有原始案例都在分母中，未知质量不计为成功，并单列 unknown。此时成功率是已确认成功的下界，不是完整质量估计。behavior_match 单独报告草稿行为标签一致率。另记录 NLU、Reflect（未有独立标签时 null）、检索有效性、生成和记忆提交。degraded 不自动代表任务正确。模型 Judge 仅产生 provisional 指标，不填入人工 reviewed 字段。
-
-## 配对统计
-
-`bootstrap_ci` 固定 seed=42、默认 2000 次；以 session 为多轮抽样单位，检索以 source paper 为单位。有放回抽取 cluster，重复抽中的所有行重复计权。均值为 turn 加权均值。小簇数量（尤其单会话）区间不能作总体推断。
-
-`eval compare RUN_A RUN_B --metric behavior_match --output comparison.json` 读取逐例文件，以 session/case ID 配对，列共同样本、单侧缺失、错误、未知指标、改善与退化，以及 B-A 的簇配对 bootstrap 95% CI。失败按零计，未知质量单列，配置缺失/不一致明确标记。
-
-## 检索口径
-
-四组固定相同 corpus/index/query hash、30 候选。Recall@5/10 为 gold 段落覆盖宏平均，多替代标注取最佳路径；任一窗口命中为覆盖代理。MRR@5/10 为首个相关 chunk 倒数排名。nDCG@5/10 使用 chunk 二元相关性（与任一 gold 段落交集），IDCG 使用完整语料相关 chunk 数；窗口重复相关是该代理的局限。失败计零。检索实验不调用 API。
-
-## 实际可执行消融
-
-`eval ablation --config configs/evaluation.json --output NEW_DIRECTORY` 读取 ablations[].args，依次调用相应评测，逐实验保存配置、指标和结果。单组失败会记录并继续。无执行开关的 no-citation-validation 已移除。配置文件的其他设计字段不是所有 CLI 参数的隐式覆盖器，实际执行以 args 与 run_config.json 为准。
-
-Reflect 固定前 3 个 session（12 turns）、BM25，比较不反思、一次反思、允许二次检索；一次反思与禁止二次检索是同配置重复对照。Memory 固定前 2 组十轮会话，比较完整历史、确定性裁剪、语义压缩、语义压缩加召回。不是人工金标效果实验。
-
-## 原工作目录复现
+已有资产直接复用。新环境见 [安装文档](setup.md)。Redis 按本机实际地址启动，本机隔离服务端口为16379；`.env` 不覆盖。先本地检查，再付费实验：
 
 ```powershell
 $py = '.\.venv-gpu\Scripts\python.exe'
 & $py -m pytest -q
-& $py scripts/audit_eval_data.py
-& $py scripts/retest_budget.py --output reports/new-budget
-& $py scripts/run_retrieval_suite.py --reuse-index --output reports/new-retrieval
-& $py scripts/report_results.py --run reports/new-retrieval
-& $py -m paper_agent.cli eval intent data/eval/v0.3/intent.jsonl --output reports/new-intent --max-tokens 4096 --thinking disabled
-& $py -m paper_agent.cli eval rewrite data/eval/v0.3/query_rewrite.jsonl --output reports/new-rewrite --max-tokens 4096 --thinking disabled
-& $py -m paper_agent.cli eval boundary data/eval/v0.3/boundary.jsonl --index indexes/bge --mode bm25 --boundary-mode replay --workers 4 --max-tokens 4096 --thinking disabled --output reports/new-boundary
-& $py -m paper_agent.cli eval e2e data/eval/v0.3/dialogs.jsonl --index indexes/bge --mode rerank --workers 4 --max-tokens 4096 --thinking disabled --output reports/new-e2e
-& $py -m paper_agent.cli eval ablation --output reports/new-ablations
-& $py scripts/judge_acceptance.py reports/new-e2e data/eval/v0.3/dialogs.jsonl
+& $py scripts/check_artifacts.py
+& $py scripts/check_memory_integration.py --redis-url redis://localhost:16379/0 --output reports/reproduced-integration
+# 以下使用 API；选择新的输出目录，core 完成后再运行 judge。
+& $py scripts/run_final_acceptance.py --output reports/reproduced-live --config configs/final-acceptance.json
+& $py scripts/run_final_acceptance.py --output reports/reproduced-live --config configs/final-acceptance.json --phase judge
+& $py scripts/reflect_diagnostic.py --output reports/reproduced-reflect
 ```
 
-直接复用 data、models、indexes、.env，不需要重新下载、重建或覆盖凭证。70-turn 是完整对话运行后的计分视图，不能省略所依赖的历史轮次。真实 token 包含失败和重试；无 usage 的超时请求成本未知，不能报告成零。P50/P95 是本机当次延迟，不是服务保证。所有实际结果、限制和未完成项见 reports 中的本轮报告。
+每个请求先落盘占用预算，失败、重试、Judge 均计入。core/judge 不得同时写同一 output。冻结配置/源码/数据不一致会拒绝恢复；半途会话保留，另建输出目录，不拼接冒充完整运行。
 
-本轮实际 API 数据冻结为 v0.3；后续 v0.4 补充显式 history session/turn 元数据、论文 ID/标题别名和实体指标适用范围。v0.4 的 Rewrite 分数是对保存的 v0.3 预测离线重算（`reports/acceptance/rewrite/rescored-v04.json`），不是新 API 实验；两版均保留草稿标签与原始结果。
+`run_final_acceptance.py` 对新输出重新运行NLU，并受配置的请求上限限制；原实验中复用NLU带来的成本不能当作每次新运行保证。先看 estimated_requests 与剩余配额，预算不足明确保留失败，不自动扩额。
+
+汇总工具 `summarize_final_acceptance.py`、`write_final_report.py` 是当前交付快照的生成器，固定读取 `reports/final-acceptance/`；不要用它们覆盖一轮新实验冒充原结果。新运行应单独记录配置和报告。
+
+## 历史实验
+
+Phase A 的 BM25/legacy 结果、旧 acceptance、早期检索和错误修复日志已归入 [reports/history/development](../reports/history/development/)。路径迁移表见 [relocations.json](../reports/history/relocations.json)。历史原始记录中的命令与路径保留当时值，相关开发脚本读取路径已调整。旧 v0.3 Reflect 子集仍用于当前对照，不能删除。
+
+`eval compare` 支持按会话/论文配对的簇 bootstrap；少量簇的区间不能作为总体显著性证据。增加统计框架不是当前工程验收条件。

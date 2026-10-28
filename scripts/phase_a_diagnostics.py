@@ -8,7 +8,7 @@ from paper_agent.eval_protocol import success_metrics
 
 
 def main():
-    root=Path('reports/phase-a/full')
+    root=Path('reports/history/development/phase-a/full')
     chunks=read_jsonl('indexes/bge/chunks.jsonl')
     by_id={c['chunk_id']:c for c in chunks}
     queries=read_jsonl('data/qasper/retrieval.jsonl')

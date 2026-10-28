@@ -19,4 +19,4 @@
 
 ## 本轮执行配置
 
---max-retrieval-attempts 1/2 控制检索预算，达到上限仍 retrieve_again 则拒答。Reflect API 失败或非法决策不会默认宣称证据充分，整轮失败并回滚。消融结果保存到 reports/acceptance/ablations，质量来自单列的临时模型评审，非人工金标。
+--max-retrieval-attempts 1/2 控制检索预算，达到上限仍 retrieve_again 则拒答。Reflect API 失败或非法决策不会默认宣称证据充分，整轮失败并回滚。当前消融结果见 reports/final-acceptance/live-v2/reflect-*；历史消融保存到 reports/history/development/acceptance/ablations，质量来自单列的临时模型评审，非人工金标。

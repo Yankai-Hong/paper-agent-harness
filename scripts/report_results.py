@@ -9,7 +9,7 @@ from paper_agent.storage import read_jsonl, write_json, atomic_text, digest
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run", default="reports/qasper-suite")
+    parser.add_argument("--run", default="reports/reproduced-retrieval")
     parser.add_argument("--queries", default="data/qasper/retrieval.jsonl")
     args = parser.parse_args()
     run = Path(args.run)

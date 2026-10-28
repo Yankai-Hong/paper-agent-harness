@@ -1,24 +1,17 @@
-# 本轮源码验收审计
+# 当前实现与验收审计
 
-Phase A 追加核查：`rewrite_metrics` 显式错误样本保持适用分母；`memory_metrics` 仅含 fact_source_papers 的有效检查点不再误判为空；新增 `claim_eval.py` 和实际批量运行脚本、原文诊断与回归测试。当前来源审核 v0.6、运行状态与未完成项以 PHASE_A_* 报告为准。此前 acceptance 表格和数字为历史快照。
+以2026-10-27最终工程验收为准：[报告](../reports/FINAL_ACCEPTANCE.md)、[冻结配置](../reports/final-acceptance/live-v2/freeze.json)。早期 Phase A 与旧审计不代表当前完成状态。
 
-核对源码入口 PaperPipeline.run、APIConfig/CompatibleReasoner、ContextArchive.search、eval_tasks、eval_protocol、eval_cli 与 prepare_eval。旧审计保存在 reports/history/pre-acceptance/implementation-audit.md，仅用于历史比较。
+| 能力 | 核验与边界 |
+|---|---|
+| 七阶段 | 完整120轮使用 rerank + three_layer，直接组件调用；tool_loop 独立 |
+| 归档提交隔离 | archive_ids 必须存在于权威提交快照；覆盖两模式、两策略、异常及子进程崩溃 |
+| 幂等与恢复 | 相同 turn_id 重放；SQLite 权威，Redis/Chroma 为可恢复投影 |
+| 事实冲突 | 按来源/论文范围/规范 key 或显式 attribute；不是通用语义矛盾裁决 |
+| 并行初始化 | Chroma 同进程首次初始化加锁，不承诺多进程生产并发 |
+| 评测 | 102项回归；完整E2E、检索、改写、边界、引用、记忆、消融与token均有产物 |
+| 质量 | 规则标签与同模型Judge；unknown明确保留；执行成功不等于任务正确 |
 
-| 项目 | 当前实现 | 证据/边界 |
-|---|---|---|
-| Rewrite 历史 | 同 session、严格较早 turn、排序消息 | test_eval_corrections；v0.3 数据 |
-| Boundary | Replay 默认、Context-only 独立标记 | 历史实际调用；不同案例执行隔离 |
-| Bootstrap | 重复簇按次数展开，固定种子 | 与独立抽样实现确定性对照 |
-| 成功率 | execution/task/pipeline 分离 | 未确认语义为 unknown，不等于成功 |
-| 消融 | 配置矩阵实际 dispatch、独立目录 | ablations/matrix_results.json |
-| API | 建连/请求总超时、有限传输与结构重试 | 故障测试、t3 真实预算对照 |
-| 降级 | Pipeline 重排失败保留检索排序、混合失败尝试单路 | 每轮 degraded/reason；独立检索基线保持严格失败 |
-| Reflect 失败 | 失败并回滚，不默认充分 | 故障测试 |
-| 引用错误 | 明确拒答、degraded | 结构与语义单独评估 |
-| Memory | 稳定 ID、单快照原子提交、失败回滚 | 同 turn 重复/重启测试；非并发事务 |
-| Archive | 同 session bounded recall，过期事实标记 | 接入 NLU/生成上下文；不当论文证据 |
-| 数据 | 新版本、非空检查点、静态审阅清单 | 草稿不提升为人工 gold |
+保留限制：SQLite 摘要可能持写锁；账本/归档ID增长、线性扫描；老归档无法核对提交时保留但不召回；自然记忆召回有漏失；有限重试不代表绝对墙钟截止时间。PDF章节/阅读顺序需要检查，引用ID合法不证明语义支持。
 
-实际文件/函数改动、真实运行分母、token、延迟和未完成项以 reports/FINAL_REPORT.md 及配套报告为准。原七阶段名称、BM25/BGE/FAISS/RRF/Cross-Encoder、轻量 Harness 保留，没有引入额外服务或数据库。tool_loop 仍为独立 Harness，七阶段没有改成模型原生工具调用。
-
-本轮实际 API 数据冻结为 v0.3；后续 v0.4 补充显式 history session/turn 元数据、论文 ID/标题别名和实体指标适用范围。v0.4 的 Rewrite 分数是对保存的 v0.3 预测离线重算（`reports/acceptance/rewrite/rescored-v04.json`），不是新 API 实验；两版均保留草稿标签与原始结果。
+本次发布整理只迁移历史文件、更新导航与文档，不改变已冻结的运行源码、模型和评测分数。

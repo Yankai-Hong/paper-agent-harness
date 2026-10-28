@@ -6,7 +6,7 @@ from paper_agent.providers import APIConfig
 
 
 def main():
-    root=Path('reports/phase-a')
+    root=Path('reports/history/development/phase-a')
     summary=json.loads((root/'summary.json').read_text(encoding='utf-8'))
     expected={'intent':100,'rewrite':90,'boundary':55,'memory':80,'e2e':120}
     for name,n in expected.items():

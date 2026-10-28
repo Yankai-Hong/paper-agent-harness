@@ -20,8 +20,8 @@ RRF 对同一 chunk 在各路的排名求和：`sum(1 / (60 + rank))`，rank 从
 
 BM25 使用 lexical-v1，适配本次英文论文；中文切词不是本次已评测能力。BGE 使用 dense 输出，没有额外启用其 learned sparse 或 ColBERT 分支。
 
-实测与限制见 [RESULTS](../reports/qasper-suite/RESULTS.md)：主指标是已知论文范围的段落覆盖 Recall@5，不是开放域问答准确率。
+实测与限制见 [RESULTS](../reports/history/development/qasper-suite/RESULTS.md)：主指标是已知论文范围的段落覆盖 Recall@5，不是开放域问答准确率。
 
 ## 本轮可靠性与复测
 
-独立检索评测仍严格失败，不把降级结果冒充指定算法。Pipeline 在 allow_degraded=True 时，hybrid 失败依次尝试 BM25/dense，成功记录 fallback 与 degraded；两路均失败则失败并回滚。新四组复测、排名和区间见 reports/acceptance/retrieval-v2。Recall@10、MRR 和二元相关 chunk nDCG 口径见 [评测](evaluation.md)。
+独立检索评测仍严格失败，不把降级结果冒充指定算法。Pipeline 在 allow_degraded=True 时，hybrid 失败依次尝试 BM25/dense，成功记录 fallback 与 degraded；两路均失败则失败并回滚。当前四组结果见 reports/final-acceptance/retrieval-reused；历史排名和区间见 reports/history/development/acceptance/retrieval-v2。Recall@10、MRR 和二元相关 chunk nDCG 口径见 [评测](evaluation.md)。

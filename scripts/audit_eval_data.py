@@ -35,7 +35,7 @@ def audit(root):
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--data", default="data/eval/v0.3")
-    p.add_argument("--output", default="reports/acceptance/data-audit.json")
+    p.add_argument("--output", default="reports/history/development/acceptance/data-audit.json")
     args = p.parse_args()
     result = audit(args.data)
     write_json(args.output, result)

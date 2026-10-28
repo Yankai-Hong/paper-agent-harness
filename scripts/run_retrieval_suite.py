@@ -19,7 +19,7 @@ from paper_agent.storage import write_json
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", default="data/qasper")
-    parser.add_argument("--output", default="reports/qasper-suite")
+    parser.add_argument("--output", default="reports/reproduced-retrieval")
     parser.add_argument("--index", default="indexes/bge")
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--batch-size", type=int, default=4)

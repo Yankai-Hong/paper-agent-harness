@@ -67,7 +67,7 @@ def json_structured(config):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--env-file", default=".env")
-    parser.add_argument("--output", default="reports/api-smoke")
+    parser.add_argument("--output", default="reports/history/development/api-smoke")
     args = parser.parse_args()
     config = APIConfig.from_env(args.env_file)
     out = Path(args.output)

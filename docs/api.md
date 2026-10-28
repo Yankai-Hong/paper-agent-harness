@@ -1,10 +1,10 @@
 # OpenCode API 与可靠性
 
-Phase A 最新调用成本见 `reports/phase-a/cost-ledger.json`。部分 Judge 请求实测 elapsed 约 8,895 秒，远超配置 120 秒后最终记录传输失败并重试；服务或宿主暂停原因尚未确认。保留这些异常，不将此批次壁钟耗时当作正常吞吐或硬实时超时保证。活跃进程的超时故障注入测试与该运行观测分别报告。
+历史 Phase A 调用成本见 `reports/history/development/phase-a/cost-ledger.json`。部分 Judge 请求实测 elapsed 约 8,895 秒，远超配置 120 秒后最终记录传输失败并重试；服务或宿主暂停原因尚未确认。保留这些异常，不将此批次壁钟耗时当作正常吞吐或硬实时超时保证。活跃进程的超时故障注入测试与该运行观测分别报告。
 
 本轮直接使用原 `.env` 的 `https://opencode.ai/zen/go/v1` 和 `deepseek-v4.1-flash`，未替换 provider 或凭证。`APIConfig.from_env` 使用进程环境优先；CompatibleReasoner 为每次请求注入稳定的 `x-opencode-session`。请求追加 `/chat/completions`，发送 JSON mode 并在本地验证 Schema。
 
-本次 t3 固定输入复测：2048 输出预算 finish_reason=length、reasoning_tokens=2048；4096 和 8192 成功。4096 加 thinking=disabled 的响应 reasoning_tokens=0，说明本次参数实际生效，不保证其他模型或未来服务行为。详细原始 usage 见 `reports/acceptance/budget-v2/results.json`。正式开发批次用 CLI 显式覆盖 4096/disabled，原 .env 不改。
+历史 t3 固定输入复测：2048 输出预算 finish_reason=length、reasoning_tokens=2048；4096 和 8192 成功。4096 加 thinking=disabled 的响应 reasoning_tokens=0，说明本次参数实际生效，不保证其他模型或未来服务行为。详细原始 usage 见 `reports/history/development/acceptance/budget-v2/results.json`。正式开发批次用 CLI 显式覆盖 4096/disabled，原 .env 不改。
 
 | 配置 | 默认 | 作用 |
 |---|---:|---|

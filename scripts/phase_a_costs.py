@@ -5,7 +5,7 @@ from paper_agent.storage import read_jsonl, write_json
 
 
 def main():
-    root=Path('reports/phase-a')
+    root=Path('reports/history/development/phase-a')
     sources={}
     for path in root.rglob('api_calls.json'):
         sources[str(path)]=load(path)

@@ -10,7 +10,7 @@ from paper_agent.storage import read_jsonl, write_json, write_jsonl
 from paper_agent.eval_tasks import bootstrap_ci, rewrite_metrics
 from paper_agent.eval_protocol import compare_runs
 
-ROOT = Path('reports/phase-a')
+ROOT = Path('reports/history/development/phase-a')
 FULL = ROOT/'full'
 
 
@@ -144,7 +144,7 @@ def main():
     historical = {}
     for name, old, metric in [('intent','intent','correct'),('boundary','boundary-replay','correct'),('e2e','e2e-full','behavior_match')]:
         if summaries[name]['status']=='completed':
-            historical[name] = compare_runs(Path('reports/acceptance')/old,runs[name],metric)
+            historical[name] = compare_runs(Path('reports/history/development/acceptance')/old,runs[name],metric)
             historical[name]['interpretation']='Historical comparison only; source/dataset/config mismatch is explicit, not causal evidence.'
     write_json(ROOT/'historical-comparisons.json',historical)
     quality_pairs = {}
@@ -177,7 +177,7 @@ def main():
         'Retrieval 使用官方 QASPER 有文本证据的 100 条；原始筛选排除 60 条无答案/无文本证据、126 条证据无法映射，见 data/qasper/manifest.json，不纳入可回答 Recall 分母。',
         'Claim 源文诊断 8 条见 phase-a/claim-benchmark/cases.jsonl 和 data/eval/claim-diagnostics-v1；预期由代理核对原文，不是独立人工金标。正式人工 Claim 验证仍缺失。',
         '进一步逐条读取原始 QASPER 压缩包中的全部标注：100 条中有 12 条可回答性分歧、2 条 yes/no 分歧，没有一致标为不可回答的样本。完整原始答案、证据与复核队列见 phase-a/source-annotation-audit。原检索协议选择至少一个可映射的可回答标注，并不代表所有标注者一致；100 条主分母不因观察到模型结果而删改。']
-    Path('reports/PHASE_A_AUDIT_REPORT.md').write_text('\n'.join(audit)+'\n',encoding='utf-8')
+    Path('reports/history/development/PHASE_A_AUDIT_REPORT.md').write_text('\n'.join(audit)+'\n',encoding='utf-8')
     claim = load(FULL/'e2e/claim-metrics.json') if (FULL/'e2e/claim-metrics.json').exists() else {'status':'not_completed'}
     claim_text = ['# Claim 与 Citation 评测','',
         '实现：src/paper_agent/claim_eval.py 复用 validate_citations；scripts/evaluate_claims.py 从实际 Generate.claims 和最终 Rerank 证据读取逐 Claim 输入。未用整库存在性替代实际提供证据。',
@@ -186,7 +186,7 @@ def main():
         '95% CI 为 session 簇 bootstrap 2000 次。仅单簇的 8 条诊断集 CI 无外推意义；原文诊断 8/8 一致不等于人工金标准确率。未获得人工样本，因此语义结果全部 provisional。',
         'Generate Schema 只允许 claims，没有单独自由回答正文；本评测不对外部文本做 Claim 自动切分。',
         '','实际结果：','```json',json.dumps(claim,ensure_ascii=False,indent=2),'```']
-    Path('reports/CLAIM_CITATION_EVAL.md').write_text('\n'.join(claim_text)+'\n',encoding='utf-8')
+    Path('reports/history/development/CLAIM_CITATION_EVAL.md').write_text('\n'.join(claim_text)+'\n',encoding='utf-8')
     report = ['# Phase A 最终回归报告','',
         '完成状态：代码、来源规则标签补齐、实际回归分别按下表核验；人工金标及独立 Judge 验证未完成，不能宣布全部验收完成。历史 acceptance 结果没有替代本轮结果。',
         '基准 Git HEAD：4368a62a4ba15160fb5ff452194fd10bd2737c4e，已通过 git ls-remote 核对远端一致。保留原有 output/、tmp/。未提交修改用文件 SHA-256 绑定。',
@@ -240,7 +240,7 @@ def main():
         report += ['',f'最终单元/可靠性测试：{len(tests)} 项，失败 {len(failed)}；见 phase-a/final-tests.xml。包含超时、429/503、非法 JSON、Schema 修复、引用错误、摘要降级、归档失败、幂等恢复及新增 Claim/分母/审核测试。']
         write_json(ROOT/'test-summary.json',{'total':len(tests),'failures':failed,'cases':[t.attrib for t in tests]})
     report += ['', '辅助质量与消融配对（不是人工准确率）：','```json',json.dumps(quality_pairs,ensure_ascii=False,indent=2),'```']
-    Path('reports/PHASE_A_FINAL_REPORT.md').write_text('\n'.join(report)+'\n',encoding='utf-8')
+    Path('reports/history/development/PHASE_A_FINAL_REPORT.md').write_text('\n'.join(report)+'\n',encoding='utf-8')
     print({k:v['status'] for k,v in summaries.items()})
 
 

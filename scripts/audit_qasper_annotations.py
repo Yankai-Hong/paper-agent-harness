@@ -23,7 +23,7 @@ def main():
             'unanimously_unanswerable':flags=={True},'review_status':'needs_human_review' if conflict else 'official_annotations_retained',
             'evidence_warning':'All original annotations retained, including unmapped FLOAT/table evidence; mapped alternatives alone do not establish consensus answerability.',
             'label_source':'QASPER official test v0.3; no new local human review'})
-    out=Path('reports/phase-a/source-annotation-audit')
+    out=Path('reports/history/development/phase-a/source-annotation-audit')
     out.mkdir(parents=True,exist_ok=False)
     write_jsonl(out/'cases.jsonl',rows)
     write_jsonl(out/'needs_human_review.jsonl',[r for r in rows if r['review_status']=='needs_human_review'])

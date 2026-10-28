@@ -74,7 +74,7 @@ def summarize(root):
 
 
 if __name__ == "__main__":
-    for path in Path("reports/acceptance").rglob("semantic-summary.json"):
+    for path in Path("reports/history/development/acceptance").rglob("semantic-summary.json"):
         if path.parent.name == "rewrite": continue
         metrics=summarize(path.parent)
         if metrics: print(path.parent.as_posix(),metrics["n"],len(metrics["failure_ids"]))

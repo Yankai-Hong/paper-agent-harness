@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from paper_agent.storage import write_json
 
-ROOT = Path('reports/phase-a/full')
+ROOT = Path('reports/history/development/phase-a/full')
 
 
 def main():

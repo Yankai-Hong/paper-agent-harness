@@ -17,7 +17,7 @@ def main():
     parser.add_argument('run_root')
     parser.add_argument('--output',required=True)
     parser.add_argument('--semantic',action='store_true')
-    parser.add_argument('--baseline',default='reports/live-final/memory-probe')
+    parser.add_argument('--baseline',default='reports/history/development/live-final/memory-probe')
     args=parser.parse_args()
     base_config=configuration('deepseek-commented')
     config=replace(base_config,thinking='disabled',max_calls=1)

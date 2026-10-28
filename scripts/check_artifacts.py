@@ -1,48 +1,48 @@
-"""Verify delivered local docs, frozen retrieval outputs and test report without API."""
+"""Read-only current release checks; no API calls and no evidence rewriting."""
+import hashlib
 import json
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
-
-from paper_agent.storage import read_jsonl, write_json
+from paper_agent.storage import read_jsonl, digest
 from paper_agent.evaluation import retrieval_metrics
 
-
 root = Path(__file__).resolve().parents[1]
-documents = [root/'README.md', *sorted((root/'docs').glob('*.md'))]
+current = root / "reports/final-acceptance"
+documents = [root / "README.md", root / "reports/README.md", root / "reports/FINAL_ACCEPTANCE.md",
+             root / "reports/final-acceptance/README.md", root / "reports/history/README.md",
+             root / "scripts/README.md", *sorted((root / "docs").glob("*.md"))]
 broken = []
 for document in documents:
-    for target in re.findall(r'\]\(([^)]+)\)', document.read_text(encoding='utf-8')):
-        if '://' not in target and not target.startswith('#'):
-            path = target.split('#', 1)[0]
-            if not (document.parent/path).exists():
-                broken.append(f'{document.relative_to(root)} -> {target}')
-if broken:
-    raise ValueError(f'Broken local documentation links: {broken}')
-queries = read_jsonl(root/'data/qasper/retrieval.jsonl')
+    for target in re.findall(r"\]\(([^)]+)\)", document.read_text(encoding="utf-8")):
+        if "://" not in target and not target.startswith("#"):
+            if not (document.parent / target.split("#", 1)[0]).exists():
+                broken.append(f"{document.relative_to(root)} -> {target}")
+assert not broken, broken
+freeze = json.loads((current / "live-v2/freeze.json").read_text(encoding="utf-8"))
+for name, expected in freeze["source_hashes"].items():
+    assert hashlib.sha256((root / "src/paper_agent" / name).read_bytes()).hexdigest() == expected, name
+for name, expected in freeze["dataset_hashes"].items():
+    assert digest(read_jsonl(root / "data/eval/v0.6" / name)) == expected, name
+queries = read_jsonl(root / "data/eval/v0.6/retrieval.jsonl")
 verified = {}
-for mode in ['bm25', 'dense', 'hybrid', 'rerank']:
-    directory = root/'reports/acceptance/retrieval-v2'/mode
-    predictions = read_jsonl(directory/'predictions.jsonl')
-    recorded = json.loads((directory/'metrics.json').read_text(encoding='utf-8'))
-    recomputed = retrieval_metrics(queries, predictions)
-    for key in ['Recall@5', 'Hit@5', 'errors', 'missing']:
-        if recomputed[key] != recorded[key]:
-            raise ValueError(f'Metric mismatch for {mode}/{key}')
-    verified[mode] = {key: recomputed[key] for key in ['Recall@5', 'Hit@5', 'errors', 'missing']}
-test_xml = ET.parse(root/'reports/acceptance-tests.xml')
-suites = list(test_xml.getroot().iter('testsuite'))
-test_counts = {key: sum(int(s.get(key, 0)) for s in suites) for key in ['tests', 'errors', 'failures', 'skipped']}
-if test_counts['errors'] or test_counts['failures']:
-    raise ValueError('Test report includes failures')
-manifest = json.loads((root/'data/dialogues-draft/manifest.json').read_text(encoding='utf-8'))
-assert len(read_jsonl(root/'data/dialogues-draft/dialogues.jsonl')) == 120
-assert manifest['valid_for_effectiveness_claims'] is False
-write_json(root/'reports/acceptance/delivery-verification.json', {'tests': test_counts,
-    'checked_document_files': len(documents), 'broken_local_links': broken,
-    'retrieval_metrics_recomputed_from_saved_predictions': verified,
-    'dialogue_draft_status': manifest['status'],
-    'verification_api_calls': 0,
-    'not_verified': ['independently reviewed multi-turn gold', 'human-reviewed semantic support',
-                     'generalized long-term memory quality; only limited development experiments run']})
-print('Documentation links, saved retrieval metrics, test report and draft status verified.')
+for mode in ("bm25", "dense", "hybrid", "rerank"):
+    directory = current / "retrieval-reused" / mode
+    actual = retrieval_metrics(queries, read_jsonl(directory / "predictions.jsonl"))
+    recorded = json.loads((directory / "metrics.json").read_text(encoding="utf-8"))
+    for key in ("Recall@5", "Hit@5", "errors", "missing"):
+        assert actual[key] == recorded[key], (mode, key)
+    verified[mode] = actual["Recall@5"]
+suites = list(ET.parse(current / "final-v2-tests.xml").getroot().iter("testsuite"))
+counts = {k: sum(int(s.get(k, 0)) for s in suites) for k in ("tests", "errors", "failures", "skipped")}
+assert counts["tests"] == 102 and counts["errors"] == counts["failures"] == 0, counts
+predictions = read_jsonl(current / "live-v2/e2e/predictions.jsonl")
+assert len(predictions) == len({p["turn_id"] for p in predictions}) == 120
+for pred in predictions:
+    path = current / "live-v2/e2e/traces" / pred["session_id"] / (pred["turn_id"] + ".json")
+    trace = json.loads(path.read_text(encoding="utf-8"))
+    assert trace["mode"] == "rerank" and trace["memory_backend"] == "three_layer"
+    assert trace["commit_status"] == "committed"
+print(json.dumps({"status": "passed", "documents": len(documents), "frozen_tests": counts,
+                  "retrieval_recomputed": verified, "e2e_traces": 120,
+                  "source_and_dataset_hashes": "matched", "api_calls": 0}, ensure_ascii=False))

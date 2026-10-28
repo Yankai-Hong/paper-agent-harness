@@ -7,7 +7,7 @@ from paper_agent.storage import read_jsonl, write_json, atomic_text
 from paper_agent.eval_tasks import bootstrap_ci
 from paper_agent.eval_protocol import compare_runs, success_metrics
 
-ROOT = Path("reports/acceptance")
+ROOT = Path("reports/history/development/acceptance")
 
 
 def load(path, default=None):
@@ -151,7 +151,7 @@ def summarize():
         if name in runs:
             m=runs[name]["metrics"]
             live += ["",f"{name}：execution {m.get('execution_success_rate')}；task {m.get('task_success_rate')}；pipeline {m.get('pipeline_success_rate')}。"]
-    atomic_text("reports/LIVE_EVAL_RESULTS.md","\n".join(live)+"\n")
+    atomic_text("reports/history/development/LIVE_EVAL_RESULTS.md","\n".join(live)+"\n")
 
     retrieval_table=table(["配置","Recall@5/95% CI","Recall@10","MRR@5","nDCG@5","失败/总数"],
        [(mode,interval(v["recall_ci"]),percent(v["metrics"].get("Recall@10")),f"{v['metrics']['MRR@5']:.4f}",f"{v['metrics']['nDCG@5']:.4f}",f"{v['metrics']['errors']}/100") for mode,v in retrieval.items()])
@@ -163,7 +163,7 @@ def summarize():
                   v['telemetry']['retrieve_again_turns'],v['telemetry']['api_requests'],v['telemetry']['known_total_tokens'],interval((v.get('semantic') or {}).get('answer_correct_lower_bound')))
                  for name,v in sorted(runs.items()) if name.startswith('ablations/reflect')]), "",
               "逐例决策、候选证据、答案、错误与 API usage 在 traces/ 与 predictions.jsonl。独立预标的证据不足子集尚缺人工审核；不能用模型自己的 retrieve_again 标签当该子集 gold。二检触发不等于证据质量改善。配对行为差异见 acceptance/paired-comparisons.json，语义 Judge 不升级为人工标签。"]
-    atomic_text("reports/ABLATION_RESULTS.md","\n".join(ablation)+"\n")
+    atomic_text("reports/history/development/ABLATION_RESULTS.md","\n".join(ablation)+"\n")
     memory=["# 记忆压缩与召回评测", "", "三层记忆保留。v0.3 有 8×10 轮长会话；真实消融固定前 2 个 session（20 turns/组），其余未执行，不能声称 80 个不同会话问题均已实测。检查点是讨论论文、事实证据来源，非人工事实文本金标。", "",
             table(["组","检查点通过/总数","压缩轮","召回轮/记录","API次数","已知token","P50/P95 ms","Judge质量/95% CI"],
               [(name,v['metrics'].get('checkpoint_accuracy'),v['telemetry']['compressed_turns'],f"{v['telemetry']['recall_turns']}/{v['telemetry']['recalled_records']}",
@@ -173,7 +173,7 @@ def summarize():
             "memory-recall-v2 是修复两次召回覆盖问题后的独立重跑，旧 memory-recall 保留；应使用 v2 与 semantic 对照。压缩 tokens 是实际全阶段 usage（包括摘要/重试），不能只用字符估计声称成本节省。token 比较和 checkpoint 配对 CI 见 acceptance/summary.json、paired-comparisons.json。", "",
             "已验证的机制：长会话早期消息移出近期窗口后可以召回；同 session 隔离；同 key 新事实优先且旧记录标记 superseded；重复 turn 与进程恢复不重复提交；归档写失败不部分提交。相关证据来自 test_reliability.py，属于 Mock/离线功能测试。", "",
             "尚未独立验证：真实模型对人工标注事实更新/冲突、归档召回精确率、早期实体指代准确率、错误事实率的完整金标质量。此次长集重复问题较多，工作 facts 可能未超 40，不能用其 checkpoint 满分证明任意长对话记忆可靠。"]
-    atomic_text("reports/MEMORY_EVAL_RESULTS.md","\n".join(memory)+"\n")
+    atomic_text("reports/history/development/MEMORY_EVAL_RESULTS.md","\n".join(memory)+"\n")
     print("Reports regenerated from saved results",flush=True)
 
 

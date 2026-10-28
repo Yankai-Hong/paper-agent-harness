@@ -8,7 +8,7 @@ from paper_agent.storage import write_json
 
 
 def main():
-    root=Path('reports/phase-a/full')
+    root=Path('reports/history/development/phase-a/full')
     runs=[(root/'memory','data/eval/v0.6/memory.jsonl')]
     runs += [(root/'ablations'/name,'data/eval/v0.3/reflect-subset.jsonl') for name in
              ['reflect-enabled','reflect-disabled','reflect-retrieve-again','reflect-no-second']]
@@ -29,7 +29,7 @@ def main():
         with (root/(run.name+'-quality.log')).open('w',encoding='utf-8') as log:
             result=subprocess.run(args,stdout=log,stderr=subprocess.STDOUT)
         records.append({'command':args,'returncode':result.returncode,'elapsed_seconds':time.time()-started})
-        write_json('reports/phase-a/quality-jobs.json',records)
+        write_json('reports/history/development/phase-a/quality-jobs.json',records)
         print(run.name,result.returncode,flush=True)
 
 

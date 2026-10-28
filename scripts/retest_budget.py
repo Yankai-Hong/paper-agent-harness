@@ -10,12 +10,12 @@ from paper_agent.storage import read_jsonl, write_json
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--output", default="reports/acceptance/budget")
+    p.add_argument("--output", default="reports/history/development/acceptance/budget")
     args = p.parse_args()
     config = APIConfig.from_env(".env")
     if "opencode.ai" not in config.base_url:
         raise ValueError("Expected configured OpenCode provider")
-    traces = [json.loads(f.read_text(encoding="utf-8")) for f in Path("reports/runs/e2e-d01-20261022-175339/traces/d01").glob("*.json")]
+    traces = [json.loads(f.read_text(encoding="utf-8")) for f in Path("reports/history/development/runs/e2e-d01-20261022-175339/traces/d01").glob("*.json")]
     trace = next(t for t in traces if t["status"] == "error")
     nlu = next(s["output"] for s in trace["stages"] if s["stage"] == "NLU")
     ids = next(s["output"]["evidence_ids"] for s in reversed(trace["stages"]) if s["stage"] == "Rerank")

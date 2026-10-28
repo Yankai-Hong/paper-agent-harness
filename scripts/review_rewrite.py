@@ -14,7 +14,7 @@ def main():
     import argparse
     from claim_benchmark import recording_reasoner
     parser = argparse.ArgumentParser()
-    parser.add_argument('--run', default='reports/acceptance/rewrite')
+    parser.add_argument('--run', default='reports/history/development/acceptance/rewrite')
     parser.add_argument('--data', default='data/eval/v0.3/query_rewrite.jsonl')
     parser.add_argument('--dialogs', default='data/eval/v0.3/dialogs.jsonl')
     args = parser.parse_args()

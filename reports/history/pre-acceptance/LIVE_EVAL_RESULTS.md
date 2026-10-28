@@ -54,7 +54,7 @@ t3 与 t2 的 Judge 失败根因相同：`deepseek-v4.1-flash` 把 `reasoning_to
 
 ## 4. 检索四组基线（既有离线 GPU 结果，未变更）
 
-见 [qasper-suite/RESULTS.md](../../qasper-suite/RESULTS.md)：BM25 66.26% / dense 73.94% / hybrid 74.24% / rerank 77.61%（Recall@5，已知论文范围，段落覆盖代理指标，配对 bootstrap 区间跨零）。
+见 [qasper-suite/RESULTS.md](../development/qasper-suite/RESULTS.md)：BM25 66.26% / dense 73.94% / hybrid 74.24% / rerank 77.61%（Recall@5，已知论文范围，段落覆盖代理指标，配对 bootstrap 区间跨零）。
 
 ## 5. 尚未完成 / 已知限制
 

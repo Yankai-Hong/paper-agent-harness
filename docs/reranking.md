@@ -8,7 +8,7 @@
 
 固定 revision：`953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e`。下载来源及权重 SHA256 记录在 `models/bge-reranker-v2-m3/provenance.json`，评测另存副本。Hugging Face 下载受阻时可从 BAAI 官方 ModelScope 渠道下载，但启用前必须匹配固定权重哈希。
 
-本次重排 Recall@5=77.61%，比 hybrid 提升 3.38 个百分点。按论文聚类的配对 bootstrap 区间跨越零，不据此声称稳定显著提升。完整设置与预测见 [评测报告](../reports/qasper-suite/RESULTS.md)。
+本次重排 Recall@5=77.61%，比 hybrid 提升 3.38 个百分点。按论文聚类的配对 bootstrap 区间跨越零，不据此声称稳定显著提升。完整设置与预测见 [评测报告](../reports/history/development/qasper-suite/RESULTS.md)。
 
 ## Pipeline 与严格检索评测的区别
 

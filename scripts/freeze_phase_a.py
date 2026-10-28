@@ -17,11 +17,11 @@ def main():
               if p.is_file() and p.suffix in {'.py','.json'}}
     retrieval_current=Path('src/paper_agent/retrieval.py').read_text(encoding='utf-8')
     retrieval_head=subprocess.check_output(['git','show','HEAD:src/paper_agent/retrieval.py'],text=True,encoding='utf-8')
-    write_json('reports/phase-a/final-provenance.json', {
+    write_json('reports/history/development/phase-a/final-provenance.json', {
         'utc':datetime.now(timezone.utc).isoformat(), 'git_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         'workspace_status':subprocess.check_output(['git','status','--short'],text=True),
         'source_sha256':source,'assets':assets,'credentials':'excluded',
-        'result_sha256':{str(p):sha(p) for p in Path('reports/phase-a').rglob('*') if p.is_file()
+        'result_sha256':{str(p):sha(p) for p in Path('reports/history/development/phase-a').rglob('*') if p.is_file()
                         and p.suffix in {'.json','.jsonl','.xml'} and p.name!='final-provenance.json'},
         'concurrent_user_retrieval_edit':{'preserved':True,'AST_matches_HEAD':ast.dump(ast.parse(retrieval_current))==ast.dump(ast.parse(retrieval_head))},
         'model_version_note':'API response exposes model name, not immutable remote weight revision; local BGE weight files hashed.'})

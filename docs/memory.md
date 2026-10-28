@@ -56,7 +56,7 @@ Docker 服务需要已启动；也可直接使用现有 Redis。SQLite/Chroma �
 
 旧 state.json/history.json/SessionMemory 继续可读，首次成功提交将已有事实作为 conversation/conflict（legacy_unverified）导入，不凭历史 ID 自动认定论文证据有效。旧 ContextArchive 不搬迁、不删除，仍可按需词项召回。压缩仍使用原 compact_state / semantic_compact_state，先保存完整归档；语义摘要失败回退确定性裁剪。长期 SQLite 事实/事件不随工作上下文裁剪删除。当前没有自动人工审核队列、跨 session 共享事实或通用语义冲突裁决。
 
-存储接口依据 [Chroma Python reference](https://docs.trychroma.com/reference/python) 与 [Redis 客户端超时文档](https://redis.io/docs/latest/develop/clients/redis-py/produsage/)，实际版本和测试记录见 `reports/MEMORY_UPGRADE_REPORT.md`。
+存储接口依据 [Chroma Python reference](https://docs.trychroma.com/reference/python) 与 [Redis 客户端超时文档](https://redis.io/docs/latest/develop/clients/redis-py/produsage/)，实际版本和测试记录见 `reports/history/development/MEMORY_UPGRADE_REPORT.md`。
 
 ## 原文件模式（legacy）
 
@@ -72,4 +72,13 @@ Pipeline 在 NLU 前使用原问题召回必要上下文，在 NLU 后使用 sta
 
 局限：同 session 多进程并发写不受锁保护；调用方应串行执行一个会话。失败调用可能仍产生服务端成本。committed_turns 的结果账本随会话增长，不进入模型上下文但需要长期保留策略。归档线性扫描适合当前本地规模，尚无语义索引。只保存旧快照，不自动把旧 facts 全部写回工作记忆。
 
-真实长会话消融和故障注入分开报告，见 `reports/MEMORY_EVAL_RESULTS.md` 与 `reports/RELIABILITY_RESULTS.md`。新版非空检查点评估讨论论文与事实来源，不能冒充事实文本正确性、冲突解决或人工语义一致性金标。
+真实长会话消融和故障注入分开报告，见 `reports/history/development/MEMORY_EVAL_RESULTS.md` 与 `reports/history/development/RELIABILITY_RESULTS.md`。新版非空检查点评估讨论论文与事实来源，不能冒充事实文本正确性、冲突解决或人工语义一致性金标。
+# 归档提交边界（2026-10-26 修复）
+
+压缩仍先保存不可变原文，再裁剪工作上下文。新归档含 `commit_protocol=1`，其 SHA-256 ID 加入候选状态的 `archive_ids`。只有该 ID 出现在持久化提交快照中，`ContextArchive.search` 才允许召回；文件存在本身不构成已提交证明。legacy 的提交点是原子替换 `.state.json`；three_layer 的提交点是 SQLite 同事务写入事实、事件及 session 快照，召回授权直接从 SQLite 获取，不信任 Redis 或文件投影。
+
+提交失败、进程在写归档后退出时，原文文件保留但不可召回；不依赖异常清理。相同 turn_id 重试仍走已提交轮次账本。旧归档不删除：无协议字段的归档须逐条与持久化轮次账本的原问题/答案及事实文本/引用核对；证据不足的历史保留在磁盘，可按 ID 检查，但不会自动进入模型上下文。这是保守兼容，并非保证所有无账本旧数据可自动恢复。
+
+论文事实身份由 source_type、排序后的论文范围、canonical attribute/key 组成。可提供 `attribute` 作为稳定可比较属性；同论文同属性变化须显式 `replaces`，保留 superseded 旧版，否则记录 conflict。不同论文或不同论文属性不再仅因文本相似而冲突。user/conversation 的旧保守相似规则仍存在；不同来源互相隔离。本规则不理解任意自然语言属性同义词。
+
+`archive_ids` 和幂等账本随会话增长；归档扫描仍是本地规模线性读取。语义摘要发生在 SQLite 写事务内，可能持锁等待模型；本轮不扩展为后台任务或生产并发系统。API timeout 不是宿主暂停、DNS 和所有服务端状态下的绝对墙钟保证。
