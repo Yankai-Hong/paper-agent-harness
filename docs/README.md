@@ -1,6 +1,6 @@
 # 文档导航
 
-当前结论以 [最终工程验收](../reports/FINAL_ACCEPTANCE.md) 为准。源码、运行配置与评测证据一致；结果为工程验收和模型辅助评审，不是人工金标或论文级增益证明。
+最新修复与验证边界见 [验收收尾](../reports/revision/CLOSURE.md)，先前记录见 [跟进验收](../reports/revision/FOLLOWUP.md) 和 [修订汇总](../reports/revision/FINAL.md)。[修订前验收](../reports/FINAL_ACCEPTANCE.md) 保留旧代码的冻结结果，不代表新版本成绩；模型辅助评审不是人工金标或论文级增益证明。
 
 | 文档 | 内容 |
 |---|---|

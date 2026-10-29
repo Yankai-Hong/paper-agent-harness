@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\connection.py", line 389, in connect_check_health
+    sock = self.retry.call_with_retry(
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\retry.py", line 110, in call_with_retry
+    raise error
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\retry.py", line 105, in call_with_retry
+    return do()
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\connection.py", line 390, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\connection.py", line 803, in _connect
+    raise err
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\connection.py", line 787, in _connect
+    sock.connect(socket_address)
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\40533\Desktop\nano-cc\scripts\check_memory_integration.py", line 103, in <module>
+    main()
+  File "C:\Users\40533\Desktop\nano-cc\scripts\check_memory_integration.py", line 36, in main
+    assert cache.client.ping()
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\commands\core.py", line 1219, in ping
+    return self.execute_command("PING", **kwargs)
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\client.py", line 621, in execute_command
+    return self._execute_command(*args, **options)
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\client.py", line 627, in _execute_command
+    conn = self.connection or pool.get_connection()
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\utils.py", line 195, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\connection.py", line 1533, in get_connection
+    connection.connect()
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\connection.py", line 380, in connect
+    self.connect_check_health(check_health=True)
+  File "C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\redis\connection.py", line 395, in connect_check_health
+    raise TimeoutError("Timeout connecting to server")
+redis.exceptions.TimeoutError: Timeout connecting to server

@@ -14,7 +14,7 @@ $py = '.\.venv-gpu\Scripts\python.exe'
 & $py -m pytest -q
 ```
 
-最新测试结果见 reports/final-acceptance/final-v2-tests.xml（历史测试记录单独保留）。交付检查（本地文档链接、保存预测的指标重算、当前冻结源码）可运行 `& $py scripts/check_artifacts.py`，该命令只读检查并直接输出当前结果，不覆盖冻结报告。
+修订后的测试结果见 reports/revision/FINAL.md；reports/final-acceptance/final-v2-tests.xml 是修订前测试。`& $py scripts/check_artifacts.py` 只读检查历史评测数据及文档链接，并报告当前源码相对历史冻结的变化，不覆盖冻结报告。
 
 其他机器应新建 Python 3.10/3.11 环境，先按 PyTorch 官网安装与显卡驱动匹配的 CUDA 构建，再安装本项目：
 
@@ -111,12 +111,12 @@ API_MAX_CALLS=100
 & $py -m paper_agent.cli chat --index indexes/bge --mode rerank --encoder models/bge-m3 --reranker models/bge-reranker-v2-m3 --device cuda:0 --session research-1
 ```
 
-chat 支持 /corpus、/trace、/memory、/quit。相同 session 恢复事实和近期历史，换 session 隔离。答案附 chunk 引用，完整阶段记录在 runs/traces，会话文件在 runs/memory。密钥与 runs 默认不纳入版本管理。
+chat 支持 /corpus、/trace、/memory、/quit。相同 session 恢复近期历史和已确认记忆；跨会话共享须显式配置项目范围。答案附 chunk 引用，完整阶段记录在 runs/traces，会话数据在 runs/memory。密钥与 runs 默认不纳入版本管理。
 
 
 ## 完整三层问答
 
-默认 ask/chat 使用 legacy。要使用验收的完整配置，启动 Redis 并设置：
+默认 ask/chat 使用 SQLite 本地模式。要启用 Redis 与 Chroma 投影，启动 Redis 并设置：
 
 ```powershell
 $env:MEMORY_BACKEND='three_layer'

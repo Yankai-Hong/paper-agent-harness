@@ -1,0 +1,64 @@
+........................................................................ [ 29%]
+........................................................................ [ 59%]
+....F................................................................... [ 88%]
+............................                                             [100%]
+================================== FAILURES ===================================
+_____ test_full_fixed_fixture_has_bounded_calls_and_paired_sqlite_history _____
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-closure-final/test_full_fixed_fixture_has_bo0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000212EB724A00>
+
+    def test_full_fixed_fixture_has_bounded_calls_and_paired_sqlite_history(tmp_path,monkeypatch):
+        from paper_agent.providers import APIConfig
+        m=module()
+        chunks=[{'paper_id':p,'chunk_id':p+'-chunk','text':'document text '+p,
+                 'spans':[{'paragraph_id':'x'}]} for p in ('paperA','paperB','paperC')]
+        class Retriever:
+            def __init__(self,*_):
+                self.chunks=chunks
+                self.by_id={c['chunk_id']:c for c in chunks}
+                self.metadata={'corpus_hash':'fixture'}
+                self.reranker=None
+            def search(self,query,mode,top_k,candidate_k,paper_ids):
+                hits=[c for c in chunks if paper_ids is None or c['paper_id'] in paper_ids][:top_k]
+                return {'hits':hits,'candidate_ids':[c['chunk_id'] for c in hits]}
+        class Reasoner:
+            def __init__(self,config,session_id): self.config=config;self.calls=[]
+            def structured(self,stage,payload):
+                if len(self.calls)>=self.config.max_calls: raise RuntimeError('fixture budget reached')
+                self.calls.append({'stage':stage,'status':'ok','usage_complete':False})
+                if stage=='nlu':
+                    q=payload['question']
+                    papers=[p for p in ('paperA','paperB','paperC') if p in q]
+                    if '刚才' in q or '它（' in q: papers.append('paperB')
+                    return {'intent':'compare' if len(papers)>1 else 'fact','standalone_query':q,
+                            'paper_ids':papers,'resolved_entities':{},'needs_clarification':False}
+                if stage=='reflect': return {'decision':'answer'}
+                hit=payload['evidence'][0]
+                return {'claims':[{'text':hit['text'],'citations':[{'paper_id':hit['paper_id'],'chunk_id':hit['chunk_id']}]}]}
+        monkeypatch.setattr(m,'read_jsonl',lambda _:rows())
+        monkeypatch.setattr(m,'Retriever',Retriever)
+        monkeypatch.setattr(m,'CompatibleReasoner',Reasoner)
+        monkeypatch.setattr(m.APIConfig,'from_env',classmethod(lambda cls: APIConfig('fixture','fixture')))
+        out=tmp_path/'result'
+        monkeypatch.setattr(sys,'argv',['revision_multiturn_comparison.py','--output',str(out)])
+        m.main()
+        import json
+        result=json.loads((out/'summary.json').read_text(encoding='utf-8'))
+>       assert result['shared_history_ready'] and result['actual_requests_total']==36
+E       assert (True and 30 == 36)
+
+tests\test_revision_multiturn_comparison.py:121: AssertionError
+---------------------------- Captured stdout call -----------------------------
+{"output": "C:\\Users\\40533\\Desktop\\nano-cc\\.cache\\pytest-closure-final\\test_full_fixed_fixture_has_bo0\\result\\summary.json", "actual_requests_total": 30}
+============================== warnings summary ===============================
+tests/test_commit_boundaries.py: 5 warnings
+tests/test_memory_manager.py: 22 warnings
+tests/test_memory_recall_fixes.py: 46 warnings
+  C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\chromadb\types.py:144: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
+    return self.model_fields  # pydantic 2.x
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_revision_multiturn_comparison.py::test_full_fixed_fixture_has_bounded_calls_and_paired_sqlite_history
+1 failed, 243 passed, 73 warnings in 20.38s

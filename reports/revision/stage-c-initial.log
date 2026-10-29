@@ -1,0 +1,360 @@
+..............F....F....F.F.................FF..FF.F...FFF.F............ [ 66%]
+...F..............F........FF.......                                     [100%]
+================================== FAILURES ===================================
+___________ test_paper_scope_attribute_versions_and_conflict_recall ___________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_paper_scope_attribute_ver0')
+
+    def test_paper_scope_attribute_versions_and_conflict_recall(tmp_path):
+        m = manager(tmp_path)
+        fact = dict(key="p1 result", attribute="accuracy", text="Accuracy is 90%.",
+                    source_type="paper_evidence", paper_ids=["p1"], status="active")
+        with m.store.transaction() as db:
+>           first = m.store.put(db, "s", "t1", fact)
+
+tests\test_commit_boundaries.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <paper_agent.long_term.MemoryStore object at 0x0000029FF7C816C0>
+db = <sqlite3.Connection object at 0x0000029FF7B6BE40>, session_id = 's'
+turn_id = 't1'
+memory = {'key': 'p1 result', 'attribute': 'accuracy', 'text': 'Accuracy is 90%.', 'source_type': 'paper_evidence', ...}
+shared = False
+
+    def put(self, db, session_id, turn_id, memory, shared=False):
+        from .memory_stores import canonical_key
+        if memory.get('source_type')!='user_explicit':
+>           raise ValueError('Only explicit user declarations may enter long-term memory')
+E           ValueError: Only explicit user declarations may enter long-term memory
+
+src\paper_agent\long_term.py:57: ValueError
+_________ test_memory_validates_before_mutation_and_isolates_sessions _________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_memory_validates_before_m0')
+
+    def test_memory_validates_before_mutation_and_isolates_sessions(tmp_path):
+        memory = SessionMemory("first")
+>       memory.update({"it": "paper-a"}, [{"key": "k", "text": "fact", "evidence_ids": ["c1"]}], [], ["c1"])
+E       TypeError: SessionMemory.update() takes 3 positional arguments but 5 were given
+
+tests\test_core.py:55: TypeError
+_________________ test_pipeline_limits_retry_and_records_skip _________________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_pipeline_limits_retry_and0')
+retriever = <paper_agent.retrieval.Retriever object at 0x0000029FFA557310>
+
+    def test_pipeline_limits_retry_and_records_skip(tmp_path, retriever):
+        class Reasoner:
+            def structured(self, stage, payload):
+                if stage == "nlu":
+                    return {"intent": "fact", "standalone_query": "retrieval", "resolved_entities": {}}
+                if stage == "reflect":
+                    return {"decision": "retrieve_again", "next_query": "indexing"}
+                raise AssertionError("Should refuse without calling generator")
+        pipeline = PaperPipeline(retriever, Reasoner(), tmp_path/"traces", tmp_path/"memory", mode="bm25")
+        state = PaperAgentState("s1")
+        result = pipeline.run("query", state)
+        assert result["answer"]["decision"] == "refuse"
+        trace = json.loads((tmp_path/"traces"/f"{result['trace_id']}.json").read_text())
+        assert sum(s["stage"] == "Retrieve" for s in trace["stages"]) == 2
+>       assert state.memory.facts == {}
+E       AttributeError: 'SessionMemory' object has no attribute 'facts'
+
+tests\test_core.py:141: AttributeError
+__________ test_pipeline_success_carries_real_chunk_ids_into_memory ___________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_pipeline_success_carries_0')
+retriever = <paper_agent.retrieval.Retriever object at 0x0000029FF9F3E950>
+
+    def test_pipeline_success_carries_real_chunk_ids_into_memory(tmp_path, retriever):
+        class ScriptedReasoner:
+            def structured(self, stage, payload):
+                if stage == "nlu":
+                    return {"intent": "fact", "standalone_query": "retrieval", "resolved_entities": {"it": "a"}}
+                if stage == "reflect":
+                    return {"decision": "answer"}
+                evidence = payload["evidence"][0]
+                return {"claims": [{"text": evidence["text"], "citations": [
+                    {"paper_id": evidence["paper_id"], "chunk_id": evidence["chunk_id"]}]}]}
+        pipeline = PaperPipeline(retriever, ScriptedReasoner(), tmp_path/"trace", tmp_path/"memory", mode="bm25")
+        state = PaperAgentState("success")
+        result = pipeline.run("retrieval", state)
+        assert result["answer"]["decision"] == "answer"
+        restored = SessionMemory.load(tmp_path/"memory", "success")
+        assert restored.entities == {"it": "a"}
+>       assert all(set(f["evidence_ids"]) <= set(retriever.by_id) for f in restored.facts.values())
+E       AttributeError: 'SessionMemory' object has no attribute 'facts'
+
+tests\test_core.py:173: AttributeError
+___________________ test_redis_isolated_and_expiry_recovery ___________________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_redis_isolated_and_expiry0')
+
+    def test_redis_isolated_and_expiry_recovery(tmp_path):
+        m = manager(tmp_path)
+        p = pipeline(tmp_path, mode="bm25", memory_manager=m)
+        state = PaperAgentState("s")
+        p.run("研究决策: alpha", state, "t1")
+        assert m.working.load("s")["messages"] == state.messages
+        assert m.working.load("other") is None
+        m.working.client.values.clear()  # simulate TTL expiry
+        restored = PaperAgentState("s")
+        result = p.run("研究决策: alpha", restored, "t1")
+        assert result["replayed_commit"] and len(restored.messages) == 2
+        assert len(m.store.episodes("s")) == 1
+>       assert len(m.store.memories("s")) == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = len([])
+E        +    where [] = memories('s')
+E        +      where memories = <paper_agent.long_term.MemoryStore object at 0x0000029FFA58C8B0>.memories
+E        +        where <paper_agent.long_term.MemoryStore object at 0x0000029FFA58C8B0> = <paper_agent.memory_manager.MemoryManager object at 0x0000029FFA58E830>.store
+
+tests\test_memory_manager.py:75: AssertionError
+_______ test_current_evidence_required_and_paraphrase_not_authoritative _______
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_current_evidence_required0')
+
+    def test_current_evidence_required_and_paraphrase_not_authoritative(tmp_path):
+        m = manager(tmp_path)
+        evidence = [{"chunk_id":"c", "paper_id":"p", "text":"Accuracy is 90%."}]
+        claim = {"text":"Accuracy is 90%.", "citations":[{"paper_id":"p", "chunk_id":"c"}]}
+        answer = {"decision":"answer", "claims":[claim]}
+        facts, _ = m.extract_memories("accuracy", answer, evidence, "t")
+>       assert facts[0]["status"] == "active"
+E       IndexError: list index out of range
+
+tests\test_memory_manager.py:85: IndexError
+_____________ test_lost_index_recalled_from_original_and_rebuilt ______________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_lost_index_recalled_from_0')
+
+    def test_lost_index_recalled_from_original_and_rebuilt(tmp_path):
+        m = manager(tmp_path)
+        p = pipeline(tmp_path, mode="bm25", memory_manager=m)
+        state = PaperAgentState("s")
+        p.run("研究决策: alpha", state, "t1")
+        m.episodic.values.clear()
+>       assert m.retrieve_memories(state, "alpha")
+E       AssertionError: assert []
+E        +  where [] = retrieve_memories(PaperAgentState(session_id='s', messages=[{'role': 'user', 'content': '研究决策: alpha', 'turn_id': 't1'}, {'role': 'assis...race_id': 't1'}}}, archive_ids=[], memory_namespace='a5d21634162d0daaca89fd35e4abb1ec98c883f95eba0c6690c6b8ef41b857cd'), 'alpha')
+E        +    where retrieve_memories = <paper_agent.memory_manager.MemoryManager object at 0x000002A04A944850>.retrieve_memories
+
+tests\test_memory_manager.py:130: AssertionError
+_______________ test_long_conversation_recall_and_legacy_import _______________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_long_conversation_recall_0')
+
+    def test_long_conversation_recall_and_legacy_import(tmp_path):
+        m = manager(tmp_path)
+        state = PaperAgentState("s")
+>       state.memory.store["old"] = {"text":"legacy finding", "evidence_ids":["missing"]}
+E       AttributeError: 'SessionMemory' object has no attribute 'store'
+
+tests\test_memory_manager.py:139: AttributeError
+_____________ test_explicit_user_update_and_similar_key_conflict ______________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_explicit_user_update_and_0')
+
+    def test_explicit_user_update_and_similar_key_conflict(tmp_path):
+        m = manager(tmp_path)
+        p = pipeline(tmp_path, mode="bm25", memory_manager=m)
+        state = PaperAgentState("s")
+        p.run("记住:输出语言=中文", state, "t1")
+        p.run("记住:输出语言=英文", state, "t2")
+        rows = [f for f in m.store.memories("s") if f["source_type"] == "user_explicit"]
+        assert {f["status"] for f in rows} == {"active", "conflict"}
+        p.run("更新记忆:输出语言=英文", state, "t3")
+        active = [f for f in m.store.memories("s", "active") if f["source_type"] == "user_explicit"]
+        assert len(active) == 1 and active[0]["text"] == "英文" and active[0]["replaces"]
+        with m.store.transaction() as db:
+            result = m.store.put(db, "s", "t4", dict(key="different", text="英文", source_type="user_explicit", status="active"))
+>           assert result["reason"] == "similar_content_different_key"
+E           KeyError: 'reason'
+
+tests\test_memory_manager.py:181: KeyError
+_________________ test_multi_paper_and_legacy_scope[paper_a] __________________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_multi_paper_and_legacy_sc0')
+stored = 'paper_a'
+
+    @pytest.mark.parametrize("stored", ["paper_a", '["paper_b", "paper_a"]', ["paper_a", "paper_b"]])
+    def test_multi_paper_and_legacy_scope(tmp_path, stored):
+        m = manager(tmp_path)
+        with m.store.transaction() as db:
+>           m.store.put(db, "s", "t", dict(key="alpha", text="alpha finding", source_type="paper_evidence",
+                            paper_id=stored, status="active", evidence_ids=["c"]))
+
+tests\test_memory_recall_fixes.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <paper_agent.long_term.MemoryStore object at 0x000002A04A97B760>
+db = <sqlite3.Connection object at 0x0000029FFA3D6740>, session_id = 's'
+turn_id = 't'
+memory = {'key': 'alpha', 'text': 'alpha finding', 'source_type': 'paper_evidence', 'paper_id': 'paper_a', ...}
+shared = False
+
+    def put(self, db, session_id, turn_id, memory, shared=False):
+        from .memory_stores import canonical_key
+        if memory.get('source_type')!='user_explicit':
+>           raise ValueError('Only explicit user declarations may enter long-term memory')
+E           ValueError: Only explicit user declarations may enter long-term memory
+
+src\paper_agent\long_term.py:57: ValueError
+__________ test_multi_paper_and_legacy_scope[["paper_b", "paper_a"]] __________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_multi_paper_and_legacy_sc1')
+stored = '["paper_b", "paper_a"]'
+
+    @pytest.mark.parametrize("stored", ["paper_a", '["paper_b", "paper_a"]', ["paper_a", "paper_b"]])
+    def test_multi_paper_and_legacy_scope(tmp_path, stored):
+        m = manager(tmp_path)
+        with m.store.transaction() as db:
+>           m.store.put(db, "s", "t", dict(key="alpha", text="alpha finding", source_type="paper_evidence",
+                            paper_id=stored, status="active", evidence_ids=["c"]))
+
+tests\test_memory_recall_fixes.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <paper_agent.long_term.MemoryStore object at 0x0000029FFA58E440>
+db = <sqlite3.Connection object at 0x0000029FFA3D6D40>, session_id = 's'
+turn_id = 't'
+memory = {'key': 'alpha', 'text': 'alpha finding', 'source_type': 'paper_evidence', 'paper_id': '["paper_b", "paper_a"]', ...}
+shared = False
+
+    def put(self, db, session_id, turn_id, memory, shared=False):
+        from .memory_stores import canonical_key
+        if memory.get('source_type')!='user_explicit':
+>           raise ValueError('Only explicit user declarations may enter long-term memory')
+E           ValueError: Only explicit user declarations may enter long-term memory
+
+src\paper_agent\long_term.py:57: ValueError
+_________________ test_multi_paper_and_legacy_scope[stored2] __________________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_multi_paper_and_legacy_sc2')
+stored = ['paper_a', 'paper_b']
+
+    @pytest.mark.parametrize("stored", ["paper_a", '["paper_b", "paper_a"]', ["paper_a", "paper_b"]])
+    def test_multi_paper_and_legacy_scope(tmp_path, stored):
+        m = manager(tmp_path)
+        with m.store.transaction() as db:
+>           m.store.put(db, "s", "t", dict(key="alpha", text="alpha finding", source_type="paper_evidence",
+                            paper_id=stored, status="active", evidence_ids=["c"]))
+
+tests\test_memory_recall_fixes.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <paper_agent.long_term.MemoryStore object at 0x0000029FFA58F7F0>
+db = <sqlite3.Connection object at 0x0000029FFA3D6B40>, session_id = 's'
+turn_id = 't'
+memory = {'key': 'alpha', 'text': 'alpha finding', 'source_type': 'paper_evidence', 'paper_id': ['paper_a', 'paper_b'], ...}
+shared = False
+
+    def put(self, db, session_id, turn_id, memory, shared=False):
+        from .memory_stores import canonical_key
+        if memory.get('source_type')!='user_explicit':
+>           raise ValueError('Only explicit user declarations may enter long-term memory')
+E           ValueError: Only explicit user declarations may enter long-term memory
+
+src\paper_agent\long_term.py:57: ValueError
+__________________ test_retention_and_multi_paper_extraction __________________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_retention_and_multi_paper0')
+
+    def test_retention_and_multi_paper_extraction(tmp_path):
+        m = manager(tmp_path)
+        evidence = [dict(chunk_id=p, paper_id=p, text="Exact finding.") for p in ("a", "b")]
+        answer = dict(decision="answer", claims=[dict(text="Exact finding.", citations=[
+            dict(chunk_id=p, paper_id=p) for p in ("a", "b")])])
+        facts, ordinary = m.extract_memories("What is the finding?", answer, evidence, "t")
+>       assert ordinary is None and facts[0]["paper_ids"] == ["a", "b"] and facts[0]["status"] == "active"
+E       IndexError: list index out of range
+
+tests\test_memory_recall_fixes.py:93: IndexError
+____________ test_working_memory_compaction_archives_evicted_facts ____________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_working_memory_compaction0')
+
+    def test_working_memory_compaction_archives_evicted_facts(tmp_path):
+        state = PaperAgentState('s')
+        for i in range(45):
+>           state.memory.update({'it': str(i)}, [{'key': str(i), 'text': str(i), 'evidence_ids': ['c']}], [], ['c'])
+E           TypeError: SessionMemory.update() takes 3 positional arguments but 5 were given
+
+tests\test_providers.py:116: TypeError
+________________ test_archive_recall_corrections_and_isolation ________________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_archive_recall_correction0')
+
+    def test_archive_recall_corrections_and_isolation(tmp_path):
+        state = PaperAgentState("s")
+>       state.memory.update({"it":"p"}, [{"key":"alpha", "text":"old alpha", "evidence_ids":["c"]}], [], ["c"])
+E       TypeError: SessionMemory.update() takes 3 positional arguments but 5 were given
+
+tests\test_reliability.py:97: TypeError
+_______ test_semantic_selection_keeps_facts_exact_and_archives_history ________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_semantic_selection_keeps_0')
+
+    def test_semantic_selection_keeps_facts_exact_and_archives_history(tmp_path):
+>       s=state()
+
+tests\test_semantic_memory.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def state():
+        s=PaperAgentState('s')
+        for i in range(6):
+            claim={'text':f'fact-{i}','citations':[{'paper_id':f'p{i}','chunk_id':f'c{i}'}]}
+            s.messages.extend([{'role':'user','content':f'question-{i}'},
+                               {'role':'assistant','content':{'claims':[claim]}}])
+>           s.memory.update({'it':f'p{i}'},[{'key':str(i),'text':f'fact-{i}','evidence_ids':[f'c{i}']}],[],[f'c{i}'])
+E           TypeError: SessionMemory.update() takes 3 positional arguments but 5 were given
+
+tests\test_semantic_memory.py:15: TypeError
+________ test_semantic_summary_rejects_invented_facts_before_mutation _________
+
+tmp_path = WindowsPath('C:/Users/40533/Desktop/nano-cc/.cache/pytest-tmp/test_semantic_summary_rejects_0')
+
+    def test_semantic_summary_rejects_invented_facts_before_mutation(tmp_path):
+>       s=state(); before=copy.deepcopy(s)
+
+tests\test_semantic_memory.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def state():
+        s=PaperAgentState('s')
+        for i in range(6):
+            claim={'text':f'fact-{i}','citations':[{'paper_id':f'p{i}','chunk_id':f'c{i}'}]}
+            s.messages.extend([{'role':'user','content':f'question-{i}'},
+                               {'role':'assistant','content':{'claims':[claim]}}])
+>           s.memory.update({'it':f'p{i}'},[{'key':str(i),'text':f'fact-{i}','evidence_ids':[f'c{i}']}],[],[f'c{i}'])
+E           TypeError: SessionMemory.update() takes 3 positional arguments but 5 were given
+
+tests\test_semantic_memory.py:15: TypeError
+============================== warnings summary ===============================
+tests/test_commit_boundaries.py: 5 warnings
+tests/test_memory_manager.py: 22 warnings
+tests/test_memory_recall_fixes.py: 46 warnings
+  C:\Users\40533\Desktop\nano-cc\.venv-gpu\lib\site-packages\chromadb\types.py:144: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
+    return self.model_fields  # pydantic 2.x
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_commit_boundaries.py::test_paper_scope_attribute_versions_and_conflict_recall
+FAILED tests/test_core.py::test_memory_validates_before_mutation_and_isolates_sessions
+FAILED tests/test_core.py::test_pipeline_limits_retry_and_records_skip - Attr...
+FAILED tests/test_core.py::test_pipeline_success_carries_real_chunk_ids_into_memory
+FAILED tests/test_memory_manager.py::test_redis_isolated_and_expiry_recovery
+FAILED tests/test_memory_manager.py::test_current_evidence_required_and_paraphrase_not_authoritative
+FAILED tests/test_memory_manager.py::test_lost_index_recalled_from_original_and_rebuilt
+FAILED tests/test_memory_manager.py::test_long_conversation_recall_and_legacy_import
+FAILED tests/test_memory_manager.py::test_explicit_user_update_and_similar_key_conflict
+FAILED tests/test_memory_recall_fixes.py::test_multi_paper_and_legacy_scope[paper_a]
+FAILED tests/test_memory_recall_fixes.py::test_multi_paper_and_legacy_scope[["paper_b", "paper_a"]]
+FAILED tests/test_memory_recall_fixes.py::test_multi_paper_and_legacy_scope[stored2]
+FAILED tests/test_memory_recall_fixes.py::test_retention_and_multi_paper_extraction
+FAILED tests/test_providers.py::test_working_memory_compaction_archives_evicted_facts
+FAILED tests/test_reliability.py::test_archive_recall_corrections_and_isolation
+FAILED tests/test_semantic_memory.py::test_semantic_selection_keeps_facts_exact_and_archives_history
+FAILED tests/test_semantic_memory.py::test_semantic_summary_rejects_invented_facts_before_mutation
+17 failed, 91 passed, 73 warnings in 12.03s

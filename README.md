@@ -2,21 +2,21 @@
 
 基于 nano-cc / learn-claude-code 设计思想的科研论文多轮检索问答 Agent。围绕指代缺失、证据不足和无依据作答，集成 Query 改写、混合检索、重排、证据反思、引用生成与会话记忆。
 
-**当前状态：通过本地工程验收，适合展示与实习项目使用。** 效果评审为规则检查和模型辅助评审，未完成用户人工抽查；不宣称复现原截图的算法增益。
+**当前状态：已实施 Harness 修订；本地机制回归与真实服务验收分开记录。** 效果评审为规则检查和模型辅助评审，未完成用户人工抽查；不宣称复现原截图的算法增益。
 
-[最终验收报告](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [文档索引](docs/README.md) · [评测协议](docs/evaluation.md) · [报告导航](reports/README.md)
+[最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
 
 ## 核心实现
 
 - 100 篇 QASPER 论文、1,996 个 chunks；段落合并与滑窗切块，保留论文、章节、段落和字符偏移。文本型 PDF 可导入，章节与阅读顺序需检查。
 - BGE-M3 + FAISS 稠密检索、BM25、RRF 和 BGE Cross-Encoder 重排。
 - Guardrails → NLU → Retrieve → Rerank → Reflect → Generate → Memory 七阶段编排，结构化意图/指代/改写、最多两轮检索、引用校验与受控拒答。
-- Redis 工作缓存、SQLite 权威事实/提交快照、Chroma 情景索引；论文检索继续使用 FAISS。支持事实版本、冲突候选、压缩归档与按需召回。
-- Turn/Stage Trace、有限重试、降级、稳定 turn_id 幂等提交、提交授权的归档可见性；CLI 支持 `/trace`、`/corpus`、`/memory`。
+- 工作记忆、情景记忆、长期记忆：SQLite 权威快照/事件/确认声明，Redis TTL 与 Chroma 为可重建投影。论文检索独立使用 FAISS，普通 Claim 不写长期记忆。
+- Turn/Stage Trace、按运行隔离的追踪与评分、有限重试、降级、稳定 turn_id 幂等提交、提交授权的归档可见性；CLI 支持 `/trace`、`/corpus`、`/memory`。
 
 七阶段主链直接调用检索组件；独立 tool_loop 不参与主链的自主规划。引用结构校验不等于语义蕴含判断。
 
-## 实测结果
+## 修订前历史实测结果
 
 最终配置：`rerank + three_layer`，实际模型 `deepseek-v4.1-flash`，数据与源码版本见验收报告中的 freeze.json。
 
@@ -45,7 +45,7 @@ $env:REDIS_URL='redis://localhost:16379/0'
 & $py -m paper_agent.cli chat --index indexes/bge --mode rerank --encoder models/bge-m3 --reranker models/bge-reranker-v2-m3 --device cuda:0 --session demo
 ```
 
-问答会使用 API 配额，需要 `.env`、模型、索引和真实 Redis。默认 CLI 为 legacy 模式；完整模式需显式设置上述变量。新机器安装、固定模型下载、QASPER 与索引准备见 [安装文档](docs/setup.md)，不要覆盖现有凭据或重建有效资产。
+问答会使用 API 配额，需要 `.env`、模型、索引和真实 Redis。默认 CLI 为 SQLite 本地模式；完整模式需显式设置上述变量。新机器安装、固定模型下载、QASPER 与索引准备见 [安装文档](docs/setup.md)，不要覆盖现有凭据或重建有效资产。
 
 ## 目录
 
@@ -55,8 +55,11 @@ $env:REDIS_URL='redis://localhost:16379/0'
 | `configs/`、`scripts/` | 运行配置与数据/评测工具；见 [脚本导航](scripts/README.md) |
 | `docs/` | 当前架构、组件、运行与评测文档 |
 | `data/` | 评测集合与本地语料；正式主集 v0.6，旧版本保留溯源 |
-| `reports/FINAL_ACCEPTANCE.md` | 唯一当前验收总报告 |
-| `reports/final-acceptance/` | 当前证据、逐轮结果、失败记录与成本账本 |
+| `reports/revision/CLOSURE.md` | 最新范围修复、真实集成、多轮对照与限制 |
+| `reports/revision/FOLLOWUP.md` | 此前修复、验证与未完成项 |
+| `reports/revision/FINAL.md` | 前一轮修订报告 |
+| `reports/FINAL_ACCEPTANCE.md` | 修订前冻结验收，不代表新代码成绩 |
+| `reports/final-acceptance/` | 修订前证据、逐轮结果、失败记录与成本账本 |
 | `reports/history/` | 历史报告与开发实验，不能作为当前验收成绩 |
 
 本机 `.venv*`、`models/`、`indexes/`、`runs/`、`.cache/`、`references/`、`tmp/` 为忽略的环境、资产或运行目录。Redis 二进制仍在 `tmp/memory-redis`，为避免破坏现有服务保持原位；无需为减少目录数迁移模型和环境。根目录旧计划已归入本地 `references/project-notes/`，导出物归入 `.cache/local-artifacts/`。
