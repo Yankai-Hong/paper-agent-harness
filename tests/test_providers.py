@@ -113,10 +113,10 @@ def test_explicit_thinking_setting_is_sent(server):
 def test_working_memory_compaction_archives_evicted_facts(tmp_path):
     state = PaperAgentState('s')
     for i in range(45):
-        state.memory.update({'it': str(i)}, [{'key': str(i), 'text': str(i), 'evidence_ids': ['c']}], [], ['c'])
+        state.memory.update({'it': str(i)}, [])
     state.messages = [{'role': 'user' if i % 2 == 0 else 'assistant', 'content': str(i)} for i in range(12)]
     result = compact_state(state, tmp_path)
-    assert len(state.memory.facts) == 40 and len(state.messages) == 8
+    assert len(state.messages) == 8
     archived = ContextArchive(tmp_path).read(result['archive_id'])
-    assert len(archived['memory']['facts']) == 45 and len(archived['messages']) == 12
+    assert 'facts' not in archived['memory'] and len(archived['messages']) == 12
     assert state.memory.entities['it'] == '44'

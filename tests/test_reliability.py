@@ -94,15 +94,14 @@ def test_archive_write_failure_rolls_back(tmp_path, monkeypatch):
 
 def test_archive_recall_corrections_and_isolation(tmp_path):
     state = PaperAgentState("s")
-    state.memory.update({"it":"p"}, [{"key":"alpha", "text":"old alpha", "evidence_ids":["c"]}], [], ["c"])
-    state.memory.facts["alpha"]["turn_id"] = "t1"
+    state.memory.update({'it':'p'},[])
     state.messages = [{"role":"user", "content":"alpha", "turn_id":"t1"}]*10
     compact_state(state, tmp_path, max_facts=0)
     state.save(tmp_path.parent)  # Archive visibility begins at the durable commit.
     archive = ContextArchive(tmp_path)
-    state.memory.update({}, [{"key":"alpha", "text":"new alpha", "evidence_ids":["c"]}], [], ["c"])
+    state.memory.update({}, [])
     rows = archive.search("s", "alpha", current_memory=state.memory)
-    assert any(r["superseded"] and r["turn_id"] == "t1" for r in rows)
+    assert any(r["kind"] == "message" and r["turn_id"] == "t1" for r in rows)
     assert archive.search("other", "alpha") == []
     assert archive.read(rows[0]["archive_id"])
 

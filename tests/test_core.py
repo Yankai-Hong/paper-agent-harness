@@ -51,18 +51,14 @@ def test_recall_dedup_missing_prediction_and_alternatives():
 
 
 def test_memory_validates_before_mutation_and_isolates_sessions(tmp_path):
-    memory = SessionMemory("first")
-    memory.update({"it": "paper-a"}, [{"key": "k", "text": "fact", "evidence_ids": ["c1"]}], [], ["c1"])
-    memory.update({"it": "paper-b"}, [], [], [])
-    assert memory.entities["it"] == "paper-b"
-    with pytest.raises(ValueError):
-        memory.update({"it": "bad"}, [{"key": "k", "text": "wrong", "evidence_ids": ["fake"]}], [], [])
-    assert memory.entities["it"] == "paper-b"
+    memory = SessionMemory('first')
+    memory.update({'it':'paper-a'}, [])
+    memory.update({'it':'paper-b'}, ['pending'])
     memory.save(tmp_path)
-    assert SessionMemory.load(tmp_path, "first").facts == memory.facts
-    assert SessionMemory.load(tmp_path, "second").facts == {}
-    with pytest.raises(ValueError):
-        SessionMemory.load(tmp_path, "../escape")
+    assert SessionMemory.load(tmp_path,'first').entities == {'it':'paper-b'}
+    assert SessionMemory.load(tmp_path,'second').entities == {}
+    assert not hasattr(memory,'facts')
+    with pytest.raises(ValueError): SessionMemory.load(tmp_path,'../escape')
 
 
 def test_archive_roundtrip_protects_pairs(tmp_path):
@@ -138,7 +134,7 @@ def test_pipeline_limits_retry_and_records_skip(tmp_path, retriever):
     assert result["answer"]["decision"] == "refuse"
     trace = json.loads((tmp_path/"traces"/f"{result['trace_id']}.json").read_text())
     assert sum(s["stage"] == "Retrieve" for s in trace["stages"]) == 2
-    assert state.memory.facts == {}
+    assert not hasattr(state.memory, 'facts')
 
 
 def test_pipeline_failure_persists_error_and_skipped(tmp_path, retriever):
@@ -170,7 +166,8 @@ def test_pipeline_success_carries_real_chunk_ids_into_memory(tmp_path, retriever
     assert result["answer"]["decision"] == "answer"
     restored = SessionMemory.load(tmp_path/"memory", "success")
     assert restored.entities == {"it": "a"}
-    assert all(set(f["evidence_ids"]) <= set(retriever.by_id) for f in restored.facts.values())
+    assert not hasattr(restored,'facts')
+    assert result['answer']['claims'][0]['citations'][0]['chunk_id'] in retriever.by_id
     trace = json.loads((tmp_path/"trace"/f"{result['trace_id']}.json").read_text())
     assert all(event["status"] == "ok" for event in trace["stages"])
 
@@ -227,5 +224,5 @@ def test_semantic_compaction_falls_back_to_bounded(tmp_path, retriever):
     assert result["answer"]["decision"] == "answer"
     trace = json.loads((tmp_path/"trace"/f"{result['trace_id']}.json").read_text())
     mem_stage = next(s for s in trace["stages"] if s["stage"] == "Memory")
-    assert mem_stage["compaction_fallback"]["from"] == "semantic"
-    assert mem_stage["compaction_fallback"]["to"] == "bounded"
+    assert any(e.get('operation')=='semantic_compaction' for e in mem_stage['memory_events'])
+    assert mem_stage['compaction']['method']=='bounded_recent_state'

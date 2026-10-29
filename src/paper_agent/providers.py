@@ -10,8 +10,20 @@ from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPHandl
 import http.client
 import threading
 import socket
+import uuid
+import re
+import hashlib
+from .observability import invocation
 
-from jsonschema import validate
+from jsonschema import validate, ValidationError
+
+def _safe_model_name(value, secret=None):
+    """Keep ordinary provider/model identifiers, reject arbitrary response text."""
+    if not isinstance(value,str) or len(value)>120 or not re.fullmatch(r'[A-Za-z0-9._:/+@-]+',value):
+        return None
+    if (secret and secret in value) or re.search(r'(?i)(?:^|[/_-])(?:sk|secret|bearer)[_-]|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}',value):
+        return '[redacted]'
+    return value
 
 
 def object_schema(properties, required):
@@ -27,9 +39,13 @@ SCHEMAS = {
         "intent": {"enum": ["search", "fact", "explain", "compare", "out_of_scope"]},
         "standalone_query": STRING, "needs_clarification": {"type": "boolean"},
         "paper_ids": {"type": ["array", "null"], "items": STRING, "uniqueItems": True},
-        "resolved_entities": {"type": "object", "additionalProperties": STRING}},
+        "resolved_entities": {"type": "object", "additionalProperties": STRING},
+        "sub_questions": {"type":"array", "maxItems":3, "items":object_schema({
+            "id":STRING, "query":STRING, "paper_ids":{"type":["array","null"],"items":STRING,"minItems":1,"uniqueItems":True},
+            "target":STRING}, ["id","query","paper_ids","target"])}},
         ["intent", "standalone_query", "needs_clarification", "paper_ids", "resolved_entities"]),
     "reflect": object_schema({"decision": {"enum": ["answer", "retrieve_again", "clarify", "refuse"]},
+        "missing_goal_ids":{"type":"array","maxItems":3,"items":STRING},
         "next_query": {"type": "string"}, "reason": STRING}, ["decision", "reason"]),
     "generate": object_schema({"claims": {"type": "array", "minItems": 1, "maxItems": 12,
         "items": object_schema({"key": STRING, "text": STRING,
@@ -59,6 +75,9 @@ class APIConfig:
     max_retries: int = 2
     repair_retries: int = 1
     retry_base_seconds: float = 1
+    circuit_enabled: bool = False
+    circuit_threshold: int = 3
+    circuit_cooldown: float = 30
 
     def __post_init__(self):
         parsed = urlsplit(self.base_url)
@@ -75,6 +94,8 @@ class APIConfig:
             raise ValueError("API_THINKING must be enabled, disabled, or unset")
         if self.connect_timeout <= 0 or self.max_retries < 0 or self.repair_retries not in {0, 1} or self.retry_base_seconds < 0:
             raise ValueError("Invalid retry/timeout configuration")
+        if self.circuit_threshold<1 or self.circuit_cooldown<=0:
+            raise ValueError('Invalid circuit limits')
 
     @classmethod
     def from_env(cls, env_file=".env"):
@@ -96,7 +117,10 @@ class APIConfig:
                    connect_timeout=float(os.getenv("API_CONNECT_TIMEOUT", "15")),
                    max_retries=int(os.getenv("API_MAX_RETRIES", "2")),
                    repair_retries=int(os.getenv("API_REPAIR_RETRIES", "1")),
-                   retry_base_seconds=float(os.getenv("API_RETRY_BASE_SECONDS", "1")))
+                   retry_base_seconds=float(os.getenv("API_RETRY_BASE_SECONDS", "1")),
+                   circuit_enabled=os.getenv('API_CIRCUIT_ENABLED','false').lower()=='true',
+                   circuit_threshold=int(os.getenv('API_CIRCUIT_THRESHOLD','3')),
+                   circuit_cooldown=float(os.getenv('API_CIRCUIT_COOLDOWN','30')))
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -172,6 +196,11 @@ class CompatibleReasoner:
         from .storage import safe_id
         self.config, self.session_id, self.transport = config, safe_id(session_id), transport
         self.calls = []
+        from .circuit import circuit_for
+        # Credentials can represent separate accounts with different 401/429
+        # behavior. A one-way fingerprint scopes health without logging the key.
+        account = hashlib.sha256(config.api_key.encode('utf-8')).hexdigest()
+        self.circuit = circuit_for((config.base_url,config.model,account),config.circuit_threshold,config.circuit_cooldown) if config.circuit_enabled else None
 
     def structured(self, stage, payload):
         retries = repairs = 0
@@ -191,6 +220,10 @@ class CompatibleReasoner:
                     retries += 1
                     record.update(retry_reason="transient_transport", retry_delay_seconds=delay,
                                   potential_duplicate_cost=bool(record.get("transport_error")))
+                    from .budgets import current_budget, BudgetExceeded
+                    budget = current_budget.get()
+                    if budget and (budget.available('model_requests') < 1 or delay >= budget.remaining()):
+                        raise BudgetExceeded('turn_retry_budget_exhausted') from None
                     time.sleep(delay)
                 elif malformed and repairs < self.config.repair_retries:
                     repairs += 1
@@ -199,6 +232,8 @@ class CompatibleReasoner:
                     raise
 
     def _structured_once(self, stage, payload, repair=False):
+        from .budgets import current_budget, BudgetExceeded
+        budget = current_budget.get()
         if stage not in SCHEMAS:
             raise ValueError("Unknown reasoning stage")
         if len(self.calls) >= self.config.max_calls:
@@ -219,38 +254,76 @@ class CompatibleReasoner:
             body["thinking"] = {"type": self.config.thinking}
         headers = {"Authorization": f"Bearer {self.config.api_key}", "Content-Type": "application/json",
                    "User-Agent": "paper-agent-reproduction/0.1", "x-opencode-session": self.session_id}
-        record = {"stage": stage, "model_requested": self.config.model, "status": "error",
+        record = {"stage": stage, "model_requested": _safe_model_name(self.config.model,self.config.api_key), "status": "error",
                   "max_tokens": self.config.max_tokens, "thinking_requested": self.config.thinking,
                   "repair": repair, "attempt": len(self.calls) + 1}
+        record.update(invocation.get(), request_id=uuid.uuid4().hex, started_at=time.time())
         from .storage import digest
         record["request_hash"] = digest(body)
+        if budget and budget.available('model_requests') < 1:
+            raise BudgetExceeded('turn_model_requests_exhausted')
+        ticket = None
+        if self.circuit:
+            record['circuit_state'],ticket=self.circuit.enter_ticket()
+        try:
+            if budget:
+                budget.take('model_requests')
+        except BaseException:
+            if self.circuit:
+                self.circuit.finish('budget',ticket)
+            raise
         self.calls.append(record)
         started = time.perf_counter()
         try:
-            transport_args = (self.config.base_url.rstrip("/") + "/chat/completions", body, headers, self.config.timeout)
+            timeout = min(self.config.timeout,budget.remaining()) if budget else self.config.timeout
+            transport_args = (self.config.base_url.rstrip("/") + "/chat/completions", body, headers, timeout)
             response = (self.transport(*transport_args, connect_timeout=self.config.connect_timeout)
                         if self.transport is post_json else self.transport(*transport_args))
+            if budget:
+                budget.remaining()
             usage = response.get("usage") or {}
+            if not isinstance(usage, dict):
+                raise ValueError("Invalid usage object")
             # OpenAI prompt_tokens INCLUDES cached tokens; do not add cached tokens twice.
             cached = usage.get("prompt_cache_hit_tokens", (usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0)) or 0
             prompt = usage.get("prompt_tokens")
             completion = usage.get("completion_tokens")
-            if (prompt is not None and (not isinstance(prompt, int) or prompt < 0)) or (
-                completion is not None and (not isinstance(completion, int) or completion < 0)) or (
-                not isinstance(cached, int) or cached < 0 or (prompt is not None and cached > prompt)):
+            if (prompt is not None and (type(prompt) is not int or prompt < 0)) or (
+                completion is not None and (type(completion) is not int or completion < 0)) or (
+                type(cached) is not int or cached < 0 or (prompt is not None and cached > prompt)):
                 raise ValueError("Invalid usage counters")
-            record.update(model_returned=response.get("model"), usage_raw=usage,
-                          reasoning_tokens=(usage.get("completion_tokens_details") or {}).get("reasoning_tokens"),
-                          usage_complete=isinstance(prompt, int) and isinstance(completion, int),
+            # Provider extensions may contain arbitrary content; retain only
+            # documented numeric counters rather than copying untrusted objects.
+            raw_usage = {k:usage[k] for k in ('prompt_tokens','completion_tokens','total_tokens','prompt_cache_hit_tokens')
+                         if type(usage.get(k)) is int and usage[k] >= 0}
+            for field_name in ('prompt_tokens_details','completion_tokens_details'):
+                details = usage.get(field_name)
+                if isinstance(details,dict):
+                    raw_usage[field_name]={k:v for k,v in details.items() if k in {'cached_tokens','reasoning_tokens'} and type(v) is int and v>=0}
+            record.update(model_returned=_safe_model_name(response.get("model"),self.config.api_key), usage_raw=raw_usage,
+                          reasoning_tokens=raw_usage.get('completion_tokens_details',{}).get('reasoning_tokens'),
+                          usage_complete=type(prompt) is int and type(completion) is int,
                           usage={"input_tokens": max(0, (prompt or 0)-cached),
                                  "output_tokens": completion or 0, "cache_read_input_tokens": cached,
                                  "cache_creation_input_tokens": 0})
             choice = response["choices"][0]
-            record["finish_reason"] = choice.get("finish_reason")
+            finish_reason=choice.get('finish_reason')
+            record['finish_reason']=finish_reason if finish_reason in {'stop','length','content_filter','tool_calls'} else 'other'
             if choice.get("finish_reason") != "stop":
                 raise ValueError("Model response incomplete or stopped unexpectedly")
             result = json.loads(choice["message"]["content"])
-            validate(result, SCHEMAS[stage])
+            try:
+                validate(result, SCHEMAS[stage])
+            except ValidationError:
+                # An invalid optional plan must not invalidate an otherwise valid
+                # NLU result or force an additional model call. Parent fields are
+                # still strictly validated after removing only that optional field.
+                if stage != 'nlu' or not isinstance(result,dict) or 'sub_questions' not in result:
+                    raise
+                without_plan = {k:v for k,v in result.items() if k != 'sub_questions'}
+                validate(without_plan, SCHEMAS[stage])
+                result = without_plan
+                record['sub_questions_discarded'] = 'schema_invalid'
             if stage == "reflect" and result["decision"] == "retrieve_again" and not result.get("next_query", "").strip():
                 raise ValueError("Retry requires a nonempty next_query")
             record["status"] = "ok"
@@ -259,11 +332,20 @@ class CompatibleReasoner:
             # Do not persist provider bodies, keys, or arbitrary model output in error strings.
             record["error_type"] = type(exc).__name__
             if hasattr(exc, "absolute_path"):
-                record["schema_error_path"] = list(exc.absolute_path)
+                allowed = set('intent standalone_query needs_clarification paper_ids resolved_entities sub_questions id query target decision missing_goal_ids next_query reason claims key text citations paper_id chunk_id overview'.split())
+                record["schema_error_path"] = [p if isinstance(p,int) or p in allowed else '[redacted]' for p in exc.absolute_path]
                 record["schema_validator"] = exc.validator
             if isinstance(exc, ProviderTransportError):
                 record.update(http_status=exc.status, transport_error=exc.kind,
                               potential_duplicate_cost=exc.status is None)
+            from .circuit import classify
+            record['error_category']=classify(record.get('http_status'),record.get('transport_error'),type(exc).__name__)
+            if isinstance(exc,BudgetExceeded):
+                raise
             raise RuntimeError(f"{stage} API/JSON validation failed ({type(exc).__name__}); see call status") from None
         finally:
             record["elapsed_ms"] = (time.perf_counter()-started)*1000
+            record['ended_at'] = time.time()
+            if self.circuit:
+                self.circuit.finish(record.get('error_category'),ticket)
+                record['circuit_after']=self.circuit.state

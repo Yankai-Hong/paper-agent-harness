@@ -1,6 +1,6 @@
 # 架构与七阶段
 
-三层存储模式由 `MEMORY_BACKEND=three_layer` 启用：Pipeline 仅调用 `MemoryManager`，后者协调 Redis 工作缓存、SQLite 权威事实及事务快照、Chroma 情景索引。读取在 NLU 上下文构建位置，写入和压缩在 Memory 阶段；没有新增外部阶段。论文 FAISS 索引不变，历史记忆不能替代当前论文证据。详细调用链、幂等恢复与旧状态迁移见 [memory.md](memory.md)。下文文件提交说明适用于默认 legacy 模式。
+架构只有工作记忆、情景记忆、长期记忆；默认 SQLite 本地模式保存权威快照、事件原文和明确用户声明。`MEMORY_BACKEND=three_layer` 启用 Redis TTL 工作缓存和 Chroma 情景语义索引。ContextArchive 是会话审计恢复，不是记忆层。论文 FAISS 知识库独立，历史记忆不能替代本轮证据。身份、共享与版本化迁移见 [memory.md](memory.md)。
 
 这是以 learn-claude-code 的 messages/tool loop 和上下文管理思想为基准的领域实现，并非上游已经拥有论文问答。固定上游 SHA 为 `ce8f9f186058939da54c9d6fead78dfb5d0fd6c3`。原始选定文件保存在内部快照 `references/learn-claude-code/`，复用审查见内部文档 `references/project-notes/LEARN_CLAUDE_CODE_REVIEW.md`（两者均未随仓库发布；上游来源与固定版本见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) 与 [upstream.lock](../upstream.lock)）。
 
@@ -19,7 +19,7 @@ flowchart LR
 
 入口为 [PaperPipeline.run](../src/paper_agent/pipeline.py)。`PaperAgentState` 包含 session_id、messages、turn_count 和 SessionMemory；该类是新增代码，上游 s01/s02 并没有同名状态结构。
 
-七阶段并不等于七次 API 请求。正常回答使用 NLU、Reflect、Generate 三次请求；二次检索增加一次 Reflect。输入校验、检索、重排、存储在本机执行。越界或澄清一般仅需 NLU。最多两轮检索；失败保留 trace 并抛出，不伪造答案。
+七阶段并不等于七次 API 请求。正常回答使用 NLU、Reflect、Generate 三次请求；二次检索增加一次 Reflect。输入校验、检索、重排、存储在本机执行。越界或澄清一般仅需 NLU。默认最多两轮检索，复杂问题开关允许首轮2—3个目标；总预算控制调用与候选。失败保留 trace 并抛出，不伪造答案。
 
 接口：`retriever.search()` 返回候选和证据；`reasoner.structured(stage, payload)` 返回校验后的 JSON。离线测试用显式 fixture，CLI 的 ask/chat 用兼容 API。独立的通用 tool_loop 保留 s02 的工具调用机制，但七阶段主流程直接调用检索组件，不假装调用了模型原生 tool calling。
 
@@ -29,4 +29,4 @@ Guardrails 当前只处理空问题、长度、控制字符和随后阶段的结
 
 ## 本轮恢复机制
 
-七阶段不变。NLU 前/后按需读取同 session 归档上下文；Provider 对临时错误有限重试，重排与单路检索按配置降级；Memory 用稳定 turn_id 和单原子 state.json 提交。错误回滚本轮状态，Trace 记录 degraded、commit_status 与所有 API 尝试。归档不是论文证据。见 [记忆](memory.md)、[API](api.md) 和 [评测](evaluation.md)。
+七阶段不变。NLU 前/后按需读取同 session 归档上下文；Provider 对临时错误有限重试，重排与单路检索按配置降级；Memory 用稳定 turn_id 和SQLite 原子快照及账本提交。错误回滚本轮状态，Trace 记录 degraded、commit_status 与所有 API 尝试。归档不是论文证据。见 [记忆](memory.md)、[API](api.md) 和 [评测](evaluation.md)。

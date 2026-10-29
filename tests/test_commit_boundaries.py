@@ -13,6 +13,7 @@ from test_reliability import pipeline
 def test_archive_written_commit_failed_restart_and_retry(tmp_path, monkeypatch, backend, strategy):
     m = manager(tmp_path) if backend == "three_layer" else None
     p = pipeline(tmp_path, mode="bm25", memory_manager=m, memory_strategy=strategy)
+    m = p.memory_manager
     original_structured = p.reasoner.structured
     p.reasoner.structured = lambda stage, payload: {"overview":"alpha"} if stage == "memory_summary" else original_structured(stage, payload)
     state = PaperAgentState("s")
@@ -20,7 +21,7 @@ def test_archive_written_commit_failed_restart_and_retry(tmp_path, monkeypatch, 
         p.run("alpha", state, f"t{i}")
     with monkeypatch.context() as patch:
         if m:
-            transaction = m.facts.transaction
+            transaction = m.store.transaction
             @contextmanager
             def fail_commit():
                 with transaction() as db:
@@ -28,7 +29,7 @@ def test_archive_written_commit_failed_restart_and_retry(tmp_path, monkeypatch, 
                     row = db.execute("SELECT version FROM sessions WHERE session_id='s'").fetchone()
                     if row and row[0] == 5:
                         raise RuntimeError("injected after archive before commit")
-            patch.setattr(m.facts, "transaction", fail_commit)
+            patch.setattr(m.store, "transaction", fail_commit)
         else:
             patch.setattr(PaperAgentState, "save", lambda *a: (_ for _ in ()).throw(RuntimeError("commit failed")))
         with pytest.raises(RuntimeError):
@@ -36,14 +37,14 @@ def test_archive_written_commit_failed_restart_and_retry(tmp_path, monkeypatch, 
     archive = ContextArchive(tmp_path/"memory/archives")
     assert list(archive.root.glob("*.json"))  # Original bytes preserved, not cleaned up.
     restored = PaperAgentState.load(tmp_path/"memory", "s")
-    restarted = manager(tmp_path) if m else None
-    durable = restarted.facts.snapshot("s") if m else asdict(restored)
+    restarted = manager(tmp_path) if backend == 'three_layer' else __import__('paper_agent.memory_manager',fromlist=['MemoryManager']).MemoryManager.local(tmp_path/'memory')
+    durable = restarted.store.snapshot("s") if m else asdict(restored)
     assert not archive.search("s", "orphansecret", committed_state=durable)
     if restarted:
         assert not restarted.retrieve_memories(restored, "orphansecret")
     p.memory_manager = restarted
     p.run("committedsecret alpha", restored, "retry")
-    durable = restarted.facts.snapshot("s") if m else asdict(PaperAgentState.load(tmp_path/"memory", "s"))
+    durable = restarted.store.snapshot("s") if m else asdict(PaperAgentState.load(tmp_path/"memory", "s"))
     assert archive.search("s", "committedsecret", committed_state=durable)
     assert not archive.search("s", "orphansecret", committed_state=durable)
     assert p.run("committedsecret alpha", restored, "retry")["replayed_commit"]
@@ -70,6 +71,7 @@ def test_abrupt_process_exit_after_archive(tmp_path, backend):
     import sys
     m = manager(tmp_path) if backend == "three_layer" else None
     p = pipeline(tmp_path, mode="bm25", memory_manager=m)
+    m = p.memory_manager
     state = PaperAgentState("s")
     for i in range(4): p.run("alpha", state, f"t{i}")
     code = '''
@@ -93,27 +95,21 @@ p.run('crashsecret alpha', PaperAgentState.load(root/'memory', 's'), 'crash')
     result = subprocess.run([sys.executable,'-c',code,str(tmp_path),backend],timeout=30)
     assert result.returncode == 79
     assert list((tmp_path/'memory/archives').glob('*.json'))
-    durable = manager(tmp_path).facts.snapshot('s') if m else asdict(PaperAgentState.load(tmp_path/'memory','s'))
+    durable = manager(tmp_path).store.snapshot('s') if m else asdict(PaperAgentState.load(tmp_path/'memory','s'))
     assert durable['turn_count'] == 4
     assert not ContextArchive(tmp_path/'memory/archives').search('s','crashsecret',committed_state=durable)
 
 
 def test_paper_scope_attribute_versions_and_conflict_recall(tmp_path):
     m = manager(tmp_path)
-    fact = dict(key="p1 result", attribute="accuracy", text="Accuracy is 90%.",
-                source_type="paper_evidence", paper_ids=["p1"], status="active")
-    with m.facts.transaction() as db:
-        first = m.facts.put_fact(db, "s", "t1", fact)
-        assert m.facts.put_fact(db, "s", "t2", {**fact, "key":"p2 result", "paper_ids":["p2"]})["action"] == "active"
-        assert m.facts.put_fact(db, "s", "t3", {**fact, "key":"another label", "text":"Accuracy is 80%."})["action"] == "conflict"
-        assert m.facts.put_fact(db, "s", "t4", {**fact, "text":"Accuracy is 95%.", "replaces":first["fact_id"]})["action"] == "update"
-        assert m.facts.put_fact(db, "s", "t5", {**fact, "attribute":"precision"})["action"] == "active"
-        assert m.facts.put_fact(db, "s", "t6", {**fact, "source_type":"user_explicit"})["action"] == "active"
-    assert any(f["fact_id"] == first["fact_id"] and f["status"] == "superseded" for f in m.facts.facts("s"))
-    recalled = m.retrieve_memories(PaperAgentState("s"), "accuracy", ["p1"], limit=20)
-    conflict = next(r for r in recalled if r["status"] == "conflict")
-    assert conflict["requires_resolution"] and not conflict["is_current_fact"] and not conflict["is_authoritative"]
-    assert all("p2" not in r["paper_ids"] for r in recalled)
+    declaration = dict(key='accuracy',text='Use strict criteria',source_type='user_explicit',status='active')
+    with m.store.transaction() as db:
+        first=m.store.put(db,'s','t1',declaration)
+        assert m.store.put(db,'s','t2',{**declaration,'text':'Use broad criteria'})['action']=='conflict'
+        assert m.store.put(db,'s','t3',{**declaration,'text':'Use broad criteria','replaces':first['memory_id']})['action']=='update'
+        with pytest.raises(ValueError): m.store.put(db,'s','t4',{**declaration,'source_type':'paper_evidence'})
+    recalled=m.retrieve_memories(PaperAgentState('s'),'accuracy',['p1'],limit=20)
+    assert any(r['status']=='conflict' and not r['is_authoritative'] for r in recalled)
 
 
 def test_chroma_first_access_concurrent_instances(tmp_path):

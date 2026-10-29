@@ -88,10 +88,10 @@ def main():
         retriever = Retriever(args.index, encoder, reranker)
         if args.command in {"ask", "chat"}:
             root = Path(args.state_dir)
-            state = PaperAgentState.load(root/"memory", args.session)
             pipeline = PaperPipeline(retriever, reasoner, root/"traces"/args.session,
                 root/"memory", args.mode, not args.no_rewrite, not args.no_reflect, not args.no_compact,
                 args.memory_strategy)
+            state = PaperAgentState.load(pipeline.memory_manager.root, args.session)
             if args.command == "ask":
                 emit(pipeline.run(args.query, state))
                 return
