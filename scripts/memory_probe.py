@@ -42,7 +42,7 @@ def main():
                                    {'role':'assistant','content':pred['answer']}])
             memory=next(s['output'] for s in pred['trace']['stages'] if s['stage']=='Memory' and s['status']=='ok')
             state.memory.entities.update(memory['entities'])
-            state.memory.facts.update(memory['facts'])
+            state.memory.summary['legacy_context_unverified'] = bool(memory.get('facts'))
         if args.semantic:
             from paper_agent.compaction import semantic_compact_state
             summary_reasoner=CompatibleReasoner(config,f'summary-{group}')

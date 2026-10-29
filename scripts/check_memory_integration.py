@@ -6,12 +6,16 @@ import os
 from pathlib import Path
 import time
 import uuid
+import hashlib
+import sys
+from urllib.parse import urlsplit
 
 from paper_agent.memory_manager import MemoryManager
 from paper_agent.memory_stores import RedisWorkingStore, ChromaEpisodes
 from paper_agent.pipeline import PaperAgentState, PaperPipeline
 from paper_agent.retrieval import BGEEncoder, BGEReranker, Retriever
 from paper_agent.storage import write_json
+from paper_agent.observability import Exporter
 
 
 def main():
@@ -25,7 +29,14 @@ def main():
     args = parser.parse_args()
     root = Path(args.output)
     root.mkdir(parents=True, exist_ok=False)
-    result = {"status":"running", "llm":"scripted; no API calls", "checks":[]}
+    redis_address = urlsplit(args.redis_url)
+    source_before = {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('src/paper_agent').glob('*.py')}
+    result = {"status":"running", "llm":"scripted; no API calls", "checks":[],
+              "configuration":{"redis_host":redis_address.hostname,"redis_port":redis_address.port,
+                  "redis_ttl_seconds":1,"index":args.index,"encoder":args.encoder,"reranker":args.reranker,
+                  "device":args.device,"mode":"rerank","memory_backend":"three_layer",
+                  "decomposition":False,"external_telemetry":False,"python":sys.version},
+              "source_hashes_before":source_before}
     started = time.monotonic()
     cache = None
     sid = "smoke_" + uuid.uuid4().hex
@@ -50,17 +61,18 @@ def main():
                                    "citations":[{"paper_id":hit["paper_id"], "chunk_id":hit["chunk_id"]}]}]}
 
         pipeline = PaperPipeline(retriever, Reasoner(), root/"traces", root/"memory",
-                                 mode="rerank", memory_manager=manager, allow_degraded=False)
+                                 mode="rerank", memory_manager=manager, allow_degraded=False,
+                                 decomposition=False, exporter=Exporter(enabled=False))
         state = PaperAgentState(sid)
         for i in range(6):
             pipeline.run(f"研究决策: attention mechanism discussion {i}", state, f"turn{i}")
         assert len(state.messages) == 8 and state.turn_count == 6
-        assert len(manager.facts.facts(sid, "active")) == 1
-        assert len(manager.facts.episodes(sid)) == 6 and episodes.collection.count() == 6
-        assert not manager.facts.episodes(sid, pending=True)
+        assert len(manager.store.memories(sid, "active")) == 0
+        assert len(manager.store.episodes(sid)) == 6 and episodes.collection.count() == 6
+        assert not manager.store.episodes(sid, pending=True)
         result["checks"].append("six pipeline turns: real FAISS/BGE/Redis/SQLite/Chroma, compacted history")
         assert episodes.search(sid, "attention mechanism")
-        paper = next(iter(manager.facts.episodes(sid)))["paper_ids"][0]
+        paper = next(iter(manager.store.episodes(sid)))["paper_ids"][0]
         assert episodes.search(sid, "attention", [paper], "research_decision")
         assert episodes.search(sid, "attention", event_type="user_decision") == []
         assert episodes.search("other", "attention mechanism") == []
@@ -73,17 +85,19 @@ def main():
         assert restored.turn_count == 6 and episodes.collection.count() == 6
         assert cache.load(sid) is not None
         result["checks"].append("real Redis TTL expiry, durable restore, idempotent replay")
-        missing = manager.facts.episodes(sid)[0]
+        missing = manager.store.episodes(sid)[0]
         episodes.collection.delete(ids=[missing["episode_id"]])
         assert episodes.collection.count() == 5
         manager.load_working_memory(restored)
-        assert episodes.collection.count() == 6 and not manager.facts.episodes(sid, pending=True)
+        assert episodes.collection.count() == 6 and not manager.store.episodes(sid, pending=True)
         result["checks"].append("partial Chroma deletion repaired from SQLite originals")
         traces = [json.loads(p.read_text(encoding="utf-8")) for p in (root/"traces").glob("*.json")]
         assert len(traces) == 6 and not any(t["degraded"] for t in traces)
-        import hashlib
-        result.update(status="passed", mode="rerank", memory_backend="three_layer", turns=6, active_facts=1, episodes=6,
-                      source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('src/paper_agent').glob('*.py')},
+        source_after={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('src/paper_agent').glob('*.py')}
+        if source_before != source_after:
+            raise RuntimeError('Source changed during integration; results are not a frozen run')
+        result.update(status="passed", mode="rerank", memory_backend="three_layer", turns=6, active_long_term=0, episodes=6,
+                      source_hashes=source_after,redis_server_version=cache.client.info('server').get('redis_version'),
                       corpus_hash=retriever.metadata["corpus_hash"],
                       versions={p:importlib.metadata.version(p) for p in ("redis", "chromadb", "FlagEmbedding", "faiss-cpu")})
     except Exception as exc:

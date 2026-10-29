@@ -14,24 +14,19 @@ from .storage import digest, safe_id, write_json
 class SessionMemory:
     session_id: str
     entities: dict = field(default_factory=dict)
-    facts: dict = field(default_factory=dict)
     unresolved: list = field(default_factory=list)
     summary: dict = field(default_factory=dict)
 
-    def update(self, entities, facts, unresolved, valid_evidence):
-        validated = {}
-        for fact in facts:
-            ids = fact.get("evidence_ids", [])
-            if not ids or not set(ids) <= set(valid_evidence):
-                raise ValueError("Memory fact must reference available evidence")
-            validated[fact["key"]] = {"text": fact["text"], "evidence_ids": ids}
+    def update(self, entities, unresolved):
         for key, value in entities.items():
             self.entities.pop(key, None)
             self.entities[key] = value
-        for key, value in validated.items():
-            self.facts.pop(key, None)
-            self.facts[key] = value
         self.unresolved = list(unresolved)
+
+    @classmethod
+    def from_snapshot(cls, data):
+        from .migration import clean_memory
+        return cls(**clean_memory(data))
 
     def save(self, root):
         write_json(Path(root)/f"{safe_id(self.session_id)}.json", asdict(self))
@@ -43,14 +38,14 @@ class SessionMemory:
             data = json.loads(snapshot.read_text(encoding="utf-8"))["memory"]
             if data["session_id"] != session_id:
                 raise ValueError("Session identity mismatch")
-            return cls(**data)
+            return cls.from_snapshot(data)
         path = Path(root)/f"{safe_id(session_id)}.json"
         if not path.exists():
             return cls(session_id)
         data = json.loads(path.read_text(encoding="utf-8"))
         if data["session_id"] != session_id:
             raise ValueError("Session identity mismatch")
-        return cls(**data)
+        return cls.from_snapshot(data)
 
 
 class ContextArchive:
@@ -111,29 +106,15 @@ class ContextArchive:
                 continue
             snapshots.append((order, path.stem, value))
         snapshots.sort(key=lambda x: (x[0], x[1]))
-        latest = {}
-        for _, _, value in snapshots:
-            latest.update(value["memory"].get("facts", {}))
-        if current_memory:
-            latest.update(current_memory.facts)
         records = {}
         for order, archive_id, value in snapshots:
-            memory = value["memory"]
-            entities = memory.get("entities", {})
-            for key, fact in memory.get("facts", {}).items():
-                record = {"archive_id": archive_id, "turn_id": fact.get("turn_id"),
-                          "turn_order": order, "kind": "fact", "key": key, "content": fact,
-                          "entities": entities, "evidence_ids": fact.get("evidence_ids", []),
-                          "superseded": latest.get(key) != fact}
-                records[("fact", key, digest(fact))] = record
             for message in value.get("messages", []):
-                claims = message.get("content", {}).get("claims", []) if isinstance(message.get("content"), dict) else []
-                superseded = any(c.get("key") in latest and latest[c["key"]].get("text") != c.get("text") for c in claims)
-                record = {"archive_id": archive_id, "turn_id": message.get("turn_id"),
-                          "turn_order": order, "kind": "message", "content": message,
-                          "entities": entities, "evidence_ids": [x["chunk_id"] for c in claims for x in c.get("citations", [])],
-                          "superseded": superseded}
-                records[("message", digest(message))] = record
+                record = {"archive_id":archive_id, "turn_id":message.get("turn_id"),
+                          "turn_order":order, "kind":"message", "content":message,
+                          "entities":value["memory"].get("entities",{}),
+                          "evidence_ids":[], "superseded":False,
+                          "historical_context_not_evidence":True}
+                records[("message",digest(message))] = record
         ranked = []
         for record in records.values():
             content = json.dumps(record["content"], ensure_ascii=False)
@@ -177,12 +158,11 @@ class ContextArchive:
 
 def validate_citations(claims, evidence):
     """Structural validation only; semantic support needs a separate evaluation."""
-    by_id = {e["chunk_id"]: e for e in evidence}
+    by_id = {(e["paper_id"], e["chunk_id"]) for e in evidence}
     for claim in claims:
         if not claim.get("text", "").strip() or not claim.get("citations"):
             raise ValueError("Every factual claim needs text and citations")
         for cite in claim["citations"]:
-            chunk = by_id.get(cite["chunk_id"])
-            if chunk is None or chunk["paper_id"] != cite["paper_id"]:
+            if (cite["paper_id"], cite["chunk_id"]) not in by_id:
                 raise ValueError("Citation does not match available evidence")
     return True

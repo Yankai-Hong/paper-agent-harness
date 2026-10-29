@@ -3,7 +3,8 @@ import json
 from types import SimpleNamespace
 import pytest
 from paper_agent.memory_manager import MemoryManager
-from paper_agent.memory_stores import FactStore, RedisWorkingStore, ChromaEpisodes
+from paper_agent.long_term import MemoryStore
+from paper_agent.memory_stores import RedisWorkingStore, ChromaEpisodes
 from paper_agent.pipeline import PaperAgentState
 from test_reliability import pipeline
 from paper_agent.storage import digest
@@ -38,25 +39,25 @@ def manager(tmp_path, **kwargs):
 
 
 def test_fact_versions_conflicts_delete(tmp_path):
-    store = FactStore(tmp_path/"facts.sqlite3")
+    store = MemoryStore(tmp_path/"facts.sqlite3")
     fact = dict(key="Model_Size", text="10 parameters", source_type="user_explicit", status="active")
     with store.transaction() as db:
-        first = store.put_fact(db, "s", "t1", fact)
-        assert store.put_fact(db, "s", "t2", {**fact, "key":"model size"})["action"] == "duplicate"
-        conflict = store.put_fact(db, "s", "t3", {**fact, "text":"20 parameters"})
+        first = store.put(db, "s", "t1", fact)
+        assert store.put(db, "s", "t2", {**fact, "key":"model size"})["action"] == "duplicate"
+        conflict = store.put(db, "s", "t3", {**fact, "text":"20 parameters"})
         assert conflict["action"] == "conflict"
-        changed = store.put_fact(db, "s", "t4", {**fact, "text":"30 parameters", "replaces":first["fact_id"]})
+        changed = store.put(db, "s", "t4", {**fact, "text":"30 parameters", "replaces":first["memory_id"]})
         assert changed["action"] == "update"
-    rows = store.facts("s")
+    rows = store.memories("s")
     assert {r["status"] for r in rows} == {"active", "superseded", "conflict"}
-    assert store.facts("other") == []
-    store.delete_fact("s", changed["fact_id"])
-    assert not store.facts("s", "active")
+    assert store.memories("other") == []
+    store.delete("s", changed["memory_id"])
+    assert not store.memories("s", "active")
     with pytest.raises(RuntimeError):
         with store.transaction() as db:
-            store.put_fact(db, "s", "t5", {**fact, "key":"other"})
+            store.put(db, "s", "t5", {**fact, "key":"other"})
             raise RuntimeError("rollback")
-    assert len(store.facts("s")) == 3
+    assert len(store.memories("s")) == 3
 
 
 def test_redis_isolated_and_expiry_recovery(tmp_path):
@@ -70,8 +71,8 @@ def test_redis_isolated_and_expiry_recovery(tmp_path):
     restored = PaperAgentState("s")
     result = p.run("研究决策: alpha", restored, "t1")
     assert result["replayed_commit"] and len(restored.messages) == 2
-    assert len(m.facts.episodes("s")) == 1
-    assert len(m.facts.facts("s")) == 1
+    assert len(m.store.episodes("s")) == 1
+    assert len(m.store.memories("s")) == 0
     assert m.working.load("s") is not None
 
 
@@ -81,17 +82,17 @@ def test_current_evidence_required_and_paraphrase_not_authoritative(tmp_path):
     claim = {"text":"Accuracy is 90%.", "citations":[{"paper_id":"p", "chunk_id":"c"}]}
     answer = {"decision":"answer", "claims":[claim]}
     facts, _ = m.extract_memories("accuracy", answer, evidence, "t")
-    assert facts[0]["status"] == "active"
+    assert facts == []
     full = "Accuracy is 90%. Evaluation used 100 examples."
     facts, _ = m.extract_memories("q", {**answer, "claims":[{**claim, "text":full}]},
                                   [{**evidence[0], "text":full}], "t")
-    assert facts[0]["status"] == "active"
+    assert facts == []
     for field, value in (("chunk_id", "fake"), ("paper_id", "wrong")):
         bad = {**claim, "citations":[{**claim["citations"][0], field:value}]}
         with pytest.raises(ValueError): m.extract_memories("q", {**answer, "claims":[bad]}, evidence, "t")
     for text in ("Accuracy is 99%.", "The system performs well."):
         facts, _ = m.extract_memories("q", {**answer, "claims":[{**claim, "text":text}]}, evidence, "t")
-        assert facts[0]["status"] == "conflict"
+        assert facts == []
     with pytest.raises(ValueError): m.extract_memories("q", answer, [], "t")
 
 
@@ -99,7 +100,7 @@ def test_service_failure_outbox_recovery_and_trace(tmp_path):
     m = manager(tmp_path, working=Down(), episodic=Down())
     p = pipeline(tmp_path, mode="bm25", memory_manager=m)
     p.run("研究决策: alpha", PaperAgentState("s"), "t1")
-    assert len(m.facts.episodes("s", pending=True)) == 1
+    assert len(m.store.episodes("s", pending=True)) == 1
     trace = json.loads((tmp_path/"traces/t1.json").read_text())
     assert trace["degraded"] and trace["commit_status"] == "committed"
     assert "secret connection" not in json.dumps(trace)
@@ -107,7 +108,7 @@ def test_service_failure_outbox_recovery_and_trace(tmp_path):
     m.working = RedisWorkingStore("unused", client=Cache())
     m.episodic = Episodes()
     assert p.run("研究决策: alpha", PaperAgentState("s"), "t1")["replayed_commit"]
-    assert not m.facts.episodes("s", pending=True)
+    assert not m.store.episodes("s", pending=True)
     assert len(m.episodic.values) == 1
 
 
@@ -116,7 +117,7 @@ def test_strict_failure_has_trace_and_no_commit(tmp_path):
     p = pipeline(tmp_path, memory_manager=m)
     with pytest.raises(RuntimeError, match="redis_read"):
         p.run("alpha", PaperAgentState("s"), "t1")
-    assert m.facts.snapshot("s") is None
+    assert m.store.snapshot("s") is None
     assert json.loads((tmp_path/"traces/t1.json").read_text())["status"] == "error"
 
 
@@ -127,23 +128,23 @@ def test_lost_index_recalled_from_original_and_rebuilt(tmp_path):
     p.run("研究决策: alpha", state, "t1")
     m.episodic.values.clear()
     assert m.retrieve_memories(state, "alpha")
-    assert m.facts.episodes("s", pending=True)
+    assert m.store.episodes("s", pending=True)
     m.load_working_memory(state)
-    assert len(m.episodic.values) == 1 and not m.facts.episodes("s", pending=True)
+    assert len(m.episodic.values) == 1 and not m.store.episodes("s", pending=True)
 
 
 def test_long_conversation_recall_and_legacy_import(tmp_path):
     m = manager(tmp_path)
     state = PaperAgentState("s")
-    state.memory.facts["old"] = {"text":"legacy finding", "evidence_ids":["missing"]}
+    state.memory.summary["legacy_context_unverified"] = True
     state.save(tmp_path/"memory")
     p = pipeline(tmp_path, mode="bm25", memory_manager=m)
     for i in range(6): p.run(f"研究决策: alpha discussion {i}", state, f"t{i}")
     assert len(state.messages) == 8
-    assert any(r["reason"] == "legacy_unverified" for r in m.facts.facts("s", "conflict"))
+    assert not m.store.memories("s")
     assert m.retrieve_memories(state, "alpha")
     assert not m.retrieve_memories(PaperAgentState("other"), "alpha")
-    assert len(m.facts.episodes("s")) == 6
+    assert len(m.store.episodes("s")) == 6
     assert list((tmp_path/"memory/archives").glob("*.json"))
 
 
@@ -170,14 +171,14 @@ def test_explicit_user_update_and_similar_key_conflict(tmp_path):
     state = PaperAgentState("s")
     p.run("记住:输出语言=中文", state, "t1")
     p.run("记住:输出语言=英文", state, "t2")
-    rows = [f for f in m.facts.facts("s") if f["source_type"] == "user_explicit"]
+    rows = [f for f in m.store.memories("s") if f["source_type"] == "user_explicit"]
     assert {f["status"] for f in rows} == {"active", "conflict"}
     p.run("更新记忆:输出语言=英文", state, "t3")
-    active = [f for f in m.facts.facts("s", "active") if f["source_type"] == "user_explicit"]
+    active = [f for f in m.store.memories("s", "active") if f["source_type"] == "user_explicit"]
     assert len(active) == 1 and active[0]["text"] == "英文" and active[0]["replaces"]
-    with m.facts.transaction() as db:
-        result = m.facts.put_fact(db, "s", "t4", dict(key="different", text="英文", source_type="user_explicit", status="active"))
-        assert result["reason"] == "similar_content_different_key"
+    with m.store.transaction() as db:
+        result = m.store.put(db, "s", "t4", dict(key="different", text="英文", source_type="user_explicit", status="active"))
+        assert result["action"] == "active"  # Different attributes no longer conflict by text overlap.
 
 
 def test_archive_failure_rolls_back_all_durable_memory(tmp_path, monkeypatch):
@@ -188,8 +189,8 @@ def test_archive_failure_rolls_back_all_durable_memory(tmp_path, monkeypatch):
     def fail(*a, **kw): raise OSError("archive offline")
     monkeypatch.setattr(ContextArchive, "store", fail)
     with pytest.raises(OSError): p.run("alpha", state, "t1")
-    assert m.facts.snapshot("s") is None
-    assert not m.facts.facts("s") and not m.facts.episodes("s")
+    assert m.store.snapshot("s") is None
+    assert not m.store.memories("s") and not m.store.episodes("s")
     assert len(state.messages) == 8 and not state.committed_turns
 
 
@@ -201,7 +202,7 @@ def test_concurrent_commit_rejected_and_summary_fallback(tmp_path):
     # Scripted reasoner has no summary schema: bounded compaction must preserve archives.
     assert len(state.messages) == 8
     assert any(e["operation"] == "semantic_compaction" for e in m.events if "operation" in e)
-    before = m.facts.snapshot("s")
+    before = m.store.snapshot("s")
     with pytest.raises(RuntimeError, match="Concurrent"):
         m.commit(state, "q", {"decision":"refuse", "claims":[]}, [], "stale", 0, True, "bounded", p.reasoner)
-    assert m.facts.snapshot("s") == before
+    assert m.store.snapshot("s") == before

@@ -12,7 +12,7 @@ def state():
         claim={'text':f'fact-{i}','citations':[{'paper_id':f'p{i}','chunk_id':f'c{i}'}]}
         s.messages.extend([{'role':'user','content':f'question-{i}'},
                            {'role':'assistant','content':{'claims':[claim]}}])
-        s.memory.update({'it':f'p{i}'},[{'key':str(i),'text':f'fact-{i}','evidence_ids':[f'c{i}']}],[],[f'c{i}'])
+        s.memory.update({'it':f'p{i}'},[])
     return s
 
 
@@ -25,7 +25,8 @@ def test_semantic_selection_keeps_facts_exact_and_archives_history(tmp_path):
             return {'overview':'Topics p0 through p5'}
     out=semantic_compact_state(s,tmp_path,Reasoner())
     assert s.memory.summary['paper_order'][0]=='p0'
-    assert s.memory.facts['0']==before.memory.facts['0']
+    assert s.memory.entities == before.memory.entities
+    assert not hasattr(s.memory,'facts')
     assert len(s.messages)==8
     assert len(ContextArchive(tmp_path).read(out['archive_id'])['messages'])==12
 

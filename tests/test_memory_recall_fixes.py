@@ -17,16 +17,16 @@ def episode(identifier, text="alpha research decision"):
 
 
 def add_episode(m, e):
-    with m.facts.transaction() as db:
+    with m.store.transaction() as db:
         db.execute("INSERT INTO episodes VALUES (?,?,?,1)", (e["episode_id"], "s", json.dumps(e)))
     m.episodic.write(e)
 
 
 def test_unified_ranking_budget_and_dedup(tmp_path, monkeypatch):
     m = manager(tmp_path)
-    with m.facts.transaction() as db:
+    with m.store.transaction() as db:
         for i in range(12):
-            m.facts.put_fact(db, "s", f"f{i}", dict(key=f"alpha {i}", text=f"alpha record {i}",
+            m.store.put(db, "s", f"f{i}", dict(key=f"alpha {i}", text=f"alpha record {i}",
                             source_type="user_explicit", status="active"))
     e = episode("decision")
     add_episode(m, e)
@@ -44,30 +44,27 @@ def test_unified_ranking_budget_and_dedup(tmp_path, monkeypatch):
 @pytest.mark.parametrize("stored", ["paper_a", '["paper_b", "paper_a"]', ["paper_a", "paper_b"]])
 def test_multi_paper_and_legacy_scope(tmp_path, stored):
     m = manager(tmp_path)
-    with m.facts.transaction() as db:
-        m.facts.put_fact(db, "s", "t", dict(key="alpha", text="alpha finding", source_type="paper_evidence",
-                        paper_id=stored, status="active", evidence_ids=["c"]))
-    state = PaperAgentState("s")
-    assert m.retrieve_memories(state, "alpha", ["paper_a"])
-    assert bool(m.retrieve_memories(state, "alpha", ["paper_b"])) == (len(paper_ids(stored)) == 2)
-    assert m.retrieve_memories(state, "alpha", ["paper_c"]) == []
-    assert m.retrieve_memories(state, "alpha")
+    with m.store.transaction() as db:
+        with pytest.raises(ValueError):
+            m.store.put(db,'s','t',dict(key='alpha',text='finding',source_type='paper_evidence',status='active'))
+        m.store.put(db,'s','t',dict(key='language',text='English',source_type='user_explicit',status='active'))
+    assert m.retrieve_memories(PaperAgentState('s'),'alpha',['paper_c'])
     with pytest.raises(ValueError): paper_ids('["paper_a", 12]')
     with pytest.raises(ValueError): paper_ids('[broken')
 
 
 def test_conflict_history_and_generate_boundary(tmp_path):
     m = manager(tmp_path)
-    with m.facts.transaction() as db:
+    with m.store.transaction() as db:
         base = dict(key="alpha", text="alpha old", source_type="user_explicit", status="active")
-        old = m.facts.put_fact(db, "s", "old", base)
-        m.facts.put_fact(db, "s", "conflict", {**base, "text":"alpha disputed"})
-        m.facts.put_fact(db, "s", "new", {**base, "text":"alpha current", "replaces":old["fact_id"]})
+        old = m.store.put(db, "s", "old", base)
+        m.store.put(db, "s", "conflict", {**base, "text":"alpha disputed"})
+        m.store.put(db, "s", "new", {**base, "text":"alpha current", "replaces":old["memory_id"]})
     state = PaperAgentState("s")
     records = m.retrieve_memories(state, "alpha")
     assert {r["status"] for r in records} == {"active", "conflict"}
     conflict = next(r for r in records if r["status"] == "conflict")
-    assert conflict["kind"] == "conflict" and conflict["requires_resolution"] and not conflict["is_current_fact"]
+    assert conflict["kind"] == "conflict" and conflict["requires_resolution"] and not conflict["is_current_memory"]
     assert conflict["historical_context_not_evidence"] and not conflict["is_authoritative"]
     assert any(r["status"] == "superseded" for r in m.retrieve_memories(state, "alpha history"))
     p = pipeline(tmp_path, mode="bm25", memory_manager=m)
@@ -81,7 +78,7 @@ def test_conflict_history_and_generate_boundary(tmp_path):
         assert any(r["status"] == "conflict" and not r["is_authoritative"]
                    for r in payloads[stage]["historical_context_not_evidence"])
     assert payloads["generate"]["evidence"] == [{"paper_id":"p", "chunk_id":"c", "text":"alpha evidence"}]
-    assert any(f["text"] == "alpha disputed" for f in m.facts.facts("s", "conflict"))
+    assert any(f["text"] == "alpha disputed" for f in m.store.memories("s", "conflict"))
 
 
 def test_retention_and_multi_paper_extraction(tmp_path):
@@ -90,17 +87,17 @@ def test_retention_and_multi_paper_extraction(tmp_path):
     answer = dict(decision="answer", claims=[dict(text="Exact finding.", citations=[
         dict(chunk_id=p, paper_id=p) for p in ("a", "b")])])
     facts, ordinary = m.extract_memories("What is the finding?", answer, evidence, "t")
-    assert ordinary is None and facts[0]["paper_ids"] == ["a", "b"] and facts[0]["status"] == "active"
+    assert ordinary is None and facts == []
     for query in ("研究决策:采用此方法", "实验结果:下降 10%", "后续待办:复现实验", "偏好:语言=中文"):
         _, retained = m.extract_memories(query, answer, evidence, "t")
-        assert retained and retained["retention_reason"] == "explicit_user_marker"
+        assert retained and retained["event_type"]
     p = pipeline(tmp_path, mode="bm25", memory_manager=m)
     state = PaperAgentState("s")
     p.run("alpha", state, "ordinary")
-    assert not m.facts.episodes("s") and len(state.messages) == 2
+    assert not m.store.episodes("s") and len(state.messages) == 2
     p.run("研究决策: alpha", state, "decision")
     p.run("研究决策: alpha", state, "decision")
-    assert len(m.facts.episodes("s")) == 1 and len(state.messages) == 4
+    assert len(m.store.episodes("s")) == 1 and len(state.messages) == 4
 
 
 def test_batched_partial_index_and_changed_payload(tmp_path):
@@ -119,7 +116,7 @@ def test_batched_partial_index_and_changed_payload(tmp_path):
     m.repair_projections(state)
     assert len(m.episodic.values) == 40 and all(len(b) <= 32 for b in batches)
     assert m.episodic.values["e02"]["content"] == "alpha research decision"
-    assert not m.facts.episodes("s", pending=True)
+    assert not m.store.episodes("s", pending=True)
 
 
 def test_real_chroma_distance_and_partial_recovery(tmp_path):
@@ -135,7 +132,7 @@ def test_real_chroma_distance_and_partial_recovery(tmp_path):
     assert hits[0]["metric"] == "l2" and hits[0]["distance"] == pytest.approx(0)
     assert hits[0]["relevance_score"] == pytest.approx(1)
     assert m.retrieve_memories(PaperAgentState("s"), "no match") == []
-    assert not m.facts.episodes("s", pending=True)
+    assert not m.store.episodes("s", pending=True)
     store.client.create_collection("cosine_test", embedding_function=None,
         metadata={"encoder_signature":store.collection.metadata["encoder_signature"], "hnsw:space":"cosine"})
     cosine = ChromaEpisodes(tmp_path/"chroma", encoder, collection="cosine_test", client=store.client, min_similarity=.5)
@@ -148,8 +145,8 @@ def test_real_chroma_distance_and_partial_recovery(tmp_path):
     assert store.collection.count() == 1
     m.repair_projections(PaperAgentState("s"))
     assert store.collection.count() == 2 and store.search("s", "alpha")[0]["episode_id"] == "near"
-    changed = {**next(e for e in m.facts.episodes("s") if e["episode_id"] == "near"), "paper_ids":["new"]}
-    with m.facts.transaction() as db:
+    changed = {**next(e for e in m.store.episodes("s") if e["episode_id"] == "near"), "paper_ids":["new"]}
+    with m.store.transaction() as db:
         db.execute("UPDATE episodes SET payload=? WHERE episode_id=?", (json.dumps(changed), "near"))
     m.repair_projections(PaperAgentState("s"))
     assert store.search("s", "alpha", ["p"]) == []
