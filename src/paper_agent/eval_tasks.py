@@ -234,13 +234,17 @@ def run_e2e_session(factory, session_id, rows, output):
         pred = {"turn_id": row["turn_id"], "session_id": session_id, "turn": row["turn"],
                 "answer": None, "error": None}
         try:
-            result = pipeline.run(row["question"], state, turn_id=row["turn_id"])
+            result = pipeline.run(row["question"], state, turn_id=row["turn_id"],case_id=row['turn_id'],run_id=str(output))
             pred.update(result)
         except Exception as exc:
             pred["error"] = f"{type(exc).__name__}: {exc}"
-        trace_path = Path(output)/"traces"/session_id/(row["turn_id"]+".json")
+        from .observability import local_trace_path
+        trace_path = Path(pred['trace_path']) if pred.get('trace_path') else local_trace_path(
+            pipeline.trace_dir, {'turn_id':row['turn_id'], 'session_id':session_id, 'run_id':str(output)})
         trace = json.loads(trace_path.read_text(encoding="utf-8")) if trace_path.exists() else {}
         pred["assessment"] = assess(row, pred, trace)
+        from .observability import attach_scores
+        attach_scores(trace_path,pred['assessment'],'rule',pipeline.exporter)
         predictions.append(pred)
         write_jsonl(Path(output)/"sessions"/(session_id+".jsonl"), predictions)
     return predictions
@@ -266,28 +270,28 @@ def run_memory(pipeline_factory, rows):
         for row in sorted(session_rows, key=lambda r: r.get("turn", 0)):
             try:
                 result = pipeline.run(row["question"], state, turn_id=row["id"])
-                final_memory[row["id"]] = {"entities": dict(state.memory.entities), "facts": dict(state.memory.facts),
-                                          "summary": dict(state.memory.summary),
-                                          "fact_source_papers": sorted({pipeline.retriever.by_id[e]["paper_id"]
-                                              for f in state.memory.facts.values() for e in f.get("evidence_ids", [])
-                                              if e in pipeline.retriever.by_id})}
+                final_memory[row["id"]] = {"entities": dict(state.memory.entities),
+                    "long_term": pipeline.memory_manager.store.memories(session_id) if pipeline.memory_manager else [],
+                    "summary": dict(state.memory.summary),
+                    "legacy_fact_metrics": "unavailable; retired representation"}
                 per_case.append({"id": row["id"], "session_id": session_id, "error": None,
                                  "answer": result["answer"], "trace_id": result["trace_id"]})
             except Exception as exc:
                 per_case.append({"id": row.get("id"), "session_id": session_id,
                                  "error": f"{type(exc).__name__}: {exc}"})
-        final_memory[session_id] = {"entities": state.memory.entities, "facts": state.memory.facts,
+        final_memory[session_id] = {"entities": state.memory.entities, "legacy_fact_metrics": "unavailable; retired representation",
                                     "summary": state.memory.summary}
     return final_memory, per_case
 
 
 def memory_metrics(rows, final_memory):
-    correct, total, per_case = 0, 0, []
+    correct, total, per_case, unknown_checks, unknown_cases = 0, 0, [], 0, 0
     for row in rows:
         row_id = row["id"]
         observed = final_memory.get(row_id, {})
         checkpoints = row.get("checkpoints") or {}
         ok = True
+        row_unknown = False
         targets = checkpoints.get("discussed_papers", [])
         for paper_id in targets:
             total += 1
@@ -295,12 +299,24 @@ def memory_metrics(rows, final_memory):
             ok = ok and hit
             per_case.append({"id": row_id, "kind": "discussed_papers", "expected": paper_id, "correct": hit})
         for paper_id in checkpoints.get("fact_source_papers", []):
+            if observed.get('legacy_fact_metrics'):
+                unknown_checks += 1
+                row_unknown = True
+                per_case.append({'id':row_id,'kind':'fact_source_papers','expected':paper_id,
+                                 'correct':None,'reason':'retired_memory_representation'})
+                continue
             total += 1
             hit = paper_id in observed.get("fact_source_papers", [])
             ok = ok and hit
             per_case.append({"id": row_id, "kind": "fact_source_papers", "expected": paper_id, "correct": hit})
         for kind in ("entities", "facts"):
             for key, value in (checkpoints.get(kind) or {}).items():
+                if kind == 'facts' and observed.get('legacy_fact_metrics'):
+                    unknown_checks += 1
+                    row_unknown = True
+                    per_case.append({'id':row_id,'key':key,'kind':kind,'expected':value,
+                                     'correct':None,'reason':'retired_memory_representation'})
+                    continue
                 total += 1
                 got = (observed.get(kind) or {}).get(key)
                 if got != value:
@@ -310,8 +326,11 @@ def memory_metrics(rows, final_memory):
                 else:
                     per_case.append({"id": row_id, "key": key, "kind": kind,
                                      "expected": value, "correct": True})
-        if ok and any(checkpoints.get(k) for k in ("discussed_papers", "fact_source_papers", "entities", "facts")):
+        unknown_cases += row_unknown
+        if ok and not row_unknown and any(checkpoints.get(k) for k in ("discussed_papers", "fact_source_papers", "entities", "facts")):
             correct += 1
-    return {"checkpoint_accuracy": rate(correct, len(rows)) if total else None,
+    return {"checkpoint_accuracy": rate(correct, len(rows)) if total or unknown_checks else None,
+            "unknown_checks":unknown_checks,"unknown_cases":unknown_cases,
+            "metric_note":"unknown checks are not counted as success; checkpoint accuracy is a lower bound",
             "empty_checkpoints": sum(not any((r.get("checkpoints") or {}).get(k) for k in ("entities", "facts", "discussed_papers", "fact_source_papers")) for r in rows),
             "checked_keys": total, "per_check": per_case}

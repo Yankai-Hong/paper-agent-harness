@@ -226,6 +226,12 @@ def cmd_e2e(args):
             jrec = judge_answer(_reasoner(config, "judge-" + pred["turn_id"]), pred["turn_id"],
                                 q, pred["answer"], cited, decision=pred["answer"].get("decision"))
             judge_calls.append(jrec.as_dict())
+            from .observability import attach_scores
+            dimensions=jrec.judgment or {'overall':None}
+            attach_scores(Path(pred['trace_path']) if pred.get('trace_path') else
+                          Path(args.output)/'traces'/pred['session_id']/(pred['turn_id']+'.json'),
+                          {k:v.get('score') if isinstance(v,dict) else None for k,v in dimensions.items()},
+                          'same_model_judge')
     metrics = {"turns": len(rows), "completed": sum(1 for p in predictions if not p.get("error")),
                "errors": sum(1 for p in predictions if p.get("error")),
                "dataset_hash": digest(rows)}

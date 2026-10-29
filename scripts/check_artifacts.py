@@ -20,8 +20,8 @@ for document in documents:
                 broken.append(f"{document.relative_to(root)} -> {target}")
 assert not broken, broken
 freeze = json.loads((current / "live-v2/freeze.json").read_text(encoding="utf-8"))
-for name, expected in freeze["source_hashes"].items():
-    assert hashlib.sha256((root / "src/paper_agent" / name).read_bytes()).hexdigest() == expected, name
+source_changes = [name for name, expected in freeze["source_hashes"].items()
+                  if hashlib.sha256((root / "src/paper_agent" / name).read_bytes()).hexdigest() != expected]
 for name, expected in freeze["dataset_hashes"].items():
     assert digest(read_jsonl(root / "data/eval/v0.6" / name)) == expected, name
 queries = read_jsonl(root / "data/eval/v0.6/retrieval.jsonl")
@@ -45,4 +45,4 @@ for pred in predictions:
     assert trace["commit_status"] == "committed"
 print(json.dumps({"status": "passed", "documents": len(documents), "frozen_tests": counts,
                   "retrieval_recomputed": verified, "e2e_traces": 120,
-                  "source_and_dataset_hashes": "matched", "api_calls": 0}, ensure_ascii=False))
+                  "historical_dataset_hashes": "matched", "current_source_changed_since_historical_freeze": source_changes, "api_calls": 0}, ensure_ascii=False))

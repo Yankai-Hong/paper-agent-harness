@@ -1,6 +1,14 @@
+当前修订验证见 [revision/FINAL](../reports/revision/FINAL.md)，固定低成本实验使用 scripts/revision_experiments.py；规则标签、替身、真实服务与模型质量分别报告。
+
+2026-10-28 跟进的两项修复、受限与正常环境测试及新的三组模型配对见 [followup](../reports/revision/FOLLOWUP.md)。原 `model-pair/summary.json` 的 `budget.actual_requests=6` 实际表示预算上限，逐组实际2+3=5；原始文件未改。新的实验使用 `max_actual_requests` 和 `actual_requests_total` 分列。
+
+最终多轮范围修复、当前源码真实三存储复验及六例多轮对照见 [closure](../reports/revision/CLOSURE.md)。两条实际前置对话和各条件的模型调用分别计入；作者构造的目标标签、官方证据段落和 unknown 语义质量分开报告。
+
+旧数据集中的 `facts`、`fact_source_papers` 检查依赖已退役的表示；新运行将这些检查记为 unknown，检查点分数为不将 unknown 视为成功的下界，不将空值冒充观测结果。旧冻结报告仍保留原始口径。
+
 # 当前评测与复现
 
-当前唯一验收结论：[FINAL_ACCEPTANCE.md](../reports/FINAL_ACCEPTANCE.md)。主配置为 `configs/final-acceptance.json`：真实 BGE-M3/FAISS、BM25/RRF、Cross-Encoder 与 three_layer 记忆。默认 CLI 的 BM25/legacy 不代表该配置。
+修订前冻结验收结论：[FINAL_ACCEPTANCE.md](../reports/FINAL_ACCEPTANCE.md)。主配置为 `configs/final-acceptance.json`：真实 BGE-M3/FAISS、BM25/RRF、Cross-Encoder 与 three_layer 记忆。默认 CLI 的 BM25/legacy 不代表该配置。
 
 ## 数据与指标
 
