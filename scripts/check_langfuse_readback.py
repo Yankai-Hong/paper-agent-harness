@@ -84,13 +84,17 @@ def verify_trace(trace, observations, scores):
     generations = [o for o in observations if _get(o, 'name') == 'LLM request']
     stage_ids = {_get(o, 'id') for o in children}
     expected_names = Counter(s.get('stage', 'unknown') + (f" #{s['attempt']}" if type(s.get('attempt')) is int and s['attempt'] > 1 else '') for s in stages)
-    correct_tree = (not _get(root, 'parent_observation_id') and
-                    all(_get(o, 'trace_id') == trace_id for o in observations) and
+    correct_tree = (all(_get(o, 'trace_id') == trace_id for o in observations) and
                     Counter(_get(o, 'name') for o in children) == expected_names and
                     len(generations) == len(calls) and
                     all(_get(o, 'parent_observation_id') in stage_ids for o in generations) and
                     len(observations) == 1 + len(children) + len(generations))
-    result['tree'] = 'passed' if correct_tree else 'failed'
+    root_parent = _get(root, 'parent_observation_id')
+    # The SDK may create a remote virtual parent for a chosen trace ID. An
+    # unresolved external parent is not proof of a valid root, nor proof of an
+    # invalid tree. A parent referring to this tree creates a cycle and fails.
+    result['tree'] = ('failed' if not correct_tree or root_parent in by_id else
+                      'unknown' if root_parent else 'passed')
     stage_checks = []
     retrieve_checks = []
     usage_checks = []
@@ -128,8 +132,14 @@ def verify_trace(trace, observations, scores):
             call_remote_meta = _get(call_remote, 'metadata')
             request_checks.extend([_check(callmeta.get('status'), call_remote_meta.get('status')),
                                    _check(callmeta.get('elapsed_ms'), call_remote_meta.get('elapsed_ms')),
-                                   _check(_level(callmeta), _get(call_remote, 'level')),
-                                   _check(callmeta.get('model_requested'), _get(call_remote, 'provided_model_name'))])
+                                   _check(_level(callmeta), _get(call_remote, 'level'))])
+            # Server versions may return either field; if both exist, compare
+            # both rather than masking an inconsistency with a fallback.
+            models = [_get(call_remote, key) for key in ('provided_model_name', 'model')]
+            models = [model for model in models if model is not None]
+            request_checks.extend([_check(callmeta.get('model_requested'), model) for model in models] or ['unknown'])
+            if call_remote_meta.get('model_requested') is not None:
+                request_checks.append(_check(callmeta.get('model_requested'), call_remote_meta['model_requested']))
             for key in ('repair','retry_reason'):
                 if callmeta.get(key) is not None:
                     request_checks.append(_check(callmeta[key], call_remote_meta.get(key)))
@@ -238,7 +248,8 @@ def main():
         if not _valid_endpoint(url):
             raise ValueError()
         from langfuse.api import LangfuseAPI
-        api = LangfuseAPI(base_url=url+'/api/public', username=os.environ['LANGFUSE_PUBLIC_KEY'],
+        # SDK 4.8.1 endpoint paths already start with /api/public.
+        api = LangfuseAPI(base_url=url, username=os.environ['LANGFUSE_PUBLIC_KEY'],
                           password=os.environ['LANGFUSE_SECRET_KEY'], timeout=3, follow_redirects=False)
         result = bounded_readback(api, traces)
     except Exception:

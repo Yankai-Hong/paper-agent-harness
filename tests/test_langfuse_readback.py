@@ -62,6 +62,26 @@ def test_bad_parent_and_score_assignment_fail():
     assert result['tree'] == result['rule_score'] == 'failed'
 
 
+def test_unresolved_root_parent_unknown_and_cycle_fails():
+    trace, obs, scores = fixture('a')
+    obs[0]['parent_observation_id'] = 'external-unresolved-parent'
+    assert readback.verify_trace(trace, obs, scores)['tree'] == 'unknown'
+    obs[0]['parent_observation_id'] = obs[1]['id']
+    assert readback.verify_trace(trace, obs, scores)['tree'] == 'failed'
+
+
+def test_model_field_fallback_checks_conflicting_values():
+    trace, obs, scores = fixture('a')
+    generation = obs[-1]
+    generation['model'] = generation.pop('provided_model_name')
+    assert readback.verify_trace(trace, obs, scores)['request'] == 'passed'
+    generation['provided_model_name'] = 'different-model'
+    assert readback.verify_trace(trace, obs, scores)['request'] == 'failed'
+    generation.pop('provided_model_name')
+    generation['metadata']['model_requested'] = 'different-model'
+    assert readback.verify_trace(trace, obs, scores)['request'] == 'failed'
+
+
 def test_missing_response_and_score_are_unknown():
     trace, obs, _ = fixture('a')
     assert readback.verify_trace(trace, [], [])['tree'] == 'unknown'
@@ -158,7 +178,7 @@ def test_basic_auth_endpoint_requires_https_or_loopback():
     assert not readback._valid_endpoint('https://example.org/?secret=value')
 
 
-def test_sdk_v4_mock_transport_contract():
+def test_sdk_v4_mock_transport_contract(monkeypatch, tmp_path, capsys):
     """Exercise real SDK response decoding without any socket or Langfuse server."""
     langfuse = pytest.importorskip('langfuse')
     httpx = pytest.importorskip('httpx')
@@ -168,7 +188,7 @@ def test_sdk_v4_mock_transport_contract():
     def transport(request):
         tid = request.url.params['traceId']
         trace, obs, scores = data[tid]
-        if request.url.path.endswith('/v2/observations'):
+        if request.url.path == '/api/public/v2/observations':
             rows = []
             for obj in obs:
                 row = {'id':obj['id'],'traceId':tid,'name':obj['name'],
@@ -180,7 +200,7 @@ def test_sdk_v4_mock_transport_contract():
                        'usageDetails':obj.get('usage_details')}
                 rows.append(row)
             return httpx.Response(200,json={'data':rows,'meta':{}})
-        assert request.url.path.endswith('/v3/scores')
+        assert request.url.path == '/api/public/v3/scores'
         obj=scores[0]
         row={'id':obj['id'],'projectId':'fixture','name':obj['name'],'value':obj['value'],
              'source':'API','dataType':'NUMERIC','environment':'paper-agent',
@@ -190,7 +210,23 @@ def test_sdk_v4_mock_transport_contract():
 
     client = httpx.Client(transport=httpx.MockTransport(transport),follow_redirects=False)
     from langfuse.api import LangfuseAPI
-    api = LangfuseAPI(base_url='http://fixture/api/public',username='public',password='secret',httpx_client=client)
+    api = LangfuseAPI(base_url='https://fixture',username='public',password='secret',httpx_client=client)
     result = readback.readback(api, [first[0],second[0]], time.monotonic()+10)
     assert result['status'] == 'readback_checked'
     assert result['complete_end_to_end_acceptance'] == 'not_verified'
+
+    # Exercise the production entry point, including its base_url construction.
+    # A duplicated /api/public prefix must fail the strict transport paths above.
+    import langfuse.api
+    real_api = langfuse.api.LangfuseAPI
+    monkeypatch.setattr(langfuse.api, 'LangfuseAPI', lambda **kwargs: real_api(**kwargs, httpx_client=client))
+    monkeypatch.setattr(readback, 'version', lambda _: '4.8.1')
+    monkeypatch.setenv('LANGFUSE_BASE_URL', 'https://fixture')
+    monkeypatch.setenv('LANGFUSE_PUBLIC_KEY', 'public')
+    monkeypatch.setenv('LANGFUSE_SECRET_KEY', 'secret')
+    monkeypatch.chdir(tmp_path)
+    for name, case in (('a.json', first), ('b.json', second)):
+        Path(name).write_text(json.dumps(case[0]), encoding='utf-8')
+    monkeypatch.setattr('sys.argv', ['check', 'a.json', 'b.json'])
+    assert readback.main() == 0
+    assert json.loads(capsys.readouterr().out)['status'] == 'readback_checked'
