@@ -141,6 +141,11 @@ class PaperPipeline:
                 failed.value.update(turn_id=turn_id, case_id=case_id, run_id=run_id, status="error", commit_status="uncommitted",
                                     memory_events=self.memory_manager.events, error_type=type(exc).__name__)
                 failed.finish(self.trace_dir)
+                try:
+                    self.exporter.export(failed.value)
+                    self.exporter.flush()
+                except Exception:
+                    pass  # Telemetry cannot replace the original memory error.
                 raise
         if turn_id in state.committed_turns:
             committed = state.committed_turns[turn_id]

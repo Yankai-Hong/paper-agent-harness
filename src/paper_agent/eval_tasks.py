@@ -225,7 +225,7 @@ def pipeline_state(pipeline, session_id):
     return PaperAgentState(session_id)
 
 
-def run_e2e_session(factory, session_id, rows, output):
+def run_e2e_session(factory, session_id, rows, output, provenance=None):
     from .eval_protocol import assess
     pipeline = factory(session_id)
     state = pipeline_state(pipeline, session_id)
@@ -242,6 +242,15 @@ def run_e2e_session(factory, session_id, rows, output):
         trace_path = Path(pred['trace_path']) if pred.get('trace_path') else local_trace_path(
             pipeline.trace_dir, {'turn_id':row['turn_id'], 'session_id':session_id, 'run_id':str(output)})
         trace = json.loads(trace_path.read_text(encoding="utf-8")) if trace_path.exists() else {}
+        if provenance:
+            pred["evaluation_provenance"] = provenance
+        if provenance and trace:
+            # Local trace is authoritative; only the hashes and fixed schema are
+            # eligible for the external metadata whitelist, never the raw dataset.
+            trace.update(dataset_hash=provenance["dataset_hash"],
+                         evaluation_config_hash=provenance["evaluation_config_hash"],
+                         evaluation_schema="paper_agent_e2e_rule_v1")
+            write_json(trace_path, trace)
         pred["assessment"] = assess(row, pred, trace)
         from .observability import attach_scores
         attach_scores(trace_path,pred['assessment'],'rule',pipeline.exporter)

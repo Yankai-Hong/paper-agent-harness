@@ -55,11 +55,18 @@ def trace_summary(trace):
     recall=trace.get('archive_recall') or []
     reasons={'retrieval_route_failed','reranker_unavailable','citation_validation_failed',
              'memory_projection_or_compaction_degraded','semantic_compaction_failed'}
+    memory_stages=[s for s in trace.get('stages',[]) if isinstance(s,dict) and s.get('stage')=='Memory']
+    compactions=[s.get('compaction') for s in memory_stages if isinstance(s.get('compaction'),dict)]
+    operations={'redis_read','redis_write','chroma_read','chroma_outbox','chroma_consistency','chroma_similarity',
+                'file_projection','projection_recovery','semantic_compaction'}
     return {'memory_recall_count':len(recall),
             'memory_long_term_recall_count':sum(isinstance(r,dict) and r.get('retrieval_source')=='sqlite' for r in recall),
             'memory_episode_recall_count':sum(isinstance(r,dict) and r.get('kind')=='episode' for r in recall),
+            'memory_archive_recall_count':sum(isinstance(r,dict) and r.get('retrieval_source')=='archive' for r in recall),
             'memory_repair_count':sum(len(e.get('episode_ids',[])) for e in events if isinstance(e,dict) and e.get('operation')=='chroma_repair_queued' and isinstance(e.get('episode_ids',[]),list)),
+            'memory_compaction_count':sum(c.get('compressed') is True for c in compactions),
             'memory_degraded_count':sum(isinstance(e,dict) and bool(e.get('degraded')) for e in events),
+            'memory_degradation_operations':sorted({e['operation'] for e in events if isinstance(e,dict) and e.get('degraded') and e.get('operation') in operations}),
             'degradation_reasons':[r for r in trace.get('degradation_reasons',[]) if r in reasons][:8]}
 
 def stage_summary(stage):
@@ -103,13 +110,18 @@ def attach_scores(path, scores, source, exporter=None):
     existing={(s['source'],s['name']):s for s in trace.get('scores',[])}
     for name,value in scores.items():
         if value is None or isinstance(value,(bool,int)) or (isinstance(value,float) and math.isfinite(value)):
-            existing[(source,name)]={'source':source,'name':name,'value':int(value) if isinstance(value,bool) else value,
-                                    'status':'unknown' if value is None else 'known'}
+            previous=existing.get((source,name),{})
+            record={'source':source,'name':name,'value':int(value) if isinstance(value,bool) else value,
+                    'status':'unknown' if value is None else 'known'}
+            if value is None and (previous.get('value') is not None or previous.get('remote_status')=='unknown_not_retracted'):
+                record['remote_status']='unknown_not_retracted'
+            existing[(source,name)]=record
     trace['scores']=list(existing.values())
     write_json(path,trace)
     if exporter and mapping_valid:
         try:
             exporter.export_scores(trace)
+            exporter.flush()  # Bounded wait; queued scores can still be lost on process exit.
         except Exception:
             pass  # Score export is optional and never changes the evaluation result.
 
@@ -120,6 +132,8 @@ USAGE_NAMES = frozenset('input_tokens output_tokens cache_read_input_tokens cach
 def metadata(value):
     result = {}
     for key in FIELDS:
+        if key not in value:
+            continue
         item = value.get(key)
         if isinstance(item, (bool, int)) or (isinstance(item,float) and math.isfinite(item)) or item is None:
             result[key] = item
@@ -131,13 +145,43 @@ def metadata(value):
     for key in ('session_id', 'turn_id', 'case_id', 'run_id', 'invocation_id', 'request_id'):
         if value.get(key):
             result[key] = hashlib.sha256(str(value[key]).encode()).hexdigest()
+    for key in ('dataset_hash', 'evaluation_config_hash'):
+        item=value.get(key)
+        if isinstance(item,str) and re.fullmatch(r'[0-9a-f]{64}',item):
+            result[key]=item
+    if value.get('evaluation_schema') == 'paper_agent_e2e_rule_v1':
+        result['evaluation_schema']='paper_agent_e2e_rule_v1'
     return result
+
+def _level(meta):
+    if meta.get('status') == 'error':
+        return 'ERROR'
+    if meta.get('degraded') or meta.get('status') == 'skipped':
+        return 'WARNING'
+    return 'DEFAULT'
+
+def _sdk_usage(usage):
+    # Langfuse treats each usage key as an exclusive bucket. Provider records
+    # already subtract cache hits from input; do not send inclusive totals.
+    names={'input_tokens':'input', 'output_tokens':'output',
+           'cache_read_input_tokens':'cache_read_input_tokens',
+           'cache_creation_input_tokens':'cache_creation_input_tokens'}
+    return {names[k]:v for k,v in usage.items() if k in names} if usage is not None else None
+
+def _new_private_provider():
+    from opentelemetry.sdk.resources import Resource
+    from opentelemetry.sdk.trace import TracerProvider
+    return TracerProvider(resource=Resource(attributes={}),shutdown_on_exit=False)
+
+_client_registry = {}
+_client_lock = threading.Lock()
 
 class LangfuseSink:
     """Lazy Python SDK v4 integration; no environment changes or automatic uploads."""
     def __init__(self, dedup_dir=None):
         from pathlib import Path
         self.client = None
+        self._allowed_spans = None
         self.dedup_dir = Path(dedup_dir or os.getenv('PAPER_TELEMETRY_DEDUP_DIR', '.cache/paper-agent-telemetry'))
 
     def _claim_tree(self, trace_id):
@@ -161,27 +205,68 @@ class LangfuseSink:
 
     def __call__(self, trace):
         if self.client is None:
+            import atexit
             from importlib.metadata import version
-            if version('langfuse').split('.')[0] != '4':
-                raise RuntimeError('Python 3.10 adapter requires verified langfuse v4')
+            if version('langfuse') != '4.8.1':
+                raise RuntimeError('Isolated adapter requires langfuse 4.8.1')
             from langfuse import Langfuse
-            self.client = Langfuse(public_key=os.environ['LANGFUSE_PUBLIC_KEY'],
-                                   secret_key=os.environ['LANGFUSE_SECRET_KEY'],
-                                   base_url=os.environ['LANGFUSE_BASE_URL'], timeout=2)
+            # A private provider prevents unrelated globally instrumented spans
+            # from bypassing this adapter's metadata-only policy. Disabling
+            # automatic shutdown avoids an unbounded SDK/OTel atexit flush.
+            public_key=os.environ['LANGFUSE_PUBLIC_KEY']
+            secret_key=os.environ['LANGFUSE_SECRET_KEY']
+            base_url=os.environ['LANGFUSE_BASE_URL']
+            key=hashlib.sha256(public_key.encode()).hexdigest()
+            target=hashlib.sha256(json.dumps([base_url,secret_key],separators=(',',':')).encode()).hexdigest()
+            with _client_lock:
+                cached=_client_registry.get(key)
+                if cached:
+                    if cached[0] != target:
+                        raise RuntimeError('Langfuse public key reused with a different destination or secret')
+                    self.client,self._allowed_spans=cached[1:]
+                else:
+                    private_provider=_new_private_provider()
+                    allowed=set()
+                    # Only spans explicitly created by this adapter may pass.
+                    # Even another SDK client reusing this manager is filtered.
+                    def allowed_span(span):
+                        context=getattr(span,'context',None)
+                        return context is not None and f'{context.span_id:016x}' in allowed
+                    client = Langfuse(public_key=public_key, secret_key=secret_key,
+                                      base_url=base_url, timeout=2, tracer_provider=private_provider,
+                                      environment='paper-agent',release='paper-agent',
+                                      should_export_span=allowed_span)
+                    resources=getattr(client,'_resources',None)
+                    # SDK 4.8.1 caches by public key; fail closed on reuse of
+                    # resources initialized by unrelated application code.
+                    if (resources is None or getattr(resources,'tracer_provider',None) is not private_provider
+                            or getattr(resources,'base_url',None) != base_url):
+                        raise RuntimeError('Langfuse resources are already shared or destination mismatched')
+                    # SDK 4.8.1 registers an unbounded shutdown at exit.
+                    atexit.unregister(resources.shutdown)
+                    self.client,self._allowed_spans=client,allowed
+                    _client_registry[key]=(target,client,allowed)
         client = self.client
         scores_only = bool(trace.get('scores_only'))
         claimed = not scores_only and self._claim_tree(trace['trace_id'])
         if claimed:
-            root = client.start_observation(name='Turn', trace_context={'trace_id': trace['trace_id']}, metadata=trace['metadata'])
+            root = client.start_observation(name='Turn', trace_context={'trace_id': trace['trace_id']}, metadata=trace['metadata'],level=_level(trace['metadata']))
+            self._allow(root)
             for stage in trace['stages']:
-                span = root.start_observation(name=stage['metadata'].get('stage','unknown'), metadata=stage['metadata'])
+                stage_name=stage['metadata'].get('stage','unknown')
+                attempt=stage['metadata'].get('attempt')
+                if type(attempt) is int and attempt>1:
+                    stage_name=f'{stage_name} #{attempt}'
+                span = root.start_observation(name=stage_name, metadata=stage['metadata'],level=_level(stage['metadata']))
+                self._allow(span)
                 for call in stage['calls']:
                     generation = span.start_observation(name='LLM request', as_type='generation',
                         metadata=call['metadata'], model=call['metadata'].get('model_requested'),
-                        usage_details=call.get('usage'))
-                    generation.end()
-                span.end()
-            root.end()
+                        level=_level(call['metadata']),usage_details=_sdk_usage(call.get('usage')))
+                    self._allow(generation)
+                    self._end(generation)
+                self._end(span)
+            self._end(root)
         for score in trace['scores']:
             client.create_score(trace_id=trace['trace_id'], name=score['name'],
                                 value=score['value'], data_type='NUMERIC', metadata=score['metadata'],
@@ -192,8 +277,19 @@ class LangfuseSink:
             return 'scores_sent_unverified' if trace['scores'] else 'no_scores'
         return 'tree_sent_unverified' if claimed else 'tree_already_claimed_unverified'
 
+    def _allow(self, observation):
+        if self._allowed_spans is not None:
+            self._allowed_spans.add(observation.id)
+
+    def _end(self, observation):
+        try:
+            observation.end()
+        finally:
+            if self._allowed_spans is not None:
+                self._allowed_spans.discard(observation.id)
+
 class Exporter:
-    def __init__(self, enabled=False, sink=None, sample_rate=1., flush_seconds=.05):
+    def __init__(self, enabled=False, sink=None, sample_rate=1., flush_seconds=.5):
         if not 0 <= sample_rate <= 1 or not 0 <= flush_seconds <= 2:
             raise ValueError('Invalid telemetry limits')
         self.enabled, self.sink = enabled, sink or LangfuseSink()
@@ -209,7 +305,8 @@ class Exporter:
         if not enabled:
             return cls()
         try:
-            return cls(enabled=True,sample_rate=float(os.getenv('PAPER_TELEMETRY_SAMPLE_RATE', '1')))
+            return cls(enabled=True,sample_rate=float(os.getenv('PAPER_TELEMETRY_SAMPLE_RATE', '1')),
+                       flush_seconds=float(os.getenv('PAPER_TELEMETRY_FLUSH_SECONDS', '.5')))
         except (ValueError, OverflowError):
             exporter=cls()
             exporter.status='disabled_invalid_configuration'
@@ -231,7 +328,9 @@ class Exporter:
                         item['usage'] = {k:v for k,v in call.get('usage', {}).items() if k in USAGE_NAMES and type(v) is int and v>=0}
                     calls.append(item)
             stages.append({'metadata': {**metadata(stage), **stage_summary(stage)}, 'calls': calls})
-        scores = [{'name': s['name'], 'value': s['value'], 'metadata': metadata(s)}
+        score_context={k:v for k,v in metadata(trace).items() if k in {
+            'session_id','turn_id','case_id','run_id','dataset_hash','evaluation_config_hash','evaluation_schema'}}
+        scores = [{'name': s['name'], 'value': s['value'], 'metadata': {**score_context,**metadata(s)}}
                   for s in trace.get('scores', []) if s.get('source') in {'rule','same_model_judge'}
                   and s.get('name') in SCORE_NAMES and isinstance(s.get('value'), (int,float))
                   and math.isfinite(s['value'])]

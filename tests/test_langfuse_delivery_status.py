@@ -10,14 +10,17 @@ def test_failed_tree_then_replay_reports_unverified_claim_and_sends_score(monkey
     attempts=[]
     scores=[]
     class Client:
-        def __init__(self,**kwargs): pass
+        def __init__(self,**kwargs):
+            self._resources=types.SimpleNamespace(tracer_provider=kwargs['tracer_provider'],base_url=kwargs['base_url'],shutdown=lambda:None)
         def start_observation(self,**kwargs):
             attempts.append(kwargs['trace_context']['trace_id'])
             raise OSError('simulated ambiguous delivery')
         def create_score(self,**kwargs): scores.append(kwargs)
         def flush(self): pass
     monkeypatch.setitem(sys.modules,'langfuse',types.SimpleNamespace(Langfuse=Client))
-    monkeypatch.setattr(importlib.metadata,'version',lambda _: '4.7.0')
+    monkeypatch.setattr(importlib.metadata,'version',lambda _: '4.8.1')
+    monkeypatch.setattr('paper_agent.observability._new_private_provider',lambda: object())
+    monkeypatch.setattr('paper_agent.observability._client_registry',{})
     for key in ('LANGFUSE_PUBLIC_KEY','LANGFUSE_SECRET_KEY','LANGFUSE_BASE_URL'):
         monkeypatch.setenv(key,'fixture')
     trace={'session_id':'s','turn_id':'t','run_id':'run','stages':[],

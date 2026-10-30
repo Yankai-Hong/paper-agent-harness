@@ -89,20 +89,23 @@ def test_sdk_mapping_is_tree_and_score_updates_have_stable_ids(monkeypatch,tmp_p
     from paper_agent.observability import LangfuseSink
     operations=[]
     class Span:
-        def __init__(self,name): self.name=name
+        def __init__(self,name): self.name=name; self.id='a'*16
         def start_observation(self,**kwargs):
             operations.append(('child',self.name,kwargs['name'],kwargs.get('as_type')))
             return Span(kwargs['name'])
         def end(self): operations.append(('end',self.name))
     class Client:
-        def __init__(self,**kwargs): pass
+        def __init__(self,**kwargs):
+            self._resources=types.SimpleNamespace(tracer_provider=kwargs['tracer_provider'],base_url=kwargs['base_url'],shutdown=lambda:None)
         def start_observation(self,**kwargs):
             operations.append(('root',kwargs['name'],kwargs['trace_context']['trace_id']))
             return Span(kwargs['name'])
         def create_score(self,**kwargs): operations.append(('score',kwargs['score_id'],kwargs['value']))
         def flush(self): operations.append(('flush',))
     monkeypatch.setitem(sys.modules,'langfuse',types.SimpleNamespace(Langfuse=Client))
-    monkeypatch.setattr(importlib.metadata,'version',lambda _: '4.7.0')
+    monkeypatch.setattr(importlib.metadata,'version',lambda _: '4.8.1')
+    monkeypatch.setattr('paper_agent.observability._new_private_provider',lambda: object())
+    monkeypatch.setattr('paper_agent.observability._client_registry',{})
     for name in ('LANGFUSE_PUBLIC_KEY','LANGFUSE_SECRET_KEY','LANGFUSE_BASE_URL'):
         monkeypatch.setenv(name,'fixture')
     data={'trace_id':'a'*32,'metadata':{},'stages':[{'metadata':{'stage':'NLU'},'calls':[{'metadata':{'model_requested':'fixture'}}]}],
@@ -122,14 +125,17 @@ def test_duplicate_tree_suppressed_across_sink_instances_and_failed_send(monkeyp
     from paper_agent.observability import LangfuseSink
     calls=[]
     class Client:
-        def __init__(self,**kwargs): pass
+        def __init__(self,**kwargs):
+            self._resources=types.SimpleNamespace(tracer_provider=kwargs['tracer_provider'],base_url=kwargs['base_url'],shutdown=lambda:None)
         def start_observation(self,**kwargs):
             calls.append(kwargs['trace_context']['trace_id'])
             raise OSError('simulated ambiguous send')
         def create_score(self,**kwargs): pass
         def flush(self): pass
     monkeypatch.setitem(sys.modules,'langfuse',types.SimpleNamespace(Langfuse=Client))
-    monkeypatch.setattr(importlib.metadata,'version',lambda _: '4.7.0')
+    monkeypatch.setattr(importlib.metadata,'version',lambda _: '4.8.1')
+    monkeypatch.setattr('paper_agent.observability._new_private_provider',lambda: object())
+    monkeypatch.setattr('paper_agent.observability._client_registry',{})
     for name in ('LANGFUSE_PUBLIC_KEY','LANGFUSE_SECRET_KEY','LANGFUSE_BASE_URL'):
         monkeypatch.setenv(name,'fixture')
     data={'trace_id':'b'*32,'metadata':{},'stages':[],'scores':[]}

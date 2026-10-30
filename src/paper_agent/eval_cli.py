@@ -201,16 +201,42 @@ def cmd_e2e(args):
     per_session = defaultdict(list)
     for row in rows:
         per_session[row["session_id"]].append(row)
+    # Record the fixed input hash and a secret-free effective configuration.
+    # Only their SHA-256 digests leave the machine via the telemetry whitelist.
+    import os
+    config_fields = ("model", "json_mode", "max_tokens", "timeout", "max_calls",
+                     "max_input_chars", "thinking", "connect_timeout", "max_retries",
+                     "repair_retries", "retry_base_seconds", "circuit_enabled", "circuit_threshold", "circuit_cooldown")
+    from .providers import _safe_model_name
+    provider_record = {key: getattr(config, key) for key in config_fields if key != "model"}
+    provider_record["model"] = _safe_model_name(config.model, config.api_key)
+    config_record = {
+        "pipeline": {key: getattr(args, key, None) for key in
+                     ("mode", "index", "encoder", "reranker", "device", "batch_size",
+                      "no_rewrite", "no_reflect", "no_compact", "memory_strategy",
+                      "no_archive_recall", "max_retrieval_attempts", "judge", "workers")},
+        "provider": provider_record,
+        "turn_limits": {key: os.getenv("PAPER_TURN_" + key.upper(), default) for key, default in
+                        (("seconds", "180"), ("model_requests", "8"), ("subqueries", "6"),
+                         ("candidates", "90"), ("rerank", "60"))},
+        "memory_backend": os.getenv("MEMORY_BACKEND", "sqlite_local"),
+        "decomposition": os.getenv("PAPER_DECOMPOSITION", "false").lower() == "true",
+        "corpus_hash": retriever.metadata.get("corpus_hash"),
+    }
+    provenance = {"dataset_hash": digest(rows), "evaluation_config_hash": digest(config_record),
+                  "evaluation_schema": "paper_agent_e2e_rule_v1", "config": config_record}
     predictions, judge_calls = [], []
     chunks = {c["chunk_id"]: c for c in retriever.chunks}
     from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=getattr(args, "workers", 1)) as pool:
-        futures = [pool.submit(tasks.run_e2e_session, factory, sid, rs, args.output)
+        futures = [pool.submit(tasks.run_e2e_session, factory, sid, rs, args.output, provenance)
                    for sid, rs in per_session.items()]
         for future in futures:
             predictions.extend(future.result())
     if getattr(args, "judge", False):
         from .judge import judge_answer
+        from .observability import Exporter
+        judge_exporter = Exporter.from_env()
         from .storage import read_jsonl as _rl
         evidence_index = {r["turn_id"]: r for r in rows}
         for pred in predictions:
@@ -231,10 +257,10 @@ def cmd_e2e(args):
             attach_scores(Path(pred['trace_path']) if pred.get('trace_path') else
                           Path(args.output)/'traces'/pred['session_id']/(pred['turn_id']+'.json'),
                           {k:v.get('score') if isinstance(v,dict) else None for k,v in dimensions.items()},
-                          'same_model_judge')
+                          'same_model_judge', judge_exporter)
     metrics = {"turns": len(rows), "completed": sum(1 for p in predictions if not p.get("error")),
                "errors": sum(1 for p in predictions if p.get("error")),
-               "dataset_hash": digest(rows)}
+               "dataset_hash": digest(rows), "evaluation_config_hash": provenance["evaluation_config_hash"]}
     from .eval_protocol import success_metrics
     metrics.update(success_metrics(predictions))
     metrics["label_status"] = sorted({r.get("review_status", "unknown") for r in rows})
