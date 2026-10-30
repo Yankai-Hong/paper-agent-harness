@@ -33,7 +33,9 @@ PAPER_TELEMETRY_ENABLED 默认 false；显式开启才加载固定 Langfuse SDK 
 
 SDK 不支持自定义 observation ID，因此相同 Trace ID 不能独自防止重复子树。适配器在创建树之前，在 `.cache/paper-agent-telemetry`（可通过 `PAPER_TELEMETRY_DEDUP_DIR` 指定）对目标实例/项目与 Trace ID 创建原子占位标记；共享标记目录的进程对同一目标最多尝试一次建树。该策略不等同于服务端全局精确一次：进程或网络在发送期间失败时，远端树可能缺失或不完整且不会自动重发；不同机器或标记目录不共享状态。标记不保存凭据，需与本地 Trace 一并妥善保留，不能根据文件存在推断服务端接收成功。Score 通过稳定的 Score ID 独立更新。相关测试使用替身，服务端读回尚未验收。
 
-适配器的发送状态使用 `tree_sent_unverified`、`tree_already_claimed_unverified`、`scores_sent_unverified` 等口径：即使本地 SDK/flush 返回，也不能推断服务端完整接收；占位后重放跳过建树时更不能报为已送达。真实读回至少需要可访问且兼容的 Langfuse 实例、Python 3.10 可用的 SDK v4、实例地址/公钥/密钥和明确的数据上传授权；当前缺少这些条件，未上传。
+适配器的发送状态使用 `tree_sent_unverified`、`tree_already_claimed_unverified`、`scores_sent_unverified` 等口径：即使本地 SDK/flush 返回，也不能推断服务端完整接收；占位后重放跳过建树时更不能报为已送达。真实读回至少需要可访问且兼容的 Langfuse 实例、Python 3.10 可用的 SDK 4.8.1、实例地址/公钥/密钥和明确的数据上传授权。
+
+2026-10-30 用户已授权固定合成样本的脱敏元数据上传，但本次仍未发现完整实例地址和凭据，因此未上传或读回。最新状态见 [验收准备报告](../reports/revision/LANGFUSE-2026-10-30.md)。
 
 `PAPER_TELEMETRY_FLUSH_SECONDS` 默认为 0.5，范围 0–2；仅限制业务线程的本地等待，队列满、超时、短进程退出或异常退出均可能丢失投影。分数采用稳定 ID 更新；unknown 不发送，如果之前已发送已知值而本地后来变为 unknown，远端旧分数可能残留。请以本地逐例 Trace 和评分为准。
 
@@ -56,6 +58,14 @@ $env:PYTHONPATH = (Resolve-Path .cache/langfuse-runtime).Path + ';' + (Resolve-P
 先通过安全渠道配置 `LANGFUSE_BASE_URL`、`LANGFUSE_PUBLIC_KEY` 和 `LANGFUSE_SECRET_KEY` 到本进程环境，并明确允许**合成样本元数据**上传。分别设置 `PAPER_TELEMETRY_ENABLED=true`、`PAPER_TELEMETRY_SAMPLE_RATE=1`、`PAPER_TELEMETRY_FLUSH_SECONDS=2`。运行模型问答须另有现成模型配置和使用授权；合成样本与两次新运行的命令及预算见 [评测说明](#合成样本和规则评分验证)。客户端标识和哈希不等于匿名，不要使用旧的个人会话。
 
 从两个新运行的本地 Trace 各读取 `observability_mapping.langfuse_trace_id`；按 [官方查询文档](https://langfuse.com/docs/api-and-data-platform/features/query-via-sdk) 在授权环境使用 SDK 的 `api.observations.get_many(trace_id=..., fields='core,basic,metadata,model,usage')`，按 `parent_observation_id` 核对 Turn → Stage → LLM request、阶段状态/实际耗时 metadata、模型与 provider usage、检索及记忆摘要。用 `api.scores_v3.get_many_v3(id=...)` 查分数；ID 可由本地 Trace ID 和 `paper_agent.observability.score_id(trace_id, 'rule', 'execution_success')` 确定，核对 `trace_id`、值和来源。比较两次 run 的 Trace/Score ID，在同一共享标记目录下重放并检查无新增树；对照本地 Trace 和逐例结果。新数据通常需 15–30 秒可查，设有限截止时间轮询；缺失、不完整、缺 usage 或读回错误均不能写通过。[官方兼容说明](https://langfuse.com/docs/compatibility) 和服务端/API 版本需随运行记录。真正读回需同时完成这些检查，SDK 初始化、flush 或测试替身不是验收。
+
+也可在服务端 v4 和 SDK 4.8.1 下，对两组新输出中的本地 Trace 使用只读核验入口：
+
+```powershell
+& $py scripts/check_langfuse_readback.py $traceA $traceB
+```
+
+先将 `$traceA`、`$traceB` 分别设为两组逐例结果的 `trace_path`，不要把凭据写在命令行。脚本按两组本地身份读取并核对服务端结果，限制等待和分页，不上传、调用模型或打印响应正文；无匹配记录及缺字段不会判通过。它不自动轮询新数据的入库延迟：若结果尚未入库，等待后重新运行。脚本不核验重放或界面，需另行检查并保留证据；它自身的成功不能代表完整端到端验收。
 
 ### 合成样本和规则评分验证
 

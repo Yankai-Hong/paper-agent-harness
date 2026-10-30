@@ -4,7 +4,7 @@
 
 **当前状态：已实施 Harness 修订；本地机制回归与真实服务验收分开记录。** 效果评审为规则检查和模型辅助评审，未完成用户人工抽查；不宣称复现原截图的算法增益。
 
-[Langfuse 阶段报告](reports/revision/LANGFUSE.md) · [最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
+[Langfuse 最新验收准备](reports/revision/LANGFUSE-2026-10-30.md) · [Langfuse 前一阶段](reports/revision/LANGFUSE.md) · [最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
 
 ## 核心实现
 
