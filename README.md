@@ -4,7 +4,7 @@
 
 **当前状态：已实施 Harness 修订；本地机制回归与真实服务验收分开记录。** 效果评审为规则检查和模型辅助评审，未完成用户人工抽查；不宣称复现原截图的算法增益。
 
-[Langfuse 最新验收准备](reports/revision/LANGFUSE-2026-10-30.md) · [Langfuse 前一阶段](reports/revision/LANGFUSE.md) · [最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
+[Langfuse 实际服务读回](reports/revision/LANGFUSE-LIVE-2026-10-30.md) · [Langfuse 验收准备](reports/revision/LANGFUSE-2026-10-30.md) · [Langfuse 前一阶段](reports/revision/LANGFUSE.md) · [最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
 
 ## 核心实现
 
@@ -16,7 +16,7 @@
 
 七阶段主链直接调用检索组件；独立 tool_loop 不参与主链的自主规划。引用结构校验不等于语义蕴含判断。
 
-可选 Langfuse 元数据投影默认关闭，本地 JSON Trace 是权威记录。它不发送问题、论文正文、用户偏好或密钥；标识散列仍是可关联的伪匿名数据。Python 3.10 使用 SDK v4，不改现有模型环境；安装、授权、合成样本与服务端读回见 [追踪文档](docs/runtime-tracing.md)。当前**服务端读回未验收**，占位、SDK 返回或替身通过均不代表远端完整接收。
+可选 Langfuse 元数据投影默认关闭，本地 JSON Trace 是权威记录。它不发送问题、论文正文、用户偏好或密钥；标识散列仍是可关联的伪匿名数据。Python 3.10 使用 SDK v4，不改现有模型环境；安装、授权、合成样本与服务端读回见 [追踪文档](docs/runtime-tracing.md)。两组真实合成运行已从服务端读回关键字段，但完整根节点和界面验收尚未完成；占位、SDK 返回或替身通过均不代表远端完整接收。
 
 ## 修订前历史实测结果
 

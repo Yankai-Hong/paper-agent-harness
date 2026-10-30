@@ -25,7 +25,7 @@ API 缺少 usage 时 usage_complete=false；不能把未知 token 当作真实�
 
 本地 Turn → Stage invocation_id → 每次实际请求 request_id 独立关联，记录开始/结束时间、case_id/run_id、provider 实际 usage、Schema修复与重试。没有 usage 时保持 unknown。eval_tasks 的规则分数和 eval_cli 的同模型 Judge 分数关联回本地 trace，unknown 不换算为0；可观测成功不代表质量验收。
 
-PAPER_TELEMETRY_ENABLED 默认 false；显式开启才加载固定 Langfuse SDK 4.8.1（Python 3.10）并导出。LANGFUSE_BASE_URL/PUBLIC_KEY/SECRET_KEY 从环境读取；不升级现有环境。白名单仅元数据，标识哈希，字符串最多120字符，不上传正文、问题、完整偏好或任意异常文本。散列标识是可关联的伪匿名数据，低熵 ID 可能被猜测，不是匿名化。容量1后台队列，有限 flush，失败不改变业务提交。外部 Span 是异步投影，真实业务起止时间和耗时在 metadata 中，SDK 瀑布图原生时间是投影时间。本轮没有真实服务读回验收。
+PAPER_TELEMETRY_ENABLED 默认 false；显式开启才加载固定 Langfuse SDK 4.8.1（Python 3.10）并导出。LANGFUSE_BASE_URL/PUBLIC_KEY/SECRET_KEY 从环境读取；不升级现有环境。白名单仅元数据，标识哈希，字符串最多120字符，不上传正文、问题、完整偏好或任意异常文本。散列标识是可关联的伪匿名数据，低熵 ID 可能被猜测，不是匿名化。容量1后台队列，有限 flush，失败不改变业务提交。外部 Span 是异步投影，真实业务起止时间和耗时在 metadata 中，SDK 瀑布图原生时间是投影时间。真实服务已读回关键字段，完整树和界面仍待验收。
 
 追踪标识采用 `paper-agent-trace-v2`：通过规范化编码的 `(命名空间, run_id, session_id, turn_id)` 生成确定性 32 位十六进制 ID。无 run_id 的普通交互使用独立的 interactive 命名空间和 session_id、turn_id；同轮重复导出稳定，不同实验 run 隔离。Trace 本地 `observability_mapping` 记录映射与算法版本；Score ID 再结合 Trace ID、来源和名称计算，补分复用同一 ID。带 run_id 的本地 Trace 位于 `traces/runs/<run 哈希>/<turn_id>.json`，无 run_id 沿用旧路径；调用方应读取返回的 `trace_path`。旧 Trace 若无可核对映射，补分只保存在本地并标记 withheld，不猜测远端归属。
 
@@ -35,7 +35,7 @@ SDK 不支持自定义 observation ID，因此相同 Trace ID 不能独自防止
 
 适配器的发送状态使用 `tree_sent_unverified`、`tree_already_claimed_unverified`、`scores_sent_unverified` 等口径：即使本地 SDK/flush 返回，也不能推断服务端完整接收；占位后重放跳过建树时更不能报为已送达。真实读回至少需要可访问且兼容的 Langfuse 实例、Python 3.10 可用的 SDK 4.8.1、实例地址/公钥/密钥和明确的数据上传授权。
 
-2026-10-30 用户已授权固定合成样本的脱敏元数据上传，但本次仍未发现完整实例地址和凭据，因此未上传或读回。最新状态见 [验收准备报告](../reports/revision/LANGFUSE-2026-10-30.md)。
+2026-10-30 用户授权固定合成样本的脱敏元数据上传，配置实例后已实际上传并从服务端读回关键字段；Turn 外部父节点和界面呈现仍待核实。最新状态见[真实服务读回记录](../reports/revision/LANGFUSE-LIVE-2026-10-30.md)，此前未配置实例时的[准备报告](../reports/revision/LANGFUSE-2026-10-30.md)保留历史状态。
 
 `PAPER_TELEMETRY_FLUSH_SECONDS` 默认为 0.5，范围 0–2；仅限制业务线程的本地等待，队列满、超时、短进程退出或异常退出均可能丢失投影。分数采用稳定 ID 更新；unknown 不发送，如果之前已发送已知值而本地后来变为 unknown，远端旧分数可能残留。请以本地逐例 Trace 和评分为准。
 
