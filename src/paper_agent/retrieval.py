@@ -156,7 +156,9 @@ class Retriever:
 
         # cross-encoder 重排
         if mode == "rerank" and ranking:
-            values = self.reranker.score(query, [self.by_id[i]["text"] for i in ranking])
+            values = self.reranker.score(query, [
+                (self.by_id[i].get('caption') or '') if self.by_id[i].get('evidence_type') in {'figure','table'}
+                else self.by_id[i]['text'] for i in ranking])
             if len(values) != len(ranking) or not np.all(np.isfinite(values)):
                 raise ValueError("Invalid reranker output")
             rerank_scores = dict(zip(ranking, map(float, values)))
@@ -166,5 +168,7 @@ class Retriever:
                  "fusion_rank": fusion_ranks[cid], "rerank_score": rerank_scores.get(cid)}
                 for rank, cid in enumerate(ranking[:top_k])]
         return {"query": query, "mode": mode, "hits": hits, "candidate_ids": list(fusion_ranks),
+                "channel_refs": {"bm25":[{"paper_id":self.by_id[cid]['paper_id'], "chunk_id":cid} for cid in sid],
+                                 "dense":[{"paper_id":self.by_id[cid]['paper_id'], "chunk_id":cid} for cid in did]},
                 "timing_ms": {"retrieve": retrieval_ms, "rerank": (time.perf_counter()-rerank_start)*1000},
                 "corpus_hash": self.metadata["corpus_hash"]}

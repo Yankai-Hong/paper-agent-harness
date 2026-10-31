@@ -115,6 +115,46 @@ def test_explicit_paper_local_demonstrative_does_not_require_history(tmp_path,sp
 
 
 @pytest.mark.parametrize('split',[False,True])
+def test_scoped_colon_demonstrative_does_not_invent_historical_target(tmp_path,split):
+    model={**nlu('paperA'), 'intent':'fact'}
+    p,searches,_=make_complex_pipeline(tmp_path,nlu=model,decomposition=split)
+    assert p.run('Only paper paperA: 这篇论文使用什么知识库？',prior(),'t')['answer']['decision']=='answer'
+    assert searches and all(opts['paper_ids']==['paperA'] for _,opts in searches)
+    p,searches,_=make_complex_pipeline(tmp_path/'recent',nlu=model,decomposition=split)
+    assert p.run('Only paper paperA: 比较这篇论文和刚才那篇',prior('paperB'),'t')['answer']['decision']=='clarify'
+    assert not searches
+
+
+@pytest.mark.parametrize('split',[False,True])
+def test_only_local_paper_reference_clarification_can_be_resolved(tmp_path,split):
+    model={**nlu('paperA'), 'intent':'fact', 'needs_clarification':True,
+           'clarification_reason':'paper_reference'}
+    p,searches,_=make_complex_pipeline(tmp_path/'paper',nlu=model,decomposition=split)
+    assert p.run('Only paper paperA: 这篇论文使用什么知识库？',prior(),'t')['answer']['decision']=='answer'
+    assert searches
+    model['clarification_reason']='other'
+    p,searches,_=make_complex_pipeline(tmp_path/'other',nlu=model,decomposition=split)
+    assert p.run('Only paper paperA: 这篇论文使用什么知识库？',prior(),'t')['answer']['decision']=='clarify'
+    assert not searches
+
+
+@pytest.mark.parametrize('split',[False,True])
+def test_explicit_artifact_digest_question_reaches_reflect_without_claiming_absence(tmp_path,split):
+    model={'intent':'out_of_scope','standalone_query':'model weights checksum',
+           'paper_ids':None,'resolved_entities':{},'needs_clarification':False}
+    p,searches,calls=make_complex_pipeline(tmp_path/'probe',nlu=model,decomposition=split,
+        verdict=lambda payload: {'decision':'refuse','reason':'No adequate artifact evidence'})
+    answer=p.run('Only paper paperA: 这篇论文模型权重文件的 SHA-256 是什么？',prior(),'t')['answer']
+    assert answer['decision']=='refuse' and searches
+    assert any(stage=='reflect' for stage,_ in calls) and not any(stage=='generate' for stage,_ in calls)
+    assert all(opts['paper_ids']==['paperA'] for _,opts in searches)
+    model['out_of_scope_reason']='not_paper_question'
+    p,searches,_=make_complex_pipeline(tmp_path/'other',nlu=model,decomposition=split)
+    assert p.run('Only paper paperA: 这篇论文模型权重文件的 SHA-256 是什么？',prior(),'t')['answer']['decision']=='refuse'
+    assert not searches
+
+
+@pytest.mark.parametrize('split',[False,True])
 def test_english_internal_it_is_not_automatically_a_second_paper(tmp_path,split):
     p,searches,_=make_complex_pipeline(tmp_path,nlu=nlu('paperA'),decomposition=split)
     assert p.run('How does paperA evaluate its method?',prior(),'t')['answer']['decision']=='answer'

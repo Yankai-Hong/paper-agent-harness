@@ -46,6 +46,19 @@ _EXCLUSION = re.compile(r'不包括|不包含|不使用|不要使用|不能使�
 _EXCLUSIVE = re.compile(r'仅限|只限|仅使用|只使用|仅用|只用|仅针对|只针对|只看|仅讨论|只讨论|\bonly\b|\bsolely\b|\bexclusively\b', re.I)
 
 
+def explicit_single_paper_prefix(question, catalog):
+    """Return only a literal, unambiguous single-paper colon prefix."""
+    if len(_ordered_mentions(question, catalog)) != 1 or re.search(
+            r'比较|对比|刚才|刚刚|上次|上一轮|上轮|之前|此前|先前|那篇|前者|后者|\bcompare\w*\b|\bversus\b|\bvs\b|\bprevious\w*\b|\bearlier\b|\bthat paper\b', question, re.I):
+        return None
+    for item in catalog:
+        pid = item['paper_id']
+        prefix = r'^\s*(?:only\s+(?:the\s+)?paper|仅限(?:论文)?|只限(?:论文)?)\s*' + re.escape(pid) + r'\s*[:：]\s*'
+        if re.match(prefix, question, re.I):
+            return pid
+    return None
+
+
 def exclusion_kind(question, catalog):
     """Allow only clearly identified data/time restrictions; uncertain exclusions clarify."""
     matches = list(_EXCLUSION.finditer(question))
@@ -77,6 +90,15 @@ def exclusive_kind(question, catalog):
 def _reference_text(question, catalog):
     """Mask only clearly local demonstratives attached to an explicit ID/title."""
     result=question
+    # An explicit single-paper scope prefix makes a local demonstrative in the
+    # subsequent question refer to that paper, even across the colon. Do not
+    # mask it for comparisons or historical references, where it may identify
+    # a distinct paper in prior conversation.
+    pid = explicit_single_paper_prefix(question, catalog)
+    if pid:
+        prefix = r'^\s*(?:only\s+(?:the\s+)?paper|仅限(?:论文)?|只限(?:论文)?)\s*' + re.escape(pid) + r'\s*[:：]\s*'
+        match = re.match(prefix, result, re.I)
+        result = result[:match.end()] + re.sub(r'这篇论文|该论文|\bthis paper\b', '', result[match.end():], flags=re.I)
     for item in catalog:
         for token in (item['paper_id'],item.get('title','').strip()):
             if len(token)<3:
