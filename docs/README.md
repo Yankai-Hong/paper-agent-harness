@@ -8,6 +8,7 @@
 | [架构](architecture.md) | 七阶段、状态、分支与实现边界 |
 | [当前验收审计](implementation-audit.md) | 修复、验证与保留限制 |
 | [语料](corpus.md) | PDF/JSONL、段落与滑窗、来源元数据 |
+| [图文检索](multimodal.md) | Docling 页面裁剪、独立 CLIP 索引与视觉证据；[agent 复核与限制](../reports/revision/MULTIMODAL-AGENT-REVIEW-20261031.md) |
 | [检索](rag-retrieval.md) / [重排](reranking.md) | BGE、FAISS、BM25、RRF、Cross-Encoder |
 | [路由](routing.md) / [反思](reflection.md) / [生成](generation.md) | NLU、证据充分性、引用与拒答 |
 | [记忆](memory.md) | Redis/SQLite/Chroma、版本、提交隔离与恢复 |
