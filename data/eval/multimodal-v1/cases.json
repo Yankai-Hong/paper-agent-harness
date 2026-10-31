@@ -1,0 +1,21 @@
+{
+  "version": "multimodal-v1-draft-2026-10-30",
+  "scope": "Fixed before multimodal runs; source-page inspection by assistant, independent human review pending. Page numbers are one-based physical PDF pages.",
+  "cases": [
+    {"id":"t01","kind":"text","paper_id":"1903.10318","question":"What does an extractive summarization label indicate for each sentence?","expected":"Whether the sentence should be included in the summary.","evidence":[{"page":1,"locator":"Methodology"}]},
+    {"id":"t02","kind":"text","paper_id":"1909.12079","question":"这篇论文使用什么知识库来取得实体类型？","expected":"Freebase。","evidence":[{"page":3,"locator":"KB Type Representation"}]},
+    {"id":"t03","kind":"text","paper_id":"2002.06854","question":"HotelRec 论文称该数据集约包含多少条酒店评论？","expected":"约 5000 万条。","evidence":[{"page":1,"locator":"Abstract"}]},
+    {"id":"a01","kind":"architecture","paper_id":"1909.12079","question":"图 1 中，拼接后的表示经过什么网络产生最终表示？","expected":"三层 MLP。","evidence":[{"page":3,"locator":"Figure 1"}]},
+    {"id":"a02","kind":"architecture","paper_id":"1911.04474","question":"In Figure 2, what are the three major stages from input features to output labels?","expected":"Embedding module, Transformer, and CRF.","evidence":[{"page":4,"locator":"Figure 2"}]},
+    {"id":"a03","kind":"architecture","paper_id":"1909.06708","question":"图 3 显示哪两类提示从教师模型传给学生模型？","expected":"隐藏状态提示和词对齐提示。","evidence":[{"page":4,"locator":"Figure 3"}]},
+    {"id":"c01","kind":"table","paper_id":"1909.12079","question":"According to Table 1, what is the FIGER (GOLD) strict accuracy of Ours (Full) and Ours (NoEL)?","expected":"75.5 and 69.8, respectively.","evidence":[{"page":5,"locator":"Table 1"}]},
+    {"id":"c02","kind":"chart","paper_id":"2002.06854","question":"图 2 的四个子图分别统计什么？","expected":"每用户评论数、每酒店评论数、每条评论词数、每年评论数；坐标使用对数尺度。","evidence":[{"page":4,"locator":"Figure 2"}]},
+    {"id":"m01","kind":"text_and_figure","paper_id":"1903.10318","question":"结合图 1 和正文，BERTSUM 如何为各句取得表示，并如何区分相邻句？","expected":"在每句前加 [CLS]、句后加 [SEP]，用各 [CLS] 的顶层 BERT 向量表示句子；按句奇偶交替使用 EA、EB 区间段嵌入。","evidence":[{"page":2,"locator":"Figure 1"},{"page":2,"locator":"Encoding Multiple Sentences; Interval Segment Embeddings"}]},
+    {"id":"u01","kind":"insufficient","paper_id":"1909.12079","question":"这篇论文最终模型权重文件的 SHA-256 是什么？","expected":"unknown：论文所提供的证据未给出可核对的权重文件哈希，应拒答或说明无法确认。","evidence":[],"note":"Absence requires corpus-wide checking; this is an abstention probe, not proof that no external artifact exists."}
+  ],
+  "image_queries": [
+    {"id":"i01","paper_id":"1909.12079","target_page":3,"target_locator":"Figure 1","query_file":"data/raw/multimodal-eval/query-i01.png","transformation":"crop figure without caption and resize to 75%; other architecture figures are distractors"},
+    {"id":"i02","paper_id":"1911.04474","target_page":4,"target_locator":"Figure 2","query_file":"data/raw/multimodal-eval/query-i02.png","transformation":"crop figure without caption and resize to 125%; other architecture figures are distractors"},
+    {"id":"i03","paper_id":"1909.06708","target_page":4,"target_locator":"Figure 3","query_file":"data/raw/multimodal-eval/query-i03.png","transformation":"crop figure without caption and resize to 80%; other architecture figures are distractors"}
+  ]
+}
