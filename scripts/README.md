@@ -33,3 +33,5 @@
 # 图片查询开发评测
 
 `eval_clip_image_text.py --help` 运行双论文、三张图片的 CLIP 检索评测，保留无范围 Top-5、原始图注目标、图搜图关联扩展和长片段诊断；目标只用于事后评分。`smoke_image_question.py --help` 以新目录和独立账本运行真实混合及纯图片问答，会向 `.env` 配置的远程模型发送图片并产生费用。测试不是独立保留集或人工金标，结果见 `reports/revision/MULTIMODAL-IMAGE-TEXT-20261106.md`。
+
+`prepare_frozen_image_holdout.py` 验证公开论文和 fixture 哈希后重建冻结查询裁图；`eval_frozen_image_holdout.py` 检查目标在真实索引后执行无范围检索。新论文和负例的首次结果及局限见 `reports/revision/MULTIMODAL-IMAGE-RETRIEVAL-REPAIR-20261106.md`。

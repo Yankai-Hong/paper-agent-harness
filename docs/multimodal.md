@@ -14,6 +14,8 @@ $vpy = '.\.venv-mm-20261030\Scripts\python.exe'
 $visual = @('--visual-index','indexes/multimodal-acceptance-repair-clip-20261102', '--visual-root','data/raw/multimodal-final-dev-20261102/crops', '--visual-python',$vpy, '--visual-image-model','models/multimodal-v1/clip-image-v1', '--visual-text-model','models/multimodal-v1/clip-text-v1', '--visual-device','cuda:0')
 & $py -m paper_agent.cli clip-text-index indexes/multimodal-acceptance-repair-text-20261102/chunks.jsonl @visual --output indexes/clip-text-new
 & $py -m paper_agent.cli clip-search-image-text @visual --clip-text-index indexes/clip-text-new data/raw/multimodal-holdout-v3-20261101/v3img01.png
+& $py -m paper_agent.cli clip-search-image-text @visual --clip-text-index indexes/clip-text-new --kind caption data/raw/multimodal-holdout-v3-20261101/v3img01.png
+& $py -m paper_agent.cli visual-search-text @visual --caption-fusion 'three stages of ULMFiT'
 & $py -m paper_agent.cli ask --index indexes/multimodal-acceptance-repair-text-20261102 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-example 'What stages are shown in this image?'
 & $py -m paper_agent.cli ask --index indexes/multimodal-acceptance-repair-text-20261102 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-only-example
 ```
@@ -21,6 +23,8 @@ $visual = @('--visual-index','indexes/multimodal-acceptance-repair-clip-20261102
 `--image` 可重复两次；`ask` 的文本位置参数可省略，`chat` 启动时提供的图片在该进程的每轮使用。旧文本命令不需要 CLIP 文本索引。图片输入必须是本地 PNG/JPEG，最多 20 MiB、4000 万像素；图片只作查询输入，不能作为论文证据引用。每次图片编码同时用于图搜图和图搜正文；图片分支与文本分支保留各自排名，按排名交错并去重，不把不同实体说成共同命中。图、独立图注和正文各自保留原始 ID、页码和框；仅有唯一同论文、同 PDF、同页且文字一致的图注可作为候选扩展，关系仍标未核实。模型与数据指纹、索引校验和、数量或维度不符会报错；图片检索单分支失败或无结果的状态写入本地 trace。
 
 Reflect 和 Generate 每次调用最多接收三张图片：用户图占用其中名额，其余可用于经校验的论文图。用户图片和论文裁图会在真实请求中发给 `.env` 配置的远程视觉模型；trace 和请求账本不保存原图或 base64，用户原文件不会被删除。请勿依据 CLIP 相似度断定细小数字、箭头或语义；必须核对实际出处与引用。此处仅进行小样本、已见题目的开发评测，直接图片到指定图注的 Hit@5 为 0/3；三条图搜图命中后经位置关联扩展找到图注为 3/3，不能算成直接检索命中。混合问答案例及纯图片回答的相关性缺陷、逐例结果和复现命令见 [本轮报告](../reports/revision/MULTIMODAL-IMAGE-TEXT-20261106.md)。
+
+后续修复增加可选 `--caption-fusion`，只对同一论文图像实体融合 CLIP 和图注词项排名；`--kind caption` 则只在独立文本索引的图注子集中直接检索，不使用图搜图关联。两个选项可能改善特定查询，但不保证跨语言召回。纯图片查询需要每张图在图搜图中有至少两个候选，最高相似度至少 0.90 且领先第二名至少 0.05；否则直接返回 `image_match_uncertain`。通过门槛后，仅把最高候选及其独立关联证据交给 Reflect，模型仍须检查图像，分数本身不是身份或语义证明。这是小样本启发式，可能拒绝有效图片；最多两张用户图还受每次模型请求的总图片数约束。可选 BGE 图注或表格分支查询失败时会记录 `failed` 并保留其他分支，构建或加载阶段的索引不一致仍明确报错。[后续修复和冻结论文验证](../reports/revision/MULTIMODAL-IMAGE-RETRIEVAL-REPAIR-20261106.md)单独记录，不改写上述早期成绩。
 
 本功能使用独立环境运行 Docling 和 CLIP；既有文本环境、索引和会话不需要迁移。五篇论文的真实运行、agent 逐例复核及剩余问题见 [本轮复核报告](../reports/revision/MULTIMODAL-AGENT-REVIEW-20261031.md)；原始首轮结果保留在 [此前阶段报告](../reports/revision/MULTIMODAL-2026-10-31.md)。用户已授权 agent 完成原定复核；agent 复核不是人类金标。
 
