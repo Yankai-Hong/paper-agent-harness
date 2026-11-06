@@ -4,7 +4,9 @@
 
 **当前状态：已实施 Harness 修订；本地机制回归与真实服务验收分开记录。** 效果评审为规则检查和模型辅助评审，未完成用户人工抽查；不宣称复现原截图的算法增益。
 
-图文检索已完成五篇论文解析、CLIP 实测、真实视觉问答及用户授权的 agent 逐例复核；固定案例仍有失败和质量限制，详见 [本轮复核报告](reports/revision/MULTIMODAL-AGENT-REVIEW-20261031.md) 和 [操作文档](docs/multimodal.md)。
+图文检索已完成真实 Docling、CLIP 和视觉问答，并在新论文隔离集上进行了 agent 逐例复核；仍有误拒、局部引用限定及多面板关联缺陷。最新修复、有限验证和阻塞见 [阶段收尾报告](reports/revision/MULTIMODAL-V4-20261101.md)，运行方法见 [操作文档](docs/multimodal.md)。这些复核不是人工金标。
+
+`ask` 还可通过 `--image` 提供本地图片；图片到正文需要额外建立独立的 CLIP 文本索引。具体命令、图片发送方式、独立引用、真实评测及限制见 [图文检索文档](docs/multimodal.md#图片到文本与图片问答)。本能力的开发评测与早期阶段验收分开记录。
 
 [Langfuse 实际服务读回](reports/revision/LANGFUSE-LIVE-2026-10-30.md) · [Langfuse 验收准备](reports/revision/LANGFUSE-2026-10-30.md) · [Langfuse 前一阶段](reports/revision/LANGFUSE.md) · [最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
 

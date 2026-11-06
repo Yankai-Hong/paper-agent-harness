@@ -1,5 +1,27 @@
 # 论文图文检索：基础阶段
 
+## 图片到文本与图片问答
+
+本轮新增独立的 CLIP 文本 FAISS 索引，覆盖同一文本索引中具有有效页面坐标的正文和图注。它与 BGE 索引独立，图像模型与多语言文本模型使用下文固定的两个对齐快照；不能将两种模型的向量混算。每个 CLIP 表示保存原始 chunk ID、字符偏移与精确切片；使用本地 fast tokenizer 的 128 token 上限，预留 2 个特殊 token、126 token 窗口和 16 token 重叠。长 chunk 不改写 BGE 索引。解析输出和图注关联仍未自动成为人工核实的原文；没有可靠可定位来源的表格提取不作为已验证表格文本加入。
+
+下面使用本机已有双论文开发索引，输出目录必须为新目录。命令需在项目根目录执行，两个模型路径必须包含原有完整性标记；主环境需安装 `pip install -e '.[visual]'` 对应的 Pillow 和项目依赖，独立模型环境使用已有 Sentence Transformers。必要时把进程临时目录设为工作区 `.cache`，不会修改 `.env`：
+
+```powershell
+$env:TEMP = (Resolve-Path .cache).Path
+$env:TMP = $env:TEMP
+$py = '.\.venv-gpu\Scripts\python.exe'
+$vpy = '.\.venv-mm-20261030\Scripts\python.exe'
+$visual = @('--visual-index','indexes/multimodal-acceptance-repair-clip-20261102', '--visual-root','data/raw/multimodal-final-dev-20261102/crops', '--visual-python',$vpy, '--visual-image-model','models/multimodal-v1/clip-image-v1', '--visual-text-model','models/multimodal-v1/clip-text-v1', '--visual-device','cuda:0')
+& $py -m paper_agent.cli clip-text-index indexes/multimodal-acceptance-repair-text-20261102/chunks.jsonl @visual --output indexes/clip-text-new
+& $py -m paper_agent.cli clip-search-image-text @visual --clip-text-index indexes/clip-text-new data/raw/multimodal-holdout-v3-20261101/v3img01.png
+& $py -m paper_agent.cli ask --index indexes/multimodal-acceptance-repair-text-20261102 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-example 'What stages are shown in this image?'
+& $py -m paper_agent.cli ask --index indexes/multimodal-acceptance-repair-text-20261102 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-only-example
+```
+
+`--image` 可重复两次；`ask` 的文本位置参数可省略，`chat` 启动时提供的图片在该进程的每轮使用。旧文本命令不需要 CLIP 文本索引。图片输入必须是本地 PNG/JPEG，最多 20 MiB、4000 万像素；图片只作查询输入，不能作为论文证据引用。每次图片编码同时用于图搜图和图搜正文；图片分支与文本分支保留各自排名，按排名交错并去重，不把不同实体说成共同命中。图、独立图注和正文各自保留原始 ID、页码和框；仅有唯一同论文、同 PDF、同页且文字一致的图注可作为候选扩展，关系仍标未核实。模型与数据指纹、索引校验和、数量或维度不符会报错；图片检索单分支失败或无结果的状态写入本地 trace。
+
+Reflect 和 Generate 每次调用最多接收三张图片：用户图占用其中名额，其余可用于经校验的论文图。用户图片和论文裁图会在真实请求中发给 `.env` 配置的远程视觉模型；trace 和请求账本不保存原图或 base64，用户原文件不会被删除。请勿依据 CLIP 相似度断定细小数字、箭头或语义；必须核对实际出处与引用。此处仅进行小样本、已见题目的开发评测，直接图片到指定图注的 Hit@5 为 0/3；三条图搜图命中后经位置关联扩展找到图注为 3/3，不能算成直接检索命中。混合问答案例及纯图片回答的相关性缺陷、逐例结果和复现命令见 [本轮报告](../reports/revision/MULTIMODAL-IMAGE-TEXT-20261106.md)。
+
 本功能使用独立环境运行 Docling 和 CLIP；既有文本环境、索引和会话不需要迁移。五篇论文的真实运行、agent 逐例复核及剩余问题见 [本轮复核报告](../reports/revision/MULTIMODAL-AGENT-REVIEW-20261031.md)；原始首轮结果保留在 [此前阶段报告](../reports/revision/MULTIMODAL-2026-10-31.md)。用户已授权 agent 完成原定复核；agent 复核不是人类金标。
 
 Docling 从 PDF 页面渲染图表裁剪，而不是只抽取嵌入图像。每个条目使用 `(paper_id, chunk_id)`；图表保存页码、页面坐标、旋转、编号（无法确认时为空）、图注、PDF 和图片哈希及解析版本。当前旋转页会明确拒绝处理；坐标和哈希校验只能证明记录内部一致，仍须逐页检查裁剪与原论文的对应关系。
@@ -24,6 +46,12 @@ $vpy = '.\.venv-mm-20261030\Scripts\python.exe'
 ```
 
 对每篇论文使用不同输出，显式指定与文本索引一致的论文 ID；源 PDF 和裁剪图均留在本地、不提交到公开仓库。以下示例需要替换本地路径：
+
+解析输出另生成 `.quarantine.jsonl` 与 `.summary.json`：零面积、非有限、反向、越界或来源缺失的局部条目被隔离并保留源标识和原因，不生成可引用区域；空文本单独标为跳过，可能包括公式，须检查遗漏。缺页和不完整转换仍报错。输出和旁车均须使用新路径。BART 的受控图表复核及逐页开发复验见 `reports/revision/MULTIMODAL-PARSE-REPAIR-20261102.md`；仅对显式原页复核、PDF 哈希和原始坐标均匹配的对象补关联，不把它推广为自动多面板识别。
+
+双论文上一版的索引、模型请求账本和 9+3 开发复验见 `reports/revision/MULTIMODAL-FINAL-DEVELOPMENT-20261102.md`；该报告保留当时首页候选漏召回及 h07 误拒的原始结果。后续版本支持明确的普通论文 ID 标题／作者提问，并检查真实首页源块；不可靠或未知范围应澄清，来源标题元数据不代替正文。表号引用可使用同 PDF、同页、身份一致且有明确来源关联的独立图注，仍须核对语义。`this effort` 的有界改写必须引用可定位原文并经声明检查；集合规模或语义条件缺失时仍会拒答，不能将该机制视为任意指代均可恢复。新旧账本独立保留，下文旧验收运行器的 60 次标记和历史结果不得覆盖或回写。
+
+本轮修复、真实开发复验、独立 agent 原页复核与未解决的 v305/v309 引用限制见 `reports/revision/MULTIMODAL-ACCEPTANCE-CLOSEOUT-20261102.md`。集合规模只在问题、已检索原文、单一论文及来源位置匹配时进行有界补全，并须逐声明自检；无法可靠匹配时保持拒答。旧声明重放和新生成结果分开记账。
 
 ```powershell
 & $vpy scripts/docling_ingest.py data/raw/example.pdf --paper-id example --title 'Example paper' --image-root data/raw/visual-v1/crops --output data/raw/visual-v1/example.jsonl
@@ -55,7 +83,7 @@ $visual = @('--visual-index','indexes/visual-v1','--visual-root','data/raw/visua
 
 问答首轮配置见本地 `runs/multimodal-acceptance-20261031/config.json`，本轮针对性复验配置见 `runs/multimodal-review-fixes-20261031/config.json`。60 次总额度已用完；如需未来继续真实模型测试，必须取得新的明确授权并记录新预算，不能删除标记或创建新账本规避现有上限。
 
-图文问答可选择 `--visual-claim-check`：生成且引用合法后，同一模型仅依据被引证据和相应图片逐项检查；任何不支持、未知、缺失或失败导致受控拒答。该选项增加一次计费请求，默认关闭，检查结果不是独立语义证明。关联正文只有在论文、chunk、PDF 哈希、页码、原文及显式图号引用均匹配可信文本索引时，才作为独立证据加入。
+图文问答可选择 `--visual-claim-check`：生成且引用合法后，同一模型仅依据被引证据和相应图片逐项检查，默认关闭。若同时用 `--local-claim-audit` 指定全新的受控本地目录，当部分声明有争议时可对争议声明做一次复核；原声明和两次 verdict 保留，冲突标 unknown 并受控拒答，不静默删掉可能必要的声明。文本数字或单位缺失时最多一次显式引用修复，图像中的数字不能由文本规则自动证明；明显的跨声明指代或缺少可核查 test 数据集限定也会受控拒答。这些步骤会增加计费请求，同模型自检和数字重合都不是独立语义证明。图形、图注和关联正文分别引用；论文标题作为本地索引来源元数据单列且标注未独立验证，不是局部框内原文。
 
 ### 图注、表格语义索引和保留集
 
@@ -68,6 +96,10 @@ $visual = @('--visual-index','indexes/visual-v1','--visual-root','data/raw/visua
 普通问答可在既有视觉参数之外指定 `--visual-semantic-index indexes/multimodal-holdout-v1-semantic`、`--mode rerank --encoder models/bge-m3` 和相同 `--max-length 768`；密集正文索引、BGE 图注索引和 CLIP 索引必须由同一版证据生成，编码模型路径及快照必须匹配元数据。此索引仍可能缺少表号，按编号过滤前应检查来源，不能用图注名称猜测表格区域。
 
 本次保留集的原始配置和输出在 `runs/multimodal-holdout-v1-eval-20261031/`，逐次请求在 `requests/`，完整调用参数可由 `scripts/run_multimodal_holdout.py --help` 查看。冻结题集、独立原页复核、实现哈希、单题结果及局限见 `reports/revision/MULTIMODAL-HOLDOUT-20261031.md`。模型调用没有自动重试；中断后要先核查本地的 `reserved_unknown` 及 provider 用量，不能将未知状态当作未消费请求。新请求需要已有授权，不能通过新建账本规避原有限额；本次新账本和旧 60 次账本分别保留。
+
+第二版保留集及本轮证据修复见 `reports/revision/MULTIMODAL-V3-20261031.md`。`scripts/run_multimodal_v3_eval.py --help` 列出真实评测参数，`--decompose` 启用带范围保护的分论文检索；题集必须与指定 SHA-256 一致，输出目录必须不存在。请求状态写入 `requests/`，原始声明与检查写入 `claim-audit/`；`scripts/join_multimodal_claim_audit.py` 可只读连接原始和修复后引用的本地坐标，输出新文件。不要把不包含正文的审计汇总当作语义证明。原 PDF、图片、模型、索引和运行结果均只在本机，复现前须依据题集说明从原始来源取得并校验。
+
+2026-11-01 收尾结果和源码冻结见 `reports/revision/MULTIMODAL-V4-20261101.md`。BERT 两幅复合图基于经 agent 核查的 `data/eval/multimodal-holdout-v2/agent-reviewed-composites-v4.json`，可使用 `scripts/apply_reviewed_composites.py --help` 的 `--panel-manifest-output` 保留来源区域；这不是任意多面板的自动正确解析。新保留集一次冻结后 ULMFiT 因零宽 bbox 中止，BART 的单论文部分诊断另行标注，不能作为原定两论文完整结果。原始 PDF、旧索引和请求账本不可覆盖；如后续修复零宽 bbox，应先补上防误定位测试，保留失败结果并按是否使用该集调参重新确定评测边界。
 
 ## 后续 ColQwen2
 
