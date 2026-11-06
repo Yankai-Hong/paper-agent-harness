@@ -16,6 +16,10 @@ def main():
     p.add_argument('--image-model', required=True)
     p.add_argument('--text-model', required=True)
     p.add_argument('--device', default='cpu')
+    p.add_argument('--index', default='indexes/multimodal-acceptance-repair-text-20261102')
+    p.add_argument('--query-image', default='data/raw/multimodal-holdout-v3-20261101/v3img01.png')
+    p.add_argument('--negative-image', help='Optional off-corpus image for a pure-image abstention check')
+    p.add_argument('--question', default='What are the stages shown in this image? Cite the relevant paper evidence.')
     args = p.parse_args()
     from paper_agent.providers import APIConfig, CompatibleReasoner, post_json
     from paper_agent.local_audit import LocalRequestAudit
@@ -29,7 +33,7 @@ def main():
                      max_calls=30, max_retries=0, repair_retries=0, thinking='disabled', circuit_enabled=False)
     enc = SubprocessEncoder(args.visual_python, args.image_model, args.text_model, args.device)
     visual = VisualRetriever(args.visual_index, args.visual_root, enc)
-    retriever = Retriever('indexes/multimodal-acceptance-repair-text-20261102')
+    retriever = Retriever(args.index)
     clip_text = ClipTextRetriever(args.clip_text_index, enc, retriever.metadata['corpus_hash'])
     audit = LocalRequestAudit(output/'requests', config.api_key)
     case = {'id':None}; reasoner = None
@@ -46,9 +50,11 @@ def main():
             finally:
                 for record in self.calls[before:]: audit.finalize(record)
     reasoner = Recorded(config, 'image-smoke', transport=transport, image_root=args.visual_root)
-    query_image = 'data/raw/multimodal-holdout-v3-20261101/v3img01.png'
     rows = []
-    for cid, question in [('mixed', 'What are the stages shown in this image? Cite the relevant paper evidence.'), ('image_only', '')]:
+    cases = [('mixed', args.question, args.query_image), ('image_only', '', args.query_image)]
+    if args.negative_image:
+        cases.append(('image_negative', '', args.negative_image))
+    for cid, question, query_image in cases:
         case['id'] = cid
         pipe = PaperPipeline(retriever, reasoner, output/'traces'/cid, output/'memory'/cid, mode='bm25',
                              archive_recall=False, visual_retriever=visual, visual_root=args.visual_root,

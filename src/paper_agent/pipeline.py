@@ -24,7 +24,7 @@ STAGES = ("Guardrails", "NLU", "Retrieve", "Rerank", "Reflect", "Generate", "Mem
 _TRACE_ROUTES = {'text_original', 'text_rewrite', 'text_dense_rescue', 'frontmatter_located'} | {
     f'{name}_{variant}' for name in ('text_bm25', 'text_dense', 'rerank', 'clip',
         'caption_bm25', 'caption_bge', 'table_bge') for variant in ('original', 'rewrite')}
-_TRACE_ROUTES |= {'image_to_text', 'image_to_image'}
+_TRACE_ROUTES |= {'image_to_text', 'image_to_image', 'image_anchor'}
 
 
 @dataclass(frozen=True)
@@ -44,6 +44,30 @@ def _interleave_evidence(*lanes):
                 if key not in seen:
                     seen.add(key); output.append(merged[key])
     return output
+
+
+def _near_duplicate_anchors(lanes, expected_count, max_images):
+    """Conservative candidate gate, not proof of identity or semantic support.
+
+    Each query image needs a high absolute score and a gap over its runner-up.
+    Reflection must still inspect both images and can refuse. This deliberately
+    abstains on non-near-duplicate images and corpora without a runner-up.
+    """
+    if len(lanes) != expected_count:
+        return None
+    selected = []
+    for lane in lanes:
+        if len(lane) < 2:
+            return None
+        a, b = lane[:2]
+        first, second = a.get('visual_score'), b.get('visual_score')
+        if (not isinstance(first, (int,float)) or not isinstance(second, (int,float))
+                or not math.isfinite(first) or not math.isfinite(second)
+                or first < .90 or first - second < .05):
+            return None
+        selected.append(a)
+    unique = list(_merge_evidence_entities(selected).values())
+    return unique if len(unique) <= max_images else None
 
 
 def _paper_artifact_digest_question(question):
@@ -944,6 +968,7 @@ class PaperPipeline:
                 image_vectors = self.visual_retriever.encoder.encode_images([item['path'] for item in query_images])
                 for item in query_images:
                     validate_query_image(item['path'], item['sha256'])
+            image_anchor_ok = not pure_image
             if decision == "search":
                 for attempt in range(1, self.max_retrieval_attempts + 1):
                     with trace.stage("Retrieve", {"query": query}, attempt) as event:
@@ -1153,16 +1178,51 @@ class PaperPipeline:
                                 budget.take('subqueries', 4 * len(query_variants))
                                 # Each route keeps 20 before fusion; final evidence
                                 # remains capped separately at five and three images.
-                                clips = self.visual_retriever.search_texts(query_variants, top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number)
-                                lexical = [self.visual_retriever.search_caption(q, top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number) for q in query_variants]
-                                sem_caps = [self.visual_text_retriever.search(q, kind='caption', top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number) for q in query_variants]
-                                sem_tables = [self.visual_text_retriever.search(q, kind='table', top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number) for q in query_variants]
+                                def optional_route(name, operations):
+                                    responses = []
+                                    for variant, operation in enumerate(operations):
+                                        try:
+                                            response = operation()
+                                            status, error = ('ok' if response['hits'] else 'empty'), None
+                                        except BudgetExceeded:
+                                            raise
+                                        except Exception as exc:
+                                            if not self.allow_degraded:
+                                                raise
+                                            response, status, error = {'hits':[]}, 'failed', type(exc).__name__
+                                            event.update(degraded=True, reason='retrieval_route_failed')
+                                        record = {'route':name + ('_original' if variant == 0 else '_rewrite'),
+                                                  'status':status, 'refs':[{'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in response['hits']]}
+                                        if error:
+                                            record['error_type'] = error
+                                        rerank_routes.append(record)
+                                        responses.append(response)
+                                    return responses
+                                try:
+                                    clips = self.visual_retriever.search_texts(query_variants, top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number)
+                                    if len(clips) != len(query_variants):
+                                        raise ValueError('CLIP response count mismatch')
+                                    for variant, response in enumerate(clips):
+                                        rerank_routes.append({'route':'clip' + ('_original' if variant == 0 else '_rewrite'),
+                                            'status':'ok' if response['hits'] else 'empty',
+                                            'refs':[{'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in response['hits']]})
+                                except BudgetExceeded:
+                                    raise
+                                except Exception as exc:
+                                    if not self.allow_degraded:
+                                        raise
+                                    event.update(degraded=True, reason='retrieval_route_failed')
+                                    clips = [{'hits':[]} for _ in query_variants]
+                                    for variant in range(len(query_variants)):
+                                        rerank_routes.append({'route':'clip' + ('_original' if variant == 0 else '_rewrite'),
+                                            'status':'failed', 'error_type':type(exc).__name__, 'refs':[]})
+                                lexical = optional_route('caption_bm25', [lambda q=q: self.visual_retriever.search_caption(q, top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number) for q in query_variants])
+                                sem_caps = optional_route('caption_bge', [lambda q=q: self.visual_text_retriever.search(q, kind='caption', top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number) for q in query_variants])
+                                sem_tables = optional_route('table_bge', [lambda q=q: self.visual_text_retriever.search(q, kind='table', top_k=20, paper_ids=nlu.get('paper_ids'), figure_number=figure_number) for q in query_variants])
                                 all_routes = [('clip', clips), ('caption_bm25', lexical), ('caption_bge', sem_caps), ('table_bge', sem_tables)]
                                 for route_name, responses in all_routes:
                                     for variant, response in enumerate(responses):
                                         budget.take('candidates', len(response['hits']))
-                                        rerank_routes.append({'route':route_name + ('_original' if variant == 0 else '_rewrite'),
-                                                              'refs':[{'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in response['hits']]})
                                 visual_result = clips[0]
                                 visual_candidates = _fuse_ranked_lanes([r['hits'] for r in clips])
                                 caption_candidates = _fuse_ranked_lanes([mapped_captions] + [r['hits'] for r in lexical])
@@ -1207,7 +1267,14 @@ class PaperPipeline:
                                     except Exception as exc:
                                         event.update(degraded=True, reason='image_retrieval_branch_failed')
                                         rerank_routes.append({'route':route, 'status':'failed', 'error_type':type(exc).__name__, 'refs':[]})
-                            candidates = _interleave_evidence(candidates, *image_text_lanes, *image_visual_lanes)
+                            if pure_image:
+                                anchors = _near_duplicate_anchors(image_visual_lanes, len(query_images), 3-len(query_images))
+                                image_anchor_ok = anchors is not None
+                                candidates = anchors or []
+                                rerank_routes.append({'route':'image_anchor', 'status':'ok' if image_anchor_ok else 'failed',
+                                    'refs':[{'paper_id':h['paper_id'],'chunk_id':h['chunk_id']} for h in candidates]})
+                            else:
+                                candidates = _interleave_evidence(candidates, *image_text_lanes, *image_visual_lanes)
                         # Preserve the actual fused ranking separately from the
                         # bounded set sent to the model for evaluation.
                         metadata_scope = explicit_scope or (explicit_natural_metadata_scope(question, catalog, nlu.get('paper_ids')) if not scope_issue else None)
@@ -1264,10 +1331,13 @@ class PaperPipeline:
                             "attempt": attempt, "intent": nlu["intent"],
                             "subgoals": goals, "candidate_coverage_not_semantic_support": {g:[ref for ref in refs if (ref['paper_id'],ref['chunk_id']) in {(c['paper_id'],c['chunk_id']) for c in evidence}] for g,refs in coverage.items()},
                             "historical_context_not_evidence": recalled,
-                            "user_image_instruction": "User images are query inputs, not paper evidence or valid citations. Focus on evidence related to the image and question; ignore unrelated retrieved candidates. Cite only independently located paper evidence." if query_images else None}
+                            "user_image_instruction": "User images are query inputs, not paper evidence or valid citations. Compare the user image with the paper image; a similarity score or retrieved caption does not establish a match. Refuse if the image match or requested detail is unclear. Focus on evidence related to the image and question; ignore unrelated candidates. Cite only independently located paper evidence." if query_images else None}
                         if self.reflect:
-                            verdict = (self.reasoner.structured("reflect", reflect_payload, images=visual_images)
-                                       if visual_images else self.reasoner.structured("reflect", reflect_payload))
+                            if pure_image and not image_anchor_ok:
+                                verdict = {'decision':'refuse', 'reason_code':'image_match_uncertain'}
+                            else:
+                                verdict = (self.reasoner.structured("reflect", reflect_payload, images=visual_images)
+                                           if visual_images else self.reasoner.structured("reflect", reflect_payload))
                         else:
                             verdict = {"decision": "answer"}
                         event['visual_image_count'] = len(visual_images)
@@ -1510,6 +1580,8 @@ class PaperPipeline:
                 else:
                     answer = {"decision": decision, "claims": [], "text":
                         "请明确所指论文或比较对象。" if decision == "clarify" else "当前语料证据不足或请求超出论文库范围。"}
+                    if pure_image and not image_anchor_ok:
+                        answer.update(reason_code='image_match_uncertain', text='无法可靠匹配该图片与论文图表；请补充问题或提供更清晰的图片。')
                     if constraint_reason:
                         answer.update(reason_code=constraint_reason,
                                       text='当前无法核实时间或数据限制，请提供可验证的条件或证据。')

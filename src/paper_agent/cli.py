@@ -67,6 +67,7 @@ def main():
     clip_text_search.add_argument('query')
     clip_text_search.add_argument('--paper-id', action='append')
     clip_text_search.add_argument('--top-k', type=int, default=5)
+    clip_text_search.add_argument('--kind', choices=['caption','text'], help='Optional source-kind filter; default searches all text')
     semantic_index = sub.add_parser("visual-semantic-index", help="Build a separate BGE caption/table index")
     semantic_index.add_argument("evidence")
     semantic_index.add_argument("--visual-root", required=True)
@@ -83,6 +84,8 @@ def main():
         p.add_argument("--paper-id", action="append")
         p.add_argument("--figure-number")
         p.add_argument("--top-k", type=int, default=5)
+        if name == 'visual-search-text':
+            p.add_argument('--caption-fusion', action='store_true', help='Combine CLIP and caption lexical ranks for the same image entities')
     for command in ("search", "shell", "ask", "chat"):
         p = sub.add_parser(command)
         p.add_argument("--index", required=True)
@@ -154,7 +157,7 @@ def main():
         emit(build_clip_text_index(args.chunks, args.output, visual_encoder(args)))
     elif args.command == 'clip-search-image-text':
         from .clip_text_index import ClipTextRetriever
-        emit(ClipTextRetriever(args.clip_text_index, visual_encoder(args)).search_image(args.query, args.top_k, args.paper_id))
+        emit(ClipTextRetriever(args.clip_text_index, visual_encoder(args)).search_image(args.query, args.top_k, args.paper_id, args.kind))
     elif args.command == "visual-semantic-index":
         from .visual_text_retrieval import build_visual_text_index
         encoder = BGEEncoder(args.encoder, args.device, args.batch_size, args.max_length)
@@ -162,7 +165,7 @@ def main():
     elif args.command in {"visual-search-text", "visual-search-image"}:
         from .visual_retrieval import VisualRetriever
         visual = VisualRetriever(args.visual_index, args.visual_root, visual_encoder(args))
-        method = visual.search_text if args.command == "visual-search-text" else visual.search_image
+        method = (visual.search_text_fused if args.caption_fusion else visual.search_text) if args.command == "visual-search-text" else visual.search_image
         emit(method(args.query, top_k=args.top_k, paper_ids=args.paper_id, figure_number=args.figure_number))
     else:
         visual = None

@@ -20,7 +20,7 @@ def main():
     out = Path(args.output)
     if out.exists(): raise ValueError('Choose a new output file')
     from paper_agent.clip_text_index import ClipTextRetriever
-    from paper_agent.visual_retrieval import SubprocessEncoder, VisualRetriever
+    from paper_agent.visual_retrieval import SubprocessEncoder, VisualRetriever, fuse_visual_hits
     from paper_agent.retrieval import Retriever
     from paper_agent.pipeline import _expand_located_context
     enc = SubprocessEncoder(args.visual_python, args.image_model, args.text_model, args.device)
@@ -45,6 +45,7 @@ def main():
         query = vec.reshape(1,-1)
         visual_hits = visual._search(query, 5, None, None, time.perf_counter())['hits']
         text_hits = text.search_vector(query, 5)['hits']
+        caption_hits = text.search_vector(query, 5, kind='caption')['hits']
         expanded, _ = _expand_located_context(visual_hits, bm25.by_id)
         expanded_text = [h for h in expanded if h.get('evidence_type') in (None, 'text')]
         def compact(hits):
@@ -53,6 +54,8 @@ def main():
                                   'hit_at_5':any(h['chunk_id']==visual_id for h in visual_hits)},
             'image_to_text':{'target':text_id,'top5':compact(text_hits),
                              'hit_at_5':any(h['chunk_id']==text_id for h in text_hits)},
+            'image_to_caption_only':{'target':text_id,'top5':compact(caption_hits),
+                                     'hit_at_5':any(h['chunk_id']==text_id for h in caption_hits)},
             'visual_association_expansion':{'method':'unique same-PDF same-page exact located caption; association remains unverified',
                     'added_text':compact(expanded_text), 'target_found':any(h['chunk_id']==text_id for h in expanded_text)}})
     queries = [('three stages of ULMFiT pretraining language model fine tuning classifier', 'v-048bf54e3c62918316858d40'),
@@ -65,10 +68,16 @@ def main():
     vectors = enc.encode_texts([q for q, _ in queries] + [tail['text']])
     output['text_to_image'] = []
     for (query, target), vector in zip(queries, vectors[:len(queries)]):
-        hits = visual._search(vector.reshape(1,-1), 5, None, None, time.perf_counter())['hits']
+        clips = visual._search(vector.reshape(1,-1), 20, None, None, time.perf_counter())['hits']
+        hits = clips[:5]
+        captions = visual.search_caption(query, top_k=20)['hits']
+        fused = fuse_visual_hits(clips, captions, 5)
         output['text_to_image'].append({'query':query, 'target':target,
             'top5':[{'paper_id':h['paper_id'],'chunk_id':h['chunk_id'],'rank':h['rank']} for h in hits],
-            'hit_at_5':any(h['chunk_id']==target for h in hits)})
+            'hit_at_5':any(h['chunk_id']==target for h in hits),
+            'caption_fused_top5':[{'paper_id':h['paper_id'],'chunk_id':h['chunk_id'],'rank':h['rank'],
+                                   'clip_rank':h['clip_rank'],'caption_rank':h['caption_rank']} for h in fused],
+            'caption_fused_hit_at_5':any(h['chunk_id']==target for h in fused)})
     tail_hits = text.search_vector(vectors[-1].reshape(1,-1), 5)['hits']
     output['long_text_self_query'] = {'description':'tail text used as query; diagnostic, not held-out relevance',
         'target':{'paper_id':tail['paper_id'],'chunk_id':tail['chunk_id'],'span':[tail['start'],tail['end']]},
@@ -85,7 +94,9 @@ def main():
     out.write_text(json.dumps(output,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'output':str(out), 'image_to_text':[c['image_to_text']['hit_at_5'] for c in output['cases']],
                       'image_to_image':[c['image_to_image']['hit_at_5'] for c in output['cases']],
+                      'caption_only':[c['image_to_caption_only']['hit_at_5'] for c in output['cases']],
                       'text_to_image':[c['hit_at_5'] for c in output['text_to_image']],
+                      'text_to_image_fused':[c['caption_fused_hit_at_5'] for c in output['text_to_image']],
                       'text_to_text':output['text_to_text']['hit_at_5'], 'elapsed_seconds':output['elapsed_seconds']}))
 
 

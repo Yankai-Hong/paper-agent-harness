@@ -61,6 +61,22 @@ def test_image_validation_and_independent_selection(tmp_path):
     assert [x['chunk_id'] for x in _interleave_evidence([a], [b, a])] == ['a','b']
 
 
+def test_caption_kind_filters_real_text_entities_before_top_k(tmp_path, monkeypatch):
+    rows = [source('body','needle body'), {**source('caption','needle caption'), 'docling_label':'caption'}]
+    chunks=tmp_path/'chunks.jsonl'; write_jsonl(chunks,rows)
+    def split(command,**kwargs):
+        request=json.loads(Path(command[-1]).read_text(encoding='utf8'))
+        Path(request['output']).write_text(json.dumps({'spans':[[[0,len(t)]] for t in request['inputs']],
+            'limit':128,'window':126,'overlap':16}),encoding='utf8')
+    monkeypatch.setattr('paper_agent.clip_text_index.subprocess.run',split)
+    build_clip_text_index(chunks,tmp_path/'idx',Encoder())
+    retriever=ClipTextRetriever(tmp_path/'idx',Encoder())
+    hits=retriever.search_vector([[0,1]],1,kind='caption')['hits']
+    assert hits[0]['chunk_id']=='caption' and hits[0]['text']=='needle caption'
+    assert retriever.search_vector([[0,1]],5,kind='text')['hits'][0]['chunk_id']=='body'
+    with pytest.raises(ValueError,match='kind'): retriever.search_vector([[0,1]],kind='image')
+
+
 @pytest.mark.parametrize('question', ['', 'What does the image show?'])
 def test_query_modes_route_images_without_turning_input_into_evidence(tmp_path, question):
     from PIL import Image
@@ -87,7 +103,9 @@ def test_query_modes_route_images_without_turning_input_into_evidence(tmp_path, 
     pipe = PaperPipeline(Text(), Reasoner(), tmp_path/'traces', tmp_path/'memory', mode='bm25',
                          visual_retriever=Visual(), clip_text_retriever=ClipText(), archive_recall=False)
     result = pipe.run_query(PaperQuery(question,(str(path),)), PaperAgentState('s'),turn_id='t')
-    assert result['answer']['decision']=='answer'
+    assert result['answer']['decision'] == ('answer' if question else 'refuse')
+    if not question:
+        assert result['answer']['reason_code'] == 'image_match_uncertain'
     for stage, payload, images in calls:
         if stage in {'reflect','generate'}:
             assert images[0]['input_type']=='user_image'
@@ -95,7 +113,9 @@ def test_query_modes_route_images_without_turning_input_into_evidence(tmp_path, 
     trace = json.loads(Path(result['trace_path']).read_text(encoding='utf8'))
     assert trace['query_mode'] == ('text_image' if question else 'image')
     routes = next(x for x in trace['stages'] if x['stage']=='Rerank')['output']['routes']
-    assert {r['route']:r['status'] for r in routes if r['route'].startswith('image_')} == {'image_to_text':'ok','image_to_image':'empty'}
+    image_routes = {r['route']:r['status'] for r in routes if r['route'].startswith('image_')}
+    assert image_routes['image_to_text']=='ok' and image_routes['image_to_image']=='empty'
+    if not question: assert image_routes['image_anchor']=='failed'
     assert str(path) not in json.dumps(trace)
 
 
@@ -156,4 +176,49 @@ def test_failed_image_text_branch_is_observable(tmp_path):
     trace = json.loads(Path(result['trace_path']).read_text(encoding='utf8'))
     assert trace['degraded'] is True
     routes = next(s for s in trace['stages'] if s['stage']=='Rerank')['output']['routes']
-    assert {r['route']:r['status'] for r in routes} == {'image_to_text':'failed','image_to_image':'empty'}
+    assert {r['route']:r['status'] for r in routes} == {'image_to_text':'failed','image_to_image':'empty','image_anchor':'failed'}
+
+
+def test_near_duplicate_gate_fails_closed_and_deduplicates():
+    from paper_agent.pipeline import _near_duplicate_anchors
+    a={'paper_id':'p','chunk_id':'a','visual_score':.96}
+    b={'paper_id':'q','chunk_id':'b','visual_score':.75}
+    assert _near_duplicate_anchors([[a,b],[a,b]],2,1)==[a]
+    assert _near_duplicate_anchors([[a,{**b,'visual_score':.94}]],1,2) is None
+    assert _near_duplicate_anchors([[{**a,'visual_score':.89},b]],1,2) is None
+    assert _near_duplicate_anchors([[a]],1,2) is None
+
+
+def test_pure_image_keeps_only_anchor_and_its_located_caption(tmp_path):
+    import hashlib
+    from PIL import Image
+    query=tmp_path/'query.png'; Image.new('RGB',(3,3),'red').save(query)
+    image_sha=hashlib.sha256(query.read_bytes()).hexdigest(); pdf_sha='a'*64
+    caption={**source('caption','Figure 1: alpha beta'), 'docling_label':'caption','pdf_sha256':pdf_sha}
+    unrelated={**source('other','Unrelated candidate'), 'paper_id':'q'}
+    figure={'paper_id':'p','chunk_id':'fig','evidence_type':'figure','text':'Figure 1: alpha beta',
+            'caption':'Figure 1: alpha beta','page':1,'bbox':[1,2,3,4],'page_size':[10,10],
+            'coordinate_system':'top-left-points','page_rotation':0,'pdf_sha256':pdf_sha,
+            'image_path':'query.png','image_sha256':image_sha,'visual_score':.97}
+    other_figure={**figure,'paper_id':'q','chunk_id':'other-fig','visual_score':.72}
+    class Text:
+        metadata={'corpus_hash':'v'}; by_id={'caption':caption,'other':unrelated}; reranker=None
+    class Visual:
+        image_root=tmp_path; evidence=[figure,other_figure]; encoder=Encoder()
+        def _search(self,*args,**kwargs): return {'hits':[figure,other_figure]}
+    class Clip:
+        metadata={'source_hash':'v'}
+        def search_vector(self,*args,**kwargs): return {'hits':[unrelated]}
+    calls=[]
+    class Reasoner:
+        def structured(self,stage,payload,images=None):
+            calls.append((stage,payload,images))
+            if stage=='reflect': return {'decision':'answer'}
+            return {'claims':[{'key':'k','text':'alpha beta','citations':[{'paper_id':'p','chunk_id':'caption'}]}]}
+    pipe=PaperPipeline(Text(),Reasoner(),tmp_path/'traces',tmp_path/'memory',mode='bm25',archive_recall=False,
+                       visual_retriever=Visual(),clip_text_retriever=Clip())
+    result=pipe.run('',PaperAgentState('s'),images=[str(query)])
+    assert result['answer']['decision']=='answer'
+    for stage,payload,images in calls:
+        assert {e['chunk_id'] for e in payload['evidence']}=={'fig','caption'}
+        assert images[0]['input_type']=='user_image' and images[1]['chunk_id']=='fig'

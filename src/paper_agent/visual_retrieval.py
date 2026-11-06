@@ -57,6 +57,18 @@ def _normalize(vectors):
     return np.ascontiguousarray(values / norms)
 
 
+def fuse_visual_hits(clip_hits, caption_hits, top_k):
+    """RRF only rankings keyed by the same visual evidence identity."""
+    from .retrieval import rrf
+    lanes = [clip_hits, caption_hits]
+    by_key = {(e['paper_id'], e['chunk_id']):e for lane in lanes for e in lane}
+    keys = [[(e['paper_id'],e['chunk_id']) for e in lane] for lane in lanes]
+    rankings = [{key:i+1 for i,key in enumerate(lane)} for lane in keys]
+    return [{**by_key[key], 'rank':i+1, 'clip_rank':rankings[0].get(key),
+             'caption_rank':rankings[1].get(key), 'fusion_score':float(score)}
+            for i,(key,score) in enumerate(rrf(keys)[:top_k])]
+
+
 class SubprocessEncoder:
     """Load only one model at a time in the isolated interpreter."""
     def __init__(self, python, image_model_path, text_model_path, device="cpu"):
@@ -161,6 +173,17 @@ class VisualRetriever:
             raise ValueError("Empty text query")
         start = time.perf_counter()
         return self._search(self.encoder.encode_texts([query]), top_k, paper_ids, figure_number, start)
+
+    def search_text_fused(self, query, top_k=5, paper_ids=None, figure_number=None):
+        """Fuse CLIP and lexical caption ranks for the same visual entities."""
+        if not isinstance(query, str) or not query.strip() or type(top_k) is not int or top_k < 1:
+            raise ValueError('Nonempty query and positive top_k required')
+        depth = max(20, top_k)
+        clip = self.search_text(query, depth, paper_ids, figure_number)
+        lexical = self.search_caption(query, depth, paper_ids, figure_number)
+        hits = fuse_visual_hits(clip['hits'], lexical['hits'], top_k)
+        return {'hits':hits, 'routes':{'clip_count':len(clip['hits']),'caption_count':len(lexical['hits'])},
+                'corpus_hash':self.metadata['corpus_hash']}
 
     def search_texts(self, queries, top_k=20, paper_ids=None, figure_number=None):
         """Encode original and rewritten text in one isolated CLIP process."""

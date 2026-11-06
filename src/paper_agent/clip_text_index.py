@@ -96,9 +96,11 @@ class ClipTextRetriever:
                     or source['text'][rep['start']:rep['end']] != rep['text']):
                 raise ValueError('CLIP representation source mapping mismatch')
 
-    def search_vector(self, vector, top_k=5, paper_ids=None):
+    def search_vector(self, vector, top_k=5, paper_ids=None, kind=None):
         if type(top_k) is not int or top_k < 1:
             raise ValueError('top_k must be positive')
+        if kind not in (None, 'caption', 'text'):
+            raise ValueError('Unknown CLIP text source kind')
         start = time.perf_counter()
         vector = _normalize(vector)
         if vector.shape != (1, self.index.d):
@@ -110,6 +112,9 @@ class ClipTextRetriever:
             rep = self.representations[int(pos)]; key = (rep['paper_id'],rep['chunk_id'])
             if key in seen or (allowed is not None and key[0] not in allowed):
                 continue
+            source_kind = 'caption' if self.by_key[key].get('docling_label') == 'caption' else 'text'
+            if kind is not None and source_kind != kind:
+                continue
             seen.add(key)
             hits.append({**self.by_key[key], 'rank':len(hits)+1, 'clip_text_score':float(score),
                          'matched_span':[rep['start'],rep['end']], 'matched_text':rep['text']})
@@ -118,7 +123,7 @@ class ClipTextRetriever:
         return {'hits':hits, 'timing_ms':{'clip_text_retrieve':(time.perf_counter()-start)*1000},
                 'source_hash':self.metadata['source_hash']}
 
-    def search_image(self, path, top_k=5, paper_ids=None):
+    def search_image(self, path, top_k=5, paper_ids=None, kind=None):
         from .query_images import validate_query_image
         item = validate_query_image(path)
-        return self.search_vector(self.encoder.encode_images([item['path']]), top_k, paper_ids)
+        return self.search_vector(self.encoder.encode_images([item['path']]), top_k, paper_ids, kind)
