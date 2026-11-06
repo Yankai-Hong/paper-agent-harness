@@ -23,8 +23,9 @@ class Encoder:
 
 
 def item(root, name, paper, number):
+    from PIL import Image
     path = root / name
-    path.write_bytes(name.encode())
+    Image.new('RGB', (2,2), color='red' if 'one' in name else 'blue').save(path)
     return {"paper_id": paper, "chunk_id": name, "title": "test", "text": f"{number} caption", "caption": f"{number} caption",
             "evidence_type": "figure", "page": 1, "bbox": [1, 2, 10, 20], "page_size": [100, 200],
             "coordinate_system": "top-left-points", "page_rotation": 0, "figure_number": number,

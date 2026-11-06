@@ -20,6 +20,87 @@ def nlu(*papers):
     return {'intent':'compare','standalone_query':'accuracy','paper_ids':list(papers),'resolved_entities':{}}
 
 
+def test_unique_paper_aliases_resolve_explicit_comparison_without_history(tmp_path):
+    model={**nlu('paperA','paperB'), 'standalone_query':'Compare AlphaVec and Sentence-BERT'}
+    p,searches,_=make_complex_pipeline(tmp_path,nlu=model,decomposition=False)
+    a,b,_=p.retriever.by_id.values()
+    a.update(title='Deep Contextualized Word Representations',
+             text='For this reason, we call them AlphaVec (Advanced vectors) representations.')
+    b.update(title='Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks')
+    for turn, question in enumerate([
+        '比较 Deep Contextualized Word Representations 和 Sentence-BERT 两篇论文的表示粒度',
+        '在 AlphaVec 和 Sentence-BERT 两篇论文中，哪一篇的 Figure 2 显示余弦相似度？',
+    ]):
+        assert p.run(question, prior(), str(turn))['answer']['decision']=='answer'
+    assert searches and all(s['paper_ids']==['paperA','paperB'] for _,s in searches)
+
+
+def test_alias_collision_and_historical_reference_remain_ambiguous(tmp_path):
+    from paper_agent.decomposition import catalog_with_literal_aliases, scope_guard
+    chunks=[{'paper_id':'paperA','title':'One Paper','text':'We call them AlphaVec (vectors).'},
+            {'paper_id':'paperB','title':'Other Paper','text':'We call them AlphaVec (methods).'}]
+    catalog=catalog_with_literal_aliases(chunks)
+    assert all('alphavec' not in p.get('aliases',[]) for p in catalog)
+    assert scope_guard('比较 paperA 和之前那篇',catalog,['paperA','paperB'],prior())=='explicit_targets_unresolved'
+    p,searches,_=make_complex_pipeline(tmp_path,nlu=nlu('paperA','paperB'),decomposition=False)
+    assert p.run('比较 paperA 和之前那篇',prior(),'t')['answer']['decision']=='clarify'
+    assert not searches
+
+
+def test_title_alias_in_single_paper_possessive_is_local():
+    from paper_agent.decomposition import catalog_with_literal_aliases, scope_guard
+    catalog=catalog_with_literal_aliases([
+        {'paper_id':'p1','title':'BERT: Pre-training of Deep Bidirectional Transformers','text':'abstract'}])
+    assert scope_guard('How does BERT evaluate its method?',catalog,['p1'],prior(),
+                       'How does BERT evaluate its method?',{}) is None
+
+
+@pytest.mark.parametrize('question,entities',[
+    ('比较 paperA 和 paperB，前者有什么特点，后者有什么特点？',{'前者':'paperA','后者':'paperB'}),
+    ('比较 paperB 和 paperA，前者有什么特点，后者有什么特点？',{'前者':'paperB','后者':'paperA'}),
+    ('Compare paperA and paperB: the former uses what, the latter uses what?',{'former':'paperA','latter':'paperB'}),
+])
+def test_same_sentence_former_and_latter_follow_explicit_order(question,entities):
+    from paper_agent.decomposition import scope_guard
+    catalog=[{'paper_id':'paperA'},{'paper_id':'paperB'},{'paper_id':'paperC'}]
+    assert scope_guard(question,catalog,['paperA','paperB'],prior(),None,entities) is None
+    assert scope_guard(question,catalog,['paperA'],prior(),None,entities) == 'explicit_targets_unresolved'
+
+
+@pytest.mark.parametrize('split',[False,True])
+def test_explicit_two_paper_order_reaches_pipeline_retrieval(tmp_path,split):
+    model={**nlu('paperA','paperB'),'standalone_query':'compare paperA and paperB',
+           'resolved_entities':{'前者':'paperA','后者':'paperB'}}
+    p, searches, _=make_complex_pipeline(tmp_path,nlu=model,decomposition=split)
+    answer=p.run('比较 paperA 和 paperB 的 Figure 2，前者显示什么，后者显示什么？',prior(),'t')['answer']
+    assert answer['decision']=='answer' and searches
+    assert {(c['citations'][0]['paper_id']) for c in answer['claims']} == {'paperA','paperB'}
+
+
+@pytest.mark.parametrize('question,ids,entities',[
+    ('比较 paperA 和 paperB，前者是什么？',['paperA','paperB'],{'前者':'paperB'}),
+    ('比较 paperA 和 paperB，后者是什么？',['paperA','paperB'],{'后者':'paperA'}),
+    ('前者是什么？比较 paperA 和 paperB。',['paperA','paperB'],{}),
+    ('比较 paperA、paperB、paperC，前者是什么？',['paperA','paperB','paperC'],{}),
+    ('比较 paperA 和 paperB。前者是什么？',['paperA','paperB'],{}),
+    ('比较 paperA 和 paperB，前者是什么？',['paperA','paperB','paperC'],{}),
+])
+def test_same_sentence_ordinal_rejects_conflicts_or_missing_order(question,ids,entities):
+    from paper_agent.decomposition import scope_guard
+    catalog=[{'paper_id':'paperA'},{'paper_id':'paperB'},{'paper_id':'paperC'}]
+    assert scope_guard(question,catalog,ids,prior(['paperB','paperC']),None,entities)=='explicit_targets_unresolved'
+
+
+def test_explicit_historical_former_does_not_use_current_sentence_order():
+    from paper_agent.decomposition import scope_guard
+    catalog=[{'paper_id':'paperA'},{'paper_id':'paperB'},{'paper_id':'paperC'}]
+    state=prior(['paperB','paperC'])
+    assert scope_guard('比较 paperA 和先前的前者',catalog,['paperA','paperB'],state,
+                       None,{'前者':'paperB'}) is None
+    assert scope_guard('比较 paperA 和先前的前者',catalog,['paperA','paperC'],state,
+                       None,{'前者':'paperC'})=='explicit_targets_unresolved'
+
+
 @pytest.mark.parametrize('split',[False,True])
 @pytest.mark.parametrize('restriction',['不包括2024年的数据','排除2024年的实验结果','without data from 2024'])
 def test_data_exclusion_remains_question_constraint(tmp_path,split,restriction):

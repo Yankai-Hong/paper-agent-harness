@@ -18,9 +18,32 @@ from .memory import SessionMemory, ContextArchive, validate_citations
 from .storage import write_json, safe_id, digest
 from .observability import invocation, Exporter
 from .budgets import TurnBudget, current_budget, BudgetExceeded
-from .decomposition import plan, scope_guard, exclusion_kind, exclusive_kind, explicit_single_paper_prefix
+from .decomposition import plan, scope_guard, exclusion_kind, exclusive_kind, explicit_single_paper_prefix, explicit_natural_metadata_scope, unknown_literal_metadata_id, catalog_with_literal_aliases, current_ordered_references
 
 STAGES = ("Guardrails", "NLU", "Retrieve", "Rerank", "Reflect", "Generate", "Memory")
+_TRACE_ROUTES = {'text_original', 'text_rewrite', 'text_dense_rescue', 'frontmatter_located'} | {
+    f'{name}_{variant}' for name in ('text_bm25', 'text_dense', 'rerank', 'clip',
+        'caption_bm25', 'caption_bge', 'table_bge') for variant in ('original', 'rewrite')}
+_TRACE_ROUTES |= {'image_to_text', 'image_to_image'}
+
+
+@dataclass(frozen=True)
+class PaperQuery:
+    text: str = ''
+    images: tuple = ()
+
+
+def _interleave_evidence(*lanes):
+    """Select independent evidence by rank without cross-entity fusion votes."""
+    merged = _merge_evidence_entities(*lanes)
+    seen, output = set(), []
+    for i in range(max((len(lane) for lane in lanes), default=0)):
+        for lane in lanes:
+            if i < len(lane):
+                key = (lane[i]['paper_id'], lane[i]['chunk_id'])
+                if key not in seen:
+                    seen.add(key); output.append(merged[key])
+    return output
 
 
 def _paper_artifact_digest_question(question):
@@ -175,7 +198,10 @@ def _expand_verified_associations(evidence, by_id, limit=5):
         if item.get('evidence_type') not in {'figure', 'table'}:
             clean.append(item)
             continue
-        clean.append({k: v for k, v in item.items() if k != 'associated_text'})
+        # Caption text and serialized table text are not inside the image's
+        # bounding box.  Never smuggle them under the visual citation key.
+        clean.append({**{k: v for k, v in item.items() if k not in {
+            'associated_text', 'caption', 'table_text', 'table_structure'}}, 'text':''})
         if not item.get('figure_number') or not re.fullmatch(r'[0-9a-f]{64}', str(item.get('pdf_sha256', ''))):
             continue
         associations = item.get('associated_text')
@@ -203,6 +229,278 @@ def _expand_verified_associations(evidence, by_id, limit=5):
     return clean + links, [item['chunk_id'] for item in links]
 
 
+def _valid_located_text(item):
+    """Accept only bounded, page-located text suitable for an independent citation."""
+    if not isinstance(item, dict) or item.get('evidence_type') not in (None, 'text'):
+        return False
+    box, size = item.get('bbox'), item.get('page_size')
+    if (not isinstance(item.get('page'), int) or isinstance(item.get('page'), bool)
+            or item['page'] < 1 or not isinstance(box, (list, tuple)) or len(box) != 4
+            or not isinstance(size, (list, tuple)) or len(size) != 2):
+        return False
+    if any(isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v)
+           for v in (*box, *size)):
+        return False
+    x0, y0, x1, y1 = box
+    return (0 <= x0 < x1 <= size[0] and 0 <= y0 < y1 <= size[1]
+            and item.get('coordinate_system') == 'top-left-points'
+            and item.get('page_rotation') in (0, 90, 180, 270)
+            and isinstance(item.get('text'), str) and bool(item['text'].strip()))
+
+
+def _linked_table_caption(table, by_id):
+    """Resolve only an explicitly linked independent caption on the same PDF page."""
+    status = table.get('caption_association_status')
+    if table.get('evidence_type') != 'table' or status not in {
+            'agent_page_reviewed_not_human', 'geometry_unique_unverified', 'docling_link_unverified'}:
+        return None
+    ids = table.get('caption_source_chunk_ids')
+    if status == 'docling_link_unverified':
+        refs = table.get('caption_source_refs')
+        if not isinstance(refs, list) or len(refs) != 1:
+            return None
+        found = [row for row in by_id.values() if row.get('docling_ref') == refs[0]
+                 and row.get('paper_id') == table.get('paper_id')]
+        if len(found) != 1:
+            return None
+        cap = found[0]
+    else:
+        if not isinstance(ids, list) or len(ids) != 1:
+            return None
+        cap = by_id.get(ids[0])
+    if (not _valid_located_text(cap) or any(cap.get(k) != table.get(k) for k in
+            ('paper_id', 'page', 'page_size', 'page_rotation', 'coordinate_system', 'pdf_sha256'))
+            or not re.fullmatch(r'[0-9a-f]{64}', str(table.get('pdf_sha256') or ''))
+            or cap.get('text', '').strip() != (table.get('caption') or '').strip()):
+        return None
+    geom = table.get('caption_geometry') or {}
+    if status != 'docling_link_unverified' and (geom.get('caption_bbox') != cap.get('bbox') or geom.get('visual_bbox') != table.get('bbox')):
+        return None
+    number = table.get('figure_number') or ''
+    if not re.fullmatch(r'Table\s+\d+[a-z]?', number, re.I) or not re.match(
+            r'^\s*' + re.escape(number) + r'\s*[:.\-–—]', cap['text'], re.I):
+        return None
+    return cap
+
+
+def _attach_table_number_citations(claims, evidence, visual_sources=()):
+    """Add an already retrieved, explicitly linked caption or report unknown."""
+    by_id = {e['chunk_id']:e for e in evidence}
+    trusted_visual = {(e['paper_id'],e['chunk_id']):e for e in visual_sources}
+    added, unknown = [], []
+    for claim in claims:
+        labels = re.findall(r'(?:\bTable|表)\s*\d+[a-z]?', claim.get('text', ''), re.I)
+        for label in labels:
+            number = re.search(r'\d+[a-z]?', label, re.I).group(0)
+            tables = [by_id.get(ref.get('chunk_id')) for ref in claim.get('citations', [])]
+            tables = [t for t in tables if t and t.get('evidence_type') == 'table'
+                      and re.fullmatch(r'Table\s*' + re.escape(number), t.get('figure_number') or '', re.I)]
+            if not tables:
+                continue  # A text-only claim may itself cite the printed table label.
+            originals = []
+            for table in tables:
+                source = trusted_visual.get((table['paper_id'],table['chunk_id']), table)
+                fields = ('paper_id','chunk_id','evidence_type','page','bbox','page_size','coordinate_system',
+                          'page_rotation','pdf_sha256','image_sha256','figure_number','caption_association_status')
+                originals.append(source if all(source.get(k) == table.get(k) for k in fields) else None)
+            captions = [_linked_table_caption(t, by_id) if t is not None else None for t in originals]
+            if any(c is None for c in captions):
+                unknown.append(claim.get('key'))
+                continue
+            for cap in captions:
+                ref = {'paper_id':cap['paper_id'], 'chunk_id':cap['chunk_id']}
+                if ref not in claim['citations']:
+                    claim['citations'].append(ref)
+                    added.append({'claim_key':claim['key'], **ref})
+    return {'added':added, 'unknown':unknown}
+
+
+def _apply_context_repairs(claims, evidence, repairs, required):
+    """Replace only 'this effort' with a phrase grounded in its cited text."""
+    by_key = {(e['paper_id'], e['chunk_id']):e for e in evidence}
+    if len(repairs) != len(required) or {r.get('claim_key') for r in repairs} != set(required):
+        raise ValueError('Incomplete context repair')
+    updated = copy.deepcopy(claims)
+    by_claim = {c['key']:c for c in updated}
+    for repair in repairs:
+        claim = by_claim[repair['claim_key']]
+        refs = {(r['paper_id'],r['chunk_id']) for r in claim['citations']}
+        ref = (repair['paper_id'],repair['chunk_id'])
+        source = by_key.get(ref)
+        replacement, quote = repair['replacement'], repair['source_quote']
+        if (ref not in refs or not _valid_located_text(source) or len(quote) < 12 or len(replacement) > 250
+                or quote not in source['text'] or quote not in replacement
+                or len(re.findall(r'\bthis\s+effort\b', claim['text'], re.I)) != 1):
+            raise ValueError('Ungrounded context repair')
+        claim['text'] = re.sub(r'\bthis\s+effort\b', lambda _:replacement, claim['text'], count=1, flags=re.I)
+    return updated
+
+
+def _repair_collection_conditions(question, claims, evidence):
+    """Append a source-quoted collection qualifier only with a unique located match."""
+    from .citation_guards import check_question_collection_conditions, check_claim_numbers
+    required = {x['claim_key'] for x in check_question_collection_conditions(question, claims)
+                if x['status'] == 'collection_condition_missing'}
+    match = re.search(r'(?i)\b(?:among|within|from\s+a\s+collection\s+of|in\s+a\s+collection\s+of)\s+'
+                      r'(\d[\d,]*)\s+([a-z]+)\b', question)
+    if not required or not match:
+        return copy.deepcopy(claims), {'added':[], 'unknown':list(required)}
+    count, noun = match.group(1).replace(',', ''), match.group(2).lower()
+    by_key = {(e['paper_id'],e['chunk_id']):e for e in evidence}
+    updated, added, unknown = copy.deepcopy(claims), [], []
+    stops = {'about','after','before','being','from','have','into','more','than','that','their','there',
+             'these','this','those','time','with','without','which','would','sentence','sentences',
+             'takes','seconds','hours','requires','results','using','finding','effort','reduced','reduces',
+             'model','task','collection','reported','find','text','number'}
+    for claim in updated:
+        if claim.get('key') not in required:
+            continue
+        refs = {(r['paper_id'],r['chunk_id']) for r in claim['citations']}
+        papers = {p for p,_ in refs}
+        pdfs = {by_key[k].get('pdf_sha256') for k in refs if k in by_key}
+        terms = {w.lower() for w in re.findall(r'[A-Za-z]{4,}',claim['text']) if w.lower() not in stops}
+        candidates = []
+        if len(papers) == 1 and len(pdfs) == 1 and None not in pdfs:
+            for source in evidence:
+                if not _valid_located_text(source) or source.get('paper_id') not in papers or source.get('pdf_sha256') not in pdfs:
+                    continue
+                for found in re.finditer(r'(?i)\bin\s+a\s+collection\s+of\s+(\d[\d,]*)\s+([a-z]+)\b',source['text']):
+                    if found.group(1).replace(',', '') != count or found.group(2).lower() != noun:
+                        continue
+                    context = source['text'][max(0,found.start()-180):min(len(source['text']),found.end()+180)]
+                    overlap = terms & {w.lower() for w in re.findall(r'[A-Za-z]{4,}',context)}
+                    if len(overlap) >= 2:
+                        candidates.append((len(overlap),source,found.group(0)))
+        candidates.sort(key=lambda x:(-x[0],x[1]['chunk_id']))
+        if not candidates or (len(candidates)>1 and candidates[0][0] == candidates[1][0]):
+            unknown.append(claim['key']); continue
+        _, source, quote = candidates[0]
+        before = copy.deepcopy(claim)
+        punctuation = '.' if claim['text'].rstrip().endswith('.') else ''
+        claim['text'] = claim['text'].rstrip().removesuffix('.') + ' (' + quote + ')' + punctuation
+        ref = {'paper_id':source['paper_id'],'chunk_id':source['chunk_id']}
+        if ref not in claim['citations']:
+            claim['citations'].append(ref)
+        numeric = check_claim_numbers([claim],evidence)
+        if any(r['status'] in {'missing','invalid_reference'} for r in numeric):
+            claim.clear(); claim.update(before); unknown.append(claim['key']); continue
+        added.append({'claim_key':claim['key'], **ref, 'source_quote':quote})
+    return updated, {'added':added,'unknown':unknown}
+
+
+def _expand_located_context(evidence, by_id, limit=8):
+    """Add uniquely matched captions and nearby text as separately cited items.
+
+    Expansion is a candidate aid, not a claim of semantic support. Caption
+    metadata is surfaced only when a single exact independently located text
+    item matches the same paper, PDF and page. Neighbors must be contiguous in
+    the source index and geometrically adjacent in the same column and page.
+    """
+    corpus = list(by_id.values())
+    selected = {(e.get('paper_id'), e.get('chunk_id')) for e in evidence}
+    captions = {}
+    for item in corpus:
+        if item.get('docling_label') == 'caption' and _valid_located_text(item):
+            key = (item.get('paper_id'), item.get('pdf_sha256'), item.get('page'), item['text'].strip())
+            captions.setdefault(key, []).append(item)
+    additions = []
+    for item in evidence:
+        if len(additions) >= limit or item.get('evidence_type') not in {'figure', 'table'}:
+            continue
+        caption, pdf = item.get('caption'), item.get('pdf_sha256')
+        if not isinstance(caption, str) or not re.fullmatch(r'[0-9a-f]{64}', str(pdf or '')):
+            continue
+        matches = captions.get((item.get('paper_id'), pdf, item.get('page'), caption.strip()), [])
+        linked = _linked_table_caption(item, by_id)
+        if linked is not None:
+            matches = [linked]
+        if len(matches) == 1:
+            source = matches[0]
+            key = (source['paper_id'], source['chunk_id'])
+            if key not in selected:
+                additions.append(source)
+                selected.add(key)
+    positions = {item.get('chunk_id'): i for i, item in enumerate(corpus)}
+    for item in evidence:
+        if len(additions) >= limit or not _valid_located_text(item) or item.get('docling_label') == 'caption':
+            continue
+        idx = positions.get(item.get('chunk_id'))
+        trusted = by_id.get(item.get('chunk_id'))
+        if idx is None or not isinstance(trusted, dict) or any(trusted.get(k) != item.get(k) for k in (
+                'paper_id', 'page', 'bbox', 'page_size', 'pdf_sha256', 'text')):
+            continue
+        if not re.fullmatch(r'[0-9a-f]{64}', str(item.get('pdf_sha256') or '')):
+            continue
+        for neighbor_idx in (idx - 1, idx + 1):
+            if len(additions) >= limit or not 0 <= neighbor_idx < len(corpus):
+                continue
+            other = corpus[neighbor_idx]
+            key = (other.get('paper_id'), other.get('chunk_id'))
+            if (key in selected or not _valid_located_text(other) or other.get('docling_label') == 'caption'
+                    or any(other.get(k) != item.get(k) for k in ('paper_id', 'page', 'page_size', 'pdf_sha256',
+                                                                    'coordinate_system', 'page_rotation'))):
+                continue
+            a, b = item['bbox'], other['bbox']
+            overlap = max(0, min(a[2], b[2]) - max(a[0], b[0]))
+            gap = max(a[1], b[1]) - min(a[3], b[3])
+            if overlap >= .8 * min(a[2]-a[0], b[2]-b[0]) and 0 <= gap <= 12:
+                additions.append(other)
+                selected.add(key)
+    return evidence + additions, [item['chunk_id'] for item in additions]
+
+
+def _frontmatter_candidates(question, paper_id, by_id):
+    """Surface independently located front matter for explicit title/author requests."""
+    if (not paper_id or not re.search(r'标题|题目|title', question, re.I)
+            or not re.search(r'作者|署名|author', question, re.I)):
+        return []
+    rows = [e for e in by_id.values() if e.get('paper_id') == paper_id and e.get('page') == 1
+            and _valid_located_text(e) and re.fullmatch(r'[0-9a-f]{64}', str(e.get('pdf_sha256') or ''))]
+    titles = [e for e in rows if isinstance(e.get('title'), str) and len(e['title']) >= 12
+              and e.get('text', '').strip().casefold() == e['title'].strip().casefold()]
+    if len(titles) != 1:
+        return []
+    title = titles[0]
+    below = [e for e in rows if e is not title and e.get('pdf_sha256') == title['pdf_sha256']
+             and e.get('page_size') == title.get('page_size')
+             and e.get('coordinate_system') == title.get('coordinate_system')
+             and e.get('page_rotation') == title.get('page_rotation')
+             and 0 <= e['bbox'][1] - title['bbox'][3] <= 80
+             and min(e['bbox'][2], title['bbox'][2]) > max(e['bbox'][0], title['bbox'][0])]
+    below.sort(key=lambda e:e['bbox'][1])
+    # A candidate is not asserted to be an author list; the model must verify it.
+    if not below or (len(below) > 1 and below[1]['bbox'][1] - below[0]['bbox'][1] < 3):
+        return []
+    return [title, below[0]]
+
+
+def _validate_repaired_claims(original, repaired, evidence):
+    """Only add available same-paper text citations; never rewrite claims."""
+    if not isinstance(repaired, list) or len(original) != len(repaired):
+        raise ValueError('Citation repair must preserve claim count')
+    if len({c.get('key') for c in original}) != len(original):
+        raise ValueError('Citation repair requires unique claim keys')
+    by_key = {(e['paper_id'], e['chunk_id']):e for e in evidence}
+    changed = False
+    for before, after in zip(original, repaired):
+        if before['key'] != after.get('key') or before['text'] != after.get('text'):
+            raise ValueError('Citation repair changed claim identity or text')
+        old = {(r['paper_id'], r['chunk_id']) for r in before['citations']}
+        new = {(r['paper_id'], r['chunk_id']) for r in after.get('citations', [])}
+        if len(new) != len(after.get('citations', [])) or not old <= new:
+            raise ValueError('Citation repair removed or duplicated a citation')
+        for key in new - old:
+            source = by_key.get(key)
+            if (source is None or source.get('evidence_type') not in (None, 'text')
+                    or key[0] not in {paper for paper,_ in old}
+                    or (source.get('pdf_sha256') and not _valid_located_text(source))):
+                raise ValueError('Citation repair added unavailable or unlocated evidence')
+        changed |= bool(new - old)
+    validate_citations(repaired, evidence)
+    if not changed:
+        raise ValueError('Citation repair did not add evidence')
+
+
 def _private_visual_trace(trace):
     """Project a multimodal trace onto safe metadata only; never persist content."""
     import hashlib
@@ -213,7 +511,11 @@ def _private_visual_trace(trace):
     def fields(obj, keys):
         return {k: obj[k] for k in keys if k in obj}
     out = fields(trace, ('status', 'commit_status', 'started_at', 'ended_at', 'mode', 'rewrite',
-                         'reflect', 'compact', 'memory_strategy', 'memory_backend', 'degraded'))
+                         'reflect', 'compact', 'memory_strategy', 'memory_backend', 'degraded', 'query_mode'))
+    if trace.get('budget_exhausted') in {'turn_deadline_exhausted', 'turn_model_requests_exhausted',
+            'turn_subqueries_exhausted', 'turn_candidates_exhausted', 'turn_rerank_exhausted',
+            'turn_retry_budget_exhausted'}:
+        out['budget_exhausted'] = trace['budget_exhausted']
     for key in ('session_id', 'turn_id', 'case_id', 'run_id'):
         if trace.get(key) is not None:
             out[key] = hashed(trace[key])
@@ -231,7 +533,7 @@ def _private_visual_trace(trace):
             safe['invocation_id'] = hashed(stage['invocation_id'])
         if stage.get('stage') in {'Retrieve', 'Rerank'}:
             source = stage.get('output') or {}
-            allowed = ('candidate_ids',) if stage['stage'] == 'Retrieve' else ('evidence_ids', 'associated_ids')
+            allowed = ('candidate_ids',) if stage['stage'] == 'Retrieve' else ('evidence_ids', 'associated_ids', 'context_ids')
             ids = {}
             for key in allowed:
                 value = source.get(key)
@@ -248,14 +550,19 @@ def _private_visual_trace(trace):
             if isinstance(source.get('routes'), list):
                 routes = []
                 for route in source['routes'][:24]:
-                    if not isinstance(route, dict) or not re.fullmatch(r'[a-z_]{1,40}', str(route.get('route', ''))):
+                    if not isinstance(route, dict) or route.get('route') not in _TRACE_ROUTES:
                         continue
                     refs = route.get('refs')
                     if not isinstance(refs, list):
                         continue
                     refs = [ref for ref in refs[:60] if isinstance(ref, dict) and set(ref) == {'paper_id', 'chunk_id'}
                             and all(isinstance(ref[k], str) and re.fullmatch(r'[A-Za-z0-9_.:-]{1,120}', ref[k]) for k in ref)]
-                    routes.append({'route':route['route'], 'refs':refs})
+                    row = {'route':route['route'], 'refs':refs}
+                    if route.get('status') in {'ok', 'empty', 'failed'}:
+                        row['status'] = route['status']
+                    if route.get('status') == 'failed' and re.fullmatch(r'[A-Za-z0-9_]{1,80}', str(route.get('error_type', ''))):
+                        row['error_type'] = route['error_type']
+                    routes.append(row)
                 ids['routes'] = routes
             safe['output'] = ids
         if type(stage.get('visual_image_count')) is int:
@@ -273,10 +580,14 @@ def _private_visual_trace(trace):
             safe['citation_validation'] = {k: citation[k] for k in ('id_valid', 'source_consistent') if type(citation.get(k)) is bool}
             if citation.get('semantic_support') == 'not_evaluated':
                 safe['citation_validation']['semantic_support'] = 'not_evaluated'
+        numeric = stage.get('numeric_validation')
+        if isinstance(numeric, dict):
+            safe['numeric_validation'] = {k:numeric[k] for k in ('missing_count','visual_unknown_count')
+                                          if type(numeric.get(k)) is int and numeric[k] >= 0}
         audit = stage.get('claim_audit')
         if isinstance(audit, dict):
             safe['claim_audit'] = {k: audit[k] for k in ('status','claim_count','image_count')
-                                   if k in audit and ((k == 'status' and audit[k] in {'supported','rejected','unavailable'})
+                                   if k in audit and ((k == 'status' and audit[k] in {'supported','rejected','unavailable','disagreement_unknown','unsupported','unknown'})
                                    or (k != 'status' and type(audit[k]) is int and audit[k] >= 0))}
         out['stages'].append(safe)
     out['api_calls'] = []
@@ -398,14 +709,30 @@ class PaperPipeline:
     def __init__(self, retriever, reasoner, trace_dir, memory_dir, mode="rerank", rewrite=True, reflect=True,
                  compact=True, memory_strategy="bounded", archive_recall=True, max_retrieval_attempts=2,
                  allow_degraded=True, memory_manager=None, exporter=None, decomposition=None, budget_limits=None,
-                 visual_retriever=None, visual_root=None, visual_claim_check=False, visual_text_retriever=None):
+                 visual_retriever=None, visual_root=None, visual_claim_check=False, visual_text_retriever=None,
+                 clip_text_retriever=None,
+                 claim_audit_sink=None):
         self.retriever, self.reasoner = retriever, reasoner
         self.visual_retriever = visual_retriever
         self.visual_text_retriever = visual_text_retriever
+        self.clip_text_retriever = clip_text_retriever
+        if clip_text_retriever is not None and visual_retriever is None:
+            raise ValueError('Image-to-text retrieval requires a visual retriever')
+        if clip_text_retriever is not None and clip_text_retriever.metadata.get('source_hash') != retriever.metadata.get('corpus_hash'):
+            raise ValueError('CLIP and paper text corpus versions differ')
+        if clip_text_retriever is not None and hasattr(clip_text_retriever, 'encoder'):
+            if clip_text_retriever.encoder.provenance != visual_retriever.encoder.provenance:
+                raise ValueError('CLIP visual and text model versions differ')
+            text_pdfs = {(x.get('paper_id'), x.get('pdf_sha256')) for x in clip_text_retriever.sources}
+            if any((x.get('paper_id'), x.get('pdf_sha256')) not in text_pdfs
+                   or not re.fullmatch(r'[0-9a-f]{64}', str(x.get('pdf_sha256') or ''))
+                   for x in visual_retriever.evidence):
+                raise ValueError('Visual and CLIP text PDF provenance differs')
         if visual_text_retriever is not None and visual_retriever is None:
             raise ValueError('BGE visual text retrieval requires the visual evidence index')
         self.visual_root = Path(visual_root or visual_retriever.image_root).resolve() if visual_retriever is not None else None
         self.visual_claim_check = bool(visual_claim_check)
+        self.claim_audit_sink = claim_audit_sink
         if self.visual_claim_check and visual_retriever is None:
             raise ValueError("Visual claim check requires a visual retriever")
         if visual_retriever is not None and not reflect:
@@ -425,7 +752,7 @@ class PaperPipeline:
         self.exporter = exporter or Exporter.from_env()
         self.decomposition = (os.getenv('PAPER_DECOMPOSITION','false').lower() == 'true') if decomposition is None else bool(decomposition)
         defaults = ({'seconds':240,'model_requests':8,'subqueries':18,'candidates':320,'rerank':180}
-                    if visual_text_retriever is not None else
+                    if visual_text_retriever is not None or clip_text_retriever is not None else
                     {'seconds':180,'model_requests':8,'subqueries':6,'candidates':90,'rerank':60})
         self.budget_limits = budget_limits if budget_limits is not None else {
             name:(float if name=='seconds' else int)(os.getenv('PAPER_TURN_'+name.upper(),str(default)))
@@ -437,7 +764,22 @@ class PaperPipeline:
             from .memory_manager import MemoryManager
             self.memory_manager = MemoryManager.local(self.memory_dir)
 
-    def run(self, question, state, turn_id=None, case_id=None, run_id=None):
+    def run_query(self, query, state, **kwargs):
+        if not isinstance(query, PaperQuery):
+            raise TypeError('Expected PaperQuery')
+        return self.run(query.text, state, images=query.images, **kwargs)
+
+    def run(self, question, state, turn_id=None, case_id=None, run_id=None, images=()):
+        from .query_images import validate_query_image
+        if not isinstance(question, str) or not isinstance(images, (list, tuple)) or len(images) > 2:
+            raise ValueError('Provide text and at most two local query images')
+        query_images = [validate_query_image(path) for path in images]
+        if query_images and (self.visual_retriever is None or self.clip_text_retriever is None):
+            raise ValueError('Image queries require both CLIP visual and CLIP text indices')
+        pure_image = bool(query_images and not question.strip())
+        if pure_image:
+            question = 'Find paper figures and text related to the provided image and describe the matching evidence.'
+        image_identity = digest([item['sha256'] for item in query_images]) if query_images else None
         budget = TurnBudget(**self.budget_limits)
         turn_id = safe_id(turn_id or uuid.uuid4().hex)
         if self.memory_manager:
@@ -457,7 +799,7 @@ class PaperPipeline:
                 raise
         if turn_id in state.committed_turns:
             committed = state.committed_turns[turn_id]
-            if committed["question"] != question:
+            if committed["question"] != question or committed.get('image_identity') != image_identity:
                 raise ValueError("turn_id already committed with a different question")
             return {**committed["result"], "replayed_commit": True}
         original = copy.deepcopy(state)
@@ -465,6 +807,7 @@ class PaperPipeline:
             raise RuntimeError("No reasoner configured; use offline search/eval commands")
         trace = TurnTrace(state.session_id, question, private_visual=self.visual_retriever is not None)
         trace.value.update(case_id=case_id, run_id=run_id)
+        trace.value['query_mode'] = 'image' if pure_image else 'text_image' if query_images else 'text'
         if turn_id is not None:
             trace.value["turn_id"] = safe_id(turn_id)
         trace.value.update(corpus_hash=self.retriever.metadata.get("corpus_hash"), mode=self.mode,
@@ -488,8 +831,7 @@ class PaperPipeline:
                 recalled = self.memory_manager.retrieve_memories(state, question) if self.memory_manager and self.archive_recall else ContextArchive(self.memory_dir/"archives").search(
                     state.session_id, question, current_memory=state.memory) if self.archive_recall else []
                 trace.value["archive_recall"] = recalled
-                catalog = list({c["paper_id"]: {"paper_id": c["paper_id"], "title": c.get("title", "")}
-                                for c in self.retriever.by_id.values()}.values())
+                catalog = catalog_with_literal_aliases(self.retriever.by_id.values())
                 explicit_scope = explicit_single_paper_prefix(question, catalog)
                 corpus_language = _corpus_language(self.retriever.by_id.values(), explicit_scope)
                 nlu = self.reasoner.structured("nlu", {"question": question,
@@ -499,22 +841,36 @@ class PaperPipeline:
                     "retrieval_corpus_language": corpus_language,
                     "query_language_instruction": "When retrieval_corpus_language is en or zh and the question is in another language, rewrite the retrieval query in that corpus language, preserving all meaning, constraints and paper scope. If unknown, do not assume a language. The user's original question remains authoritative for answering.",
                     "decomposition_enabled": self.decomposition,
-                    "retrieval_plan_instruction": 'When enabled and multiple evidence targets are needed, optionally provide 2-3 sub_questions within parent paper_ids; otherwise omit.'})
+                    "user_image_present": bool(query_images),
+                    "user_image_scope_instruction": "The user supplied the image being asked about. Search the full corpus without assuming its paper identity; do not ask which paper solely because the image is not identified. Do not invent image contents." if query_images else None,
+                    "retrieval_plan_instruction": 'When enabled and multiple evidence targets are needed, optionally provide 2-3 sub_questions within parent paper_ids; otherwise omit.'}) if not pure_image else {'intent':'search', 'standalone_query':question, 'paper_ids':None, 'needs_clarification':False, 'resolved_entities':{}}
                 if nlu.get("intent") not in {"search", "fact", "explain", "compare", "out_of_scope"}:
                     raise ValueError("Invalid intent")
                 if not isinstance(nlu.get("standalone_query"), str) or not nlu["standalone_query"].strip():
                     raise ValueError("Missing standalone query")
                 if nlu.get("paper_ids") is not None:
                     known = {p["paper_id"] for p in catalog}
-                    if not isinstance(nlu["paper_ids"], list) or any(p not in known for p in nlu["paper_ids"]):
-                        raise ValueError("NLU returned unknown paper IDs")
+                    if not isinstance(nlu["paper_ids"], list):
+                        raise ValueError("NLU returned invalid paper IDs")
+                    if any(p not in known for p in nlu["paper_ids"]):
+                        nlu = {**nlu, 'paper_ids':None, 'needs_clarification':True, 'clarification_reason':'other'}
+                        event['scope_guard'] = 'unknown_paper_id'
+                # Resolve only an image-referent ambiguity. Explicit paper or
+                # historical scope remains subject to the normal guard.
+                if (query_images and nlu.get('needs_clarification') and nlu.get('clarification_reason') == 'paper_reference'
+                        and re.search(r'(?i)\b(?:this|the provided|the supplied) (?:image|picture|figure)\b|(?:这|该|此)(?:张|幅)?(?:图片|图像)', question)
+                        and not _figure_refs(question)
+                        and scope_guard(question, catalog, None, state, question, {}) is None):
+                    nlu = {**nlu, 'paper_ids':None, 'standalone_query':question,
+                           'resolved_entities':{}, 'needs_clarification':False}
+                    event['image_reference_resolved'] = True
                 digest_probe = (_paper_artifact_digest_question(question) and explicit_scope is not None
                     and self.reflect and nlu.get('intent') == 'out_of_scope'
                     and nlu.get('out_of_scope_reason') not in {'not_paper_question', 'other'}
                     and not nlu.get('needs_clarification'))
                 if digest_probe and nlu.get('paper_ids') is None:
                     nlu = {**nlu, 'paper_ids':[explicit_scope]}
-                scope_issue = scope_guard(question, catalog, nlu.get('paper_ids'), state,
+                scope_issue = None if pure_image else scope_guard(question, catalog, nlu.get('paper_ids'), state,
                                           nlu.get('standalone_query'),nlu.get('resolved_entities'))
                 if scope_issue:
                     nlu = {**nlu, 'needs_clarification':True}
@@ -528,6 +884,14 @@ class PaperPipeline:
                         # hash scan or out-of-scope classification proves absence.
                         nlu = {**nlu, 'intent':'fact'}
                         event['artifact_evidence_route'] = True
+                elif (nlu.get('needs_clarification') and nlu.get('clarification_reason') == 'paper_reference'
+                      and (local_order := current_ordered_references(question, catalog))
+                      and set(nlu.get('paper_ids') or []) == set(local_order.values())):
+                    nlu = {**nlu, 'needs_clarification':False}
+                    event['explicit_order_resolved'] = True
+                if unknown_literal_metadata_id(question, catalog):
+                    nlu = {**nlu, 'needs_clarification':True, 'clarification_reason':'other'}
+                    event['scope_guard'] = 'unknown_paper_id'
                 event["output"] = nlu
                 if self.archive_recall:
                     extra = self.memory_manager.retrieve_memories(state, nlu["standalone_query"], nlu.get("paper_ids")) if self.memory_manager else ContextArchive(self.memory_dir/"archives").search(
@@ -546,6 +910,7 @@ class PaperPipeline:
                     recalled = merged
                     trace.value["archive_recall"] = recalled
             evidence = []
+            raw_evidence = []
             decision = "refuse" if nlu["intent"] == "out_of_scope" else "clarify" if nlu.get("needs_clarification") else "search"
             if (decision == 'search' and self.visual_text_retriever is not None
                     and _ambiguous_bare_figure(question, nlu.get('paper_ids'), self.visual_retriever.evidence)):
@@ -573,6 +938,12 @@ class PaperPipeline:
             goals = plan(question, nlu, self.decomposition and self.rewrite)
             coverage = {g['id']:[] for g in goals}
             trace.value['retrieval_plan'] = goals
+            image_vectors = None
+            if query_images and decision == 'search':
+                # One encoding per user image, shared by both CLIP indices and retries.
+                image_vectors = self.visual_retriever.encoder.encode_images([item['path'] for item in query_images])
+                for item in query_images:
+                    validate_query_image(item['path'], item['sha256'])
             if decision == "search":
                 for attempt in range(1, self.max_retrieval_attempts + 1):
                     with trace.stage("Retrieve", {"query": query}, attempt) as event:
@@ -584,6 +955,7 @@ class PaperPipeline:
                         combined = {}
                         text_lanes = []
                         route_trace = []
+                        dense_rescue_refs = []
                         allowance = min(30, budget.available('candidates'))
                         if allowance < len(targets):
                             raise BudgetExceeded('turn_candidates_exhausted')
@@ -596,10 +968,13 @@ class PaperPipeline:
                             cap = max(1, allowance//len(targets))
                             searches = ([target_query] if self.visual_text_retriever is None else
                                         list(dict.fromkeys(([question] + query_variants + [target_query]))))
+                            if pure_image:
+                                searches = []
                             # A decomposition may contain additional targets, but every
                             # query remains constrained to the target paper scope.
                             for q_index, current_query in enumerate(searches):
                                 result = None
+                                route_failed = False
                                 for route in ([retrieval_mode,'bm25','dense'] if self.allow_degraded and retrieval_mode=='hybrid' else [retrieval_mode]):
                                     budget.take('subqueries')
                                     try:
@@ -611,19 +986,30 @@ class PaperPipeline:
                                         break
                                     except BudgetExceeded:
                                         raise
-                                    except Exception:
+                                    except Exception as exc:
                                         if route == 'dense' or retrieval_mode != 'hybrid' or not self.allow_degraded:
-                                            raise
+                                            if not query_images:
+                                                raise
+                                            result = {'hits':[]}
+                                            route_failed = True
+                                            event.update(degraded=True, reason='retrieval_route_failed', error_type=type(exc).__name__)
+                                            route_trace.append({'route':'text_original' if q_index == 0 else 'text_rewrite',
+                                                                'status':'failed', 'error_type':type(exc).__name__, 'refs':[]})
+                                            break
                                 lane = result['hits'][:cap]
                                 text_lanes.append(lane)
-                                route_trace.append({'route':'text_original' if q_index == 0 and self.visual_text_retriever is not None else 'text_rewrite',
-                                                    'refs':[{'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in lane]})
+                                if not route_failed:
+                                    route_trace.append({'route':'text_original' if q_index == 0 and (self.visual_text_retriever is not None or query_images) else 'text_rewrite',
+                                                        'status':'ok' if lane else 'empty',
+                                                        'refs':[{'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in lane]})
                                 if self.visual_text_retriever is not None:
                                     suffix = '_original' if q_index == 0 else '_rewrite'
                                     for channel in ('bm25','dense'):
                                         refs = result.get('channel_refs', {}).get(channel, [])
                                         if refs:
                                             route_trace.append({'route':'text_'+channel+suffix, 'refs':refs})
+                                            if channel == 'dense':
+                                                dense_rescue_refs.append((target['id'],target['paper_ids'],refs))
                                 for c in lane:
                                     if target['paper_ids'] is not None and c['paper_id'] not in target['paper_ids']:
                                         raise ValueError('Retriever returned out-of-scope evidence')
@@ -632,11 +1018,35 @@ class PaperPipeline:
                                     if target['id'] in coverage and ref not in coverage[target['id']]:
                                         coverage[target['id']].append(ref)
                         merged_text = (_fuse_ranked_lanes(text_lanes) if self.visual_text_retriever is not None else list(combined.values()))
+                        # Preserve a small number of novel dense candidates that
+                        # hybrid truncation discarded; rerank them with the same
+                        # model and final five-item limit. This is not an extra
+                        # fusion vote or a claim of improved final recall.
+                        if self.visual_text_retriever is not None:
+                            seen = {(c['paper_id'],c['chunk_id']) for c in merged_text}
+                            for goal_id, scope, refs in dense_rescue_refs:
+                                added = []
+                                for ref in refs:
+                                    key = (ref.get('paper_id'),ref.get('chunk_id'))
+                                    if key in seen:
+                                        continue
+                                    source = self.retriever.by_id.get(key[1])
+                                    if source is None or source.get('paper_id') != key[0] or (scope is not None and key[0] not in scope):
+                                        raise ValueError('Untrusted dense candidate')
+                                    budget.take('candidates')
+                                    merged_text.append(source)
+                                    seen.add(key)
+                                    added.append({'paper_id':key[0],'chunk_id':key[1]})
+                                    if goal_id in coverage and added[-1] not in coverage[goal_id]:
+                                        coverage[goal_id].append(added[-1])
+                                    if len(added) == 3:
+                                        break
+                                route_trace.append({'route':'text_dense_rescue', 'refs':added})
                         result = {'hits':merged_text,'candidate_ids':[c['chunk_id'] for c in merged_text]}
                         event['candidate_coverage_not_semantic_support'] = copy.deepcopy(coverage)
                         event["output"] = {"candidate_ids": result["candidate_ids"],
                                            'candidate_refs':[{'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in merged_text],
-                                           'routes':route_trace if self.visual_text_retriever is not None else []}
+                                           'routes':route_trace if self.visual_text_retriever is not None or query_images else []}
                     with trace.stage("Rerank", {"candidate_ids": result["candidate_ids"]}, attempt) as event:
                         candidates = result["hits"]
                         figure_number = _requested_figure(question)
@@ -690,11 +1100,15 @@ class PaperPipeline:
                                     raise
                                 event.update(degraded=True, reason="reranker_unavailable", error_type=type(exc).__name__)
                         # Text, figure captions and images retain independent ranks.
-                        if self.visual_retriever is not None:
+                        if self.visual_retriever is not None and not pure_image:
                             from .visual_evidence import validate_image
                             from .visual_retrieval import _number
-                            candidates, mapped_captions, caption_mapping = _map_exact_caption_entities(
-                                candidates, getattr(self.visual_retriever, 'evidence', []))
+                            if query_images:
+                                # Keep independently located captions as text citations.
+                                mapped_captions, caption_mapping = [], {}
+                            else:
+                                candidates, mapped_captions, caption_mapping = _map_exact_caption_entities(
+                                    candidates, getattr(self.visual_retriever, 'evidence', []))
                             # A mixed legacy text index may contain image entities
                             # directly. They belong to the caption lane, not both
                             # the text and caption lanes.
@@ -716,8 +1130,21 @@ class PaperPipeline:
                                 coverage[goal] = unique
                             if self.visual_text_retriever is None:
                                 budget.take('subqueries', 2)
-                                visual_result = self.visual_retriever.search_text(query, top_k=5, paper_ids=nlu.get('paper_ids'), figure_number=figure_number)
-                                caption_result = self.visual_retriever.search_caption(query, top_k=5, paper_ids=nlu.get('paper_ids'), figure_number=figure_number)
+                                def visual_branch(name, operation):
+                                    try:
+                                        response = operation()
+                                        status = 'ok' if response['hits'] else 'empty'
+                                    except Exception as exc:
+                                        if not query_images or isinstance(exc, BudgetExceeded):
+                                            raise
+                                        response, status = {'hits':[]}, 'failed'
+                                        event.update(degraded=True, reason='image_retrieval_branch_failed')
+                                    if query_images:
+                                        rerank_routes.append({'route':name, 'status':status,
+                                            'refs':[{'paper_id':h['paper_id'],'chunk_id':h['chunk_id']} for h in response['hits']]})
+                                    return response
+                                visual_result = visual_branch('clip_original', lambda: self.visual_retriever.search_text(query, top_k=5, paper_ids=nlu.get('paper_ids'), figure_number=figure_number))
+                                caption_result = visual_branch('caption_bm25_original', lambda: self.visual_retriever.search_caption(query, top_k=5, paper_ids=nlu.get('paper_ids'), figure_number=figure_number))
                                 visual_candidates = visual_result['hits']
                                 caption_candidates = list(_merge_evidence_entities(mapped_captions, caption_result['hits']).values())
                                 budget.take('candidates', len(visual_candidates) + len(caption_result['hits']))
@@ -751,24 +1178,54 @@ class PaperPipeline:
                             # of evidence. Fuse them first so two visual routes
                             # do not automatically outweigh the single text lane.
                             if self.visual_text_retriever is None:
-                                candidates = _fuse_text_visual_candidates(candidates, caption_candidates, visual_candidates)
+                                candidates = (_interleave_evidence(candidates, caption_candidates, visual_candidates)
+                                              if query_images else _fuse_text_visual_candidates(candidates, caption_candidates, visual_candidates))
                             else:
                                 text_visual = _fuse_ranked_lanes([caption_candidates] + extra_visual_lanes)
                                 combined_visual = _fuse_ranked_lanes([text_visual, visual_candidates])
-                                candidates = _fuse_ranked_lanes([candidates, combined_visual])
+                                candidates = (_interleave_evidence(candidates, combined_visual) if query_images
+                                              else _fuse_ranked_lanes([candidates, combined_visual]))
                             event['visual_retrieval'] = {'candidate_count':len(visual_candidates), 'caption_candidate_count':len(caption_candidates), 'timing_ms':visual_result.get('timing_ms')}
+                        if image_vectors is not None:
+                            image_text_lanes, image_visual_lanes = [], []
+                            for vector in image_vectors:
+                                for route, dest, call in (
+                                    ('image_to_text', image_text_lanes, lambda: self.clip_text_retriever.search_vector(vector.reshape(1, -1), 20, nlu.get('paper_ids'))),
+                                    ('image_to_image', image_visual_lanes, lambda: self.visual_retriever._search(vector.reshape(1, -1), 20, nlu.get('paper_ids'), figure_number, time.perf_counter()))):
+                                    try:
+                                        response = call(); hits = response['hits']
+                                        budget.take('candidates', len(hits))
+                                        # Restore trusted full source; representations never become citations.
+                                        if route == 'image_to_text':
+                                            hits = [self.retriever.by_id[h['chunk_id']] for h in hits
+                                                    if h['chunk_id'] in self.retriever.by_id and self.retriever.by_id[h['chunk_id']]['paper_id'] == h['paper_id']]
+                                        dest.append(hits)
+                                        rerank_routes.append({'route':route, 'status':'ok' if hits else 'empty',
+                                            'refs':[{'paper_id':h['paper_id'],'chunk_id':h['chunk_id']} for h in hits]})
+                                    except BudgetExceeded:
+                                        raise
+                                    except Exception as exc:
+                                        event.update(degraded=True, reason='image_retrieval_branch_failed')
+                                        rerank_routes.append({'route':route, 'status':'failed', 'error_type':type(exc).__name__, 'refs':[]})
+                            candidates = _interleave_evidence(candidates, *image_text_lanes, *image_visual_lanes)
                         # Preserve the actual fused ranking separately from the
                         # bounded set sent to the model for evaluation.
+                        metadata_scope = explicit_scope or (explicit_natural_metadata_scope(question, catalog, nlu.get('paper_ids')) if not scope_issue else None)
+                        frontmatter = _frontmatter_candidates(question, metadata_scope, self.retriever.by_id)
+                        if frontmatter:
+                            candidates = list(_merge_evidence_entities(frontmatter, candidates).values())
+                            rerank_routes.append({'route':'frontmatter_located', 'refs':[
+                                {'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in frontmatter]})
                         ranked_refs = [{'paper_id': c['paper_id'], 'chunk_id': c['chunk_id']} for c in candidates[:5]]
                         # Retain first retrieval evidence when filling gaps on retry.
                         selected = candidates[:5]
-                        if self.visual_text_retriever is not None and len(goals) == 1:
+                        if (self.visual_text_retriever is not None or query_images) and len(goals) == 1:
                             # Backfill beyond the first five when the model-image
                             # cap would otherwise leave fewer than five entities.
                             selected, image_count = [], 0
                             for candidate in candidates:
                                 is_image = candidate.get('evidence_type') in {'figure','table'}
-                                if is_image and image_count >= 3:
+                                if is_image and image_count >= 3 - len(query_images):
                                     continue
                                 selected.append(candidate)
                                 image_count += int(is_image)
@@ -779,31 +1236,35 @@ class PaperPipeline:
                             for goal in goals:
                                 selected += next(([c] for c in candidates if {'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} in coverage[goal['id']]), [])
                             selected = list({(c['paper_id'],c['chunk_id']):c for c in selected+candidates}.values())[:5]
-                        evidence = list(_merge_evidence_entities(evidence, selected).values())
+                        evidence = list(_merge_evidence_entities(raw_evidence, selected).values())
                         # Never send unseen visual candidates to the reasoning model.
                         visuals_seen = 0
                         bounded = []
                         for item in evidence:
                             if item.get('evidence_type') in {'figure', 'table'}:
                                 visuals_seen += 1
-                                if visuals_seen > 3:
+                                if visuals_seen > 3 - len(query_images):
                                     continue
                             bounded.append(item)
+                        raw_evidence = bounded
                         evidence = bounded
                         associated_ids = []
+                        context_ids = []
                         if self.visual_retriever is not None:
+                            evidence, context_ids = _expand_located_context(evidence, self.retriever.by_id)
                             evidence, associated_ids = _expand_verified_associations(evidence, self.retriever.by_id)
-                            budget.take('candidates', len(associated_ids))
-                        event["output"] = {"evidence_ids": [c["chunk_id"] for c in evidence], 'associated_ids': associated_ids, 'ranked_refs': ranked_refs,
+                            budget.take('candidates', len(associated_ids) + len(context_ids))
+                        event["output"] = {"evidence_ids": [c["chunk_id"] for c in evidence], 'associated_ids': associated_ids, 'context_ids':context_ids, 'ranked_refs': ranked_refs,
                                            'fused_refs':[{'paper_id':c['paper_id'],'chunk_id':c['chunk_id']} for c in candidates[:20]],
-                                           'routes':rerank_routes if self.visual_text_retriever is not None else []}
+                                           'routes':rerank_routes if self.visual_text_retriever is not None or query_images else []}
                     with trace.stage("Reflect", {"evidence_ids": [c["chunk_id"] for c in evidence]}, attempt) as event:
-                        visual_images = [c for c in evidence if c.get('evidence_type') in {'figure', 'table'}]
+                        visual_images = query_images + [c for c in evidence if c.get('evidence_type') in {'figure', 'table'}]
                         reflect_payload = {"question": question, "evidence": evidence,
                             "resolved_question": nlu["standalone_query"],
                             "attempt": attempt, "intent": nlu["intent"],
                             "subgoals": goals, "candidate_coverage_not_semantic_support": {g:[ref for ref in refs if (ref['paper_id'],ref['chunk_id']) in {(c['paper_id'],c['chunk_id']) for c in evidence}] for g,refs in coverage.items()},
-                            "historical_context_not_evidence": recalled}
+                            "historical_context_not_evidence": recalled,
+                            "user_image_instruction": "User images are query inputs, not paper evidence or valid citations. Focus on evidence related to the image and question; ignore unrelated retrieved candidates. Cite only independently located paper evidence." if query_images else None}
                         if self.reflect:
                             verdict = (self.reasoner.structured("reflect", reflect_payload, images=visual_images)
                                        if visual_images else self.reasoner.structured("reflect", reflect_payload))
@@ -829,6 +1290,9 @@ class PaperPipeline:
                     if not isinstance(query, str) or not query.strip():
                         raise ValueError("Reflection must specify next_query")
             with trace.stage("Generate", {"decision": decision}) as event:
+                local_audit_id, local_verdicts, local_recheck = None, None, None
+                local_numeric, local_repair, local_conditions, local_caption = None, None, None, None
+                local_context, local_completeness, local_question_conditions, local_collection = None, None, None, None
                 if decision == "answer":
                     if not evidence:
                         decision = "refuse"
@@ -839,9 +1303,13 @@ class PaperPipeline:
                             "resolved_question": nlu["standalone_query"], "evidence": evidence,
                             "subgoals": goals, "candidate_coverage_not_semantic_support": coverage,
                             "historical_context_not_evidence": recalled}
-                        visual_images = [c for c in evidence if c.get('evidence_type') in {'figure', 'table'}]
+                        if query_images:
+                            generate_payload['user_image_instruction'] = 'User images are query inputs, not paper evidence or valid citations. Answer the question using evidence relevant to the image; omit unrelated retrieved candidates. Cite only independently located paper evidence.'
+                        visual_images = query_images + [c for c in evidence if c.get('evidence_type') in {'figure', 'table'}]
                         answer = (self.reasoner.structured("generate", generate_payload, images=visual_images)
                                   if visual_images else self.reasoner.structured("generate", generate_payload))
+                        if self.claim_audit_sink is not None:
+                            local_audit_id = self.claim_audit_sink.begin(case_id, turn_id, answer, evidence)
                         event['visual_image_count'] = len(visual_images)
                         if answer.get('decision') == 'refuse' and not answer.get('claims'):
                             decision = 'refuse'
@@ -851,6 +1319,13 @@ class PaperPipeline:
                             raise ValueError("Answer must include claims")
                         try:
                             validate_citations(answer["claims"], evidence)
+                            trusted = {(e['paper_id'], e['chunk_id']):e for e in evidence}
+                            for claim in answer['claims']:
+                                for ref in claim['citations']:
+                                    src = trusted[(ref['paper_id'], ref['chunk_id'])]
+                                    if (src.get('pdf_sha256') and src.get('evidence_type') in (None, 'text')
+                                            and not _valid_located_text(src)):
+                                        raise ValueError('Cited PDF text has no valid location')
                         except ValueError:
                             event.update(degraded=True, reason="citation_validation_failed")
                             # Controlled refusal: invalid citations are never silently repaired.
@@ -858,14 +1333,99 @@ class PaperPipeline:
                             answer = {"decision": decision, "reason_code": "citation_validation_failed",
                                       "text": "当前证据无法支撑可靠引用，因此不给出结论。", "claims": []}
                         else:
+                            local_caption = _attach_table_number_citations(answer['claims'], evidence,
+                                getattr(self.visual_retriever, 'evidence', []) if self.visual_retriever else [])
+                            if local_caption['unknown']:
+                                decision = 'refuse'
+                                answer = {'decision':'refuse', 'reason_code':'table_caption_unknown',
+                                          'text':'表号的独立来源无法可靠核实。', 'claims':[]}
+                            from .citation_guards import check_claim_numbers
+                            local_numeric = check_claim_numbers(answer['claims'], evidence)
+                            missing_keys = {row['claim_key'] for row in local_numeric if row['status'] == 'missing'}
+                            if missing_keys and local_audit_id is not None and self.visual_claim_check:
+                                repair_original = [copy.deepcopy(c) for c in answer['claims'] if c.get('key') in missing_keys]
+                                local_repair = {'reason':'uncited_explicit_numeric_condition', 'status':'pending'}
+                                try:
+                                    # One explicit repair, only among already selected text evidence;
+                                    # this is not an automatic transport retry.
+                                    text_evidence = [e for e in evidence if e.get('evidence_type') in (None, 'text')]
+                                    repair = self.reasoner.structured('repair_citations',
+                                        {'question':question, 'claims':repair_original, 'evidence':text_evidence,
+                                         'missing_numeric_conditions':[r for r in local_numeric if r['claim_key'] in missing_keys]})
+                                    local_repair['response'] = copy.deepcopy(repair)
+                                    repaired = repair.get('claims', [])
+                                    _validate_repaired_claims(repair_original, repaired, evidence)
+                                    replaced = {c['key']:c for c in repaired}
+                                    answer['claims'] = [replaced.get(c['key'],c) for c in answer['claims']]
+                                    local_numeric = check_claim_numbers(answer['claims'], evidence)
+                                    if any(row['status'] in {'missing','invalid_reference'} for row in local_numeric):
+                                        raise ValueError('Citation repair did not cover numeric conditions')
+                                    local_repair['status'] = 'validated_pending_self_check'
+                                except BudgetExceeded:
+                                    raise
+                                except Exception:
+                                    local_repair['status'] = 'rejected'
+                            if any(row['status'] in {'missing','invalid_reference'} for row in local_numeric):
+                                decision = 'refuse'
+                                answer = {'decision':'refuse', 'reason_code':'numeric_citation_incomplete',
+                                          'text':'引用文本缺少结论中的数值或单位，无法可靠作答。', 'claims':[]}
+                            if decision == 'answer':
+                                from .citation_guards import check_claim_conditions
+                                local_conditions = check_claim_conditions(answer['claims'], evidence)
+                                context_keys = [r['claim_key'] for r in local_conditions if r['status'] == 'context_dependent']
+                                eligible = [c for c in answer['claims'] if c.get('key') in context_keys]
+                                if (context_keys and local_audit_id is not None and self.visual_claim_check
+                                        and all(re.search(r'\bthis\s+effort\b', c['text'], re.I) for c in eligible)):
+                                    local_context = {'status':'pending', 'claim_keys':context_keys}
+                                    try:
+                                        refs = {(r['paper_id'],r['chunk_id']) for c in eligible for r in c['citations']}
+                                        cited = [e for e in evidence if (e['paper_id'],e['chunk_id']) in refs and _valid_located_text(e)]
+                                        repair = self.reasoner.structured('repair_context', {'question':question,
+                                            'claims':answer['claims'], 'repair_claim_keys':context_keys, 'evidence':cited})
+                                        local_context['response'] = copy.deepcopy(repair)
+                                        revised = _apply_context_repairs(answer['claims'], evidence, repair['repairs'], context_keys)
+                                        conditions = check_claim_conditions(revised, evidence)
+                                        numeric = check_claim_numbers(revised, evidence)
+                                        if any(r['status'] != 'ok' for r in conditions) or any(r['status'] in {'missing','invalid_reference'} for r in numeric):
+                                            raise ValueError('Context repair not independently checkable')
+                                        answer['claims'], local_conditions, local_numeric = revised, conditions, numeric
+                                        local_context['status'] = 'validated_pending_self_check'
+                                    except BudgetExceeded:
+                                        raise
+                                    except Exception:
+                                        local_context['status'] = 'rejected'
+                                if any(row['status'] != 'ok' for row in local_conditions):
+                                    decision = 'refuse'
+                                    answer = {'decision':'refuse','reason_code':'claim_condition_unknown',
+                                              'text':'声明的指代或数据条件无法由所引区域单独核实。','claims':[]}
+                            if decision == 'answer':
+                                from .citation_guards import check_question_collection_conditions
+                                local_question_conditions = check_question_collection_conditions(question, answer['claims'])
+                                if any(r['status'] != 'ok' for r in local_question_conditions) and local_audit_id is not None and self.visual_claim_check:
+                                    answer['claims'], local_collection = _repair_collection_conditions(question, answer['claims'], evidence)
+                                    local_question_conditions = check_question_collection_conditions(question, answer['claims'])
+                                    local_numeric = check_claim_numbers(answer['claims'], evidence)
+                                if any(r['status'] != 'ok' for r in local_question_conditions):
+                                    decision = 'refuse'
+                                    answer = {'decision':'refuse','reason_code':'question_condition_missing',
+                                              'text':'答案缺少问题中明确的集合规模条件。','claims':[]}
+                            event['numeric_validation'] = {
+                                'missing_count':sum(row['status'] in {'missing','invalid_reference'} for row in local_numeric),
+                                'visual_unknown_count':sum(row['status'] == 'unknown_visual' for row in local_numeric)}
                             # Location information comes from trusted retrieved evidence, never model output.
                             evidence_by_key = {(e['paper_id'], e['chunk_id']):e for e in evidence}
                             for claim in answer['claims']:
                                 for cite in claim['citations']:
                                     source = evidence_by_key[(cite['paper_id'], cite['chunk_id'])]
-                                    for field_name in ('evidence_type', 'page', 'bbox', 'figure_number', 'coordinate_system', 'page_rotation', 'image_sha256'):
+                                    for field_name in ('evidence_type', 'docling_label', 'page', 'bbox', 'page_size', 'pdf_sha256', 'figure_number', 'coordinate_system', 'page_rotation', 'image_sha256',
+                                                       'caption_association_status', 'caption_source_chunk_ids', 'caption_geometry'):
                                         if field_name in source:
                                             cite[field_name] = source[field_name]
+                                    if isinstance(source.get('title'),str) and source['title'].strip():
+                                        cite['source_metadata'] = {'title':source['title'], 'source':'local_index',
+                                            'status':'unverified', 'scope':'paper_identity_not_cited_region'}
+                                    from .visual_evidence import composite_provenance
+                                    cite.update(composite_provenance(source))
                                     if source.get('image_path'):
                                         from .visual_evidence import validate_image
                                         cite['image_path'] = str(validate_image(source, self.visual_root))
@@ -887,25 +1447,81 @@ class PaperPipeline:
                                         audit = (self.reasoner.structured('verify_claims', audit_payload, images=audit_images)
                                                  if audit_images else self.reasoner.structured('verify_claims', audit_payload))
                                         verdicts = audit.get('verdicts', [])
+                                        local_verdicts = copy.deepcopy(verdicts)
                                         statuses = {v['claim_key']: v['status'] for v in verdicts}
-                                        if (len(verdicts) == len(keys) and len(statuses) == len(keys)
-                                                and set(statuses) == set(keys) and all(value == 'supported' for value in statuses.values())):
+                                        complete_verdicts = (len(verdicts) == len(keys) and len(statuses) == len(keys)
+                                                             and set(statuses) == set(keys))
+                                        if complete_verdicts and all(value == 'supported' for value in statuses.values()):
                                             audit_status = 'supported'
+                                        elif (complete_verdicts and local_audit_id is not None
+                                              and any(value == 'supported' for value in statuses.values())):
+                                            # A disputed factual claim may be essential. Recheck it
+                                            # once against its own sources; never silently drop it.
+                                            disputed = [c for c in audit_claims if statuses[c['key']] != 'supported']
+                                            refs = {(r['paper_id'],r['chunk_id']) for c in disputed for r in c['citations']}
+                                            cited_disputed = [e for e in evidence if (e['paper_id'],e['chunk_id']) in refs]
+                                            imgs = [e for e in cited_disputed if e.get('evidence_type') in {'figure','table'}]
+                                            local_recheck = {'status':'pending', 'disputed_claim_keys':[c['key'] for c in disputed]}
+                                            payload = {'question':question, 'claims':disputed, 'evidence':cited_disputed}
+                                            checked = (self.reasoner.structured('verify_claims', payload, images=imgs)
+                                                       if imgs else self.reasoner.structured('verify_claims', payload))
+                                            repeated = checked.get('verdicts', [])
+                                            local_recheck['verdicts'] = copy.deepcopy(repeated)
+                                            repeated_map = {v['claim_key']:v['status'] for v in repeated}
+                                            if (len(repeated) == len(disputed) and len(repeated_map) == len(disputed)
+                                                    and set(repeated_map) == {c['key'] for c in disputed}):
+                                                disagrees = any(repeated_map[k] != statuses[k] for k in repeated_map)
+                                                audit_status = ('disagreement_unknown' if disagrees else
+                                                    'unknown' if 'unknown' in repeated_map.values() else 'unsupported')
+                                                local_recheck['status'] = audit_status
+                                            else:
+                                                audit_status = local_recheck['status'] = 'unavailable'
                                     except BudgetExceeded:
                                         raise
                                     except Exception:
                                         audit_status = 'unavailable'
+                                        if local_recheck is not None:
+                                            local_recheck['status'] = 'unavailable'
                                 event['claim_audit'] = {'status':audit_status, 'claim_count':len(claims), 'image_count':len(audit_images)}
-                                if audit_status != 'supported':
+                                if audit_status not in {'supported', 'supported_after_recheck'}:
                                     decision = 'refuse'
                                     answer = {'decision':'refuse', 'reason_code':'claim_self_check_failed',
                                               'text':'引用证据无法充分核实全部陈述，暂不给出结论。', 'claims':[]}
+                            if (decision == 'answer' and self.visual_claim_check and answer.get('claims')
+                                    and re.search(r'阶段|步骤|\bstages?\b|\bsteps?\b', question, re.I)
+                                    and re.search(r'三|各|分别|\b(?:three|each|multiple)\b|\d+', question, re.I)):
+                                local_completeness = {'status':'pending'}
+                                try:
+                                    payload = {'question':question,
+                                        'candidate_claims':answer['claims'], 'evidence':evidence,
+                                        'instruction':'Judge whether these exact claims include all requested stage distinctions; do not fill omissions from evidence.'}
+                                    completeness = (self.reasoner.structured('reflect', payload, images=visual_images)
+                                                    if visual_images else self.reasoner.structured('reflect', payload))
+                                    local_completeness = {'status':completeness.get('decision','unknown')}
+                                    if completeness.get('decision') != 'answer':
+                                        decision = 'refuse'
+                                        answer = {'decision':'refuse','reason_code':'answer_incomplete',
+                                                  'text':'现有陈述未完整覆盖所问阶段及其条件。','claims':[]}
+                                except Exception:
+                                    local_completeness = {'status':'unavailable'}
+                                    decision = 'refuse'
+                                    answer = {'decision':'refuse','reason_code':'answer_completeness_unknown',
+                                              'text':'无法核实答案是否完整。','claims':[]}
                 else:
                     answer = {"decision": decision, "claims": [], "text":
                         "请明确所指论文或比较对象。" if decision == "clarify" else "当前语料证据不足或请求超出论文库范围。"}
                     if constraint_reason:
                         answer.update(reason_code=constraint_reason,
                                       text='当前无法核实时间或数据限制，请提供可验证的条件或证据。')
+                if local_audit_id is not None:
+                    if local_context and local_context.get('status') == 'validated_pending_self_check':
+                        local_context['status'] = 'accepted_after_self_check' if answer.get('decision') == 'answer' else 'rejected_after_self_check'
+                    if local_repair and local_repair.get('status') == 'validated_pending_self_check':
+                        local_repair['status'] = ('accepted_after_self_check' if answer.get('decision') == 'answer'
+                                                  else 'rejected_after_self_check')
+                    self.claim_audit_sink.finalize(local_audit_id, local_verdicts, answer, local_recheck,
+                                                   local_repair, local_numeric, local_conditions, local_caption, local_context, local_completeness,
+                                                   local_question_conditions, local_collection)
                 event["output"] = answer
             with trace.stage("Memory", {"decision": answer["decision"]}) as event:
                 if answer["decision"] == "answer":
@@ -931,7 +1547,7 @@ class PaperPipeline:
                         event["compaction"] = compact_state(state, self.memory_dir/"archives")
                 from .observability import local_trace_path
                 trace_path = str(local_trace_path(self.trace_dir,trace.value))
-                state.committed_turns[turn_id] = {"question": question, "result": {"answer": answer, "trace_id": turn_id,
+                state.committed_turns[turn_id] = {"question": question, "image_identity":image_identity, "result": {"answer": answer, "trace_id": turn_id,
                                                                                    "trace_path": trace_path}}
                 if self.memory_manager:
                     event["compaction"] = self.memory_manager.commit(state, question, answer, evidence, turn_id,
@@ -950,6 +1566,10 @@ class PaperPipeline:
             state.__dict__.update(original.__dict__)
             trace.value["status"] = "error"
             trace.value['error_type'] = type(exc).__name__
+            if isinstance(exc, BudgetExceeded) and str(exc) in {
+                    'turn_deadline_exhausted', 'turn_model_requests_exhausted', 'turn_subqueries_exhausted',
+                    'turn_candidates_exhausted', 'turn_rerank_exhausted', 'turn_retry_budget_exhausted'}:
+                trace.value['budget_exhausted'] = str(exc)
             raise
         finally:
             if self.memory_manager:

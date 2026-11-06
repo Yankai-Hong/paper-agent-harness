@@ -2,6 +2,50 @@
 import re
 
 
+def catalog_with_literal_aliases(chunks):
+    """Derive only unique, locally evidenced names, without inferring a title.
+
+    A title's compact prefix before a colon and explicit author definitions
+    such as 'we call them ELMo (...)' are usable names, not facts from memory.
+    Collisions across papers or with another paper's title are discarded.
+    """
+    catalog = {}
+    candidates = {}
+    definition = re.compile(r'\bwe\s+(?:call|name)\s+(?:them|these|this|it)\s+([A-Za-z][A-Za-z0-9-]{2,30})\s*\(', re.I)
+    for chunk in chunks:
+        pid = chunk['paper_id']
+        title = chunk.get('title') or ''
+        catalog.setdefault(pid, {'paper_id':pid, 'title':title})
+        prefix = title.split(':', 1)[0].strip() if ':' in title else ''
+        if (re.fullmatch(r'[A-Za-z][A-Za-z0-9.-]{2,30}', prefix)
+                and ('-' in prefix or any(ch.isdigit() for ch in prefix) or prefix.isupper())):
+            candidates.setdefault(prefix.casefold(), set()).add(pid)
+        for match in definition.finditer(chunk.get('text') or ''):
+            alias = match.group(1)
+            if any(ch.isupper() for ch in alias):
+                candidates.setdefault(alias.casefold(), set()).add(pid)
+    for alias, owners in candidates.items():
+        if len(owners) != 1:
+            continue
+        owner = next(iter(owners))
+        pattern = r'(?<![A-Za-z0-9_-])' + re.escape(alias) + r'(?![A-Za-z0-9_-])'
+        if any(pid != owner and (re.search(pattern, item['title'], re.I)
+               or re.fullmatch(pattern, pid, re.I)) for pid,item in catalog.items()):
+            continue
+        catalog[owner].setdefault('aliases', []).append(alias)
+    return list(catalog.values())
+
+
+def _catalog_tokens(item):
+    identifier = item['paper_id']
+    tokens = [identifier] if len(identifier) >= 3 or (len(identifier) >= 2 and any(c.isdigit() for c in identifier)) else []
+    title = item.get('title', '').strip()
+    if len(title) >= 6:
+        tokens.append(title)
+    tokens.extend(a for a in item.get('aliases', []) if isinstance(a, str) and len(a) >= 3)
+    return tokens
+
+
 def explicit_paper_scope(question, catalog):
     """Find unambiguous literal catalog identifiers, not inferred titles or pronouns.
 
@@ -12,12 +56,7 @@ def explicit_paper_scope(question, catalog):
     negative = False
     for item in catalog:
         identifier = item['paper_id']
-        # Tiny IDs such as 'a' occur naturally in English; do not infer from them.
-        identifiers = [identifier] if len(identifier) >= 3 or (len(identifier) >= 2 and any(c.isdigit() for c in identifier)) else []
-        title = item.get('title','').strip()
-        if len(title) >= 6:
-            identifiers.append(title)
-        for token in identifiers:
+        for token in _catalog_tokens(item):
             pattern = r'(?<![A-Za-z0-9_-])' + re.escape(token) + r'(?![A-Za-z0-9_-])'
             for match in re.finditer(pattern, question, re.IGNORECASE):
                 mentions.add(identifier)
@@ -32,11 +71,7 @@ def _ordered_mentions(text, catalog):
     positions = []
     for item in catalog:
         pid = item['paper_id']
-        tokens = [pid] if len(pid) >= 3 or (len(pid) >= 2 and any(c.isdigit() for c in pid)) else []
-        title = item.get('title', '').strip()
-        if len(title) >= 6:
-            tokens.append(title)
-        for token in tokens:
+        for token in _catalog_tokens(item):
             pattern = r'(?<![A-Za-z0-9_-])' + re.escape(token) + r'(?![A-Za-z0-9_-])'
             positions.extend((match.start(), pid) for match in re.finditer(pattern, text, re.I))
     return list(dict.fromkeys(pid for _, pid in sorted(positions)))
@@ -57,6 +92,31 @@ def explicit_single_paper_prefix(question, catalog):
         if re.match(prefix, question, re.I):
             return pid
     return None
+
+
+def explicit_natural_metadata_scope(question, catalog, nlu_papers):
+    """Accept a literal single paper ID in an ordinary title/author question."""
+    if not (re.search(r'标题|题目|title', question, re.I) and re.search(r'作者|署名|author', question, re.I)):
+        return None
+    if re.search(r'比较|对比|刚才|刚刚|上次|上一轮|上轮|之前|此前|先前|那篇|这篇|前者|后者|它|'
+                 r'\bcompare\w*\b|\bprevious\w*\b|\bearlier\b|\bthat\s+paper\b|\bformer\b|\blatter\b', question, re.I):
+        return None
+    mentioned, excluded = explicit_paper_scope(question, catalog)
+    if excluded or len(mentioned) != 1 or not isinstance(nlu_papers, list) or set(nlu_papers) != mentioned:
+        return None
+    pid = next(iter(mentioned))
+    direct = r'(?:论文|paper)\s*' + re.escape(pid) + r'\s*(?:的|[\'’]s\b|[:,：])'
+    return pid if re.search(direct, question, re.I) else None
+
+
+def unknown_literal_metadata_id(question, catalog):
+    """Detect an explicit ID-shaped metadata target outside the local catalog."""
+    if not (re.search(r'标题|题目|title', question, re.I) and re.search(r'作者|署名|author', question, re.I)):
+        return False
+    identifiers = re.findall(r'(?:论文|paper)\s*([A-Za-z0-9][A-Za-z0-9._-]{2,100})\s*(?:的|[\'’]s\b|[:,：?？]|$)', question, re.I)
+    known = {str(c['paper_id']).casefold() for c in catalog}
+    known.update(alias.casefold() for c in catalog for alias in c.get('aliases', []) if isinstance(alias, str))
+    return any(re.search(r'\d', token) and token.casefold() not in known for token in identifiers)
 
 
 def exclusion_kind(question, catalog):
@@ -100,7 +160,7 @@ def _reference_text(question, catalog):
         match = re.match(prefix, result, re.I)
         result = result[:match.end()] + re.sub(r'这篇论文|该论文|\bthis paper\b', '', result[match.end():], flags=re.I)
     for item in catalog:
-        for token in (item['paper_id'],item.get('title','').strip()):
+        for token in _catalog_tokens(item):
             if len(token)<3:
                 continue
             p=r'(?<![A-Za-z0-9_-])'+re.escape(token)+r'(?![A-Za-z0-9_-])'
@@ -114,12 +174,45 @@ def _reference_text(question, catalog):
             not re.search(r'比较|对比|刚才|刚刚|上次|上一轮|上轮|之前|此前|先前|\bcompare\w*\b|\bversus\b|\bvs\b|\bcomparison\b|\bdifference\w*\b|\bbetween\b|\bprevious\w*\b|\bearlier\b|\brecent\w*\b',result,re.I)):
         pid=_ordered_mentions(result,catalog)[0]
         item=next(c for c in catalog if c['paper_id']==pid)
-        positions=[m.start() for token in (pid,item.get('title','').strip()) if len(token)>=3
+        positions=[m.start() for token in _catalog_tokens(item) if len(token)>=3
                    for m in re.finditer(r'(?<![A-Za-z0-9_-])'+re.escape(token)+r'(?![A-Za-z0-9_-])',result,re.I)]
         if positions:
             first=min(positions)
             result=result[:first]+re.sub(r'\b(?:it|its)\b','',result[first:],flags=re.I)
     return result
+
+
+_FORMER_LATTER = re.compile(r'前者|后者|後者|\bformer\b|\blatter\b', re.I)
+_HISTORICAL_ORDINAL = re.compile(r'刚才|刚刚|之前|以前|上次|上一轮|上轮|上一回|此前|先前|前面|'
+                                  r'\bprevious\w*\b|\bearlier\b|\blast\s+(?:turn|discussion|comparison)\b', re.I)
+
+
+def current_ordered_references(question, catalog):
+    """Resolve local former/latter only with two distinct preceding names.
+
+    Return an empty dict when no such expressions occur, None when they occur
+    but cannot be grounded locally, otherwise a mapping for both ordinals.
+    Sentence boundaries and explicit historical anchors prevent accidentally
+    treating a preceding turn as the current pair.
+    """
+    refs = list(_FORMER_LATTER.finditer(question))
+    if not refs:
+        return {}
+    if _HISTORICAL_ORDINAL.search(question):
+        return None
+    pair = None
+    for ref in refs:
+        start = max((m.end() for m in re.finditer(r'[。！？!?\n;；]', question[:ref.start()])), default=0)
+        end_match = re.search(r'[。！？!?\n;；]', question[ref.end():])
+        end = ref.end() + end_match.start() if end_match else len(question)
+        before = _ordered_mentions(question[start:ref.start()], catalog)
+        sentence = _ordered_mentions(question[start:end], catalog)
+        if len(before) != 2 or len(sentence) != 2 or set(before) != set(sentence):
+            return None
+        if pair is not None and pair != before:
+            return None
+        pair = before
+    return {'former':pair[0], 'latter':pair[1]}
 
 
 def _history_groups(state, catalog):
@@ -200,7 +293,13 @@ def scope_guard(question, catalog, nlu_papers, state, standalone_query=None, res
         return 'explicit_targets_unresolved'
     chosen = None if nlu_papers is None else set(nlu_papers)
     ref_text=_reference_text(question,catalog)
-    has_reference = bool(re.search(r'刚才|刚刚|之前|以前|上次|上一轮|上轮|上一回|此前|先前|前面|最近(?:讨论|提到|说到|聊到|一次|那篇|这篇|的论文|的那篇)|那篇|这篇|它|前者|后者|後者|这两篇|那两篇|\bearlier\b|\bprevious\w*\b|\brecent\w*\b|\bthat paper\b|\bthe other\b|\bit\b|\bits\b|\bthem\b|\bthose\b|\bformer\b|\blatter\b',ref_text,re.I))
+    local_order = current_ordered_references(question, catalog)
+    # Multiple named candidates in the current question with no clear local
+    # ordering cannot be silently resolved from an unrelated prior comparison.
+    if local_order is None and len(mentioned) >= 2 and not _HISTORICAL_ORDINAL.search(question):
+        return 'explicit_targets_unresolved'
+    reference_remainder = _FORMER_LATTER.sub('', ref_text) if local_order else ref_text
+    has_reference = bool(re.search(r'刚才|刚刚|之前|以前|上次|上一轮|上轮|上一回|此前|先前|前面|最近(?:讨论|提到|说到|聊到|一次|那篇|这篇|的论文|的那篇)|那篇|这篇|它|前者|后者|後者|这两篇|那两篇|\bearlier\b|\bprevious\w*\b|\brecent\w*\b|\bthat paper\b|\bthe other\b|\bit\b|\bits\b|\bthem\b|\bthose\b|\bformer\b|\blatter\b',reference_remainder,re.I))
     # Scope and rewrite are one contract: otherwise a legal citation from B can
     # still answer a rewritten comparison about the wrong paper C.
     rewritten=set(_ordered_mentions(standalone_query,catalog)) if isinstance(standalone_query,str) else set()
@@ -212,6 +311,12 @@ def scope_guard(question, catalog, nlu_papers, state, standalone_query=None, res
         referenced=set(_ordered_mentions(value,catalog))
         if referenced and (chosen is None or not referenced <= chosen):
             return 'explicit_targets_unresolved'
+        if local_order and _FORMER_LATTER.search(str(key)):
+            markers = _FORMER_LATTER.findall(str(key))
+            kinds = {'latter' if re.search(r'后者|後者|latter',m,re.I) else 'former' for m in markers}
+            if len(kinds) != 1 or referenced != {local_order[next(iter(kinds))]}:
+                return 'explicit_targets_unresolved'
+            continue
         if has_reference and re.search(r'它|刚才|刚刚|上一轮|上轮|那篇|这篇|前者|后者|後者|\bit\b|\bits\b|\bformer\b|\blatter\b|\bthat\b|\brecent\b',str(key),re.I):
             target=_resolve_reference(ref_text,state,catalog)
             if not referenced or target is None or referenced != target:

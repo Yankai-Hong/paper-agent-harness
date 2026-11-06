@@ -173,9 +173,8 @@ class VisualRetriever:
         return [self._search(vector.reshape(1, -1), top_k, paper_ids, figure_number, start) for vector in vectors]
 
     def search_image(self, image_path, top_k=5, paper_ids=None, figure_number=None):
-        path = Path(image_path).resolve(strict=True)
-        if not path.is_file():
-            raise ValueError("Image query must be a file")
+        from .query_images import validate_query_image
+        path = Path(validate_query_image(image_path)['path'])
         start = time.perf_counter()
         return self._search(self.encoder.encode_images([path]), top_k, paper_ids, figure_number, start)
 

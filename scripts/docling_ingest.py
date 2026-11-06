@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import importlib.metadata
 import json
+import math
 import re
 import time
 import uuid
@@ -12,6 +13,26 @@ from pathlib import Path
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def bbox_problem(bbox, width, height):
+    """Classify an unusable region without repairing or inventing geometry."""
+    if not all(math.isfinite(n) for n in (width, height)) or width <= 0 or height <= 0:
+        raise ValueError('Invalid Docling page dimensions')
+    if len(bbox) != 4 or not all(math.isfinite(n) for n in bbox):
+        return 'non_finite_coordinate'
+    x0, y0, x1, y1 = bbox
+    if x0 > x1 or y0 > y1:
+        return 'reversed_coordinate'
+    if x0 < 0 or y0 < 0 or x1 > width or y1 > height:
+        return 'outside_page'
+    if x0 == x1 and y0 == y1:
+        return 'zero_width_and_height'
+    if x0 == x1:
+        return 'zero_width'
+    if y0 == y1:
+        return 'zero_height'
+    return None
 
 
 def _reference_key(label):
@@ -100,6 +121,116 @@ def checked_caption(item, document, page, kind):
     return caption, number, ref_ids, 'docling_link_unverified' if number else 'unknown_number'
 
 
+def recover_unlinked_table_captions(entries, max_gap=12.0, min_overlap=0.8):
+    """Conservatively recover an omitted table-caption link; retain its uncertainty.
+
+    Docling sometimes emits a correctly labelled, separate caption item but
+    leaves TableItem.captions empty. Require an isolated, one-to-one spatial
+    match on the same original page. No multi-region objects, type conflicts,
+    reused numbers, intervening text, or ambiguous alternatives are accepted.
+    Geometry is not semantic proof: the method is recorded as unverified and
+    the caption remains an independently locatable text evidence item.
+    """
+    from math import isfinite
+
+    def box(entry):
+        value = entry.get('bbox')
+        if not isinstance(value, (tuple, list)) or len(value) != 4:
+            return None
+        if not all(type(n) in (int, float) and isfinite(n) for n in value):
+            return None
+        x0, y0, x1, y1 = value
+        if not x0 < x1 or not y0 < y1:
+            return None
+        return value
+
+    def label(caption):
+        text = caption.get('text', '')
+        if not isinstance(text, str):
+            return None
+        match = re.match(r'\s*(table\s*\d+[a-z]?)(?=\s*[:.\-–—]|\s|$)', text, re.I)
+        return match.group(1) if match else None
+
+    def compatible(a, b):
+        return (a.get('paper_id') == b.get('paper_id') and a.get('pdf_sha256')
+                and a.get('pdf_sha256') == b.get('pdf_sha256')
+                and a.get('page') == b.get('page') and a.get('page_size') == b.get('page_size')
+                and a.get('coordinate_system') == b.get('coordinate_system') == 'top-left-points'
+                and a.get('page_rotation') == b.get('page_rotation')
+                and a.get('region_count', 1) == b.get('region_count', 1) == 1)
+
+    tables = [e for e in entries if e.get('evidence_type') == 'table' and box(e)]
+    captions = [e for e in entries if e.get('evidence_type') == 'text'
+                and e.get('docling_label') == 'caption' and e.get('docling_ref')
+                and e.get('chunk_id') and box(e) and label(e)]
+    # A duplicated printed number or an already claimed identifier is not
+    # sufficient evidence for attaching this unlinked caption to a table.
+    counts = {}
+    claimed = set()
+    for cap in captions:
+        key = (cap.get('paper_id'), _reference_key(label(cap)))
+        counts[key] = counts.get(key, 0) + 1
+    for table in tables:
+        key = _reference_key(table.get('figure_number'))
+        if key:
+            claimed.add((table.get('paper_id'), key))
+
+    pairs = []
+    for cap in captions:
+        cb = box(cap)
+        cap_key = (cap.get('paper_id'), _reference_key(label(cap)))
+        if counts[cap_key] != 1 or cap_key in claimed:
+            continue
+        for table in tables:
+            if not compatible(table, cap):
+                continue
+            tb = box(table)
+            overlap = max(0.0, min(tb[2], cb[2]) - max(tb[0], cb[0]))
+            overlap_fraction = overlap / min(tb[2] - tb[0], cb[2] - cb[0])
+            if overlap_fraction < min_overlap:
+                continue
+            if tb[3] <= cb[1]:
+                low, high = tb[3], cb[1]
+            elif cb[3] <= tb[1]:
+                low, high = cb[3], tb[1]
+            else:
+                continue
+            gap = high - low
+            if gap > max_gap:
+                continue
+            # A separate text item in the gap makes the pairing unsafe.
+            obstructed = any(
+                other is not cap and other.get('evidence_type') == 'text'
+                and compatible(other, cap) and box(other)
+                and low < (box(other)[1] + box(other)[3]) / 2 < high
+                and min(box(other)[2], tb[2], cb[2]) > max(box(other)[0], tb[0], cb[0])
+                for other in entries)
+            if not obstructed:
+                pairs.append((table, cap, gap, overlap_fraction))
+
+    count = 0
+    for table, cap, gap, overlap in pairs:
+        # Do not override an explicit parser association or competing candidate.
+        if (table.get('caption_association_status') != 'unknown_missing'
+                or sum(t is table for t, _, _, _ in pairs) != 1
+                or sum(c is cap for _, c, _, _ in pairs) != 1):
+            continue
+        caption = cap['text'].strip()
+        number = label(cap)
+        table.update(figure_number=number, caption=caption,
+                     caption_source_refs=[cap['docling_ref']],
+                     caption_source_chunk_ids=[cap['chunk_id']],
+                     caption_association_status='geometry_unique_unverified',
+                     caption_geometry={'method':'same_page_unique_adjacent',
+                         'gap_points':gap, 'horizontal_overlap_fraction':overlap,
+                         'caption_bbox':cap['bbox'], 'visual_bbox':table['bbox']})
+        table_text = table.get('table_text')
+        table['text'] = table_text if table_text and table_text.startswith(caption) else '\n\n'.join(
+            part for part in (caption, table_text) if part)
+        count += 1
+    return count
+
+
 def text_span(text, charspan):
     """Return a text slice only when Docling's character provenance is valid."""
     if (not isinstance(text, str) or not isinstance(charspan, (tuple, list)) or len(charspan) != 2
@@ -142,7 +273,9 @@ def run(args):
         raise ValueError("Unsupported device")
     source = Path(args.pdf).resolve(strict=True)
     output, root = Path(args.output), Path(args.image_root).resolve()
-    if output.exists():
+    quarantine_path = output.with_name(output.name + '.quarantine.jsonl')
+    summary_path = output.with_name(output.name + '.summary.json')
+    if any(p.exists() for p in (output, quarantine_path, summary_path)):
         raise ValueError("Refusing to overwrite an existing evidence file")
     root.mkdir(parents=True, exist_ok=True)
     paper_dir = root / args.paper_id
@@ -151,7 +284,7 @@ def run(args):
     if paper_dir.exists() and any(paper_dir.iterdir()):
         raise ValueError("Refusing to overwrite an existing paper image directory")
     from pypdf import PdfReader
-    from docling.datamodel.base_models import InputFormat
+    from docling.datamodel.base_models import InputFormat, ConversionStatus
     from docling.datamodel.pipeline_options import PdfPipelineOptions
     from docling.datamodel.accelerator_options import AcceleratorOptions
     from docling.document_converter import DocumentConverter, PdfFormatOption
@@ -170,16 +303,28 @@ def run(args):
     if args.artifacts_path:
         options.artifacts_path = Path(args.artifacts_path).resolve(strict=True)
     result = DocumentConverter(format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=options)}).convert(str(source))
+    if result.status != ConversionStatus.SUCCESS:
+        raise ValueError(f'Docling conversion did not fully succeed: {result.status}')
     document = result.document
     pdf_hash = sha(source)
     version = importlib.metadata.version("docling")
-    entries, skipped_multipage, split_multiregion, unknown_spans = [], 0, 0, 0
+    entries, quarantine, skipped_multipage, split_multiregion, unknown_spans = [], [], 0, 0, 0
+    page_stats = {str(i): {'evidence': 0, 'quarantined': 0, 'skipped_empty': 0} for i in range(1, len(pdf.pages) + 1)}
+    for page in range(1, len(pdf.pages) + 1):
+        if page not in document.pages:
+            raise ValueError(f'Docling missing PDF page {page}')
+        size = document.pages[page].size
+        bbox_problem([0., 0., 1., 1.], float(size.width), float(size.height))
     paper_dir.mkdir(parents=True, exist_ok=True)
     for item, _level in document.iterate_items():
-        if not getattr(item, "prov", None):
-            continue
         is_visual = isinstance(item, (PictureItem, TableItem))
         kind = "table" if isinstance(item, TableItem) else "figure" if is_visual else "text"
+        if not getattr(item, "prov", None):
+            raw_text = str(getattr(item, 'text', '') or '')
+            quarantine.append({'paper_id': args.paper_id, 'pdf_sha256': pdf_hash, 'page': None, 'disposition':'quarantined',
+                'docling_ref': str(item.self_ref), 'evidence_type': kind, 'reason': 'missing_provenance',
+                'text_sha256': hashlib.sha256(raw_text.encode('utf-8')).hexdigest(), 'text_length': len(raw_text)})
+            continue
         regions = list(item.prov)
         if len(regions) > 1:
             split_multiregion += 1
@@ -195,8 +340,18 @@ def run(args):
             box = prov.bbox.to_top_left_origin(page_height=height)
             bbox = [float(box.l), float(box.t), float(box.r), float(box.b)]
             x0, y0, x1, y1 = bbox
-            if not (0 <= x0 < x1 <= width and 0 <= y0 < y1 <= height):
-                raise ValueError(f"Docling bbox outside page {page}: {bbox}")
+            problem = bbox_problem(bbox, width, height)
+            if problem:
+                # JSON cannot faithfully represent NaN/Infinity; preserve their explicit spelling.
+                quarantine.append({'paper_id': args.paper_id, 'pdf_sha256': pdf_hash, 'page': page, 'disposition':'quarantined',
+                    'docling_ref': str(item.self_ref), 'evidence_type': kind, 'reason': problem,
+                    'region_index': region_index, 'region_count': len(regions),
+                    'bbox': [v if math.isfinite(v) else str(v) for v in bbox],
+                    'page_size': [width, height], 'coordinate_system': 'top-left-points',
+                    'source_charspan': list(prov.charspan), 'text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                    'text_length': len(text)})
+                page_stats[str(page)]['quarantined'] += 1
+                continue
             if rotations[page - 1]:
                 import pypdfium2 as pdfium
                 rendered_size = pdfium.PdfDocument(str(source))[page - 1].get_size()
@@ -213,6 +368,13 @@ def run(args):
                 if span_status == 'unknown':
                     unknown_spans += 1
             if not content and not is_visual and len(regions) == 1:
+                page_stats[str(page)]['skipped_empty'] += 1
+                quarantine.append({'paper_id': args.paper_id, 'pdf_sha256': pdf_hash, 'page': page,
+                    'docling_ref': str(item.self_ref), 'evidence_type': kind, 'disposition':'skipped',
+                    'reason':'empty_text', 'region_index':region_index, 'region_count':len(regions),
+                    'bbox':bbox, 'page_size':[width, height], 'coordinate_system':'top-left-points',
+                    'source_charspan':span, 'text_sha256':hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                    'text_length':len(text)})
                 continue
             identity = [pdf_hash, str(item.self_ref), page, bbox, kind]
             if len(regions) > 1:
@@ -221,7 +383,7 @@ def run(args):
             entry = {'paper_id': args.paper_id, 'chunk_id': chunk_id, 'title': title, 'text': content, 'evidence_type': kind,
                      'page': page, 'bbox': bbox, 'page_size': [width, height], 'coordinate_system': 'top-left-points',
                      'page_rotation': rotations[page - 1], 'pdf_sha256': pdf_hash,
-                     'parser': {'name': 'docling', 'version': version, 'images_scale': 2.0, 'device_requested': args.device, 'evidence_schema': 'docling-region-v2'},
+                     'parser': {'name': 'docling', 'version': version, 'images_scale': 2.0, 'device_requested': args.device, 'evidence_schema': 'docling-region-v3'},
                      'docling_ref': str(item.self_ref), 'docling_label': str(getattr(getattr(item, 'label', None), 'value', getattr(item, 'label', 'unknown'))),
                      'region_group_id': group_id, 'region_index': region_index, 'region_count': len(regions),
                      'source_charspan': span, 'source_span_status': span_status}
@@ -258,18 +420,28 @@ def run(args):
                 entry['image_path'] = (Path(args.paper_id) / filename).as_posix()
                 entry['image_sha256'] = sha(paper_dir / filename)
             entries.append(entry)
+            page_stats[str(page)]['evidence'] += 1
     if not entries:
         raise ValueError("Docling returned no usable evidence")
+    geometric_captions = recover_unlinked_table_captions(entries)
     associate_explicit_references(entries)
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("x", encoding="utf-8") as stream:
         for entry in entries:
             stream.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    with quarantine_path.open('x', encoding='utf-8') as stream:
+        for item in quarantine:
+            stream.write(json.dumps(item, ensure_ascii=False, allow_nan=False) + '\n')
     result = {"paper_id": args.paper_id, "pdf_sha256": pdf_hash, "docling": version,
               "device_requested": args.device,
               "items": len(entries), "visual_items": sum(e["evidence_type"] in {"figure", "table"} for e in entries),
               "skipped_multiple_provenances": skipped_multipage, "split_multiregion_items":split_multiregion,
-              "unknown_spans":unknown_spans}
+              "unknown_spans":unknown_spans, "geometry_unique_unverified_captions":geometric_captions,
+              "quarantined": sum(q['disposition'] == 'quarantined' for q in quarantine),
+              "skipped_empty": sum(q['disposition'] == 'skipped' for q in quarantine), "page_stats": page_stats,
+              "quarantine_path": str(quarantine_path), "source_sha256": sha(__file__)}
+    with summary_path.open('x', encoding='utf-8') as stream:
+        json.dump(result, stream, ensure_ascii=False, indent=2, allow_nan=False)
     print(json.dumps(result))
     return result
 
@@ -293,7 +465,7 @@ def main():
                      "ended_at": datetime.now(timezone.utc).isoformat(),
                      "elapsed_ms": (time.perf_counter() - start) * 1000, "error_type": error}
             if result:
-                stage["output"] = {k: result[k] for k in ("pdf_sha256", "docling", "device_requested", "items", "visual_items", "skipped_multiple_provenances", "split_multiregion_items", "unknown_spans")}
+                stage["output"] = {k: result[k] for k in ("pdf_sha256", "docling", "device_requested", "items", "visual_items", "skipped_multiple_provenances", "split_multiregion_items", "unknown_spans", "geometry_unique_unverified_captions")}
             trace = {"session_id": "pdf-ingest", "turn_id": turn_id, "stages": [stage]}
             with (trace_dir / (turn_id + ".json")).open("x", encoding="utf-8") as stream:
                 json.dump(trace, stream, ensure_ascii=False, indent=2)

@@ -100,6 +100,22 @@ def test_limits_stop_before_network_and_key_not_in_repr():
         APIConfig('SECRET', 'fixture', 'http://example.com')
 
 
+def test_nlu_schema_failure_keeps_only_safe_schema_diagnostics():
+    # The v205 response was never saved; this synthetic failure tests the
+    # diagnostic mechanism without pretending to reconstruct that response.
+    value = {'intent':'fact','standalone_query':'private text',
+             'needs_clarification':False,'paper_ids':['paperA']}
+    reasoner = CompatibleReasoner(APIConfig('SECRET', 'fixture', max_retries=0, repair_retries=0),
+                                  's', lambda *args:response(value))
+    with pytest.raises(RuntimeError):
+        reasoner.structured('nlu', {})
+    assert len(reasoner.calls) == 1
+    record = reasoner.calls[0]
+    assert record['status'] == 'error' and record['schema_validator'] == 'required'
+    assert record['schema_error_path'] == [] and record['schema_missing_fields'] == ['resolved_entities']
+    assert 'private text' not in json.dumps(record) and 'SECRET' not in json.dumps(record)
+
+
 def test_explicit_thinking_setting_is_sent(server):
     url, requests, answers = server
     answers.append((200, response({'decision': 'refuse', 'reason': 'fixture'})))

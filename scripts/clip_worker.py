@@ -13,6 +13,8 @@ def main():
     download.add_argument("directory")
     encode = sub.add_parser("encode")
     encode.add_argument("request")
+    split = sub.add_parser("split")
+    split.add_argument("request")
     args = parser.parse_args()
     if args.command == "download":
         from huggingface_hub import snapshot_download
@@ -33,6 +35,34 @@ def main():
         snapshot_download(repo_id=args.model_id, revision=args.revision, local_dir=str(target),
                           ignore_patterns=["*.bin", "*.onnx", "*.h5", "openvino/*", ".gitattributes"])
         (target / "snapshot.complete.json").write_text(json.dumps(provenance), encoding="utf-8")
+        return
+    if args.command == "split":
+        from transformers import AutoTokenizer
+        request = json.loads(Path(args.request).read_text(encoding="utf-8"))
+        tokenizer = AutoTokenizer.from_pretrained(request["model"], local_files_only=True, use_fast=True)
+        if not tokenizer.is_fast:
+            raise ValueError("Fast tokenizer with character offsets required")
+        # Sentence Transformers' saved maximum, not tokenizer's often unbounded default.
+        config = json.loads((Path(request["model"]) / "0_Transformer" / "sentence_bert_config.json").read_text(encoding="utf-8")) if (Path(request["model"]) / "0_Transformer" / "sentence_bert_config.json").exists() else json.loads((Path(request["model"]) / "sentence_bert_config.json").read_text(encoding="utf-8"))
+        limit = int(config["max_seq_length"])
+        window = limit - tokenizer.num_special_tokens_to_add(pair=False)
+        overlap = min(16, window // 4)
+        if window < 2:
+            raise ValueError("Invalid tokenizer limit")
+        rows = []
+        for text in request["inputs"]:
+            offsets = tokenizer(text, add_special_tokens=False, return_offsets_mapping=True, truncation=False)["offset_mapping"]
+            offsets = [(a, b) for a, b in offsets if b > a]
+            spans = []
+            for i in range(0, len(offsets), window - overlap):
+                batch = offsets[i:i + window]
+                if not batch:
+                    break
+                spans.append([batch[0][0], batch[-1][1]])
+                if i + window >= len(offsets):
+                    break
+            rows.append(spans)
+        Path(request["output"]).write_text(json.dumps({"spans": rows, "limit": limit, "window": window, "overlap": overlap}), encoding="utf-8")
         return
     import numpy as np
     from PIL import Image

@@ -1,7 +1,37 @@
 """Validation of local, page-derived evidence. No image bytes enter records."""
 import hashlib
 import math
+import re
 from pathlib import Path
+
+
+def composite_provenance(source):
+    """Project reviewed panel provenance to bounded, content-free locations."""
+    if (source.get('association_method') != 'explicit_page_reviewed_composite'
+            or source.get('review_status') != 'agent_reviewed_not_human'):
+        return {}
+    details, ids = source.get('source_region_details'), source.get('source_regions')
+    if not isinstance(details,list) or not isinstance(ids,list) or not 2 <= len(details) == len(ids) <= 16:
+        return {}
+    safe = []
+    fields = ('paper_id','chunk_id','page','bbox','page_size','page_rotation','coordinate_system',
+              'pdf_sha256','image_sha256','panel_label','panel_label_source','panel_scope')
+    for item in details:
+        if not isinstance(item,dict) or item.get('paper_id') != source.get('paper_id') or item.get('page') != source.get('page') or item.get('pdf_sha256') != source.get('pdf_sha256'):
+            return {}
+        if not isinstance(item.get('chunk_id'),str) or not re.fullmatch(r'[A-Za-z0-9_.:-]{1,120}',item['chunk_id']):
+            return {}
+        box, size = item.get('bbox'), item.get('page_size')
+        if (not isinstance(box,(list,tuple)) or len(box)!=4 or not isinstance(size,(list,tuple)) or len(size)!=2
+                or any(type(v) not in (int,float) or not math.isfinite(v) for v in (*box,*size))
+                or not (0 <= box[0] < box[2] <= size[0] and 0 <= box[1] < box[3] <= size[1])
+                or not re.fullmatch(r'[0-9a-f]{64}',str(item.get('image_sha256','')))):
+            return {}
+        safe.append({k:item[k] for k in fields if k in item})
+    if [r['chunk_id'] for r in safe] != ids:
+        return {}
+    return {'association_method':'explicit_page_reviewed_composite', 'review_status':'agent_reviewed_not_human',
+            'source_regions':ids, 'source_region_details':safe}
 
 
 def validate_image(evidence, root):

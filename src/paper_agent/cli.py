@@ -57,6 +57,16 @@ def main():
     visual_index = sub.add_parser("visual-index", help="Build a separate CLIP figure/table index")
     visual_options(visual_index)
     visual_index.add_argument("evidence", help="Docling evidence JSONL")
+    clip_text_index = sub.add_parser('clip-text-index', help='Build the independent located CLIP text index')
+    visual_options(clip_text_index)
+    clip_text_index.add_argument('chunks', help='Same chunks.jsonl used by the paper text index')
+    clip_text_index.add_argument('--output', required=True)
+    clip_text_search = sub.add_parser('clip-search-image-text', help='Search located text with a local image')
+    visual_options(clip_text_search)
+    clip_text_search.add_argument('--clip-text-index', required=True)
+    clip_text_search.add_argument('query')
+    clip_text_search.add_argument('--paper-id', action='append')
+    clip_text_search.add_argument('--top-k', type=int, default=5)
     semantic_index = sub.add_parser("visual-semantic-index", help="Build a separate BGE caption/table index")
     semantic_index.add_argument("evidence")
     semantic_index.add_argument("--visual-root", required=True)
@@ -88,14 +98,17 @@ def main():
             p.add_argument("--memory-strategy", choices=["bounded", "semantic"], default="bounded")
             p.add_argument("--visual-index", help="Enable visual retrieval using this CLIP index")
             p.add_argument("--visual-semantic-index", help="Optional BGE caption/table index for multimodal fusion")
+            p.add_argument('--clip-text-index', help='CLIP text index for image queries')
+            p.add_argument('--image', action='append', default=[], help='Local PNG/JPEG query image, up to two')
             p.add_argument("--visual-root")
             p.add_argument("--visual-python")
             p.add_argument("--visual-image-model")
             p.add_argument("--visual-text-model")
             p.add_argument("--visual-device", default="cpu")
             p.add_argument("--visual-claim-check", action="store_true", help="Use a model self-check of each cited claim (extra API call)")
+            p.add_argument("--local-claim-audit", help="Fresh local directory for raw generated claims and self-check decisions")
             if command == "ask":
-                p.add_argument("query")
+                p.add_argument("query", nargs='?', default='')
         elif command == "search":
             p.add_argument("query")
             p.add_argument("--paper-id", action="append")
@@ -136,6 +149,12 @@ def main():
     elif args.command == "visual-index":
         from .visual_retrieval import build_visual_index
         emit(build_visual_index(args.evidence, args.visual_index, args.visual_root, visual_encoder(args)))
+    elif args.command == 'clip-text-index':
+        from .clip_text_index import build_clip_text_index
+        emit(build_clip_text_index(args.chunks, args.output, visual_encoder(args)))
+    elif args.command == 'clip-search-image-text':
+        from .clip_text_index import ClipTextRetriever
+        emit(ClipTextRetriever(args.clip_text_index, visual_encoder(args)).search_image(args.query, args.top_k, args.paper_id))
     elif args.command == "visual-semantic-index":
         from .visual_text_retrieval import build_visual_text_index
         encoder = BGEEncoder(args.encoder, args.device, args.batch_size, args.max_length)
@@ -167,19 +186,32 @@ def main():
         retriever = Retriever(args.index, encoder, reranker)
         if args.command in {"ask", "chat"}:
             semantic = None
+            clip_text = None
+            if args.clip_text_index:
+                if not visual:
+                    parser.error('--clip-text-index requires --visual-index and visual options')
+                from .clip_text_index import ClipTextRetriever
+                clip_text = ClipTextRetriever(args.clip_text_index, visual.encoder, retriever.metadata.get('corpus_hash'))
+            if args.image and not clip_text:
+                parser.error('--image requires --clip-text-index and visual options')
             if args.visual_semantic_index:
                 if not visual or encoder is None:
                     parser.error("--visual-semantic-index requires visual options and a dense or hybrid/rerank text mode")
                 from .visual_text_retrieval import VisualTextRetriever
                 semantic = VisualTextRetriever(args.visual_semantic_index, visual, encoder)
             root = Path(args.state_dir)
+            claim_audit = None
+            if args.local_claim_audit:
+                from .local_audit import LocalClaimAudit
+                claim_audit = LocalClaimAudit(args.local_claim_audit, config.api_key)
             pipeline = PaperPipeline(retriever, reasoner, root/"traces"/args.session,
                 root/"memory", args.mode, not args.no_rewrite, not args.no_reflect, not args.no_compact,
                 args.memory_strategy, visual_retriever=visual, visual_root=args.visual_root, visual_text_retriever=semantic,
-                visual_claim_check=args.visual_claim_check)
+                clip_text_retriever=clip_text,
+                visual_claim_check=args.visual_claim_check, claim_audit_sink=claim_audit)
             state = PaperAgentState.load(pipeline.memory_manager.root, args.session)
             if args.command == "ask":
-                emit(pipeline.run(args.query, state))
+                emit(pipeline.run(args.query, state, images=args.image))
                 return
             print("模型问答模式（使用 API 配额）。/corpus /trace /memory /quit")
             last = None
@@ -198,7 +230,7 @@ def main():
                     elif query.startswith("/"):
                         print("未知命令")
                     elif query:
-                        last = pipeline.run(query, state)
+                        last = pipeline.run(query, state, images=args.image)
                         emit(last)
                 except (EOFError, KeyboardInterrupt):
                     break

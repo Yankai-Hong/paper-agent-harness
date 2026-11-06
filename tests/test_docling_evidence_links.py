@@ -81,3 +81,64 @@ def test_table_cells_preserve_row_column_and_unknown_geometry():
     assert grid['cell_page_bbox'] == 'unknown' and grid['cells'][0]['row_start'] == 0
     cell.end_row_offset_idx = 4
     assert module.table_structure(item) == (None, 'unknown')
+
+
+def _caption_example():
+    common = {'paper_id':'p', 'pdf_sha256':'sha', 'page':5, 'page_size':[600, 800],
+              'page_rotation':0, 'coordinate_system':'top-left-points', 'region_count':1}
+    table = {**common, 'evidence_type':'table', 'chunk_id':'t', 'docling_ref':'#/tables/0',
+             'bbox':[110, 90, 490, 200], 'caption':'', 'figure_number':None,
+             'caption_association_status':'unknown_missing', 'table_text':'| a | b |',
+             'text':'| a | b |', 'associated_text':[]}
+    caption = {**common, 'evidence_type':'text', 'chunk_id':'c', 'docling_label':'caption',
+               'docling_ref':'#/texts/5', 'bbox':[90, 209, 510, 240],
+               'text':'Table 1: Example results.'}
+    return table, caption
+
+
+def test_caption_recovery_is_unique_located_and_marked_unverified():
+    module = load_script()
+    table, caption = _caption_example()
+    # A glyph whose center remains inside the table may extend into the gap;
+    # it is not an intervening paragraph or competing caption.
+    glyph = {**caption, 'chunk_id':'glyph', 'docling_label':'text', 'bbox':[120, 190, 130, 204], 'text':'±'}
+    assert module.recover_unlinked_table_captions([table, caption, glyph]) == 1
+    assert table['figure_number'] == 'Table 1'
+    assert table['caption'] == caption['text']
+    assert table['caption_source_chunk_ids'] == ['c']
+    assert table['caption_source_refs'] == ['#/texts/5']
+    assert table['caption_geometry']['caption_bbox'] == caption['bbox']
+    assert table['caption_geometry']['gap_points'] == 9
+    assert table['caption_association_status'] == 'geometry_unique_unverified'
+    assert table['text'].endswith('| a | b |')
+    assert caption['text'] == 'Table 1: Example results.'
+
+
+def test_caption_recovery_refuses_uncertain_pairings():
+    module = load_script()
+    for mutate in (
+        lambda t,c: c.update(page=6),
+        lambda t,c: c.update(pdf_sha256='other'),
+        lambda t,c: c.update(bbox=[90, 215, 510, 240]),
+        lambda t,c: c.update(bbox=[500, 209, 550, 240]),
+        lambda t,c: c.update(region_count=2),
+        lambda t,c: c.update(text='Figure 1: Example.'),
+        lambda t,c: t.update(caption_association_status='unknown_type_conflict'),
+    ):
+        table, caption = _caption_example()
+        mutate(table, caption)
+        assert module.recover_unlinked_table_captions([table, caption]) == 0
+        assert table['figure_number'] is None
+
+    table, caption = _caption_example()
+    another_table = {**table, 'chunk_id':'t2', 'bbox':[115, 90, 485, 201]}
+    assert module.recover_unlinked_table_captions([table, another_table, caption]) == 0
+    assert table['figure_number'] is None and another_table['figure_number'] is None
+
+    table, caption = _caption_example()
+    duplicate_caption = {**caption, 'chunk_id':'c2', 'docling_ref':'#/texts/6', 'bbox':[90, 500, 510, 540]}
+    assert module.recover_unlinked_table_captions([table, caption, duplicate_caption]) == 0
+
+    table, caption = _caption_example()
+    obstruction = {**caption, 'chunk_id':'x', 'docling_label':'text', 'bbox':[120, 203, 480, 207]}
+    assert module.recover_unlinked_table_captions([table, caption, obstruction]) == 0

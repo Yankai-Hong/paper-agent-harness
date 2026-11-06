@@ -75,6 +75,44 @@ class VisualRetriever:
         return {"hits":[self.item]}
 
 
+def test_novel_dense_candidate_survives_hybrid_truncation_without_extra_visual_vote(tmp_path):
+    base = {'paper_id':'p', 'chunk_id':'base', 'text':'first', 'title':'Paper'}
+    dense = {'paper_id':'p', 'chunk_id':'dense', 'text':'needed', 'title':'Paper'}
+    class Retriever:
+        metadata = {}; reranker = None
+        by_id = {'base':base,'dense':dense}
+        def search(self, query, **kwargs):
+            return {'hits':[base], 'channel_refs':{'dense':[
+                {'paper_id':'p','chunk_id':'base'}, {'paper_id':'p','chunk_id':'dense'}]}}
+    class EmptyVisual:
+        image_root = tmp_path; evidence = []
+        def search_texts(self, queries, **kwargs):
+            return [{'hits':[], 'timing_ms':0} for _ in queries]
+        def search_caption(self, query, **kwargs):
+            return {'hits':[], 'timing_ms':0}
+    class EmptySemantic:
+        def search(self, query, **kwargs):
+            return {'hits':[], 'timing_ms':0}
+    class Reasoner:
+        def structured(self, stage, payload, **kwargs):
+            if stage == 'nlu':
+                return {'intent':'fact', 'standalone_query':'rewritten', 'paper_ids':['p'],
+                        'resolved_entities':{}, 'needs_clarification':False}
+            if stage == 'reflect': return {'decision':'answer', 'reason':'available'}
+            assert 'dense' in {e['chunk_id'] for e in payload['evidence']}
+            return {'claims':[{'key':'k','text':'needed',
+                               'citations':[{'paper_id':'p','chunk_id':'dense'}]}]}
+    p = PaperPipeline(Retriever(), Reasoner(), tmp_path/'traces', tmp_path/'memory',
+                      mode='bm25', visual_retriever=EmptyVisual(),
+                      visual_text_retriever=EmptySemantic(), archive_recall=False)
+    result = p.run('original', PaperAgentState('s'), turn_id='t')
+    assert result['answer']['claims'][0]['citations'][0]['chunk_id']=='dense'
+    trace = json.loads(Path(result['trace_path']).read_text(encoding='utf8'))
+    retrieve = next(s for s in trace['stages'] if s['stage']=='Retrieve')
+    assert any(r['route']=='text_dense_rescue' and r['refs']==[{'paper_id':'p','chunk_id':'dense'}]
+               for r in retrieve['output']['routes'])
+
+
 @pytest.mark.parametrize("outcome", ["answer", "reflect_refuse", "generate_refuse", "bad_citation"])
 def test_pipeline_reflect_generate_see_images_and_trusted_citation(tmp_path, outcome):
     image_root = tmp_path / "images"
@@ -130,6 +168,67 @@ def test_conflicting_evidence_key_fails_closed():
     assert len(_merge_evidence_entities([visual], [same])) == 1
 
 
+def test_reviewed_composite_locations_are_bounded_and_content_free():
+    from paper_agent.visual_evidence import composite_provenance
+    source = {'paper_id':'p','page':3,'pdf_sha256':'a'*64,
+              'association_method':'explicit_page_reviewed_composite','review_status':'agent_reviewed_not_human',
+              'source_regions':['a','b'], 'source_region_details':[
+                  {'paper_id':'p','chunk_id':cid,'page':3,'pdf_sha256':'a'*64,'image_sha256':'b'*64,
+                   'bbox':[1,2,30,40],'page_size':[100,100],'page_rotation':0,
+                   'coordinate_system':'top-left-points','text':'private document'} for cid in ('a','b')]}
+    details = composite_provenance(source)
+    assert [r['chunk_id'] for r in details['source_region_details']]==['a','b']
+    assert 'private document' not in json.dumps(details)
+    source['source_region_details'][1]['pdf_sha256']='c'*64
+    assert composite_provenance(source)=={}
+
+
+@pytest.mark.parametrize('claim_text,condition', [
+    ('With SBERT, this is reduced to 5 seconds.','context_dependent'),
+    ('The test perplexity is 24.0.','test_condition_unknown')])
+def test_ambiguous_claim_conditions_refuse_without_erasing_original(tmp_path, claim_text, condition):
+    from paper_agent.local_audit import LocalClaimAudit
+    root=tmp_path/'images'; root.mkdir()
+    ev=fixture_image(root)
+    def transport(url,body,headers,timeout):
+        stage=len(reasoner.calls)
+        if stage==1:
+            value={'intent':'fact','standalone_query':'diagram','needs_clarification':False,
+                   'paper_ids':['p'],'resolved_entities':{}}
+        elif stage==2:
+            value={'decision':'answer','reason':'available'}
+        else:
+            value={'claims':[{'key':'k','text':claim_text,
+                              'citations':[{'paper_id':'p','chunk_id':'visual-1'}]}]}
+        return response(value)
+    reasoner=CompatibleReasoner(APIConfig('secret','fixture',max_retries=0,repair_retries=0),'s',transport,image_root=root)
+    sink=LocalClaimAudit(tmp_path/'claim-audit','secret')
+    pipe=PaperPipeline(TextRetriever(),reasoner,tmp_path/'traces',tmp_path/'memory',mode='bm25',
+                       visual_retriever=VisualRetriever(root,ev),visual_claim_check=True,claim_audit_sink=sink)
+    result=pipe.run('Describe the diagram',PaperAgentState('s'))
+    saved=json.loads(next((tmp_path/'claim-audit').glob('*.json')).read_text(encoding='utf8'))
+    assert result['answer']['reason_code']=='claim_condition_unknown'
+    assert saved['generated']['claims'][0]['text']==claim_text
+    assert saved['condition_check'][0]['status']==condition
+
+
+def test_private_trace_retains_only_whitelisted_bm25_routes_and_ids():
+    from paper_agent.pipeline import _private_visual_trace
+    refs = [{'paper_id':'paper1','chunk_id':'chunk1'}]
+    stage = {'stage':'Retrieve','output':{'routes':[
+        {'route':'text_bm25_original','refs':refs},
+        {'route':'caption_bm25_rewrite','refs':refs},
+        {'route':'user_supplied_secret','refs':refs},
+        {'route':'text_dense_original','refs':[{'paper_id':'paper1','chunk_id':'chunk1','text':'private'}]},
+    ]}}
+    projected = _private_visual_trace({'stages':[stage]})
+    routes = projected['stages'][0]['output']['routes']
+    assert routes[0]['route']=='text_bm25_original' and routes[0]['refs']==refs
+    assert routes[1]['route']=='caption_bm25_rewrite' and routes[1]['refs']==refs
+    assert all(r['route']!='user_supplied_secret' for r in routes)
+    assert routes[2]['refs']==[] and 'private' not in json.dumps(projected)
+
+
 def test_associated_prose_is_promoted_only_after_index_verification():
     from paper_agent.pipeline import _expand_verified_associations
     sha = 'a' * 64
@@ -148,6 +247,101 @@ def test_associated_prose_is_promoted_only_after_index_verification():
         assert not ids and 'associated_text' not in clean[0]
     clean, ids = _expand_verified_associations([{**visual, 'figure_number':'Figure 2'}], {'t':text})
     assert not ids and 'associated_text' not in clean[0]
+
+
+def test_caption_is_a_separate_located_evidence_item():
+    from paper_agent.pipeline import _expand_located_context, _expand_verified_associations
+    sha = 'a' * 64
+    loc = {'paper_id':'p', 'page':3, 'pdf_sha256':sha, 'page_size':[100,100],
+           'coordinate_system':'top-left-points', 'page_rotation':0}
+    visual = {**loc, 'chunk_id':'f', 'evidence_type':'figure', 'bbox':[1,1,40,40],
+              'figure_number':'Figure 1', 'text':'Figure 1: shared weights',
+              'caption':'Figure 1: shared weights', 'table_text':'hidden data'}
+    caption = {**loc, 'chunk_id':'c', 'evidence_type':'text', 'docling_label':'caption',
+               'bbox':[1,45,40,55], 'text':'Figure 1: shared weights'}
+    expanded, ids = _expand_located_context([visual], {'c':caption})
+    assert ids == ['c'] and expanded[1]['bbox'] == [1,45,40,55]
+    clean, _ = _expand_verified_associations(expanded, {'c':caption})
+    assert clean[0]['text'] == '' and 'caption' not in clean[0] and 'table_text' not in clean[0]
+    assert clean[1] == caption
+    invalids = [{**caption, 'bbox':[1,45,140,55]}, {**caption, 'page':2},
+                {**caption, 'pdf_sha256':'b'*64}, {**caption, 'text':'different'}]
+    for bad in invalids:
+        assert _expand_located_context([visual], {'c':bad})[1] == []
+    assert _expand_located_context([visual], {'c':caption, 'c2':{**caption,'chunk_id':'c2'}})[1] == []
+
+
+def test_caption_citation_resolves_to_caption_bbox_not_figure_bbox(tmp_path):
+    root = tmp_path/'images'; root.mkdir()
+    image = {**fixture_image(root), 'caption':'Figure 1: shared weights',
+             'text':'Figure 1: shared weights', 'pdf_sha256':'a'*64}
+    caption = {'paper_id':'p','chunk_id':'cap','text':image['caption'], 'evidence_type':'text',
+               'docling_label':'caption','page':2,'bbox':[1,20,50,30],'page_size':[100,100],
+               'coordinate_system':'top-left-points','page_rotation':0,'pdf_sha256':'a'*64}
+    text = TextRetriever(); text.by_id['cap'] = caption
+    received = []
+    def transport(url, body, headers, timeout):
+        received.append(body)
+        if len(received) == 1:
+            value = {'intent':'fact','standalone_query':'figure','needs_clarification':False,
+                     'paper_ids':['p'],'resolved_entities':{}}
+        elif len(received) == 2:
+            value = {'decision':'answer','reason':'seen'}
+        else:
+            value = {'claims':[{'key':'weights','text':'Weights are shared',
+                                'citations':[{'paper_id':'p','chunk_id':'cap'}]}]}
+        return response(value)
+    reasoner = CompatibleReasoner(APIConfig('secret','fixture',max_retries=0,repair_retries=0), 's', transport, image_root=root)
+    pipe = PaperPipeline(text, reasoner, tmp_path/'traces', tmp_path/'memory', mode='bm25',
+                         visual_retriever=VisualRetriever(root,image))
+    result = pipe.run('Describe the figure', PaperAgentState('s'))
+    citation = result['answer']['claims'][0]['citations'][0]
+    assert citation['chunk_id'] == 'cap' and citation['bbox'] == caption['bbox']
+    assert citation['pdf_sha256'] == image['pdf_sha256'] and citation['docling_label'] == 'caption'
+    payload = json.loads(received[2]['messages'][1]['content'][0]['text'])
+    figure = next(e for e in payload['evidence'] if e['chunk_id'] == 'visual-1')
+    assert not figure['text'] and 'caption' not in figure
+    assert next(e for e in payload['evidence'] if e['chunk_id'] == 'cap')['text'] == image['caption']
+
+
+def test_second_retrieval_can_revisit_visual_without_caption_identity_conflict(tmp_path):
+    root = tmp_path/'images'; root.mkdir()
+    image = {**fixture_image(root), 'caption':'Figure 1: source caption',
+             'text':'Figure 1: source caption'}
+    def transport(url, body, headers, timeout):
+        calls.append(body)
+        n = len(calls)
+        if n == 1:
+            value = {'intent':'fact','standalone_query':'figure','needs_clarification':False,
+                     'paper_ids':['p'],'resolved_entities':{}}
+        elif n == 2:
+            value = {'decision':'retrieve_again','next_query':'another figure query','reason':'need evidence'}
+        elif n == 3:
+            value = {'decision':'answer','reason':'seen'}
+        else:
+            value = {'claims':[{'key':'k','text':'A diagram',
+                                'citations':[{'paper_id':'p','chunk_id':'visual-1'}]}]}
+        return response(value)
+    calls = []
+    reasoner = CompatibleReasoner(APIConfig('secret','fixture',max_retries=0,repair_retries=0), 's', transport, image_root=root)
+    pipe = PaperPipeline(TextRetriever(), reasoner, tmp_path/'traces', tmp_path/'memory', mode='bm25',
+                         visual_retriever=VisualRetriever(root,image), max_retrieval_attempts=2)
+    assert pipe.run('Describe the diagram', PaperAgentState('s'))['answer']['decision'] == 'answer'
+
+
+def test_adjacent_context_requires_matching_source_and_geometry():
+    from paper_agent.pipeline import _expand_located_context
+    sha = 'a' * 64
+    common = {'paper_id':'p', 'page':1, 'pdf_sha256':sha, 'page_size':[100,100],
+              'coordinate_system':'top-left-points', 'page_rotation':0,
+              'evidence_type':'text', 'docling_label':'text'}
+    first = {**common, 'chunk_id':'one', 'bbox':[1,10,45,30], 'text':'10,000 sentences'}
+    second = {**common, 'chunk_id':'two', 'bbox':[1,35,45,60], 'text':'65 hours to 5 seconds'}
+    expanded, ids = _expand_located_context([second], {'one':first,'two':second})
+    assert ids == ['one'] and expanded[1]['text'] == first['text']
+    for bad in ({**first,'page':2}, {**first,'bbox':[60,10,95,30]},
+                {**first,'bbox':[1,1,45,10]}, {**first,'pdf_sha256':'b'*64}):
+        assert _expand_located_context([second], {'one':bad,'two':second})[1] == []
 
 
 def test_caption_entity_mapping_requires_unique_page_hash_and_exact_text():
@@ -242,6 +436,7 @@ def test_visual_routes_together_get_one_vote_against_text():
 
 @pytest.mark.parametrize('audit_status', ['supported', 'unsupported', 'unknown', 'wrong_key'])
 def test_optional_visual_claim_check_views_image_and_fails_closed(tmp_path, audit_status):
+    from paper_agent.local_audit import LocalClaimAudit
     image_root = tmp_path / 'images'
     image_root.mkdir()
     ev = fixture_image(image_root)
@@ -259,8 +454,10 @@ def test_optional_visual_claim_check_views_image_and_fails_closed(tmp_path, audi
         return response({'verdicts':[{'claim_key':'different' if audit_status == 'wrong_key' else 'k',
                                       'status':'supported' if audit_status == 'wrong_key' else audit_status}]})
     reasoner = CompatibleReasoner(APIConfig('secret','fixture',max_retries=0,repair_retries=0), 's', transport, image_root=image_root)
+    local_audit = LocalClaimAudit(tmp_path/'claims', 'secret')
     pipeline = PaperPipeline(TextRetriever(), reasoner, tmp_path/'traces', tmp_path/'memory', mode='bm25',
-                             visual_retriever=VisualRetriever(image_root,ev), visual_claim_check=True)
+                             visual_retriever=VisualRetriever(image_root,ev), visual_claim_check=True,
+                             claim_audit_sink=local_audit)
     result = pipeline.run('Describe the figure', PaperAgentState('s'))
     assert len(requests) == 4 and requests[-1]['messages'][1]['content'][-1]['type'] == 'image_url'
     assert result['answer']['decision'] == ('answer' if audit_status == 'supported' else 'refuse')
@@ -271,6 +468,50 @@ def test_optional_visual_claim_check_views_image_and_fails_closed(tmp_path, audi
     assert stage['claim_audit']['status'] == ('supported' if audit_status == 'supported' else 'rejected')
     assert stage['citation_validation']['semantic_support'] == 'not_evaluated'
     assert base64.b64encode(PNG).decode() not in json.dumps(trace)
+    saved = json.loads(next((tmp_path/'claims').glob('*.json')).read_text(encoding='utf-8'))
+    assert saved['generated']['claims'][0]['text'] == 'A diagram'
+    assert saved['cited_regions'][0]['bbox'] == ev['bbox']
+    assert saved['verdicts'][0]['status'] == ('supported' if audit_status == 'wrong_key' else audit_status)
+    assert saved['final_decision'] == ('answer' if audit_status == 'supported' else 'refuse')
+
+
+@pytest.mark.parametrize('recheck,expected_status', [
+    ('supported','disagreement_unknown'), ('unknown','disagreement_unknown'),
+    ('unsupported','unsupported')])
+def test_disputed_claim_is_rechecked_without_silent_deletion(tmp_path, recheck, expected_status):
+    from paper_agent.local_audit import LocalClaimAudit
+    root = tmp_path/'images'; root.mkdir()
+    ev = fixture_image(root)
+    requests = []
+    def transport(url, body, headers, timeout):
+        requests.append(body)
+        n = len(requests)
+        if n == 1:
+            v = {'intent':'fact','standalone_query':'diagram','needs_clarification':False,
+                 'paper_ids':['p'],'resolved_entities':{}}
+        elif n == 2:
+            v = {'decision':'answer','reason':'evidence seen'}
+        elif n == 3:
+            v = {'claims':[{'key':'a','text':'A relevant fact','citations':[{'paper_id':'p','chunk_id':'visual-1'}]},
+                           {'key':'b','text':'An uncertain extra','citations':[{'paper_id':'p','chunk_id':'visual-1'}]}]}
+        elif n == 4:
+            v = {'verdicts':[{'claim_key':'a','status':'supported'}, {'claim_key':'b','status':'unsupported'}]}
+        elif n == 5:
+            v = {'verdicts':[{'claim_key':'b','status':recheck}]}
+        else:
+            raise AssertionError('No automatic extra model call')
+        return response(v)
+    reasoner = CompatibleReasoner(APIConfig('secret','fixture',max_retries=0,repair_retries=0), 's', transport, image_root=root)
+    sink = LocalClaimAudit(tmp_path/'claims','secret')
+    pipe = PaperPipeline(TextRetriever(), reasoner, tmp_path/'traces', tmp_path/'memory', mode='bm25',
+                         visual_retriever=VisualRetriever(root,ev), visual_claim_check=True, claim_audit_sink=sink)
+    result = pipe.run('Describe the figure', PaperAgentState('s'))
+    assert result['answer']['decision'] == 'refuse'
+    saved = json.loads(next((tmp_path/'claims').glob('*.json')).read_text(encoding='utf-8'))
+    assert len(saved['generated']['claims']) == 2 and saved['recheck']['disputed_claim_keys'] == ['b']
+    assert saved['recheck']['verdicts'][0]['status'] == recheck
+    assert saved['recheck']['status'] == expected_status and len(requests) == 5
+    assert not result['answer']['claims']
 
 
 def test_requested_figure_mismatch_fails_closed(tmp_path):
