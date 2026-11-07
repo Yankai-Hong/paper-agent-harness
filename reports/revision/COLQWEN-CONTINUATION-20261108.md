@@ -1,0 +1,104 @@
+# ColQwen2 独立分支续跑记录（2026-11-08）
+
+## 研究检查点和范围
+
+主线检查点 `fb8069a3cdc62b0d3ea2ce78e2b8cd9790c30106`，分支 `codex/colqwen2-visual-retrieval` 从该提交创建。该检查点是可复现实验的冻结点，**不是主线端到端验收完成声明**：页面证据融合接口和有界搜索仍未替换普通问答的默认路径，真实 PDF 的完整引用质量仍需验收。主线完整回归 457 passed、1 skipped；受限连接下七项本机 HTTP 测试失败，允许本机回环连接后完整通过。
+
+继承 [IRPAPERS 基线](CHROMA-IRPAPERS-20261106.md) 的数据及全部页面范围和 [恢复记录](IRPAPERS-BOUNDED-RECOVERY-20261107.md) 的模型与候选协议。本轮重新计算三个原 CSV 的 SHA-256，与原审计一致：页面 `8fe316290b55c71bd1641603b5feb02117672028f7d1af45bcad1c111c53611b`、标准题 `a87d8263d8b498cdaceb6cb719abcd0a584ded3993910aad41edab1db8fa6ed3`、视觉题 `972aa9f2f1541defbefc4226667dba04653af8be9c8ad5351c201fdc82b89b93`。准备后页面清单 SHA-256 `d127db27db1077edf0f19defc7a643b3071c33cfe56acd0502b40d3a748faac9`；基线冻结文件 SHA-256 `697b917a1e852ffc3845cf90b5d338ca1a2242a9f7486648c91cbbca0f313d13`；候选计划 SHA-256 `dbea772bc28840b5f236839ec88a46c4c64b667b92bf164b7878e29c60e3f32d`。先前测试集汇总已曝光，不是严格盲测。转写是 benchmark transcription，不是 Docling 原文，不能提供像素级 bbox。
+
+已有开发索引封存 2,114 页、550,217 个 token，`sealed.json` SHA-256 `e91ae02916774034adfd3de616c667c1f8195a735e011dc787fbf51fa1b97e45`，当前目录约 1,017,400,350 字节；编码契约 SHA-256 `109bf2fb728623e2785611a816ae43448407d7e396a3ee0a0486d6e35b923f11`。固定适配器和基础模型 revision、各权重哈希及 256 视觉 token 设置见恢复记录和契约。隔离环境 `pip check` 通过。此索引只覆盖开发题候选页面，不是全语料页索引。
+
+## 查询接口和真实探针
+
+`ColQwenCandidateRetriever` 接收普通文本和调用者提供的页面候选，在独立多向量 collection 中按真实 MaxSim 排序。来源清单哈希绑定索引，检验页面 ID、论文、原图哈希、页码、模型版本和权重契约；缺页或不匹配直接报错。每个结果只声明页面级定位，不把整页当作图表 bbox，也不声称同页文字与图像互相支持。查询模型通过隔离进程执行，attention mask 排除 padding；候选生成与问答管线还未接入该接口，不能将其称为完整 Docling 问答。
+
+在 RTX 4060 8 GB 上，`standard-006` 的候选表前两页（与 gold 无关）执行真实模型查询：33×128 查询向量与原模型检查点最大绝对差为 0；两页排序为 `2_2`、`2_1`，MaxSim 约 21.7567、20.7737。带清单校验的复验包含进程启动、权重校验和模型加载约 36.35 秒，随后两页读取和计分约 6.44 秒；另一冷启动探针约 67.77 秒。它们是少量单次测量，且目标页排第二，不代表总体效果或延迟分布。结果文件 `output/colqwen-live-query-manifest-20261108.json` SHA-256 `c01dd3d66539514b3bbd685260415d6829c76afc14292e6b2dfe7bf221be13a8`，为忽略资产。
+
+```powershell
+$p = '.\.venv-gpu\Scripts\python.exe'
+& $p scripts/colqwen_live_probe.py --case standard-006 --index indexes/colqwen-dev-20261107 --encoded runs/colqwen-dev-20261107 --candidates runs/irpapers-colqwen-candidates-20261106 --baseline runs/irpapers-chroma-baseline-v2-20261106 --prepared data/raw/irpapers-prepared-20261106 --python .venv-colqwen-20261106/Scripts/python.exe --base models/colqwen2-base-range-20261107 --adapter models/colqwen2-v1-20261106 --output output/colqwen-live-query-NEW.json
+```
+
+现在还提供 `python -m paper_agent.cli colqwen-search-text --help`；它接收普通文本和由调用方提供的候选页面 JSON 数组，未索引页面会报错，不会静默省略。使用相同两页实际运行该命令成功，包含启动的总耗时 46.85 秒，输出 `runs/colqwen-cli-probe-20261108/stdout.json` SHA-256 `5b7cd230be70717fc040a5ec00b1d828fe7e033050339146abb638dccdbc7e9d`。它尚未接到 `ask`／`chat` 或自动候选生成，不能当作已完成普通问答接入。固定模型的当前配置与 tokenizer 哈希见 [本机配置清单](colqwen-config-hashes-20261108.json)；历史实验并未绑定这些配置文件哈希，因此不能据此证明历史配置内容。
+
+新增的 `colqwen-hybrid-search` 使用现有 BGE+BM25 文本索引和独立 CLIP 页面索引，自动取各自前 50 页的并集，以 `.05` 权重融合候选内 ColQwen 前 20 页。此入口目前要求 IRPAPERS 基准索引与冻结计划，不是通用 Docling PDF 接入；开发索引缺页时会报错。对 `standard-006` 的一次真实复核在同时导入保留索引时耗时约 165.18 秒；98 页候选**集合**与冻结基线相同，CLIP 前 50 和 ColQwen、融合前 20 顺序一致，文本前 50 中第 33、34 名交换，因此候选顺序不同。输出 `runs/colqwen-hybrid-live-v2-20261108/stdout.txt` SHA-256 `cfc0105a1732ce2d80efeb074d81e55a624c9ed5660c85b75cbaf0677a689d7b`。第一次运行因系统临时目录无权写入而失败，失败记录保留；第二次使用项目内临时目录。上述单例不代表实时延迟分布或实际问答、引用正确率。
+
+之后增加保留所有文本候选原始证据 ID 和排名的输出，再对同一题实际复验，98 页集合和 ColQwen 前 20 仍与冻结结果一致，保留 9,166 个文本候选引用，耗时约 130.64 秒；输出 `runs/colqwen-hybrid-live-v3-20261108/stdout.txt` SHA-256 `62fe2370b34130673f4627fc3ae8120ecc1f112f4f45bb665fc0e89d96c17519`。上述两次真实复核运行时实验权重为 `.05`；保留组结果出现视觉题退化后，入口默认改为 0，复现实验必须显式传 `.05`。
+
+## 开发集真实结果与冻结
+
+157 题的开发集逐题计分完成，结果 SHA-256 `818b20286a877f331bcf8459feeadf1eff0010de85c4552530535c6103ec5784`。ColQwen2 只重排每题文本前 50 和全库 CLIP 前 50 的并集，最多 100 页；未使用 gold 或答案生成候选。下表的 ColQwen MRR 对候选外计零；文本、CLIP 是此前全库排序，范围不同，不能解释成同等计算量对比。冲突标签仍为 unknown 并计入分母。
+
+| 开发组／方法 | Hit@1 | Hit@5 | Hit@20 | MRR |
+|---|---:|---:|---:|---:|
+| 标准 138：文本混合 | .3696 | .7754 | .8986 | .5443 |
+| 标准：整页 CLIP | .0072 | .0362 | .0870 | .0237 |
+| 标准：候选内 ColQwen2 | .2464 | .5725 | .8696 | .4058 |
+| 标准：文本 + ColQwen2 | .3478 | .7826 | .9130 | .5370 |
+| 视觉 19：文本混合 | .1053 | .3158 | .4737 | .2122 |
+| 视觉：整页 CLIP | .0000 | .0000 | .0526 | .0137 |
+| 视觉：候选内 ColQwen2 | .1053 | .3684 | .5263 | .2310 |
+| 视觉：文本 + ColQwen2 | .1053 | .3158 | .4211 | .2242 |
+
+候选覆盖标准 131/138、视觉 14/19；未进入候选的目标不可能被候选内模型找回。相对文本，单独 ColQwen 候选排序的标准 Hit@5 改善 7、退化 35；视觉改善 2、退化 1。融合以完整文本页面排名和 ColQwen 前 20 页做 RRF，`k=60`，仅在开发集比较权重 `0/.05/.1/.25/.5/1`，要求两组 Hit@5 不低于文本，再选两组 MRR 之和最高者，冻结权重 `.05`。标准开发题融合 Hit@5 改善 2、退化 1；视觉题均无变化。标准 Hit@1 和视觉 Hit@20 同时下降，不能只报告改善指标。冻结计划 SHA-256 `9f2eaeaafa3fa06c67ea87209a1e892f23a52c4a37652a3d2c3d8d46fb9a390a`，编码／计分冻结文件 SHA-256 `f142939ff44b818c6083c395337de1aed8aa218a16e0bc726f8c6b5b701a5f03`。此前保留组的基线汇总已曝光，因此后续结果不是严格盲测。
+
+开发集逐题重排时间中位数标准约 4.98 秒、视觉约 4.50 秒，页面读取中位数分别约 4.95、4.47 秒，GPU 批量计分中位数约 0.025 秒；这些测量不包含现场模型冷启动及候选生成。所有记录重排时间之和约 784.47 秒，批量与逐页参考的最大差约 `3.88e-6`，采样 RSS 峰值约 1.84 GB，计分 GPU 峰值约 28.6 MB；编码时 GPU 峰值约 4.65 GB。各值来自不同运行，不应相加为单次端到端测量。
+
+保留组独立索引已封存 1,569 页、408,142 token；`sealed.json` SHA-256 `5af6ff9450cb6d88986662f798c4029e8733a95ffc41b0c099d5e22077451d77`，计分后索引目录约 755 MB。其中 1,360 页通过契约与哈希复用开发编码，另 209 页实际重新编码；53 个问题均重新编码。剩余 208 页编码批次约 96.16 秒，GPU 峰值约 4.65 GB，进程结束 RSS 约 1.80 GB；另一次 1 页加 53 问批次约 15.60 秒。索引目录创建到封存约 888 秒，包括两批写入之间的等待、来源校验和并发工作，不能当作纯写入耗时。保留组逐题重排中位数标准 3.63 秒、视觉 4.44 秒；53 题所记录的重排时间之和 212.09 秒，计分 GPU 峰值约 29.4 MB，采样 RSS 峰值约 1.53 GB。这些不是包含加载与候选生成的现场端到端延迟。
+
+## 全部问题和保留组对比
+
+保留组计分在开发计划冻结后执行，结果 SHA-256 `164a446571a7e2d2946865ace8ffba62751ce29b1dfe567e0b12f7bd935f1ba9`。下表单独 ColQwen MRR 将候选外计零；文本、整页 CLIP 和等权文本+CLIP 为全库结果，ColQwen 及其融合只对候选并集做 MaxSim。它们的计算范围与成本不同。视觉 30 题与标准题有论文和页重叠，不是独立测试集。单目标口径下 Hit@K 与该基准的 Recall@K 数值相同。
+
+| 题组／方法 | Hit@1 | Hit@5 | Hit@20 | MRR |
+|---|---:|---:|---:|---:|
+| 标准 180：BM25 | .4500 | .7778 | .8944 | .5911 |
+| 标准：BGE | .4000 | .7333 | .8611 | .5487 |
+| 标准：文本混合 | .3944 | .7722 | .9111 | .5606 |
+| 标准：整页 CLIP | .0056 | .0278 | .0667 | .0187 |
+| 标准：候选内 ColQwen | .2778 | .6222 | .8778 | .4405 |
+| 标准：等权文本+CLIP | .0833 | .3000 | .8222 | .2075 |
+| 标准：文本+ColQwen .05 | .3778 | .7833 | .9222 | .5558 |
+| 视觉 30：BM25 | .1333 | .4000 | .5000 | .2286 |
+| 视觉：BGE | .2000 | .3333 | .5000 | .2810 |
+| 视觉：文本混合 | .1667 | .4000 | .6000 | .2794 |
+| 视觉：整页 CLIP | .0000 | .0000 | .0333 | .0095 |
+| 视觉：候选内 ColQwen | .2000 | .4000 | .5333 | .3041 |
+| 视觉：等权文本+CLIP | .1000 | .2333 | .5000 | .1915 |
+| 视觉：文本+ColQwen .05 | .1667 | .3333 | .5667 | .2833 |
+
+标准全部候选覆盖 171/180，视觉 23/30；保留组分别 40/42、9/11。相对文本，`.05` 融合在标准全部题 Hit@5 改善 4、退化 2，在视觉全部题改善 0、退化 2。标准保留组文本与融合 Hit@5 分别为 .7619、.7857（改善 2、退化 1）；视觉保留组分别为 .5455、.3636（改善 0、退化 2）。这不证明稳定增益；`colqwen-hybrid-search` 默认视觉权重为 0，回退到文本页面排序；仅显式 `--visual-weight .05` 才复现此实验。该实验命令在权重为 0 时仍执行并单独返回 ColQwen 候选结果，因此仍有模型和索引开销；权重 0 不是视觉增益。
+
+为控制候选范围，将已保存的真实 CLIP 全库排序过滤到每题同一候选并集，再与 ColQwen 比较；这不需要重新运行模型。标准全部题同候选 CLIP 的 Hit@1/5/20、MRR 为 `.0056/.0278/.0667/.0288`，ColQwen 为 `.2778/.6222/.8778/.4405`；视觉题分别为 `.0000/.0000/.0333/.0176` 和 `.2000/.4000/.5333/.3041`。候选本身包含 CLIP 前 50，因此前 20 命中与其全库结果相同；这个对照仍保留两者模型、分辨率和计算成本差异。完整开发／保留组及逐题对照在 [同候选对照](colqwen-clip-same-candidates-20261108.json)，SHA-256 `d9f723201b9edf32042d63a4937177733db8258312bf9fc11012040d2813ab54`。
+
+[逐题排名清单](colqwen-page-ranks-20261108.json) 包含 210 个问题 ID、划分、标签状态、候选覆盖和各分支名次，不含问题及转写正文；SHA-256 `c07c08650464437b9a6ef091833826fa8dad6bc3fe3492ed761f673bf212521a`。冲突 `standard-143` 仍为 unknown；目标页空转写 `standard-090` 仍在分母。这里没有把解析错误、标签冲突或检索失败合并成语义正确率，也未测图表 bbox、上传图片或端到端回答。
+
+支线最终完整回归为 **462 passed、1 skipped**（40.76 秒），包括真实 Chroma 存储、来源守卫、图片与记忆兼容性测试；自动测试不等于语义或人工引用验收。
+
+模型、原数据、索引和结果未提交。完整恢复顺序及构建命令见[恢复记录](IRPAPERS-BOUNDED-RECOVERY-20261107.md)；使用新输出路径，不覆盖任何检查点。候选内排序及融合不得误报为全库 ColQwen2 检索。
+
+下例从本地冻结结果取出 `standard-006` 的**问题文本**，在线阶段只使用问题，随后由文本及 CLIP 产生候选；`.05` 是已冻结的实验权重。索引覆盖不足时命令会报错。`.cache` 用于本地临时文件，输出重定向到新的文件；不需要访问远程生成服务。
+
+```powershell
+$p = '.\.venv-gpu\Scripts\python.exe'
+$env:TEMP = (Resolve-Path '.cache').Path
+$env:TMP = $env:TEMP
+$q = & $p -c "import json; print(next(x['question'] for x in map(json.loads,open('runs/irpapers-chroma-baseline-v2-20261106/text-results.jsonl',encoding='utf-8')) if x['case_id']=='standard-006'))"
+& $p -m paper_agent.cli colqwen-hybrid-search $q --index indexes/colqwen-dev-20261107 --source-manifest data/raw/irpapers-prepared-20261106/pages.jsonl --image-root data/raw/irpapers-prepared-20261106 --colqwen-python .venv-colqwen-20261106/Scripts/python.exe --worker scripts/colqwen_query_worker.py --base models/colqwen2-base-range-20261107 --adapter models/colqwen2-v1-20261106 --text-index indexes/irpapers-chroma-text-baseline-v2-20261106 --text-binding runs/irpapers-chroma-baseline-v2-20261106/plan.json --encoder models/bge-m3 --clip-index indexes/irpapers-chroma-page-clip-baseline-20261106 --clip-python .venv-mm-20261030/Scripts/python.exe --clip-image-model models/multimodal-v1/clip-image-v1 --clip-text-model models/multimodal-v1/clip-text-v1 --visual-weight .05 > output/colqwen-hybrid-NEW.json
+```
+
+根据已保存的两个已完成分区重新计算冻结权重及逐题清单时，先以新文件执行 `scripts/colqwen_fusion_analysis.py choose`（只读开发结果），再用 `evaluate` 分别读取开发和保留结果；保留组还必须提供 `--selection`。`scripts/colqwen_export_ranks.py --help` 给出汇总所需输入；它核验两部分结果、冻结选择与数据哈希，再导出不包含题文的记录。原始二进制、模型和索引均需按[恢复记录](IRPAPERS-BOUNDED-RECOVERY-20261107.md)重建或使用已验证的本地资产。
+以下汇总命令本轮以新路径实际重跑，计划、两个融合结果和逐题清单哈希均与首次产物一致；这是对已保存模型结果的汇总复现，不是重新编码或重新执行 210 题模型推理。
+
+```powershell
+$p = '.\.venv-gpu\Scripts\python.exe'
+$b = 'runs/irpapers-chroma-baseline-v2-20261106'
+$d = 'runs/colqwen-dev-20261107/results.jsonl'
+$t = 'runs/colqwen-test-20261108/results.jsonl'
+$s = 'runs/colqwen-selection-20261108.json'
+& $p scripts/colqwen_fusion_analysis.py choose --baseline "$b/text-results.jsonl" --results $d --output runs/colqwen-fusion-plan-NEW.json
+& $p scripts/colqwen_fusion_analysis.py evaluate --baseline "$b/text-results.jsonl" --results $d --plan runs/colqwen-fusion-plan-NEW.json --output runs/colqwen-fusion-dev-NEW.json
+& $p scripts/colqwen_fusion_analysis.py evaluate --baseline "$b/text-results.jsonl" --results $t --plan runs/colqwen-fusion-plan-NEW.json --selection $s --output runs/colqwen-fusion-test-NEW.json
+& $p scripts/colqwen_clip_candidate_control.py --baseline $b --candidates runs/irpapers-colqwen-candidates-20261106 --dev $d --test $t --selection $s --output runs/colqwen-clip-control-NEW.json
+& $p scripts/colqwen_export_ranks.py --baseline "$b/text-results.jsonl" --visual "$b/visual-results.jsonl" --dev $d --test $t --fusion-dev runs/colqwen-fusion-dev-NEW.json --fusion-test runs/colqwen-fusion-test-NEW.json --plan runs/colqwen-fusion-plan-NEW.json --selection $s --output runs/colqwen-ranks-NEW.json
+```
