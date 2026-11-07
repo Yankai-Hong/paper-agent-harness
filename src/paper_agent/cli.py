@@ -90,6 +90,8 @@ def main():
     hybrid_page.add_argument('--limit', type=int, default=20)
     hybrid_page.add_argument('--visual-weight', type=float, default=0,
                              help='RRF visual weight; 0 preserves text order, .05 reproduces the experimental selection')
+    hybrid_page.add_argument('--evidence-jsonl', help='Optional original Docling figure/table evidence')
+    hybrid_page.add_argument('--evidence-root', help='Image root for the supplied Docling evidence')
     semantic_index = sub.add_parser("visual-semantic-index", help="Build a separate BGE caption/table index")
     semantic_index.add_argument("evidence")
     semantic_index.add_argument("--visual-root", required=True)
@@ -206,17 +208,29 @@ def main():
                                              device=args.device, max_candidates=2 * args.depth)
         clip_encoder = SubprocessEncoder(args.clip_python, args.clip_image_model, args.clip_text_model, device=args.device)
         clip = ClipPageCandidates(args.clip_index, clip_encoder, colqwen.sources, contract['source_hash'])
-        benchmark = json.loads((Path(args.text_index) / 'benchmark.json').read_text(encoding='utf-8'))
         plan = json.loads(Path(args.text_binding).read_text(encoding='utf-8'))
-        if (benchmark['plan_sha256'] != _sha(args.text_binding)
-                or benchmark['source_chunks_sha256'] != _sha(Path(args.text_index) / 'chunks.jsonl')
-                or plan['prepared_pages_sha256'] != contract['source_hash']):
-            raise ValueError('Text index and page manifest binding mismatch')
+        text_metadata = json.loads((Path(args.text_index) / 'metadata.json').read_text(encoding='utf-8'))
+        if plan.get('kind') == 'docling_pdf_pages_v1':
+            if (plan.get('status') != 'sealed' or plan.get('pages_sha256') != contract['source_hash']
+                    or plan.get('text_chunks_sha256') != _sha(Path(args.text_index) / 'chunks.jsonl')
+                    or plan.get('text_corpus_hash') != text_metadata.get('corpus_hash')):
+                raise ValueError('Docling text and PDF page binding mismatch')
+            text_source_hash = plan['pages_sha256']
+        else:
+            benchmark = json.loads((Path(args.text_index) / 'benchmark.json').read_text(encoding='utf-8'))
+            if (benchmark['plan_sha256'] != _sha(args.text_binding)
+                    or benchmark['source_chunks_sha256'] != _sha(Path(args.text_index) / 'chunks.jsonl')
+                    or plan['prepared_pages_sha256'] != contract['source_hash']
+                    or text_metadata['corpus_hash'] != benchmark['original_index_metadata']['corpus_hash']):
+                raise ValueError('Text index and page manifest binding mismatch')
+            text_source_hash = plan['prepared_pages_sha256']
         text = Retriever(args.text_index, BGEEncoder(args.encoder, args.device, 2, 768))
-        if text.metadata['corpus_hash'] != benchmark['original_index_metadata']['corpus_hash']:
-            raise ValueError('Text index metadata differs from benchmark snapshot')
-        emit(HybridColQwenPageSearch(text, clip, colqwen, text_source_hash=plan['prepared_pages_sha256'],
-                                      depth=args.depth, visual_weight=args.visual_weight).search(args.query, limit=args.limit))
+        if bool(args.evidence_jsonl) != bool(args.evidence_root):
+            raise ValueError('Both --evidence-jsonl and --evidence-root are required together')
+        source_evidence = read_jsonl(args.evidence_jsonl) if args.evidence_jsonl else None
+        emit(HybridColQwenPageSearch(text, clip, colqwen, text_source_hash=text_source_hash,
+                                      depth=args.depth, visual_weight=args.visual_weight,
+                                      visual_sources=source_evidence, visual_root=args.evidence_root).search(args.query, limit=args.limit))
     elif args.command == "visual-semantic-index":
         from .visual_text_retrieval import build_visual_text_index
         encoder = BGEEncoder(args.encoder, args.device, args.batch_size, args.max_length)

@@ -74,6 +74,7 @@ class ColQwenCandidateRetriever:
             evidence.append({'paper_id': source['paper_id'], 'page_id': page_id,
                              'page': source['page_number'],
                              'image_path': source['image_path'], 'image_sha256': source['image_sha256'],
+                             'pdf_sha256': source.get('pdf_sha256'),
                              'evidence_type': 'page', 'citation_granularity': 'page'})
         query_vectors = _matrix(self.encoder.encode_query(query), self.store.contract['dimension'])
         scores = score_maxsim_batch(query_vectors, documents, device=self.device)

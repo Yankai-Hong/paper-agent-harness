@@ -30,3 +30,18 @@ def test_hybrid_generates_distinct_candidates_and_preserves_unknowns():
     experimental = HybridColQwenPageSearch(text, clip, visual, text_source_hash='source', depth=2,
                                             visual_weight=.05).search('question')
     assert experimental['visual_weight'] == .05
+
+
+def test_docling_text_maps_to_page_only_when_pdf_hash_matches():
+    chunks = [dict(chunk_id='a', paper_id='p', page=1, pdf_sha256='pdf', text='located'),
+              dict(chunk_id='b', paper_id='p', page=1, pdf_sha256='other', text='unverified')]
+    text = SimpleNamespace(chunks=chunks, by_id={x['chunk_id']: x for x in chunks},
+        search=lambda query, **kwargs: {'candidate_ids': ['a', 'b'], 'hits': chunks})
+    clip = SimpleNamespace(search=lambda query, limit: {'pages': ['page1']})
+    source = {'paper_id': 'p', 'pdf_sha256': 'pdf', 'page_number': 1}
+    visual = SimpleNamespace(max_candidates=2, sources={'page1': source},
+        store=SimpleNamespace(contract={'source_hash': 'source'}),
+        search_text=lambda query, pages: {'hits': [{'page_id': 'page1'}]})
+    result = HybridColQwenPageSearch(text, clip, visual, text_source_hash='source', depth=1).search('query')
+    assert result['pages'][0]['text_evidence']['chunk_id'] == 'a'
+    assert result['unknown_text_locations'][0]['chunk_id'] == 'b'

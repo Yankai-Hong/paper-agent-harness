@@ -40,3 +40,16 @@ class ColQwenQueryEncoder:
         if vectors.ndim != 2 or vectors.shape[1] != self.dimension or not len(vectors):
             raise ValueError('Invalid query-token output')
         return vectors
+
+    def encode_page(self, image):
+        import torch
+        batch = self.processor.process_images([image]).to(self.device)
+        with torch.inference_mode():
+            vectors = self.model(**batch)[0].float().cpu().numpy()
+        active = batch['attention_mask'][0].bool()
+        positions = self.processor.get_image_mask(batch)[0][active].nonzero(as_tuple=True)[0].cpu().tolist()
+        vectors = vectors[active.cpu().numpy()]
+        if vectors.ndim != 2 or vectors.shape[1] != self.dimension or not len(vectors):
+            raise ValueError('Invalid page-token output')
+        return vectors, {'image_grid_thw': batch['image_grid_thw'].cpu().tolist(),
+                         'image_token_positions': positions, 'active_token_count': len(vectors)}
