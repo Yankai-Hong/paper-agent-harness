@@ -2,7 +2,7 @@
 
 ## 研究检查点和范围
 
-主线检查点 `fb8069a3cdc62b0d3ea2ce78e2b8cd9790c30106`，分支 `codex/colqwen2-visual-retrieval` 从该提交创建。该检查点是可复现实验的冻结点，**不是主线端到端验收完成声明**：页面证据融合接口和有界搜索仍未替换普通问答的默认路径，真实 PDF 的完整引用质量仍需验收。主线完整回归 457 passed、1 skipped；受限连接下七项本机 HTTP 测试失败，允许本机回环连接后完整通过。
+主线冻结提交 `d99827684e5f9a2b710d5133b219b78a546b77ae`；分支 `codex/colqwen2-visual-retrieval` 最初从研究检查点 `fb8069a3cdc62b0d3ea2ce78e2b8cd9790c30106` 建立，主线页面检索完成并回归后，本任务的分支提交整理到该冻结提交之上。主线完整回归 **459 passed、1 skipped**（38.29 秒）；受限连接下此前七项本机 HTTP 测试失败，允许本机回环连接后完整通过。冻结覆盖可复现的文本及页面检索，**不是端到端问答和引用质量全部验收完成的声明**：页面接口尚未替换 `ask`／`chat` 的默认证据选择，真实 PDF 的全面引用质量仍需验收。
 
 继承 [IRPAPERS 基线](CHROMA-IRPAPERS-20261106.md) 的数据及全部页面范围和 [恢复记录](IRPAPERS-BOUNDED-RECOVERY-20261107.md) 的模型与候选协议。本轮重新计算三个原 CSV 的 SHA-256，与原审计一致：页面 `8fe316290b55c71bd1641603b5feb02117672028f7d1af45bcad1c111c53611b`、标准题 `a87d8263d8b498cdaceb6cb719abcd0a584ded3993910aad41edab1db8fa6ed3`、视觉题 `972aa9f2f1541defbefc4226667dba04653af8be9c8ad5351c201fdc82b89b93`。准备后页面清单 SHA-256 `d127db27db1077edf0f19defc7a643b3071c33cfe56acd0502b40d3a748faac9`；基线冻结文件 SHA-256 `697b917a1e852ffc3845cf90b5d338ca1a2242a9f7486648c91cbbca0f313d13`；候选计划 SHA-256 `dbea772bc28840b5f236839ec88a46c4c64b667b92bf164b7878e29c60e3f32d`。先前测试集汇总已曝光，不是严格盲测。转写是 benchmark transcription，不是 Docling 原文，不能提供像素级 bbox。
 
