@@ -13,9 +13,9 @@
 ## 核心实现
 
 - 100 篇 QASPER 论文、1,996 个 chunks；段落合并与滑窗切块，保留论文、章节、段落和字符偏移。文本型 PDF 可导入，章节与阅读顺序需检查。
-- BGE-M3 + FAISS 稠密检索、BM25、RRF 和 BGE Cross-Encoder 重排。
+- BGE-M3 + Chroma 稠密检索、BM25、RRF 和 BGE Cross-Encoder 重排；历史 FAISS 索引可选兼容读取。
 - Guardrails → NLU → Retrieve → Rerank → Reflect → Generate → Memory 七阶段编排，结构化意图/指代/改写、最多两轮检索、引用校验与受控拒答。
-- 工作记忆、情景记忆、长期记忆：SQLite 权威快照/事件/确认声明，Redis TTL 与 Chroma 为可重建投影。论文检索独立使用 FAISS，普通 Claim 不写长期记忆。
+- 工作记忆、情景记忆、长期记忆：SQLite 权威快照/事件/确认声明，Redis TTL 与 Chroma 为可重建投影。论文检索使用独立 Chroma 持久化目录，不复用情景记忆 collection；普通 Claim 不写长期记忆。
 - Turn/Stage Trace、按运行隔离的追踪与评分、有限重试、降级、稳定 turn_id 幂等提交、提交授权的归档可见性；CLI 支持 `/trace`、`/corpus`、`/memory`。
 
 七阶段主链直接调用检索组件；独立 tool_loop 不参与主链的自主规划。引用结构校验不等于语义蕴含判断。

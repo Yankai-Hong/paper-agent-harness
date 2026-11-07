@@ -2,7 +2,7 @@
 
 ## 图片到文本与图片问答
 
-本轮新增独立的 CLIP 文本 FAISS 索引，覆盖同一文本索引中具有有效页面坐标的正文和图注。它与 BGE 索引独立，图像模型与多语言文本模型使用下文固定的两个对齐快照；不能将两种模型的向量混算。每个 CLIP 表示保存原始 chunk ID、字符偏移与精确切片；使用本地 fast tokenizer 的 128 token 上限，预留 2 个特殊 token、126 token 窗口和 16 token 重叠。长 chunk 不改写 BGE 索引。解析输出和图注关联仍未自动成为人工核实的原文；没有可靠可定位来源的表格提取不作为已验证表格文本加入。
+CLIP 文本索引覆盖同一文本索引中具有有效页面坐标的正文和图注；新建索引默认使用独立 Chroma collection，早前评测使用的 FAISS 索引保留为可选兼容。它与 BGE 索引独立，图像模型与多语言文本模型使用下文固定的两个对齐快照；不能将两种模型的向量混算。每个 CLIP 表示保存原始 chunk ID、字符偏移与精确切片；使用本地 fast tokenizer 的 128 token 上限，预留 2 个特殊 token、126 token 窗口和 16 token 重叠。长 chunk 不改写 BGE 索引。解析输出和图注关联仍未自动成为人工核实的原文；没有可靠可定位来源的表格提取不作为已验证表格文本加入。
 
 下面使用本机已有双论文开发索引，输出目录必须为新目录。命令需在项目根目录执行，两个模型路径必须包含原有完整性标记；主环境需安装 `pip install -e '.[visual]'` 对应的 Pillow 和项目依赖，独立模型环境使用已有 Sentence Transformers。必要时把进程临时目录设为工作区 `.cache`，不会修改 `.env`：
 
@@ -11,13 +11,13 @@ $env:TEMP = (Resolve-Path .cache).Path
 $env:TMP = $env:TEMP
 $py = '.\.venv-gpu\Scripts\python.exe'
 $vpy = '.\.venv-mm-20261030\Scripts\python.exe'
-$visual = @('--visual-index','indexes/multimodal-acceptance-repair-clip-20261102', '--visual-root','data/raw/multimodal-final-dev-20261102/crops', '--visual-python',$vpy, '--visual-image-model','models/multimodal-v1/clip-image-v1', '--visual-text-model','models/multimodal-v1/clip-text-v1', '--visual-device','cuda:0')
-& $py -m paper_agent.cli clip-text-index indexes/multimodal-acceptance-repair-text-20261102/chunks.jsonl @visual --output indexes/clip-text-new
+$visual = @('--visual-index','indexes/chroma-migration-clip-20261106', '--visual-root','data/raw/multimodal-final-dev-20261102/crops', '--visual-python',$vpy, '--visual-image-model','models/multimodal-v1/clip-image-v1', '--visual-text-model','models/multimodal-v1/clip-text-v1', '--visual-device','cuda:0')
+& $py -m paper_agent.cli clip-text-index indexes/chroma-migration-text-20261106/chunks.jsonl @visual --output indexes/clip-text-new
 & $py -m paper_agent.cli clip-search-image-text @visual --clip-text-index indexes/clip-text-new data/raw/multimodal-holdout-v3-20261101/v3img01.png
 & $py -m paper_agent.cli clip-search-image-text @visual --clip-text-index indexes/clip-text-new --kind caption data/raw/multimodal-holdout-v3-20261101/v3img01.png
 & $py -m paper_agent.cli visual-search-text @visual --caption-fusion 'three stages of ULMFiT'
-& $py -m paper_agent.cli ask --index indexes/multimodal-acceptance-repair-text-20261102 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-example 'What stages are shown in this image?'
-& $py -m paper_agent.cli ask --index indexes/multimodal-acceptance-repair-text-20261102 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-only-example
+& $py -m paper_agent.cli ask --index indexes/chroma-migration-text-20261106 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-example 'What stages are shown in this image?'
+& $py -m paper_agent.cli ask --index indexes/chroma-migration-text-20261106 --mode bm25 @visual --clip-text-index indexes/clip-text-new --image data/raw/multimodal-holdout-v3-20261101/v3img01.png --session image-only-example
 ```
 
 `--image` 可重复两次；`ask` 的文本位置参数可省略，`chat` 启动时提供的图片在该进程的每轮使用。旧文本命令不需要 CLIP 文本索引。图片输入必须是本地 PNG/JPEG，最多 20 MiB、4000 万像素；图片只作查询输入，不能作为论文证据引用。每次图片编码同时用于图搜图和图搜正文；图片分支与文本分支保留各自排名，按排名交错并去重，不把不同实体说成共同命中。图、独立图注和正文各自保留原始 ID、页码和框；仅有唯一同论文、同 PDF、同页且文字一致的图注可作为候选扩展，关系仍标未核实。模型与数据指纹、索引校验和、数量或维度不符会报错；图片检索单分支失败或无结果的状态写入本地 trace。
@@ -30,7 +30,9 @@ Reflect 和 Generate 每次调用最多接收三张图片：用户图占用其�
 
 Docling 从 PDF 页面渲染图表裁剪，而不是只抽取嵌入图像。每个条目使用 `(paper_id, chunk_id)`；图表保存页码、页面坐标、旋转、编号（无法确认时为空）、图注、PDF 和图片哈希及解析版本。当前旋转页会明确拒绝处理；坐标和哈希校验只能证明记录内部一致，仍须逐页检查裁剪与原论文的对应关系。
 
-图像模型固定为 `sentence-transformers/clip-ViT-B-32`，文本模型固定为 `sentence-transformers/clip-ViT-B-32-multilingual-v1`，参照[多语言模型卡](https://huggingface.co/sentence-transformers/clip-ViT-B-32-multilingual-v1)。两者的 commit 分别为 `327ab6726d33c0e22f920c83f2ff9e4bd38ca37f` 和 `58edf8cada9e398793dca955574a48cbb7f18be2`。构建时记录快照文件哈希、维度和索引哈希；编码在独立进程中执行，图像与文本模型分时加载。向量均归一化，视觉 FAISS 只存 CLIP 图像向量，不与 BGE 向量计算相似度。
+图像模型固定为 `sentence-transformers/clip-ViT-B-32`，文本模型固定为 `sentence-transformers/clip-ViT-B-32-multilingual-v1`，参照[多语言模型卡](https://huggingface.co/sentence-transformers/clip-ViT-B-32-multilingual-v1)。两者的 commit 分别为 `327ab6726d33c0e22f920c83f2ff9e4bd38ca37f` 和 `58edf8cada9e398793dca955574a48cbb7f18be2`。构建时记录快照文件哈希、维度和向量指纹；编码在独立进程中执行，图像与文本模型分时加载。向量均归一化，视觉 Chroma collection 只存 CLIP 图像向量，不与 BGE 向量计算相似度；余弦距离转换为 `1-distance` 才是相似度。历史 FAISS 为精确搜索，Chroma HNSW 是近似搜索。
+
+当 Chroma 0.6.3 在全量候选查询时返回已识别的 HNSW 连续数组错误，适配器从该 collection 读取向量并执行精确余弦全扫描，策略记录为 `chroma_exact_full_scan_after_hnsw_limit`；这可能增加内存和耗时，普通较小候选查询仍使用 HNSW。整页 IRPAPERS 基线、回退的实际使用、失败记录和复现命令见 [运行记录](../reports/revision/CHROMA-IRPAPERS-20261106.md)。整页 CLIP 的结果不等于图表裁剪检索或引用验证。
 
 本次实际环境为 `.venv-mm-20261030`：Python 3.10.11、Docling 2.48.0、Sentence Transformers 3.4.1、FAISS CPU 1.9.0.post1、PyTorch 2.6.0+cu124。原有缓存写入卡住，通过 `--no-cache-dir` 和官方 HTTPS 包源解决。准备全新环境时，目录必须不存在，不要覆盖现有环境。下列为 CPU 安装示例；GPU 需另行安装适合本机的官方 PyTorch CUDA wheel，复核版本及显存：
 
@@ -79,6 +81,8 @@ $visual = @('--visual-index','indexes/visual-v1','--visual-root','data/raw/visua
 
 验收运行器 `scripts/run_multimodal_acceptance.py` 对该任务使用持久预算文件；本阶段已产生 **60 次调用**，额度已耗尽，不得删除该文件或使用新账本绕过上限。固定案例的纯 CLIP 评测命令使用 `scripts/run_clip_retrieval_eval.py`，逐例记录器使用 `scripts/multimodal_eval_record.py`。agent 已代做复核，仍不能表述为人类审查。
 
+原五篇论文和 13 个固定案例的首轮状态、后续开发复验、实际用量及当前限制汇总于 [第一阶段状态核对](../reports/revision/MULTIMODAL-PHASE1-STATUS-20261107.md)。首轮问答使用 v3，v5 是之后的修订版本；复现或比较时应分别记录版本，且原阶段请求预算已耗尽。
+
 本次纯 CLIP 检索的命令如下；输出路径必须使用新文件：
 
 ```powershell
@@ -108,3 +112,7 @@ $visual = @('--visual-index','indexes/visual-v1','--visual-root','data/raw/visua
 ## 后续 ColQwen2
 
 后续可单独添加页面级多向量编码器、带版本和页面映射的独立索引，以及文本查询的 MaxSim 排序，再与现有图表级 CLIP 排名融合；图片搜图继续由 CLIP 完成。应先测单页的显存、编码耗时、向量与磁盘规模，再以固定页面标注检验召回、引用坐标和中文问题；8 GB 显存可能需要低批量、量化或 CPU，具体能力和成本尚未实测。该阶段不属于本次基础闭环的完成条件。
+
+2026-11-06 的实验增加了独立的页面 token Chroma 存储和候选内 MaxSim 算法，以及去重页面的可选排名融合；原始图片检索和引用默认路径未更改。当时基础模型权重下载受阻，尚未产生真实模型向量或基准成绩。候选覆盖、当时的依赖问题以及文本方案在视觉题上的退化见 [召回诊断与运行报告](../reports/revision/IRPAPERS-RECALL-COLQWEN-20261106.md)。
+
+2026-11-07 的后续工作已恢复兼容依赖和固定权重，并实际运行两页 ColQwen2 GPU 前向、Chroma 写入及候选内 MaxSim；完整 210 题评测尚未完成。独立有界 Chroma 查询、可恢复的多向量页面存储、页面切片开发探针、下载断点受损情况及恢复步骤见 [本轮记录](../reports/revision/IRPAPERS-BOUNDED-RECOVERY-20261107.md)。有界搜索及切片结果尚未替换默认问答路径。

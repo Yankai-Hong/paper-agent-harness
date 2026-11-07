@@ -64,7 +64,7 @@ $env:HF_HUB_OFFLINE = '1'
 & $py scripts/report_results.py --run reports/reproduced-retrieval
 ```
 
-脚本统一生成 chunks、建立 FAISS IndexFlatIP，再依次评测 BM25、dense、hybrid、rerank。两路各 30 个候选，RRF 常数 60，重排前取 30，返回 5。输出在 `reports/reproduced-retrieval/`。已建好同一版本索引可加 `--reuse-index`；首次必须省略。
+脚本统一生成 chunks、默认建立独立 Chroma 稠密索引，再依次评测 BM25、dense、hybrid、rerank。两路各 30 个候选，RRF 常数 60，重排前取 30，返回 5。Chroma HNSW 的近似检索与历史 FAISS IndexFlatIP 精确排序不保证相同；旧索引需要可选 `.[legacy-faiss]` 才能读取。输出在 `reports/reproduced-retrieval/`。已建好同一版本索引可加 `--reuse-index`；首次必须省略。
 
 ```powershell
 & $py -m paper_agent.cli search 'How is the model evaluated?' --index indexes/bge --mode rerank --encoder models/bge-m3 --reranker models/bge-reranker-v2-m3 --device cuda:0

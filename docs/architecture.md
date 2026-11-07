@@ -1,6 +1,6 @@
 # 架构与七阶段
 
-架构只有工作记忆、情景记忆、长期记忆；默认 SQLite 本地模式保存权威快照、事件原文和明确用户声明。`MEMORY_BACKEND=three_layer` 启用 Redis TTL 工作缓存和 Chroma 情景语义索引。ContextArchive 是会话审计恢复，不是记忆层。论文 FAISS 知识库独立，历史记忆不能替代本轮证据。身份、共享与版本化迁移见 [memory.md](memory.md)。
+架构只有工作记忆、情景记忆、长期记忆；默认 SQLite 本地模式保存权威快照、事件原文和明确用户声明。`MEMORY_BACKEND=three_layer` 启用 Redis TTL 工作缓存和 Chroma 情景语义索引。ContextArchive 是会话审计恢复，不是记忆层。论文 Chroma 检索索引使用独立持久化目录和来源快照，不复用记忆 collection；历史 FAISS 索引可选兼容读取。历史记忆不能替代本轮证据。身份、共享与版本化迁移见 [memory.md](memory.md)。
 
 这是以 learn-claude-code 的 messages/tool loop 和上下文管理思想为基准的领域实现，并非上游已经拥有论文问答。固定上游 SHA 为 `ce8f9f186058939da54c9d6fead78dfb5d0fd6c3`。原始选定文件保存在内部快照 `references/learn-claude-code/`，复用审查见内部文档 `references/project-notes/LEARN_CLAUDE_CODE_REVIEW.md`（两者均未随仓库发布；上游来源与固定版本见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) 与 [upstream.lock](../upstream.lock)）。
 
