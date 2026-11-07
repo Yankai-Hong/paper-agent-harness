@@ -22,10 +22,16 @@ class ClipPageCandidates:
         root = Path(directory)
         metadata = json.loads((root / 'metadata.json').read_text(encoding='utf-8'))
         mapping_path = root / 'mapping.jsonl'
+        contract = metadata.get('vector_contract') or {}
         if (metadata.get('backend') != 'chroma' or metadata.get('pages_sha256') != source_hash
                 or metadata.get('mapping_sha256') != _sha(mapping_path)
                 or metadata.get('vector_manifest_sha256') != _sha(root / 'vectors' / 'vector-store.json')
-                or metadata.get('model_provenance') != encoder.provenance):
+                or metadata.get('model_provenance') != encoder.provenance
+                or contract.get('source_hash') != source_hash
+                or contract.get('mapping_hash') != metadata.get('mapping_sha256')
+                or contract.get('model_provenance') != encoder.provenance
+                or contract.get('dimension') != metadata.get('dimension')
+                or contract.get('kind') != 'clip_page_image'):
             raise ValueError('CLIP page index provenance mismatch')
         with mapping_path.open(encoding='utf-8') as stream:
             mapping = [json.loads(line) for line in stream if line.strip()]
@@ -50,7 +56,7 @@ class ClipPageCandidates:
 
 class HybridColQwenPageSearch:
     """Run text and CLIP independently, then rerank their page union."""
-    def __init__(self, text_retriever, clip_pages, colqwen, *, text_source_hash, depth=50, visual_weight=.05):
+    def __init__(self, text_retriever, clip_pages, colqwen, *, text_source_hash, depth=50, visual_weight=0):
         if type(depth) is not int or depth < 1 or 2 * depth > colqwen.max_candidates:
             raise ValueError('Invalid candidate depth')
         if not text_source_hash or text_source_hash != colqwen.store.contract.get('source_hash'):

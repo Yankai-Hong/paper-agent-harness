@@ -88,6 +88,8 @@ def main():
     hybrid_page.add_argument('--device', default='cuda:0')
     hybrid_page.add_argument('--depth', type=int, default=50)
     hybrid_page.add_argument('--limit', type=int, default=20)
+    hybrid_page.add_argument('--visual-weight', type=float, default=0,
+                             help='RRF visual weight; 0 preserves text order, .05 reproduces the experimental selection')
     semantic_index = sub.add_parser("visual-semantic-index", help="Build a separate BGE caption/table index")
     semantic_index.add_argument("evidence")
     semantic_index.add_argument("--visual-root", required=True)
@@ -214,7 +216,7 @@ def main():
         if text.metadata['corpus_hash'] != benchmark['original_index_metadata']['corpus_hash']:
             raise ValueError('Text index metadata differs from benchmark snapshot')
         emit(HybridColQwenPageSearch(text, clip, colqwen, text_source_hash=plan['prepared_pages_sha256'],
-                                      depth=args.depth).search(args.query, limit=args.limit))
+                                      depth=args.depth, visual_weight=args.visual_weight).search(args.query, limit=args.limit))
     elif args.command == "visual-semantic-index":
         from .visual_text_retrieval import build_visual_text_index
         encoder = BGEEncoder(args.encoder, args.device, args.batch_size, args.max_length)

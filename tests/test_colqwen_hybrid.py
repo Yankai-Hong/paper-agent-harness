@@ -21,8 +21,12 @@ def test_hybrid_generates_distinct_candidates_and_preserves_unknowns():
     result = HybridColQwenPageSearch(text, clip, visual, text_source_hash='source', depth=2).search('question')
     assert seen == ['1', '2', '3']
     assert result['candidate_count'] == 3
+    assert result['visual_weight'] == 0 and [x['page_id'] for x in result['pages']] == ['1', '2']
     assert result['unknown_text_locations'] == [{**chunks[2], 'candidate_rank': 3}]
     assert [x['rank'] for x in result['text_candidate_refs']] == [1, 2, 3, 4]
     assert result['text_candidate_refs'][2]['page_mapping'] == 'unknown'
     assert result['pages'][0]['text_evidence']['chunk_id'] == 'a'
     assert result['pages'][0]['page_evidence']['evidence_type'] == 'page'
+    experimental = HybridColQwenPageSearch(text, clip, visual, text_source_hash='source', depth=2,
+                                            visual_weight=.05).search('question')
+    assert experimental['visual_weight'] == .05
