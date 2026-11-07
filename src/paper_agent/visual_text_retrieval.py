@@ -42,14 +42,16 @@ def build_visual_text_index(evidence_path, directory, image_root, encoder):
     directory.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='visual-text-index-', dir=directory.parent) as tmp:
         tmp = Path(tmp)
-        src, dest = tmp/'representations.jsonl', tmp/'index'
+        src = tmp/'representations.jsonl'
         write_jsonl(src, rows)
-        meta = build_index(src, dest, encoder)
+        # Chroma holds persistent files open on Windows; do not rename or delete
+        # its directory while its client is alive. A failed build remains for
+        # inspection and cannot be silently overwritten.
+        meta = build_index(src, directory, encoder)
         meta.update(visual_text_schema=1, visual_corpus_hash=digest(evidence),
                     representations={'caption':sum(r['representation']=='caption' for r in rows),
                                      'table':sum(r['representation']=='table' for r in rows)})
-        write_json(dest/'metadata.json', meta)
-        dest.rename(directory)
+        write_json(directory/'metadata.json', meta)
     return meta
 
 

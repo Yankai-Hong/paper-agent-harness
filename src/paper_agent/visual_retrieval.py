@@ -100,8 +100,11 @@ class SubprocessEncoder:
         return self._encode("texts", texts)
 
 
-def build_visual_index(evidence_path, directory, image_root, encoder):
-    import faiss
+def visual_vector_id(evidence):
+    return 'visual-'+digest([evidence['paper_id'],evidence['chunk_id']])
+
+
+def build_visual_index(evidence_path, directory, image_root, encoder, backend='chroma'):
     directory = Path(directory)
     if directory.exists():
         raise ValueError("Refusing to overwrite an existing visual index directory")
@@ -113,25 +116,31 @@ def build_visual_index(evidence_path, directory, image_root, encoder):
     vectors = _normalize(encoder.encode_images(images))
     if len(vectors) != len(evidence):
         raise ValueError("CLIP image count mismatch")
-    directory.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="visual-index-", dir=directory.parent) as temp:
-        staging = Path(temp) / "index"
-        staging.mkdir()
+    if backend not in {'chroma','faiss'}: raise ValueError('Unknown visual vector backend')
+    directory.mkdir(parents=True,exist_ok=False)
+    metadata = {"schema": 1, "corpus_hash": digest(evidence), "count": len(evidence), "dimension": vectors.shape[1],
+                "model_provenance": encoder.provenance, "normalization": "l2", "metric": "inner_product",'backend':backend}
+    if backend=='chroma':
+        from .vector_store import ChromaVectorStore
+        contract={'collection':'paper_clip_images_v1','kind':'clip_figure_image','corpus_hash':metadata['corpus_hash'],
+                  'model_provenance':encoder.provenance,'dimension':vectors.shape[1], 'normalization':'l2','metric':'cosine'}
+        store=ChromaVectorStore(directory/'vectors',contract,create=True)
+        ids=[visual_vector_id(e) for e in evidence]
+        store.upsert(ids,vectors); store.seal(ids)
+        metadata['vector_contract']=contract
+    else:
+        import faiss
         index = faiss.IndexFlatIP(vectors.shape[1])
         index.add(vectors)
-        faiss.write_index(index, str(staging / "visual.faiss"))
-        metadata = {"schema": 1, "corpus_hash": digest(evidence), "count": len(evidence), "dimension": vectors.shape[1],
-                    "index_sha256": hashlib.sha256((staging / "visual.faiss").read_bytes()).hexdigest(),
-                    "model_provenance": encoder.provenance, "normalization": "l2", "metric": "inner_product"}
-        write_jsonl(staging / "evidence.jsonl", evidence)
-        write_json(staging / "metadata.json", metadata)
-        staging.rename(directory)
+        faiss.write_index(index, str(directory / "visual.faiss"))
+        metadata['index_sha256']=_file_sha256(directory/'visual.faiss')
+    write_jsonl(directory / "evidence.jsonl", evidence)
+    write_json(directory / "metadata.json", metadata)
     return metadata
 
 
 class VisualRetriever:
     def __init__(self, directory, image_root, encoder):
-        import faiss
         self.directory, self.image_root, self.encoder = Path(directory), Path(image_root), encoder
         self.evidence = read_jsonl(self.directory / "evidence.jsonl")
         self.metadata = json.loads((self.directory / "metadata.json").read_text(encoding="utf-8"))
@@ -139,10 +148,23 @@ class VisualRetriever:
             raise ValueError("Visual corpus version or hash mismatch")
         if encoder.provenance != self.metadata.get("model_provenance"):
             raise ValueError("CLIP model provenance differs from index")
-        index_path = self.directory / "visual.faiss"
-        if hashlib.sha256(index_path.read_bytes()).hexdigest() != self.metadata.get("index_sha256"):
-            raise ValueError("Visual index checksum mismatch")
-        self.index = faiss.read_index(str(index_path))
+        if self.metadata.get('backend','faiss')=='chroma':
+            from .vector_store import ChromaVectorStore,ChromaIndexAdapter
+            contract=self.metadata.get('vector_contract')
+            if (not isinstance(contract,dict) or contract.get('corpus_hash')!=self.metadata['corpus_hash']
+                    or contract.get('model_provenance')!=encoder.provenance
+                    or contract.get('dimension')!=self.metadata.get('dimension')):
+                raise ValueError('Visual vector contract mismatch')
+            self.index=ChromaIndexAdapter(ChromaVectorStore(self.directory/'vectors',contract),
+                                          [visual_vector_id(e) for e in self.evidence])
+        elif self.metadata.get('backend','faiss')=='faiss':
+            import faiss
+            index_path = self.directory / "visual.faiss"
+            if _file_sha256(index_path) != self.metadata.get("index_sha256"):
+                raise ValueError("Visual index checksum mismatch")
+            self.index = faiss.read_index(str(index_path))
+        else:
+            raise ValueError('Unknown visual vector backend')
         if self.index.ntotal != len(self.evidence) or self.index.ntotal != self.metadata.get("count") or self.index.d != self.metadata.get("dimension"):
             raise ValueError("Visual index dimensions or count mismatch")
 

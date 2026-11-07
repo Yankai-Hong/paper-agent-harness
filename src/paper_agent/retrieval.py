@@ -56,27 +56,42 @@ class BGEReranker:
         return np.atleast_1d(scores).tolist()
 
 
-def build_index(chunks_path, directory, encoder=None):
+def build_index(chunks_path, directory, encoder=None, backend='chroma'):
     chunks = read_jsonl(chunks_path)
     ids = [c["chunk_id"] for c in chunks]
     if not chunks or len(ids) != len(set(ids)):
         raise ValueError("Corpus must be nonempty with unique chunk IDs")
     directory = Path(directory)
-    directory.mkdir(parents=True, exist_ok=True)
+    if directory.exists():
+        raise ValueError('Refusing to overwrite an existing text index')
+    if backend not in {'chroma','faiss'}:
+        raise ValueError('Unknown dense vector backend')
+    directory.mkdir(parents=True, exist_ok=False)
     metadata = {"schema": 1, "corpus_hash": digest(chunks), "chunks": len(chunks),
                 "bm25_tokenizer": "lexical-v1", "chunker": chunks[0].get("chunker"),
                 "dense": False, "encoder": None}
     if encoder is not None:
-        import faiss
         values = encoder.encode([c["text"] for c in chunks])
-        index = faiss.IndexFlatIP(values.shape[1])
-        index.add(values)
-        faiss.write_index(index, str(directory / "dense.faiss"))
-        metadata.update(dense=True, dimension=values.shape[1], encoder=encoder.model_id,
-                        max_length=encoder.max_length,
-                        index_sha256=hashlib.sha256((directory/"dense.faiss").read_bytes()).hexdigest())
+        values=np.asarray(values,dtype=np.float32)
+        if values.ndim!=2 or len(values)!=len(chunks):
+            raise ValueError('Dense vector count or dimension mismatch')
         provenance = Path(encoder.model_id)/"provenance.json"
-        metadata["model_provenance"] = json.loads(provenance.read_text(encoding="utf-8")) if provenance.exists() else None
+        model_provenance=json.loads(provenance.read_text(encoding="utf-8")) if provenance.exists() else None
+        metadata.update(dense=True, dimension=values.shape[1], encoder=encoder.model_id,
+                        max_length=encoder.max_length,backend=backend,model_provenance=model_provenance)
+        if backend=='chroma':
+            from .vector_store import ChromaVectorStore
+            contract={'collection':'paper_bge_text_v1','kind':'bge_text', 'corpus_hash':metadata['corpus_hash'],
+                      'model_id':encoder.model_id,'model_provenance':model_provenance,'max_length':encoder.max_length,
+                      'dimension':values.shape[1],'normalization':'l2','metric':'cosine'}
+            store=ChromaVectorStore(directory/'vectors',contract,create=True)
+            store.upsert(ids,values); store.seal(ids)
+            metadata['vector_contract']=contract
+        else:
+            import faiss
+            index=faiss.IndexFlatIP(values.shape[1]); index.add(np.ascontiguousarray(values))
+            faiss.write_index(index,str(directory/'dense.faiss'))
+            metadata['index_sha256']=hashlib.sha256((directory/'dense.faiss').read_bytes()).hexdigest()
     write_jsonl(directory / "chunks.jsonl", chunks)
     write_json(directory / "metadata.json", metadata)
     return metadata
@@ -103,10 +118,23 @@ class Retriever:
                 not provenance.exists() or json.loads(provenance.read_text(encoding="utf-8")) != self.metadata["model_provenance"]
             ):
                 raise ValueError("Query model revision differs from index provenance")
-            import faiss
-            if hashlib.sha256((self.directory/"dense.faiss").read_bytes()).hexdigest() != self.metadata.get("index_sha256"):
-                raise ValueError("Dense index checksum mismatch")
-            self.index = faiss.read_index(str(self.directory / "dense.faiss"))
+            if self.metadata.get('backend','faiss')=='chroma':
+                from .vector_store import ChromaVectorStore,ChromaIndexAdapter
+                contract=self.metadata.get('vector_contract')
+                if (not isinstance(contract,dict) or contract.get('corpus_hash')!=self.metadata['corpus_hash']
+                        or contract.get('model_id')!=encoder.model_id or contract.get('max_length')!=encoder.max_length
+                        or contract.get('model_provenance')!=self.metadata.get('model_provenance')
+                        or contract.get('dimension')!=self.metadata.get('dimension')):
+                    raise ValueError('Dense vector contract mismatch')
+                store=ChromaVectorStore(self.directory/'vectors',contract)
+                self.index=ChromaIndexAdapter(store,[c['chunk_id'] for c in self.chunks])
+            elif self.metadata.get('backend','faiss')=='faiss':
+                import faiss
+                if hashlib.sha256((self.directory/"dense.faiss").read_bytes()).hexdigest() != self.metadata.get("index_sha256"):
+                    raise ValueError("Dense index checksum mismatch")
+                self.index = faiss.read_index(str(self.directory / "dense.faiss"))
+            else:
+                raise ValueError('Unknown dense vector backend')
             if self.index.ntotal != len(self.chunks):
                 raise ValueError("Dense index length mismatch")
 
@@ -168,6 +196,7 @@ class Retriever:
                  "fusion_rank": fusion_ranks[cid], "rerank_score": rerank_scores.get(cid)}
                 for rank, cid in enumerate(ranking[:top_k])]
         return {"query": query, "mode": mode, "hits": hits, "candidate_ids": list(fusion_ranks),
+                "dense_search_strategy":getattr(getattr(self.index,'store',None),'last_search_mode',None) if mode != 'bm25' else None,
                 "channel_refs": {"bm25":[{"paper_id":self.by_id[cid]['paper_id'], "chunk_id":cid} for cid in sid],
                                  "dense":[{"paper_id":self.by_id[cid]['paper_id'], "chunk_id":cid} for cid in did]},
                 "timing_ms": {"retrieve": retrieval_ms, "rerank": (time.perf_counter()-rerank_start)*1000},

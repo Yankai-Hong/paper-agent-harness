@@ -68,8 +68,10 @@ def test_visual_index_filter_tampering_and_no_overwrite(tmp_path):
     assert [h['paper_id'] for h in retriever.search_caption("1")['hits']] == ['p1']
     retriever.evidence[0]['text'] += ' secretcell'
     assert retriever.search_caption('secretcell')['hits'] == []
-    (index / "visual.faiss").write_bytes(b"corrupt")
-    with pytest.raises(ValueError, match="checksum"):
+    manifest=index / 'vectors' / 'vector-store.json'
+    data=json.loads(manifest.read_text(encoding='utf8')); data['signature']='corrupt'
+    manifest.write_text(json.dumps(data),encoding='utf8')
+    with pytest.raises(ValueError, match="contract"):
         VisualRetriever(index, root, encoder)
 
 
