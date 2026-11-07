@@ -10,7 +10,7 @@
 
 IRPAPERS 的全页面基线及数据、模型、评测口径见 [运行记录](reports/revision/CHROMA-IRPAPERS-20261106.md) 和 [有界检索记录](reports/revision/IRPAPERS-BOUNDED-RECOVERY-20261107.md)。标准题文本混合 Hit@5 为 77.22%，整页 CLIP 为 2.78%；整页 CLIP 未证明增益。基准转写不是 Docling 原文，页面命中不是图表坐标或引用正确性验收。保留集汇总已经曝光，不是严格盲测。
 
-本分支的 ColQwen2 候选内真实评测和逐题结果见 [续跑记录](reports/revision/COLQWEN-CONTINUATION-20261108.md)。文本+ColQwen 实验配置在视觉保留题上退化，自动页面检索默认权重为 0；该入口目前仅绑定 IRPAPERS，未接入通用 PDF 问答。
+本分支的 ColQwen2 候选内真实评测和逐题结果见 [续跑记录](reports/revision/COLQWEN-CONTINUATION-20261108.md)。文本+ColQwen 实验配置在视觉保留题上退化，自动页面检索默认权重为 0；已对五篇 Docling PDF 做来源与查询探针，尚未接入既有生成式 PDF 问答。
 
 [Langfuse 实际服务读回](reports/revision/LANGFUSE-LIVE-2026-10-30.md) · [Langfuse 验收准备](reports/revision/LANGFUSE-2026-10-30.md) · [Langfuse 前一阶段](reports/revision/LANGFUSE.md) · [最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
 

@@ -21,9 +21,26 @@ $p = '.\.venv-gpu\Scripts\python.exe'
 
 现在还提供 `python -m paper_agent.cli colqwen-search-text --help`；它接收普通文本和由调用方提供的候选页面 JSON 数组，未索引页面会报错，不会静默省略。使用相同两页实际运行该命令成功，包含启动的总耗时 46.85 秒，输出 `runs/colqwen-cli-probe-20261108/stdout.json` SHA-256 `5b7cd230be70717fc040a5ec00b1d828fe7e033050339146abb638dccdbc7e9d`。它尚未接到 `ask`／`chat` 或自动候选生成，不能当作已完成普通问答接入。固定模型的当前配置与 tokenizer 哈希见 [本机配置清单](colqwen-config-hashes-20261108.json)；历史实验并未绑定这些配置文件哈希，因此不能据此证明历史配置内容。
 
-新增的 `colqwen-hybrid-search` 使用现有 BGE+BM25 文本索引和独立 CLIP 页面索引，自动取各自前 50 页的并集，以 `.05` 权重融合候选内 ColQwen 前 20 页。此入口目前要求 IRPAPERS 基准索引与冻结计划，不是通用 Docling PDF 接入；开发索引缺页时会报错。对 `standard-006` 的一次真实复核在同时导入保留索引时耗时约 165.18 秒；98 页候选**集合**与冻结基线相同，CLIP 前 50 和 ColQwen、融合前 20 顺序一致，文本前 50 中第 33、34 名交换，因此候选顺序不同。输出 `runs/colqwen-hybrid-live-v2-20261108/stdout.txt` SHA-256 `cfc0105a1732ce2d80efeb074d81e55a624c9ed5660c85b75cbaf0677a689d7b`。第一次运行因系统临时目录无权写入而失败，失败记录保留；第二次使用项目内临时目录。上述单例不代表实时延迟分布或实际问答、引用正确率。
+新增的 `colqwen-hybrid-search` 使用现有 BGE+BM25 文本索引和独立 CLIP 页面索引，自动取各自前 50 页的并集；实验权重 `.05` 可融合候选内 ColQwen 前 20 页。它支持已绑定来源的 IRPAPERS 与 Docling 页面集合；索引缺少候选页时会报错。对 `standard-006` 的一次真实复核在同时导入保留索引时耗时约 165.18 秒；98 页候选**集合**与冻结基线相同，CLIP 前 50 和 ColQwen、融合前 20 顺序一致，文本前 50 中第 33、34 名交换，因此候选顺序不同。输出 `runs/colqwen-hybrid-live-v2-20261108/stdout.txt` SHA-256 `cfc0105a1732ce2d80efeb074d81e55a624c9ed5660c85b75cbaf0677a689d7b`。第一次运行因系统临时目录无权写入而失败，失败记录保留；第二次使用项目内临时目录。上述单例不代表实时延迟分布或实际问答、引用正确率。
 
 之后增加保留所有文本候选原始证据 ID 和排名的输出，再对同一题实际复验，98 页集合和 ColQwen 前 20 仍与冻结结果一致，保留 9,166 个文本候选引用，耗时约 130.64 秒；输出 `runs/colqwen-hybrid-live-v3-20261108/stdout.txt` SHA-256 `62fe2370b34130673f4627fc3ae8120ecc1f112f4f45bb665fc0e89d96c17519`。上述两次真实复核运行时实验权重为 `.05`；保留组结果出现视觉题退化后，入口默认改为 0，复现实验必须显式传 `.05`。
+
+## 真实 Docling PDF 页面探针
+
+继承 [Docling+CLIP 页面记录](DOCLING-CLIP-PAGE-20261108.md) 的五篇 PDF、39 页、共享文本索引及 21 条标为未经核实的表格文本；不把它们和 IRPAPERS 转写混算。对这 39 张真实 PDF 渲染页实际运行固定 ColQwen2 GPU 编码，39 页共 10,062 个非 padding token，编码含模型加载约 38.73 秒，显存峰值约 4.65 GB，结束 RSS 约 1.63 GB。独立 Chroma 索引约 19.8 MB，封存哈希 `5b5b7afd1f699ab72549c7044e8dc7ba61b90bee3d701512cd1354dfdbdeb5b2`；新进程重开、逐页回读并核对官方处理器网格与 token mask，39 页全部通过，重开校验约 1.38 秒。另对实际问题和两张 PDF 页面将 MaxSim 与官方 processor 逐页对照，最大差 `3.28e-7`；记录 SHA-256 `163a8d27ef9e465c9d0b1d0b078ee150e6d11a3ea5219460f9b0f75096bf891b`。图片 token 位置不是像素 bbox。
+
+两个已见开发问题均不施加目标论文或页码过滤；39 页都进入候选，因此对这小语料实际比较了全部 39 页，不能推广为 IRPAPERS 全库 MaxSim。表格问题的目标 `1909.12079` 第 5 页：文本第 1、CLIP 第 3、ColQwen 第 1、默认文本融合第 1，冷启动约 69.30 秒；返回独立表格文本、整页和表格图，原页与裁图代理复核见主线记录。输出 SHA-256 `021d3667560f545cbc9d896c1e00a796272a8e5e8e9b07e8be2cea51b3b672d6`。Figure 3 的 hints 问题目标 `1909.06708` 第 4 页：文本第 2、CLIP 第 9、ColQwen 第 6、默认融合第 2，冷启动约 65.40 秒，返回独立 Figure 3 证据；输出 SHA-256 `3b65b9fba1d0fcc6d97c7733aacd139748f3ff263b790cc3fa469586482597ae`。同页证据均标记未验证语义关联，表格文本的解析状态仍为 unknown；原页代理复核不等于人类金标。没有在本轮发起远程生成问答，`ask`／`chat` 尚未接入此页面接口。
+
+按主线报告准备页面和共享文本索引后，可用以下命令在新路径重建 PDF 的 ColQwen 页面向量和独立索引；两种索引使用同一页面清单但维度和 collection 完全独立。原始页面／向量检查点与模型不会覆盖。
+
+```powershell
+$p = '.\.venv-gpu\Scripts\python.exe'
+$c = '.\.venv-colqwen-20261106\Scripts\python.exe'
+& $c scripts/colqwen_encode_pdf_pages.py --prepared data/raw/docling-pages-NEW --reference-contract runs/colqwen-dev-20261107/contract.json --base models/colqwen2-base-range-20261107 --adapter models/colqwen2-v1-20261106 --output runs/colqwen-docling-NEW --device cuda:0
+& $p scripts/colqwen_import_pdf_pages.py --prepared data/raw/docling-pages-NEW --encoded runs/colqwen-docling-NEW --index indexes/colqwen-docling-NEW --adapter models/colqwen2-v1-20261106 --report output/colqwen-docling-NEW.json
+& $c scripts/colqwen_pdf_score_audit.py --prepared data/raw/docling-pages-NEW --encoded runs/colqwen-docling-NEW --base models/colqwen2-base-range-20261107 --adapter models/colqwen2-v1-20261106 --query 'What are the FIGER and BBN accuracy scores for Ours (Full)?' --page-id 1909.12079__p5 --page-id 1909.12079__p4 --output output/colqwen-pdf-score-NEW.json
+& $p -m paper_agent.cli colqwen-hybrid-search 'What are the FIGER and BBN accuracy scores for Ours (Full)?' --index indexes/colqwen-docling-NEW --source-manifest data/raw/docling-pages-NEW/pages.jsonl --image-root data/raw/docling-pages-NEW --colqwen-python $c --worker scripts/colqwen_query_worker.py --base models/colqwen2-base-range-20261107 --adapter models/colqwen2-v1-20261106 --text-index indexes/docling-table-NEW --text-binding data/raw/docling-pages-NEW/binding-table.json --encoder 'models\bge-m3' --clip-index indexes/docling-clip-NEW --clip-python .venv-mm-20261030/Scripts/python.exe --clip-image-model models/multimodal-v1/clip-image-v1 --clip-text-model models/multimodal-v1/clip-text-v1 --evidence-jsonl data/raw/multimodal-eval/docling-v5-agent-reviewed/evidence.jsonl --evidence-root data/raw/multimodal-eval/docling-v5-agent-reviewed/crops > output/colqwen-docling-query-NEW.json
+```
 
 ## 开发集真实结果与冻结
 
@@ -73,7 +90,7 @@ $p = '.\.venv-gpu\Scripts\python.exe'
 
 [逐题排名清单](colqwen-page-ranks-20261108.json) 包含 210 个问题 ID、划分、标签状态、候选覆盖和各分支名次，不含问题及转写正文；SHA-256 `c07c08650464437b9a6ef091833826fa8dad6bc3fe3492ed761f673bf212521a`。冲突 `standard-143` 仍为 unknown；目标页空转写 `standard-090` 仍在分母。这里没有把解析错误、标签冲突或检索失败合并成语义正确率，也未测图表 bbox、上传图片或端到端回答。
 
-支线最终完整回归为 **462 passed、1 skipped**（40.76 秒），包括真实 Chroma 存储、来源守卫、图片与记忆兼容性测试；自动测试不等于语义或人工引用验收。
+支线完整回归为 **465 passed、1 skipped**（41.14 秒），包括真实 Chroma 存储、来源守卫、图片与记忆兼容性测试；自动测试不等于语义或人工引用验收。
 
 模型、原数据、索引和结果未提交。完整恢复顺序及构建命令见[恢复记录](IRPAPERS-BOUNDED-RECOVERY-20261107.md)；使用新输出路径，不覆盖任何检查点。候选内排序及融合不得误报为全库 ColQwen2 检索。
 
