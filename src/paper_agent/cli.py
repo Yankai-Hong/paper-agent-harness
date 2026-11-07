@@ -68,6 +68,18 @@ def main():
     clip_text_search.add_argument('--paper-id', action='append')
     clip_text_search.add_argument('--top-k', type=int, default=5)
     clip_text_search.add_argument('--kind', choices=['caption','text'], help='Optional source-kind filter; default searches all text')
+    colqwen_search = sub.add_parser('colqwen-search-text', help='Rerank supplied page candidates with ColQwen2 (not full-corpus search)')
+    colqwen_search.add_argument('query')
+    colqwen_search.add_argument('--index', required=True, help='Sealed ColQwen page-token index')
+    colqwen_search.add_argument('--source-manifest', required=True, help='Index-bound page JSONL manifest')
+    colqwen_search.add_argument('--image-root', required=True)
+    colqwen_search.add_argument('--candidates', required=True, help='JSON array of page IDs generated independently of gold')
+    colqwen_search.add_argument('--colqwen-python', required=True)
+    colqwen_search.add_argument('--worker', required=True, help='Path to scripts/colqwen_query_worker.py')
+    colqwen_search.add_argument('--base', required=True)
+    colqwen_search.add_argument('--adapter', required=True)
+    colqwen_search.add_argument('--device', default='cuda:0')
+    colqwen_search.add_argument('--max-candidates', type=int, default=100)
     semantic_index = sub.add_parser("visual-semantic-index", help="Build a separate BGE caption/table index")
     semantic_index.add_argument("evidence")
     semantic_index.add_argument("--visual-root", required=True)
@@ -158,6 +170,19 @@ def main():
     elif args.command == 'clip-search-image-text':
         from .clip_text_index import ClipTextRetriever
         emit(ClipTextRetriever(args.clip_text_index, visual_encoder(args)).search_image(args.query, args.top_k, args.paper_id, args.kind))
+    elif args.command == 'colqwen-search-text':
+        from .colqwen_page_retrieval import ColQwenCandidateRetriever
+        from .colqwen_subprocess import SubprocessColQwenQueryEncoder
+        from .resumable_colqwen import ResumableColQwenStore
+        contract = json.loads((Path(args.index) / 'contract.json').read_text(encoding='utf-8'))['contract']
+        candidates = json.loads(Path(args.candidates).read_text(encoding='utf-8'))
+        if not isinstance(candidates, list):
+            raise ValueError('Candidate file must be a JSON array')
+        store = ResumableColQwenStore(args.index, contract)
+        encoder = SubprocessColQwenQueryEncoder(args.colqwen_python, args.worker, args.base, args.adapter, contract, device=args.device)
+        retriever = ColQwenCandidateRetriever(store, encoder, args.source_manifest, args.image_root,
+                                              device=args.device, max_candidates=args.max_candidates)
+        emit(retriever.search_text(args.query, candidates))
     elif args.command == "visual-semantic-index":
         from .visual_text_retrieval import build_visual_text_index
         encoder = BGEEncoder(args.encoder, args.device, args.batch_size, args.max_length)
