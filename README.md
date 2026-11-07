@@ -8,6 +8,8 @@
 
 `ask` 还可通过 `--image` 提供本地图片；图片到正文需要额外建立独立的 CLIP 文本索引。具体命令、图片发送方式、独立引用、真实评测及限制见 [图文检索文档](docs/multimodal.md#图片到文本与图片问答)。本能力的开发评测与早期阶段验收分开记录。
 
+IRPAPERS 的全页面基线及数据、模型、评测口径见 [运行记录](reports/revision/CHROMA-IRPAPERS-20261106.md) 和 [有界检索记录](reports/revision/IRPAPERS-BOUNDED-RECOVERY-20261107.md)。标准题文本混合 Hit@5 为 77.22%，整页 CLIP 为 2.78%；整页 CLIP 未证明增益。基准转写不是 Docling 原文，页面命中不是图表坐标或引用正确性验收。保留集汇总已经曝光，不是严格盲测。
+
 [Langfuse 实际服务读回](reports/revision/LANGFUSE-LIVE-2026-10-30.md) · [Langfuse 验收准备](reports/revision/LANGFUSE-2026-10-30.md) · [Langfuse 前一阶段](reports/revision/LANGFUSE.md) · [最终验收收尾](reports/revision/CLOSURE.md) · [此前跟进](reports/revision/FOLLOWUP.md) · [此前修订](reports/revision/FINAL.md) · [修订前验收](reports/FINAL_ACCEPTANCE.md) · [安装与运行](docs/setup.md) · [架构](docs/architecture.md) · [评测协议](docs/evaluation.md)
 
 ## 核心实现

@@ -116,3 +116,5 @@ $visual = @('--visual-index','indexes/visual-v1','--visual-root','data/raw/visua
 2026-11-06 的实验增加了独立的页面 token Chroma 存储和候选内 MaxSim 算法，以及去重页面的可选排名融合；原始图片检索和引用默认路径未更改。当时基础模型权重下载受阻，尚未产生真实模型向量或基准成绩。候选覆盖、当时的依赖问题以及文本方案在视觉题上的退化见 [召回诊断与运行报告](../reports/revision/IRPAPERS-RECALL-COLQWEN-20261106.md)。
 
 2026-11-07 的后续工作已恢复兼容依赖和固定权重，并实际运行两页 ColQwen2 GPU 前向、Chroma 写入及候选内 MaxSim；完整 210 题评测尚未完成。独立有界 Chroma 查询、可恢复的多向量页面存储、页面切片开发探针、下载断点受损情况及恢复步骤见 [本轮记录](../reports/revision/IRPAPERS-BOUNDED-RECOVERY-20261107.md)。有界搜索及切片结果尚未替换默认问答路径。
+
+页面级实验可用 `paper_agent.page_fusion.select_page_evidence` 按已验证的 `(paper_id, page_id)` 合并候选，保留原 lane、排名及原证据；每个 lane 对同页只计一次。调用者必须自行验证页面映射并标记 `page_mapping='verified'`，否则各条候选独立保留为 unknown。选中同一页不建立正文与图片间的支持关系，具体引用仍须回溯并验证原始证据；仅有页面定位时只能声称页面级位置。此接口目前是独立组件，尚未替换普通问答的证据选择路径。
