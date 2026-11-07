@@ -80,6 +80,14 @@ def main():
     colqwen_search.add_argument('--adapter', required=True)
     colqwen_search.add_argument('--device', default='cuda:0')
     colqwen_search.add_argument('--max-candidates', type=int, default=100)
+    hybrid_page = sub.add_parser('colqwen-hybrid-search', help='Generate text/CLIP page candidates and rerank them with ColQwen2')
+    hybrid_page.add_argument('query')
+    for option in ('index', 'source-manifest', 'image-root', 'colqwen-python', 'worker', 'base', 'adapter',
+                   'text-index', 'text-binding', 'encoder', 'clip-index', 'clip-python', 'clip-image-model', 'clip-text-model'):
+        hybrid_page.add_argument('--' + option, required=True)
+    hybrid_page.add_argument('--device', default='cuda:0')
+    hybrid_page.add_argument('--depth', type=int, default=50)
+    hybrid_page.add_argument('--limit', type=int, default=20)
     semantic_index = sub.add_parser("visual-semantic-index", help="Build a separate BGE caption/table index")
     semantic_index.add_argument("evidence")
     semantic_index.add_argument("--visual-root", required=True)
@@ -183,6 +191,30 @@ def main():
         retriever = ColQwenCandidateRetriever(store, encoder, args.source_manifest, args.image_root,
                                               device=args.device, max_candidates=args.max_candidates)
         emit(retriever.search_text(args.query, candidates))
+    elif args.command == 'colqwen-hybrid-search':
+        from .colqwen_hybrid import ClipPageCandidates, HybridColQwenPageSearch, _sha
+        from .colqwen_page_retrieval import ColQwenCandidateRetriever
+        from .colqwen_subprocess import SubprocessColQwenQueryEncoder
+        from .resumable_colqwen import ResumableColQwenStore
+        from .visual_retrieval import SubprocessEncoder
+        contract = json.loads((Path(args.index) / 'contract.json').read_text(encoding='utf-8'))['contract']
+        store = ResumableColQwenStore(args.index, contract)
+        query_encoder = SubprocessColQwenQueryEncoder(args.colqwen_python, args.worker, args.base, args.adapter, contract, device=args.device)
+        colqwen = ColQwenCandidateRetriever(store, query_encoder, args.source_manifest, args.image_root,
+                                             device=args.device, max_candidates=2 * args.depth)
+        clip_encoder = SubprocessEncoder(args.clip_python, args.clip_image_model, args.clip_text_model, device=args.device)
+        clip = ClipPageCandidates(args.clip_index, clip_encoder, colqwen.sources, contract['source_hash'])
+        benchmark = json.loads((Path(args.text_index) / 'benchmark.json').read_text(encoding='utf-8'))
+        plan = json.loads(Path(args.text_binding).read_text(encoding='utf-8'))
+        if (benchmark['plan_sha256'] != _sha(args.text_binding)
+                or benchmark['source_chunks_sha256'] != _sha(Path(args.text_index) / 'chunks.jsonl')
+                or plan['prepared_pages_sha256'] != contract['source_hash']):
+            raise ValueError('Text index and page manifest binding mismatch')
+        text = Retriever(args.text_index, BGEEncoder(args.encoder, args.device, 2, 768))
+        if text.metadata['corpus_hash'] != benchmark['original_index_metadata']['corpus_hash']:
+            raise ValueError('Text index metadata differs from benchmark snapshot')
+        emit(HybridColQwenPageSearch(text, clip, colqwen, text_source_hash=plan['prepared_pages_sha256'],
+                                      depth=args.depth).search(args.query, limit=args.limit))
     elif args.command == "visual-semantic-index":
         from .visual_text_retrieval import build_visual_text_index
         encoder = BGEEncoder(args.encoder, args.device, args.batch_size, args.max_length)
