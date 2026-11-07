@@ -57,6 +57,8 @@ $env:REDIS_URL='redis://localhost:16379/0'
 
 ## 目录
 
+真实 PDF 的 Docling 文本、独立 CLIP 页面索引及来源核查见 [页面检索记录](reports/revision/DOCLING-CLIP-PAGE-20261108.md) 和 [操作说明](docs/docling-page-search.md)。
+
 | 路径 | 用途 |
 |---|---|
 | `src/`、`tests/` | 实现与回归测试 |
