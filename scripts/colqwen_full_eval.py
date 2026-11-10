@@ -46,7 +46,9 @@ def main():
             or model_contract.get('full_encoding_contract_sha256')!=sha(encoded/'contract.json')
             or any(model_contract.get(k)!=model[k] for k in ('model_revision','base_revision','weight_sha256','max_visual_tokens','dimension'))):
         raise ValueError('Index model, source, or encoding contract mismatch')
+    open_started=time.perf_counter()
     store=ResumableColQwenStore(index,outer['contract'])
+    index_open_seconds=time.perf_counter()-open_started
     if not store.final.is_file(): raise ValueError('Full index not sealed')
     seal=json.loads(store.final.read_text(encoding='utf-8'))
     if seal['pages']!=3230: raise ValueError('Full index page coverage incomplete')
@@ -177,6 +179,7 @@ def main():
         else: os.link(pending,output); pending.unlink()
     report={'status':'complete','partition':a.partition,'results_sha256':sha(output),'plan_sha256':sha(plan),
             'selection_sha256':sha(a.selection) if a.selection else None,
+            'index_open_seconds_this_run':index_open_seconds,
             'cache_seconds_this_run':cache_seconds,'elapsed_seconds_this_run':time.perf_counter()-started,
             'rss_bytes_final':process.memory_info().rss,'sampled_peak_rss_bytes':sampled_peak_rss,
             'gpu_peak_bytes':torch.cuda.max_memory_allocated() if a.device.startswith('cuda') else None}
