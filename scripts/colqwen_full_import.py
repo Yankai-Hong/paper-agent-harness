@@ -9,7 +9,7 @@ import numpy as np
 from colqwen_encode_candidates import check_marker
 from colqwen_smoke import rows, sha
 from paper_agent.resumable_colqwen import ResumableColQwenStore
-from paper_agent.batched_colqwen import seal_batched
+from paper_agent.batched_colqwen import seal_batched, add_pages_batched
 from paper_agent.colqwen_store import _digest
 
 
@@ -40,7 +40,7 @@ def main():
                 'weight_sha256':enc['weight_sha256'],'max_visual_tokens':enc['max_visual_tokens'],
                 'full_encoding_contract_sha256':sha(encoded / 'contract.json'), 'scope':'full_corpus'}
     store = ResumableColQwenStore(index, contract, create=not index.exists())
-    started = time.perf_counter(); provenance=[]
+    started = time.perf_counter(); provenance=[]; pending_batch=[]
     for i, page in enumerate(pages, 1):
         key=page['page_id']; marker_path=encoded / 'pages' / (key+'.json')
         image_path=(source / page['image_path']).resolve()
@@ -65,12 +65,17 @@ def main():
                 if (previous.get('paper_id')!=page['paper_id'] or previous.get('image_sha256')!=page['image_sha256']
                         or previous.get('count')!=count or previous.get('vectors_sha256')!=_digest(vectors)):
                     raise ValueError('Committed page differs from checkpoint: '+key)
-            else: store.add_page(key,page['paper_id'],page['image_sha256'],vectors)
+            else:
+                pending_batch.append({'page_id':key,'paper_id':page['paper_id'],
+                                      'image_sha256':page['image_sha256'],'vectors':vectors})
+                if len(pending_batch)==8:
+                    add_pages_batched(store,pending_batch); pending_batch=[]
         else: store.get_page(key)
         provenance.append({'page_id':key,'paper_id':page['paper_id'],'image_sha256':page['image_sha256'],
             'marker_sha256':sha(marker_path),'vector_file_sha256':marker['vectors_sha256'],
             'image_grid_thw':grid,'image_token_positions':positions,'active_token_count':count})
         if i%100==0: print('pages verified or committed',i,'of',len(pages),flush=True)
+    if pending_batch: add_pages_batched(store,pending_batch)
     content=''.join(json.dumps(r,sort_keys=True,separators=(',',':'))+'\n' for r in provenance).encode()
     fingerprint=hashlib.sha256(content).hexdigest(); sidecar=index/'patch-provenance.jsonl'
     if sidecar.exists():

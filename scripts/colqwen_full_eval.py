@@ -142,6 +142,14 @@ def main():
         result.append(record)
         sampled_peak_rss=max(sampled_peak_rss,process.memory_info().rss)
         if len(result)%10==0: print('full queries scored',len(result),'of',len(queries),flush=True)
+    if (json.loads(plan.read_text(encoding='utf-8'))!=spec or sha(__file__)!=spec['implementation_sha256']
+            or sha('src/paper_agent/colqwen_store.py')!=spec['maxsim_code_sha256']
+            or sha('src/paper_agent/maxsim_batch.py')!=spec['batch_code_sha256']
+            or sha('src/paper_agent/full_maxsim.py')!=spec['ranking_code_sha256']
+            or sha('src/paper_agent/batched_colqwen.py')!=spec['batched_read_code_sha256']
+            or sha(store.final)!=spec['index_seal_sha256'] or sha(source/'pages.jsonl')!=spec['source_pages_sha256']
+            or sha(root/'BASELINE-FROZEN.json')!=spec['baseline_freeze_sha256']):
+        raise ValueError('Frozen evaluation inputs or implementation changed during scoring')
     output=out/('results-'+a.partition+'.jsonl')
     if output.exists():
         if rows(output)!=result: raise ValueError('Existing results differ from checkpoints')

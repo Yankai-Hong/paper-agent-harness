@@ -119,4 +119,6 @@ $visual = @('--visual-index','indexes/visual-v1','--visual-root','data/raw/visua
 
 2026-11-08 的独立分支已完成 210 题候选内 MaxSim，并在五篇 Docling PDF 上验证页面和原始图表来源；范围、逐题名次、复现命令、冷启动成本和保留组退化见 [续跑记录](../reports/revision/COLQWEN-CONTINUATION-20261108.md)。自动页面查询入口未替换 `ask`/`chat` 的 Docling 证据选择；默认融合权重为 0，`.05` 仅为开发集选出的实验配置。
 
+纯 ColQwen2 全库评测使用逐页完整 token 和精确 MaxSim，单独记录于 [全库评测记录](../reports/revision/COLQWEN-FULL-CORPUS-20261110.md)；封存与评测完成前不能把候选内结果当作全库基线。
+
 页面级实验可用 `paper_agent.page_fusion.select_page_evidence` 按已验证的 `(paper_id, page_id)` 合并候选，保留原 lane、排名及原证据；每个 lane 对同页只计一次。调用者必须自行验证页面映射并标记 `page_mapping='verified'`，否则各条候选独立保留为 unknown。选中同一页不建立正文与图片间的支持关系，具体引用仍须回溯并验证原始证据；仅有页面定位时只能声称页面级位置。此接口目前是独立组件，尚未替换普通问答的证据选择路径。

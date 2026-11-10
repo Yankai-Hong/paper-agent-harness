@@ -65,6 +65,8 @@ def main():
                 'full_top20_candidate_overlap':sum(x in allowed for x in row['pages'][:20]),
                 'full_score_seconds':row['score_seconds'],'query_encode_seconds':row['query_encode_seconds'],
                 'candidate_read_and_score_seconds':old['rerank_seconds'],
+                'full_measured_components_sum_seconds':row['score_seconds']+row['query_encode_seconds'],
+                'candidate_measured_components_sum_seconds':old['prior_text_search_seconds']+old['prior_clip_search_seconds']+old['rerank_seconds']+old['query_encode_seconds'],
                 'prior_text_search_seconds':old['prior_text_search_seconds'],'prior_clip_search_seconds':old['prior_clip_search_seconds']})
         return result
     if a.mode=='choose':
@@ -94,7 +96,8 @@ def main():
                 for k in (1,5,20):
                     item[f'candidate_coverage_of_full_top{k}']=sum(r[f'full_top{k}_candidate_overlap'] for r in rs)/(k*len(rs))
                 for timing in ('full_score_seconds','query_encode_seconds','candidate_read_and_score_seconds',
-                               'prior_text_search_seconds','prior_clip_search_seconds'):
+                               'prior_text_search_seconds','prior_clip_search_seconds',
+                               'full_measured_components_sum_seconds','candidate_measured_components_sum_seconds'):
                     values=sorted(r[timing] for r in rs)
                     item[timing]={'median':statistics.median(values),'p95':values[min(len(values)-1,int(.95*len(values)))]}
                 for key in ('text_rank','clip_rank','candidate_rank','full_rank','fused_rank'): item[key]=metrics(rs,key)
@@ -106,7 +109,7 @@ def main():
                     'candidate_only':[r['case_id'] for r in rs if hit(r['candidate_rank']) and not hit(r['full_rank'])]}
                 stats[group+'_'+partition]=item
         out={'plan_sha256':sha(a.plan),'weight':plan['weight'],'strict_blind_test':False,'metrics':stats,'cases':result,
-             'note':'Full MaxSim uses all pages; prior candidate costs were separately measured, not live end-to-end.'}
+             'note':'Full MaxSim uses all pages. Component sums combine separate runs; they omit model startup, full-cache loading, and cached BGE/CLIP query encoding, and are not live end-to-end latencies.'}
     with Path(a.output).open('x',encoding='utf-8') as f: json.dump(out,f,ensure_ascii=False,indent=2)
     print(json.dumps({'output':a.output,'sha256':sha(a.output),'weight':out.get('weight')}))
 

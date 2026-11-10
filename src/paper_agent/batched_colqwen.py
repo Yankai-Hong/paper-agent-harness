@@ -1,6 +1,6 @@
 """Lossless batched Chroma reads with page/token provenance validation."""
 import numpy as np
-from .colqwen_store import _matrix
+from .colqwen_store import _matrix, _digest
 
 
 def _read_pages(store, records, require_sealed):
@@ -32,6 +32,46 @@ def _read_pages(store, records, require_sealed):
 
 def read_pages(store, records):
     return _read_pages(store, records, True)
+
+
+def add_pages_batched(store, pages, *, token_batch=512):
+    """Commit pages after resumable token writes and a verified batched read."""
+    import json
+    import re
+    if store.final.exists() or not pages or len(pages)>16 or not 1<=token_batch<=512:
+        raise ValueError('Invalid page batch')
+    if len({p['page_id'] for p in pages})!=len(pages): raise ValueError('Duplicate pages')
+    records=[]; arrays=[]
+    for page in pages:
+        key, paper, fingerprint = page['page_id'], page['paper_id'], page['image_sha256']
+        if not re.fullmatch(r'[A-Za-z0-9_.-]+',key) or not paper or not re.fullmatch(r'[0-9a-f]{64}',fingerprint):
+            raise ValueError('Invalid page source')
+        array=_matrix(page['vectors'],store.contract['dimension'])
+        record={'page_id':key,'paper_id':paper,'image_sha256':fingerprint,'count':len(array),'vectors_sha256':_digest(array)}
+        pending=store.pending/(key+'.json'); committed=store.committed/(key+'.json')
+        if pending.exists():
+            if json.loads(pending.read_text(encoding='utf-8'))!=record: raise ValueError('Pending page differs')
+        else: store._write_new(pending,record)
+        store._ensure_reference(record,array)
+        if committed.exists():
+            old=json.loads(committed.read_text(encoding='utf-8'))
+            if any(old.get(k)!=v for k,v in record.items()): raise ValueError('Committed page differs')
+        records.append(record); arrays.append(array)
+    ids=[]; values=[]; metadata=[]
+    for record,array in zip(records,arrays):
+        if (store.committed/(record['page_id']+'.json')).exists(): continue
+        for i,vector in enumerate(array):
+            ids.append(f"{record['page_id']}:{i:06d}"); values.append(vector)
+            metadata.append({'page_id':record['page_id'],'paper_id':record['paper_id'],
+                             'image_sha256':record['image_sha256'],'token_index':i})
+    for start in range(0,len(ids),token_batch):
+        stop=min(start+token_batch,len(ids))
+        store.collection.upsert(ids=ids[start:stop],embeddings=np.asarray(values[start:stop]).tolist(),
+                                metadatas=metadata[start:stop])
+    checked=_read_pages(store,records,False)
+    for record,page in zip(records,checked):
+        committed=store.committed/(record['page_id']+'.json')
+        if not committed.exists(): store._write_new(committed,{**record,'stored_vectors_sha256':_digest(page)})
 
 
 def seal_batched(store, *, patch_provenance_sha256, batch_pages=16):
