@@ -60,7 +60,9 @@ def main():
             result.append({'case_id':row['case_id'],'group':row['group'],'partition':row['partition'],
                 'gold_status':row['gold_status'],'full_rank':row['gold_rank'],'fused_rank':fused,
                 'target_in_index':row['target_in_index'],
+                'bm25_rank':original['bm25']['gold_rank'],'dense_rank':original['dense']['gold_rank'],
                 'text_rank':original['hybrid']['gold_rank'],'clip_rank':visual[row['case_id']]['clip']['gold_rank'],
+                'text_clip_rank':visual[row['case_id']]['fusion']['gold_rank'],
                 'candidate_rank':old['candidate_rank'],'candidate_covered':old['candidate_hit'],
                 'full_top1_candidate_overlap':sum(x in allowed for x in row['pages'][:1]),
                 'full_top5_candidate_overlap':sum(x in allowed for x in row['pages'][:5]),
@@ -106,7 +108,7 @@ def main():
                                'full_measured_components_sum_seconds','candidate_measured_components_sum_seconds'):
                     values=sorted(r[timing] for r in rs)
                     item[timing]={'median':statistics.median(values),'p95':values[math.ceil(.95*len(values))-1]}
-                for key in ('text_rank','clip_rank','candidate_rank','full_rank','fused_rank'): item[key]=metrics(rs,key)
+                for key in ('bm25_rank','dense_rank','text_rank','clip_rank','text_clip_rank','candidate_rank','full_rank','fused_rank'): item[key]=metrics(rs,key)
                 for key in ('full_rank','fused_rank'):
                     hit=lambda x:x is not None and x<=5
                     item[key+'_paired_hit5']={'improved':[r['case_id'] for r in rs if hit(r[key]) and not hit(r['text_rank'])],

@@ -28,8 +28,11 @@ class FullColQwenPageRetriever:
         with source.open(encoding='utf-8') as f:self.pages=[json.loads(x) for x in f if x.strip()]
         seal=json.loads(store.final.read_text(encoding='utf-8'))
         plan=json.loads((self.cache/'plan.json').read_text(encoding='utf-8'))
+        from . import batched_colqwen
         if (len(self.pages)!=seal['pages'] or len({x['page_id'] for x in self.pages})!=len(self.pages)
-                or plan['index_seal_sha256']!=_sha(store.final) or plan['source_pages_sha256']!=_sha(source)):
+                or plan['index_seal_sha256']!=_sha(store.final) or plan['source_pages_sha256']!=_sha(source)
+                or plan.get('scope')!='exact full corpus MaxSim, no candidate selection or text tail'
+                or plan.get('batched_read_code_sha256')!=_sha(batched_colqwen.__file__)):
             raise ValueError('Full index or cache contract mismatch')
         self.offsets=[0]
         for page in self.pages:

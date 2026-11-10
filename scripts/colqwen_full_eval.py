@@ -34,12 +34,18 @@ def main():
     source, encoded, index, root, out = map(Path,(a.prepared,a.encoded,a.index,a.baseline,a.output))
     freeze=read_frozen(root); pages=rows(source/'pages.jsonl')
     enc=json.loads((encoded/'contract.json').read_text(encoding='utf-8'))
-    if len(pages)!=3230 or sha(source/'pages.jsonl')!=enc['source_pages_sha256']:
+    if (len(pages)!=3230 or len({x['page_id'] for x in pages})!=3230
+            or sha(source/'pages.jsonl')!=enc['source_pages_sha256']):
         raise ValueError('Full corpus mismatch')
     if (sha(Path(a.dev)/'contract.json')!=enc['dev_contract_sha256']
             or sha(Path(a.test)/'contract.json')!=enc['test_contract_sha256']):
         raise ValueError('Query encoder checkpoints differ from full page contract')
     outer=json.loads((index/'contract.json').read_text(encoding='utf-8'))
+    model_contract=outer['contract']; model=enc['encoder']
+    if (model_contract.get('source_hash')!=enc['source_pages_sha256']
+            or model_contract.get('full_encoding_contract_sha256')!=sha(encoded/'contract.json')
+            or any(model_contract.get(k)!=model[k] for k in ('model_revision','base_revision','weight_sha256','max_visual_tokens','dimension'))):
+        raise ValueError('Index model, source, or encoding contract mismatch')
     store=ResumableColQwenStore(index,outer['contract'])
     if not store.final.is_file(): raise ValueError('Full index not sealed')
     seal=json.loads(store.final.read_text(encoding='utf-8'))

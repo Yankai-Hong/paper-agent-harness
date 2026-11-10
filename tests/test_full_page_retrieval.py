@@ -1,10 +1,12 @@
 import hashlib
 import json
+from pathlib import Path
 from types import SimpleNamespace
 import numpy as np
 import pytest
 from paper_agent.full_page_retrieval import FullColQwenPageRetriever
 from paper_agent.resumable_colqwen import ResumableColQwenStore
+from paper_agent import batched_colqwen
 
 
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -24,7 +26,8 @@ def test_full_search_scores_every_page_and_checks_cache_and_source(tmp_path):
     store.add_page('2','p',pages[1]['image_sha256'],np.array([[0,1]],dtype=np.float32));store.seal()
     cache=tmp_path/'cache';cache.mkdir();(cache/'cache-pages').mkdir()
     matrix=np.array([[1,0],[0,1]],dtype=np.float32);np.save(cache/'vectors.npy',matrix)
-    seal=sha(store.final);(cache/'plan.json').write_text(json.dumps({'index_seal_sha256':seal,'source_pages_sha256':sha(manifest)}))
+    seal=sha(store.final);(cache/'plan.json').write_text(json.dumps({'index_seal_sha256':seal,'source_pages_sha256':sha(manifest),
+        'scope':'exact full corpus MaxSim, no candidate selection or text tail','batched_read_code_sha256':sha(Path(batched_colqwen.__file__))}))
     for i,page in enumerate(pages):
         marker={'seal':seal,'sha256':hashlib.sha256(matrix[i:i+1].tobytes()).hexdigest()}
         (cache/'cache-pages'/(page['page_id']+'.json')).write_text(json.dumps(marker))
