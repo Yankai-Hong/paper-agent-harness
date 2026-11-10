@@ -23,7 +23,8 @@ def main():
     p.add_argument('--plan'); a=p.parse_args()
     root, full = Path(a.baseline), Path(a.full); read_frozen(root)
     summary=json.loads((full/'summary-dev.json').read_text(encoding='utf-8'))
-    if summary['status']!='complete' or summary['results_sha256']!=sha(full/'results-dev.jsonl'):
+    if (summary['status']!='complete' or summary['results_sha256']!=sha(full/'results-dev.jsonl')
+            or summary['plan_sha256']!=sha(full/'plan.json')):
         raise ValueError('Full corpus results incomplete')
     base={x['case_id']:x for x in rows(root/'text-results.jsonl')}
     visual={x['case_id']:x for x in rows(root/'visual-results.jsonl')}
@@ -34,7 +35,8 @@ def main():
     for path, partition in ((a.candidate_dev,'dev'),) + (((a.candidate_test,'test'),) if a.mode=='evaluate' else ()):
         prior_summary=json.loads(Path(path+'.summary.json').read_text(encoding='utf-8'))
         if (prior_summary.get('status')!='complete' or prior_summary.get('partition')!=partition
-                or prior_summary.get('results_sha256')!=sha(path)):
+                or prior_summary.get('results_sha256')!=sha(path)
+                or prior_summary.get('candidate_plan_sha256')!=candidate_summary.get('plan_sha256')):
             raise ValueError('Candidate evaluation results changed')
     prior_rows=rows(a.candidate_dev)+(rows(a.candidate_test) if a.mode=='evaluate' else [])
     prior={x['case_id']:x for x in prior_rows}
@@ -42,6 +44,7 @@ def main():
     if a.mode=='evaluate':
         test_summary=json.loads((full/'summary-test.json').read_text(encoding='utf-8'))
         if (test_summary['status']!='complete' or test_summary['results_sha256']!=sha(full/'results-test.jsonl')
+                or test_summary['plan_sha256']!=sha(full/'plan.json')
                 or not a.plan or test_summary['selection_sha256']!=sha(a.plan)):
             raise ValueError('Holdout score is incomplete or not bound to selection')
         full_rows+=rows(full/'results-test.jsonl')
