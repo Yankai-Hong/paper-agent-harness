@@ -105,12 +105,15 @@ def main():
         sampled_peak_rss=max(sampled_peak_rss,process.memory_info().rss)
         if (start+16)%400==0: print('Chroma pages cached and verified',start+16,'of',len(pages),flush=True)
     cache_seconds=time.perf_counter()-cache_read_start
+    matrix.flush(); cache_mtime=cache.stat().st_mtime_ns
+    matrix.flags.writeable=False
     queries=rows(root/'text-results.jsonl')
     if len(queries)!=210: raise ValueError('Question coverage differs')
     checkpoints=out/'scores'; checkpoints.mkdir(exist_ok=True); result=[]
     if a.device.startswith('cuda'): torch.cuda.reset_peak_memory_stats()
     queries=[x for x in queries if x['partition']==a.partition]
     for case in queries:
+        if cache.stat().st_mtime_ns!=cache_mtime: raise ValueError('Verified page cache changed during scoring')
         cid=case['case_id']; folder=Path(a.dev if case['partition']=='dev' else a.test)/'queries'
         expected={'case_id':cid,'question_sha256':hashlib.sha256(case['question'].encode()).hexdigest()}
         if not check_marker(folder,cid,expected): raise ValueError('Query checkpoint missing')
@@ -125,11 +128,15 @@ def main():
             if envelope['result_sha256']!=hashlib.sha256(json.dumps(record,sort_keys=True).encode()).hexdigest():
                 raise ValueError('Scoring checkpoint altered')
         else:
-            tick=time.perf_counter(); scores=[]
+            tick=time.perf_counter(); scores=[]; page_read_seconds=0.; batch_compute_seconds=0.
             for start in range(0,len(pages),a.batch_pages):
                 stop=min(start+a.batch_pages,len(pages))
-                docs=[matrix[offsets[j]:offsets[j+1]] for j in range(start,stop)]
+                read_start=time.perf_counter()
+                docs=[np.array(matrix[offsets[j]:offsets[j+1]],dtype=np.float32,copy=True) for j in range(start,stop)]
+                page_read_seconds+=time.perf_counter()-read_start
+                score_start=time.perf_counter()
                 batch=score_maxsim_batch(q,docs,device=a.device)
+                batch_compute_seconds+=time.perf_counter()-score_start
                 if start==0 and max(abs(batch[j]-maxsim(q,docs[j])) for j in range(min(5,len(docs))))>1e-3:
                     raise ValueError('Batch MaxSim differs from independent reference')
                 scores.extend(batch)
@@ -142,10 +149,12 @@ def main():
                     'pages':ranked,'scores':[scores[i] for i in order], 'query_encode_seconds':marker['encode_seconds'],
                     'top20_sources':[{k:pages[i].get(k) for k in ('page_id','paper_id','page_number','image_path','image_sha256')}
                                      for i in order[:20]],
+                    'page_read_seconds':page_read_seconds,'batch_compute_seconds':batch_compute_seconds,
                     'score_seconds':time.perf_counter()-tick}
             write_new(ck,{'plan_sha256':signature,'query_marker_sha256':sha(folder/(cid+'.json')),
                           'result':record,'result_sha256':hashlib.sha256(json.dumps(record,sort_keys=True).encode()).hexdigest()})
         result.append(record)
+        if cache.stat().st_mtime_ns!=cache_mtime: raise ValueError('Verified page cache changed during scoring')
         sampled_peak_rss=max(sampled_peak_rss,process.memory_info().rss)
         if len(result)%10==0: print('full queries scored',len(result),'of',len(queries),flush=True)
     if (json.loads(plan.read_text(encoding='utf-8'))!=spec or sha(__file__)!=spec['implementation_sha256']

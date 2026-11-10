@@ -68,6 +68,7 @@ def main():
                 'full_top5_candidate_overlap':sum(x in allowed for x in row['pages'][:5]),
                 'full_top20_candidate_overlap':sum(x in allowed for x in row['pages'][:20]),
                 'full_score_seconds':row['score_seconds'],'query_encode_seconds':row['query_encode_seconds'],
+                'full_page_read_seconds':row['page_read_seconds'],'full_batch_compute_seconds':row['batch_compute_seconds'],
                 'candidate_read_and_score_seconds':old['rerank_seconds'],
                 'full_measured_components_sum_seconds':row['score_seconds']+row['query_encode_seconds'],
                 'candidate_measured_components_sum_seconds':old['prior_text_search_seconds']+old['prior_clip_search_seconds']+old['rerank_seconds']+old['query_encode_seconds'],
@@ -104,6 +105,7 @@ def main():
                 for k in (1,5,20):
                     item[f'candidate_coverage_of_full_top{k}']=sum(r[f'full_top{k}_candidate_overlap'] for r in rs)/(k*len(rs))
                 for timing in ('full_score_seconds','query_encode_seconds','candidate_read_and_score_seconds',
+                               'full_page_read_seconds','full_batch_compute_seconds',
                                'prior_text_search_seconds','prior_clip_search_seconds',
                                'full_measured_components_sum_seconds','candidate_measured_components_sum_seconds'):
                     values=sorted(r[timing] for r in rs)
