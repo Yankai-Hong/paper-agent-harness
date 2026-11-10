@@ -17,6 +17,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for x in ('prepared','encoded','dev','baseline','adapter','output'): p.add_argument('--'+x,required=True)
     p.add_argument('--case',default='standard-006'); p.add_argument('--device',default='cuda:0')
+    p.add_argument('--new-pages-test',help='Select first pages absent from both old partitions')
     a=p.parse_args()
     import torch
     from colpali_engine.models import ColQwen2Processor
@@ -29,7 +30,13 @@ def main():
     marker=json.loads((query_folder/(a.case+'.json')).read_text(encoding='utf-8'))
     with np.load(query_folder/marker['vector_file'],allow_pickle=False) as z:q=np.asarray(z['vectors'],dtype=np.float32)
     docs=[]; page_ids=[]
-    for page in rows(source/'pages.jsonl')[:3]:
+    source_pages=rows(source/'pages.jsonl')
+    if a.new_pages_test:
+        test=Path(a.new_pages_test)
+        source_pages=[page for page in source_pages if not (dev/'pages'/(page['page_id']+'.json')).exists()
+                      and not (test/'pages'/(page['page_id']+'.json')).exists()]
+    if len(source_pages)<3: raise ValueError('Not enough independent source pages')
+    for page in source_pages[:3]:
         key=page['page_id']; folder=encoded/'pages'
         if not check_marker(folder,key,{'page_id':key,'paper_id':page['paper_id'],'image_sha256':page['image_sha256']}):
             raise ValueError('Page checkpoint missing')
@@ -43,7 +50,7 @@ def main():
     official=[float(processor.score_multi_vector([torch.from_numpy(q)],[torch.from_numpy(x)],device='cpu')[0,0]) for x in docs]
     diff=max(abs(x-y) for xs,ys in ((batch,single),(batch,official)) for x,y in zip(xs,ys))
     if diff>1e-3: raise ValueError('Official and batched MaxSim disagree')
-    report={'case_id':a.case,'page_selection':'first three source pages, independent of gold',
+    report={'case_id':a.case,'page_selection':('first three source pages absent from old partitions' if a.new_pages_test else 'first three source pages')+', independent of gold',
             'page_ids':page_ids,'batch':batch,'single':single,'official':official,'max_abs_difference':diff,
             'scope':'real masked token vectors; small numerical equivalence probe'}
     with Path(a.output).open('x',encoding='utf-8') as f:json.dump(report,f,indent=2)

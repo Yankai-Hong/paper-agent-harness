@@ -80,6 +80,12 @@ def main():
     colqwen_search.add_argument('--adapter', required=True)
     colqwen_search.add_argument('--device', default='cuda:0')
     colqwen_search.add_argument('--max-candidates', type=int, default=100)
+    full_search = sub.add_parser('colqwen-full-search', help='Exact full-corpus ColQwen text-to-page search')
+    full_search.add_argument('query')
+    for option in ('index','source-manifest','image-root','cache-dir','colqwen-python','worker','base','adapter'):
+        full_search.add_argument('--'+option, required=True)
+    full_search.add_argument('--device',default='cuda:0')
+    full_search.add_argument('--top-k',type=int,default=20)
     hybrid_page = sub.add_parser('colqwen-hybrid-search', help='Generate text/CLIP page candidates and rerank them with ColQwen2')
     hybrid_page.add_argument('query')
     for option in ('index', 'source-manifest', 'image-root', 'colqwen-python', 'worker', 'base', 'adapter',
@@ -195,6 +201,15 @@ def main():
         retriever = ColQwenCandidateRetriever(store, encoder, args.source_manifest, args.image_root,
                                               device=args.device, max_candidates=args.max_candidates)
         emit(retriever.search_text(args.query, candidates))
+    elif args.command == 'colqwen-full-search':
+        from .colqwen_subprocess import SubprocessColQwenQueryEncoder
+        from .full_page_retrieval import FullColQwenPageRetriever
+        from .resumable_colqwen import ResumableColQwenStore
+        contract=json.loads((Path(args.index)/'contract.json').read_text(encoding='utf-8'))['contract']
+        store=ResumableColQwenStore(args.index,contract)
+        encoder=SubprocessColQwenQueryEncoder(args.colqwen_python,args.worker,args.base,args.adapter,contract,device=args.device)
+        emit(FullColQwenPageRetriever(store,encoder,args.source_manifest,args.image_root,args.cache_dir,
+                                     device=args.device).search_text(args.query,top_k=args.top_k))
     elif args.command == 'colqwen-hybrid-search':
         from .colqwen_hybrid import ClipPageCandidates, HybridColQwenPageSearch, _sha
         from .colqwen_page_retrieval import ColQwenCandidateRetriever

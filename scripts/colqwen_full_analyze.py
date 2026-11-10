@@ -1,6 +1,7 @@
 """Select page RRF on development and evaluate full-corpus MaxSim results."""
 import argparse
 import json
+import math
 import statistics
 from pathlib import Path
 
@@ -58,6 +59,7 @@ def main():
             allowed=set(ca['pages'])
             result.append({'case_id':row['case_id'],'group':row['group'],'partition':row['partition'],
                 'gold_status':row['gold_status'],'full_rank':row['gold_rank'],'fused_rank':fused,
+                'target_in_index':row['target_in_index'],
                 'text_rank':original['hybrid']['gold_rank'],'clip_rank':visual[row['case_id']]['clip']['gold_rank'],
                 'candidate_rank':old['candidate_rank'],'candidate_covered':old['candidate_hit'],
                 'full_top1_candidate_overlap':sum(x in allowed for x in row['pages'][:1]),
@@ -92,14 +94,18 @@ def main():
         for group in ('standard','visual'):
             for partition in ('all','dev','test'):
                 rs=[r for r in result if r['group']==group and (partition=='all' or r['partition']==partition)]
-                item={'n':len(rs),'candidate_coverage':sum(r['candidate_covered'] for r in rs)/len(rs)}
+                item={'n':len(rs),'successful_queries':len(rs),
+                      'consistent_targets':sum(r['gold_status']=='consistent' for r in rs),
+                      'consistent_targets_in_index':sum(r['target_in_index'] is True for r in rs),
+                      'unknown_labels':sum(r['gold_status']!='consistent' for r in rs),
+                      'candidate_coverage':sum(r['candidate_covered'] for r in rs)/len(rs)}
                 for k in (1,5,20):
                     item[f'candidate_coverage_of_full_top{k}']=sum(r[f'full_top{k}_candidate_overlap'] for r in rs)/(k*len(rs))
                 for timing in ('full_score_seconds','query_encode_seconds','candidate_read_and_score_seconds',
                                'prior_text_search_seconds','prior_clip_search_seconds',
                                'full_measured_components_sum_seconds','candidate_measured_components_sum_seconds'):
                     values=sorted(r[timing] for r in rs)
-                    item[timing]={'median':statistics.median(values),'p95':values[min(len(values)-1,int(.95*len(values)))]}
+                    item[timing]={'median':statistics.median(values),'p95':values[math.ceil(.95*len(values))-1]}
                 for key in ('text_rank','clip_rank','candidate_rank','full_rank','fused_rank'): item[key]=metrics(rs,key)
                 for key in ('full_rank','fused_rank'):
                     hit=lambda x:x is not None and x<=5
